@@ -115,7 +115,7 @@ const test = _.chain(data)
 const rule1 = ( patientMedications ) => {
 	return _.chain(patientMedications)
 		.filter( (patientMedication) => {
-		 	return patientMedication.chemicalType === "laac"
+		 	return patientMedication.chemicalType === "laac";
 		})
 		.value();
 }
@@ -125,8 +125,14 @@ const rule2 = ( patientMedications, masterMedications ) => {
 	return _.chain(patientMedications)
 	.filter( (patientMedication) => {
 		return patientMedication.chemicalType !== "ICS";
-	})
-	.value();
+	})//filter
+	.value()
+	.map( (filteredPatientMedications) => {
+		return _.chain(masterMedications)
+		.filter( (medicationElement) ) => { 
+			return filteredPatientMedications.chemicalType === "laba" && masterMedications.chemicalType === "laba,ICS";
+		})
+	});
 }
 
 //Rule 6
