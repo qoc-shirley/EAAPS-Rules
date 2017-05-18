@@ -59,7 +59,14 @@ const header = _.filter(json, (item, index) => { return index === 0 });
 const data = _.filter (json, (item, index) => { return index !== 0});
 
 //patient's list of medications
-const medications = ["laba","laac","ics","saba","saac","itra","laba,ics"];
+const medications = [ 	
+	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS"},
+	{id:"11",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS"},
+	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ICS"},
+	{id:"14",function:"controller",name:"asmanex",type:"other",chemicalType:"laac"},
+	{id:"16",function:"controller",name:"asmanex",type:"combo",chemicalType:"laba,ICS"},
+	{id:"18",function:"controller",name:"asmanex",type:"laba",chemicalType:"laba"}
+];
 
 //takes the data array and uses map to get a list of {[id:1, color: blue ...etc]}
 //maps a data value to 
@@ -69,7 +76,11 @@ const test = _.chain(data)
 		return _.chain(header)
 			//gets first element of array
 			.head()
-			.filter( (headerVal) => { return headerVal !== "" })
+			.filter( (headerVal) => { 
+				return headerVal !== "" 
+			})		
+			//	(headerVal) => !headerVal
+		
 			//acc array to iterate over
 			//headVal the function that is called per iteration
 			//index is the initual value
@@ -86,12 +97,13 @@ const test = _.chain(data)
 //Rule 1
 /*const rule1 = (medications, test) => {
 	//check if the array of medications of the patient has a chemicalType of LAAC
-	const check = _.filter(medications,(chemType) => {return chemType === "laac"});
+	const check = _.filter(medications,(chemType, index) => {return chemType === "laac"});
 	//check if the medication exists
 	//empty = does not exist, otherwise it move on to recommending what type of medication
 	if(_.isEmpty(check)){
 		return "No original medication of LAAC";
 	}
+	
 	//uses test to find the object that contains LAAC to recommend to patient
 	const recommend = _.map(function(test,key,value,index){
 		if(test[index][key] === "chemicalType" && value === "laac"){
@@ -100,32 +112,21 @@ const test = _.chain(data)
 	}).bind(null,test);
 }//end rule1*/
 
-const recommend = _.map(function(test,key,value,index){
-	if(test[index][key] === "chemicalType" && value === "laac"){
-		return test[index];
+const rule1 = ( patientMedications ) => {
+	return _.chain(patientMedications)
+		.filter( (patientMedication) => {
+			(patientMedication === "laac")
+			return patientMedications;
+		})
+		.value();
 	}
-}).bind(null,test);
 
 //Rule 2
-const rule2 = (medications, test) => {
-	//check if the array of medications of the patient has a chemicalType of LAAC
-	const check = _.filter(medications,(chemType) => {return chemType === "ICS"});
+const rule6 = ( patientMedications ) =>{
+		
+	}
+		
 	
-	//finds recommended medication
-	if(_.isEmpty(check)){
-		//uses test to find the object that contains LAAC to recommend to patient
-		const recommend = _.map(function(test,key,value,index){
-			if(test[index][key] === "chemicalType" && value === "laac"){
-				return test[index];
-			}
-		}).bind(null,test);
-	}//end if
-	return "Contains ICS";
-}//end rule1*?
-
-
-
-
 
 debugger
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
