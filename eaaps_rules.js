@@ -86,25 +86,49 @@ const test = _.chain(data)
 //Rule 1
 /*const rule1 = (medications, test) => {
 	//check if the array of medications of the patient has a chemicalType of LAAC
-	const check1 = _.filter(medications,(chemType) => {return chemType === "laac"});
+	const check = _.filter(medications,(chemType) => {return chemType === "laac"});
 	//check if the medication exists
 	//empty = does not exist, otherwise it move on to recommending what type of medication
-	if(_.isEmpty(check1)){
-		return "No original medication of 'LAAC'";
+	if(_.isEmpty(check)){
+		return "No original medication of LAAC";
 	}
 	//uses test to find the object that contains LAAC to recommend to patient
-	const recommend = _.chain(test)
-		.map((medRec) => {
-			return _.filter(test,(findChemType) => { return findChemType === "laac"})
-		})
-		.value();//end map
+	const recommend = _.map(function(test,key,value,index){
+		if(test[index][key] === "chemicalType" && value === "laac"){
+			return test[index];
+		}
+	}).bind(null,test);
 }//end rule1*/
 
 const recommend = _.map(function(test,key,value,index){
 	if(test[index][key] === "chemicalType" && value === "laac"){
-		return "ok";
+		return test[index];
 	}
 }).bind(null,test);
+
+//Rule 2
+const rule2 = (medications, test) => {
+	//check if the array of medications of the patient has a chemicalType of LAAC
+	const check = _.filter(medications,(chemType) => {return chemType === "ICS"});
+	
+	//finds recommended medication
+	if(_.isEmpty(check)){
+		//uses test to find the object that contains LAAC to recommend to patient
+		const recommend = _.map(function(test,key,value,index){
+			if(test[index][key] === "chemicalType" && value === "laac"){
+				return test[index];
+			}
+		}).bind(null,test);
+	}//end if
+	return "Contains ICS";
+}//end rule1*?
+
+
+
+
+
+debugger
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* const object = { a: 'b', b: 'c', c: 'd'};
  const o=_.chain(object)
@@ -143,6 +167,5 @@ const size = _.size(headerFlatten);
 		.bind(null, size),{})
 	.value();
 	*/
-debugger
 
 
