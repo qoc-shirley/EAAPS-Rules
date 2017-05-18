@@ -82,9 +82,29 @@ const test = _.chain(data)
 			.value();
 	})
 	.value();
-	
-const rule1 = _.filter(medications,(chemType) => {return chemType === "laac"});
 
+//Rule 1
+/*const rule1 = (medications, test) => {
+	//check if the array of medications of the patient has a chemicalType of LAAC
+	const check1 = _.filter(medications,(chemType) => {return chemType === "laac"});
+	//check if the medication exists
+	//empty = does not exist, otherwise it move on to recommending what type of medication
+	if(_.isEmpty(check1)){
+		return "No original medication of 'LAAC'";
+	}
+	//uses test to find the object that contains LAAC to recommend to patient
+	const recommend = _.chain(test)
+		.map((medRec) => {
+			return _.filter(test,(findChemType) => { return findChemType === "laac"})
+		})
+		.value();//end map
+}//end rule1*/
+
+const recommend = _.chain(test)
+	.map((medRec) => {
+		return _.filter(test,(findChemType) => { return findChemType === "laac"})
+	})
+	.value();//end map
 /* const object = { a: 'b', b: 'c', c: 'd'};
  const o=_.chain(object)
  	.keys()
