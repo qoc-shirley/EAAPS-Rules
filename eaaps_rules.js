@@ -115,21 +115,33 @@ const test = _.chain(data)
 const rule1 = ( patientMedications ) => {
 	return _.chain(patientMedications)
 		.filter( (patientMedication) => {
-			(patientMedication === "laac")
-			return patientMedications;
+		 	return patientMedication.chemicalType === "laac"
 		})
 		.value();
 }
 
-//Rule 6
-/*If there exists an original medication that DOES NOT have “name” is “symbicort” AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND there also exists an original medication “chemicalType” is “LTRA” AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), Recommend consulting a respirologist*/
-const rule6 = ( patientMedications ) => {
+// Rule 2
+const rule2 = ( patientMedications, masterMedications ) => {
 	return _.chain(patientMedications)
-	.filter( (patientMedications) =>{
-		return
+	.filter( (patientMedication) => {
+		return patientMedication.chemicalType !== "ICS";
 	})
 	.value();
 }
+
+//Rule 6
+/*
+If there exists an original medication that DOES NOT have “name” is “symbicort” AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND there also exists an original medication “chemicalType” is “LTRA” AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), Recommend consulting a respirologist
+*/
+/*const rule6 = ( patientMedications ) => {
+	return _.chain(patientMedications)
+	.filter( (patientMedication) => {
+		( (patientMedication !== "symbicort" && patientMedication === "laba,ICS") 
+		|| (patientMedication !== "symbicort" && patientMedication === "laba,ICS"))
+		return 
+	})
+	.value();
+}*/
 		
 	
 
