@@ -100,11 +100,12 @@ const test = _.chain(data)
 		.value();//end map
 }//end rule1*/
 
-const recommend = _.chain(test)
-	.map((medRec) => {
-		return _.filter(test,(findChemType) => { return findChemType === "laac"})
-	})
-	.value();//end map
+const recommend = _.map(function(test,key,value,index){
+	if(test[index][key] === "chemicalType" && value === "laac"){
+		return "ok";
+	}
+}).bind(null,test);
+
 /* const object = { a: 'b', b: 'c', c: 'd'};
  const o=_.chain(object)
  	.keys()
