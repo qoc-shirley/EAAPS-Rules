@@ -130,13 +130,26 @@ const rule1 = ( patientMedications ) => {
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
-	return _.chain(patientMedications)
+	if(_.chain(patientMedications)
 		.filter( (patientMedication) => {
-			if( patientMedication.chemicalType !== "ICS" ){
-				return "not ICS condition";
-			}
-			return patientMedication.chemicalType === "ltra"
-		})//filter
+			return patientMedication.chemicalType !== "ICS";
+		})
+		.isEmpty()
+		.value()){
+		return ["All chemical types of patient's medication are ICS"];
+	}
+	else{
+		return "condition2";
+	}
+	
+	//part 2 of rule
+	return _.chain(patientMedications)
+			.filter( (patientMedication) => {
+				return patientMedication.chemicalType === "ltra";
+			})
+			.value()
+		
+		
 		/*.filter( (filteredPatientMedication) => {
 			if(filteredPatientMedication.chemicalType === "laba"){
 				.chain(masterMedications)
@@ -169,7 +182,6 @@ const rule2 = ( patientMedications, masterMedications ) => {
 						 "Alvesco", "200ug", "I PUFF od", "OR QVAR 100", "I PUFF ug bid"];
 			}
 		})//filter*/
-	.value();
 }
 
 //Rule 6
