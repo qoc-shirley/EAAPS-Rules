@@ -118,21 +118,30 @@ const rule1 = ( patientMedications ) => {
 		 	return patientMedication.chemicalType === "laac";
 		})
 		.value();
+		
+	// return _.chain(patientMedications)
+	// 	.map("chemicalType")
+	// 	.filter( (chemicalType) => {
+	// 	 	return chemicalType === "laac";
+	// 	})
+	// 	.value();
+		
 }
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
 	return _.chain(patientMedications)
-	.filter( (patientMedication) => {
-		return patientMedication.chemicalType !== "ICS";
-	})//filter
-	.value()
-	.map( (filteredPatientMedications) => {
-		return _.chain(masterMedications)
-		.filter( (medicationElement) ) => { 
-			return filteredPatientMedications.chemicalType === "laba" && masterMedications.chemicalType === "laba,ICS";
-		})
-	});
+		.filter( (patientMedication) => {
+			return patientMedication.chemicalType !== "ICS";
+		})//filter
+		//.map( (filteredPatientMedications) => {return 
+		.chain(masterMedications)
+			.filter( (medicationElement) => { 
+				return filteredPatientMedications.chemicalType === "laba" && masterMedications.chemicalType === "laba,ICS";
+			})
+			.value();
+		//})
+		.value();
 }
 
 //Rule 6
