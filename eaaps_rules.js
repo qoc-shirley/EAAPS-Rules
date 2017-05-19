@@ -134,16 +134,34 @@ const rule2 = ( patientMedications, masterMedications ) => {
 		.filter( (patientMedication) => {
 			return patientMedication.chemicalType !== "ICS";
 		})//filter
-		.filter( (filteredPatientMedications) => {
-			if(patientMedication.chemicalType === "laba"){
+		.filter( (filteredPatientMedication) => {
+			if(filteredPatientMedication.chemicalType === "laba"){
 				.chain(masterMedications)
 					.filter( (medicationElement) => { 
-						return masterMedications.chemicalType === "laba,ICS";
-					})
+						if(medicationElement.chemicalType === "laba,ICS"){
+							if((filteredPatientMediation.chemicalLABA === medicationElement.chemicalLABA)){
+								if(filteredPatientMediation.device === medicationElement.device){
+									return ["lowest ICS dose"];
+								}//if
+								return ["recommend new medication at the lowest ICS dose in any available device"];
+							}
+							else{
+								//ASK how to find the lowest dose out of the following medications for patient
+								return [
+									{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
+									{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
+									{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
+								];
+							}//if
+						}//if
+					})//filter
 				.value();
 			}//if 
+			else{
+				// ASK recommend any of the following new medications
+			}
 		})//filter
-		.value();
+	.value();
 }
 
 //Rule 6
