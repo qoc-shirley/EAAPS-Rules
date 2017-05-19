@@ -134,13 +134,15 @@ const rule2 = ( patientMedications, masterMedications ) => {
 		.filter( (patientMedication) => {
 			return patientMedication.chemicalType !== "ICS";
 		})//filter
-		//.map( (filteredPatientMedications) => {return 
-		.chain(masterMedications)
-			.filter( (medicationElement) => { 
-				return filteredPatientMedications.chemicalType === "laba" && masterMedications.chemicalType === "laba,ICS";
-			})
-			.value();
-		//})
+		.filter( (filteredPatientMedications) => {
+			if(patientMedication.chemicalType === "laba"){
+				.chain(masterMedications)
+					.filter( (medicationElement) => { 
+						return masterMedications.chemicalType === "laba,ICS";
+					})
+				.value();
+			}//if 
+		})//filter
 		.value();
 }
 
