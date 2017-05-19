@@ -132,9 +132,12 @@ const rule1 = ( patientMedications ) => {
 const rule2 = ( patientMedications, masterMedications ) => {
 	return _.chain(patientMedications)
 		.filter( (patientMedication) => {
-			return patientMedication.chemicalType !== "ICS";
+			if( patientMedication.chemicalType !== "ICS" ){
+				return "not ICS condition";
+			}
+			return patientMedication.chemicalType === "ltra"
 		})//filter
-		.filter( (filteredPatientMedication) => {
+		/*.filter( (filteredPatientMedication) => {
 			if(filteredPatientMedication.chemicalType === "laba"){
 				.chain(masterMedications)
 					.filter( (medicationElement) => { 
@@ -159,8 +162,13 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			}//if 
 			else{
 				// ASK recommend any of the following new medications
+				return [ "Flovent", "125ug", "1 PUFF bid", 
+						 "Discus Flovent", "100ug", "1 PUFF puff bid", 
+						 "Pulmicort", "200ug", "1 PUFF bid",
+						 "Asmanex", "200ug", "I PUFF od",
+						 "Alvesco", "200ug", "I PUFF od", "OR QVAR 100", "I PUFF ug bid"];
 			}
-		})//filter
+		})//filter*/
 	.value();
 }
 
