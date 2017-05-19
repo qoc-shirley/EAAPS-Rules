@@ -130,16 +130,17 @@ const rule1 = ( patientMedications ) => {
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
-	if(_.chain(patientMedications)
-		.filter( (patientMedication) => {
-			return patientMedication.chemicalType !== "ICS";
-		})
-		.isEmpty()
-		.value()){
+	const notContainingICS = _.chain(patientMedications)
+							  .filter( (patientMedication) => {
+								  return patientMedication.chemicalType !== "ICS";
+							  })
+							  .value();
+		
+	if(_.isEmpty(notContainingICS)){
 		return ["All chemical types of patient's medication are ICS"];
 	}
 	else{
-		return "condition2";
+		return "ddd";//_.chain(notContainingICS);
 	}
 	
 	//part 2 of rule
