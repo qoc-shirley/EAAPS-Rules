@@ -59,7 +59,7 @@ const header = _.filter(json, (item, index) => { return index === 0 });
 const data = _.filter (json, (item, index) => { return index !== 0});
 
 //patient's list of medications
-const medications = [ 	
+const patientMedications = [ 	
 	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS"},
 	{id:"11",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS"},
 	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ICS"},
@@ -130,59 +130,47 @@ const rule1 = ( patientMedications ) => {
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
-	const notContainingICS = _.chain(patientMedications)
-							  .filter( (patientMedication) => {
-								  return patientMedication.chemicalType !== "ICS";
-							  })
-							  .value();
+	return  _.chain(patientMedications)
+					.filter( (patientMedication) => {
+						return patientMedication.chemicalType !== "ICS";
+					})
+						.chain(masterMedications)//is this possible?
+							.filter( (filteredPatientMedication, medicationElement) => {
+								return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS";
+								/*if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS"){
+									if(filteredPatientMedication.chemicalLABA === medicationElement.chemicalLABA){
+										if(filteredPatientMedication.device === medicationElement.device){
+											//lowest doseICS
+											return medicationElement.doseICS;
+										}
+										else {
+											//lowest doseICS of any device
+											return medicationElement.doseICS;
+										}//if
+									}
+								}
+								else{
+									return medicationElement.chemicalLABA === "salmeterol" 
+											&& medicationElement.chemicalICS === "fluticasone" 
+											&& medicationElement.device === "diskus";
+									//[
+									//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
+									//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
+									//		{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
+									//];
+								}*/
+							})
+					
+					.value();
+					
+			//.value();
 		
-	if(_.isEmpty(notContainingICS)){
-		return ["All chemical types of patient's medication are ICS"];
-	}
-	else{
-		return "ddd";//_.chain(notContainingICS);
-	}
-	
-	//part 2 of rule
-	return _.chain(patientMedications)
+
+	/*return _.chain(patientMedications)
 			.filter( (patientMedication) => {
 				return patientMedication.chemicalType === "ltra";
 			})
-			.value()
-		
-		
-		/*.filter( (filteredPatientMedication) => {
-			if(filteredPatientMedication.chemicalType === "laba"){
-				.chain(masterMedications)
-					.filter( (medicationElement) => { 
-						if(medicationElement.chemicalType === "laba,ICS"){
-							if((filteredPatientMediation.chemicalLABA === medicationElement.chemicalLABA)){
-								if(filteredPatientMediation.device === medicationElement.device){
-									return ["lowest ICS dose"];
-								}//if
-								return ["recommend new medication at the lowest ICS dose in any available device"];
-							}
-							else{
-								//ASK how to find the lowest dose out of the following medications for patient
-								return [
-									{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
-									{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
-									{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
-								];
-							}//if
-						}//if
-					})//filter
-				.value();
-			}//if 
-			else{
-				// ASK recommend any of the following new medications
-				return [ "Flovent", "125ug", "1 PUFF bid", 
-						 "Discus Flovent", "100ug", "1 PUFF puff bid", 
-						 "Pulmicort", "200ug", "1 PUFF bid",
-						 "Asmanex", "200ug", "I PUFF od",
-						 "Alvesco", "200ug", "I PUFF od", "OR QVAR 100", "I PUFF ug bid"];
-			}
-		})//filter*/
+			.value()*/
 }
 
 //Rule 6
@@ -220,8 +208,8 @@ const b = _.size(a);*/
 //	 take that position in the DATA array and add the size to the index in DATA to set each data/header relationship throughout the rest of  the array
 //does not work because this would set all elements would be under one key
 
-const headerFlatten = _.flatten(header);
-const size = _.size(headerFlatten);
+/*const headerFlatten = _.flatten(header);
+const size = _.size(headerFlatten);*/
 
 
 //2) if the index of DATA mod SIZE of header is 0 
