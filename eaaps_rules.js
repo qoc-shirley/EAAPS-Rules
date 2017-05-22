@@ -134,34 +134,38 @@ const rule2 = ( patientMedications, masterMedications ) => {
 					.filter( (patientMedication) => {
 						return patientMedication.chemicalType !== "ICS";
 					})
-						.chain(masterMedications)//is this possible?
-							.filter( (filteredPatientMedication, medicationElement) => {
-								return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS";
-								/*if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS"){
-									if(filteredPatientMedication.chemicalLABA === medicationElement.chemicalLABA){
-										if(filteredPatientMedication.device === medicationElement.device){
-											//lowest doseICS
-											return medicationElement.doseICS;
-										}
-										else {
-											//lowest doseICS of any device
-											return medicationElement.doseICS;
-										}//if
+					.filter(_.partial((filteredPatientMedication, _masterMedications) => {
+						return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS"
+					}
+					, patientMedication, masterMedications))
+						//.chain(masterMedications)
+						//.filter( (filteredPatientMedication, medicationElement) => {
+							//return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS";
+							/*if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS"){
+								if(filteredPatientMedication.chemicalLABA === medicationElement.chemicalLABA){
+									if(filteredPatientMedication.device === medicationElement.device){
+										//lowest doseICS
+										return medicationElement.doseICS;
 									}
+									else {
+										//lowest doseICS of any device
+										return medicationElement.doseICS;
+									}//if
 								}
-								else{
-									return medicationElement.chemicalLABA === "salmeterol" 
-											&& medicationElement.chemicalICS === "fluticasone" 
-											&& medicationElement.device === "diskus";
-									//[
-									//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
-									//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
-									//		{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
-									//];
-								}*/
+							}
+							else{
+								return medicationElement.chemicalLABA === "salmeterol" 
+										&& medicationElement.chemicalICS === "fluticasone" 
+										&& medicationElement.device === "diskus";
+								//[
+								//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
+								//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
+								//		{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
+								//];
+							}*/
 							})
 					
-					.value();
+					//.value();
 					
 			//.value();
 		
