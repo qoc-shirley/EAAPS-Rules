@@ -123,7 +123,6 @@ const test = _.chain(masterMedications)
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
-	
 	/*const filteredPatientMedication = _.chain(patientMedications)
 			.filter( (patientMedication) => {
 				return patientMedication.chemicalType !== "ICS"
@@ -146,8 +145,12 @@ const rule2 = ( patientMedications, masterMedications ) => {
 						if( (patientMedication.chemicalType === "laba") && (_.some(medicationElement,{chemicalType:"laba,ICS"})) ){
 							console.log("medication element laba,ICS");
 							console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
-							//console.log(medicationElement);
-							return filteredMedicationLabaICS;
+							console.log(medicationElement);
+							return _.chain(masterMedications)
+										.filter( (medication) => {
+											return medication.chemicalType === "laba,ICS";
+										})
+									.value();
 						}
 						else {
 							return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
@@ -161,57 +164,15 @@ const rule2 = ( patientMedications, masterMedications ) => {
 				}
 			,masterMedications))
 			.value();	
-	/*		
-	return _.chain(masterMedications)
-				.filter( (medicationElement) => {
-					if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS")
-						return getChemTypeLaba.chemicalType === "laba";
-				})
-			.value();*/
 	
-	/*return  _.chain(patientMedications)
-					.filter( (patientMedication) => {
-						return patientMedication.chemicalType !== "ICS";
-					})
-					.value();*/
-						//.chain(masterMedications)
-						
-						//.filter( (filteredPatientMedication, medicationElement) => {
-							//return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS";
-							/*if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS"){
-								if(filteredPatientMedication.chemicalLABA === medicationElement.chemicalLABA){
-									if(filteredPatientMedication.device === medicationElement.device){
-										//lowest doseICS
-										return medicationElement.doseICS;
-									}
-									else {
-										//lowest doseICS of any device
-										return medicationElement.doseICS;
-									}//if
-								}
-							}
-							else{
-								return medicationElement.chemicalLABA === "salmeterol" 
-										&& medicationElement.chemicalICS === "fluticasone" 
-										&& medicationElement.device === "diskus";
-								//[
-								//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
-								//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
-								//		{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
-								//];
-							}*/
-							//})
-					
-					//.value();
-					
-			//.value();
-		
-
-	/*return _.chain(patientMedications)
-			.filter( (patientMedication) => {
-				return patientMedication.chemicalType === "ltra";
-			})
-			.value()*/
+			//return medicationElement.chemicalLABA === "salmeterol" 
+			//		&& medicationElement.chemicalICS === "fluticasone" 
+			//		&& medicationElement.device === "diskus";
+			//[
+			//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
+			//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
+			//		{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
+			//];
 }
 console.log(rule2(patientMedications, masterMedications));
 
