@@ -158,7 +158,11 @@ const rule2 = ( patientMedications, masterMedications ) => {
 							if( (_.find(masterMedications,{chemicalType:"laba,ICS"})).chemicalLABA === patientMedication.chemicalLABA){
 								console.log("chemicalLABA");
 								if((_.find(masterMedications,{chemicalType:"laba,ICS"})).device === patientMedication.device){
-									console.log("device");
+									console.log("device: recommend new medication aat lowest ICS dose");
+									
+								}
+								else {
+									console.log("device: recommend new medication at lowest ICS dose");
 								}
 							}
 							
