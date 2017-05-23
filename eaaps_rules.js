@@ -136,19 +136,32 @@ const rule2 = ( patientMedications, masterMedications ) => {
 	//const filteredMedication = _.filter(masterMedications, { chemicalType:"laba,ICS"});
 	//console.log(filteredMedicationLabaICS);
 	//console.log(filteredMedication);
+	let filteredMedication = "";
+	//console.log(_.find(masterMedications,{chemicalType:"laba"}));
 			
 	return  _.chain(patientMedications)
 			//return to whatever is true to the param inside
 			.filter( 
 				_.partial( (medicationElement, patientMedication) => {
+					//console.log(patientMedication.chemicalType)
 					//1
 					if(patientMedication.chemicalType !== "ICS"){
 						//console.log(patientMedication.chemicalType === "laba");
 						if( (patientMedication.chemicalType === "laba") && (_.some(medicationElement,{chemicalType:"laba,ICS"})) ){
 							console.log("medication element laba,ICS");
-							//console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
-							console.log(medicationElement);
-							return _.filter(medicationElement, {chemicalType:"laba,ICS"});
+							console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
+							//console.log(medicationElement);
+							//filteredMedication = _.filter(masterMedications, { chemicalType:"laba,ICS"});
+							//console.log(filteredMedication);
+							//return medicationElement.chemicalType === "laba,ICS";
+							//console.log(_.find(masterMedications,{chemicalType:"laba,ICS"}).chemicalLABA );
+							if( (_.find(masterMedications,{chemicalType:"laba,ICS"})).chemicalLABA === patientMedication.chemicalLABA){
+								console.log("chemicalLABA");
+								if((_.find(masterMedications,{chemicalType:"laba,ICS"})).device === patientMedication.device){
+									console.log("device");
+								}
+							}
+							
 						}
 						else {
 							return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
@@ -161,7 +174,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 						return patientMedication.chemicalType === "ltra";
 					}
 				}
-			,masterMedications))
+			, masterMedications))
 			.value();	
 	
 			//return medicationElement.chemicalLABA === "salmeterol" 
