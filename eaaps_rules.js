@@ -52,7 +52,7 @@ var json = [
 ]
 
 //...spread operator
-var combine = _.zip(...json);
+//var combine = _.zip(...json);
 
 
 const header = _.filter(json, (item, index) => { return index === 0 });
@@ -60,17 +60,16 @@ const data = _.filter (json, (item, index) => { return index !== 0});
 
 //patient's list of medications
 const patientMedications = [ 	
-	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS"},
-	{id:"11",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS"},
-	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ICS"},
-	{id:"14",function:"controller",name:"asmanex",type:"other",chemicalType:"laac"},
-	{id:"16",function:"controller",name:"asmanex",type:"combo",chemicalType:"laba,ICS"},
-	{id:"18",function:"controller",name:"asmanex",type:"laba",chemicalType:"laba"}
+	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS", chemicalLABA:"salmeterol", device:"diskus", doseICS:"50"},
+	{id:"11",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS", chemicalLABA:"salmeterol",device:"diskus",doseICS:"50"},
+	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ICS",chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
+	{id:"14",function:"controller",name:"asmanex",type:"other",chemicalType:"laac", chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
+	{id:"16",function:"controller",name:"asmanex",type:"combo",chemicalType:"ICS", chemicalLABA:"salmeterol",device:"diskus",doseICS:"30"},
+	{id:"18",function:"controller",name:"asmanex",type:"ltra",chemicalType:"laba", chemicalLABA:"salmeterol",device:"diskus", doseICS:"30"}
 ];
-
 //takes the data array and uses map to get a list of {[id:1, color: blue ...etc]}
 //maps a data value to 
-const test = _.chain(data)
+const masterMedications = _.chain(data)
 	//map data to header element
 	.map( (dataVal) => {
 		return _.chain(header)
@@ -128,16 +127,38 @@ const rule1 = ( patientMedications ) => {
 		
 }
 
+function greet(greeting, name) {
+  return greeting + ' ' + name;
+}
+
+var sayHelloTo = _.partial( (Greeting,Name) => {
+	if( Name === 'fred'){
+		return Greeting + ' ' + Name;
+	}
+	else{
+		return "you are not fred";
+	}
+}, 'hello', 'fred');
+//sayHelloTo('fred');
+
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
-	return  _.chain(patientMedications)
+	const filteredPatientMedication = _.chain(patientMedications)
+			.filter( (patientMedication) => {
+				return patientMedication.chemicalType !== "ICS"
+			})
+			.value();
+	return _.chain(masterMedications)
+				.filter( (medicationElement) => {
+					if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS")
+						return getChemTypeLaba.chemicalType === "laba";
+				})
+			.value();
+	/*return  _.chain(patientMedications)
 					.filter( (patientMedication) => {
 						return patientMedication.chemicalType !== "ICS";
 					})
-					.filter(_.partial((filteredPatientMedication, _masterMedications) => {
-						return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS"
-					}
-					, patientMedication, masterMedications))
+					.value();*/
 						//.chain(masterMedications)
 						//.filter( (filteredPatientMedication, medicationElement) => {
 							//return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS";
@@ -163,7 +184,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 								//		{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
 								//];
 							}*/
-							})
+							//})
 					
 					//.value();
 					
@@ -176,6 +197,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			})
 			.value()*/
 }
+console.log(rule2(patientMedications, masterMedications));
 
 //Rule 6
 /*
@@ -190,9 +212,6 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 	})
 	.value();
 }*/
-		
-	
-
 debugger
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
