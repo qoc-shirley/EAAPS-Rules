@@ -1,13 +1,3 @@
-//convert .csv file to json
-//import json file to js file (this file)
-//start translating simple rules
-
-/*$.getJSON("convertcsv-2.json", function("json")) {
-	console.log("json");
-});*/
-
-//const or let instead of let
-
 //importing .json file of the medications rules
 var json = [
   ["id","atc","din","href","colour","device","function","name","type","chemicalType","chemicalLABA","chemicalICS","chemicalOther","doseLABA","doseICS","doseOther","maxGreenLABA","maxGreenICS","maxYellowLABA","maxYellowICS","lowCeilICS","highFloorICS","timesPerDay","maxPuffPerTime","dose (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)","maxGreen (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)","maxYellow (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)","trade","chemical","appears in questionnaire",""  ],
@@ -67,6 +57,16 @@ const patientMedications = [
 	{id:"16",function:"controller",name:"asmanex",type:"combo",chemicalType:"ICS", chemicalLABA:"salmeterol",device:"diskus",doseICS:"30"},
 	{id:"18",function:"controller",name:"asmanex",type:"ltra",chemicalType:"laba", chemicalLABA:"salmeterol",device:"diskus", doseICS:"30"}
 ];
+
+/*const patientMedications = [ 	
+	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ltra", chemicalLABA:"salmeterol", device:"diskus", doseICS:"50"},
+	{id:"11",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ltra", chemicalLABA:"salmeterol",device:"diskus",doseICS:"50"},
+	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ltra",chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
+	{id:"14",function:"controller",name:"asmanex",type:"other",chemicalType:"laac", chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
+	{id:"16",function:"controller",name:"asmanex",type:"combo",chemicalType:"abba", chemicalLABA:"salmeterol",device:"diskus",doseICS:"30"},
+	{id:"18",function:"controller",name:"asmanex",type:"ltra",chemicalType:"laba", chemicalLABA:"salmeterol",device:"diskus", doseICS:"30"}
+];*/
+
 //takes the data array and uses map to get a list of {[id:1, color: blue ...etc]}
 //maps a data value to 
 const masterMedications = _.chain(data)
@@ -94,23 +94,6 @@ const masterMedications = _.chain(data)
 	.value();
 
 //Rule 1
-/*const rule1 = (medications, test) => {
-	//check if the array of medications of the patient has a chemicalType of LAAC
-	const check = _.filter(medications,(chemType, index) => {return chemType === "laac"});
-	//check if the medication exists
-	//empty = does not exist, otherwise it move on to recommending what type of medication
-	if(_.isEmpty(check)){
-		return "No original medication of LAAC";
-	}
-	
-	//uses test to find the object that contains LAAC to recommend to patient
-	const recommend = _.map(function(test,key,value,index){
-		if(test[index][key] === "chemicalType" && value === "laac"){
-			return test[index];
-		}
-	}).bind(null,test);
-}//end rule1*/
-
 const rule1 = ( patientMedications ) => {
 	return _.chain(patientMedications)
 		.filter( (patientMedication) => {
@@ -126,20 +109,6 @@ const rule1 = ( patientMedications ) => {
 	// 	.value();
 		
 }
-
-function greet(greeting, name) {
-  return greeting + ' ' + name;
-}
-
-var sayHelloTo = _.partial( (Greeting,Name) => {
-	if( Name === 'fred'){
-		return Greeting + ' ' + Name;
-	}
-	else{
-		return "you are not fred";
-	}
-}, 'hello', 'fred');
-//sayHelloTo('fred');
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
@@ -157,11 +126,19 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			.value();*/
 			
 	return  _.chain(patientMedications)
-			.filter(_.partial(masterMedication, patientMedication)	=> {
+			//return to whatever is true to the param inside
+			.filter( _.partial((medicationElement, patientMedication) => {
 				if(patientMedication.chemicalType !== "ICS"){
-					
+					if(patientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS"){
+						
+					}
+						return "a";
 				}
-			}, masterMedications )	
+				else {
+					return patientMedication.chemicalType === "ltra"
+				}
+			}, masterMedications))
+			.value();	
 	
 	/*return  _.chain(patientMedications)
 					.filter( (patientMedication) => {
