@@ -128,12 +128,14 @@ const rule2 = ( patientMedications, masterMedications ) => {
 				return patientMedication.chemicalType !== "ICS"
 			})
 			.value();*/
-	const filteredMedicationLabaICS = _.chain(masterMedications)
+	/*const filteredMedicationLabaICS = _.chain(masterMedications)
 				.filter( (medication) => {
 					return medication.chemicalType === "laba,ICS";
 				})
-				.value();
-				console.log(filteredMedicationLabaICS);
+				.value();*/
+	//const filteredMedication = _.filter(masterMedications, { chemicalType:"laba,ICS"});
+	//console.log(filteredMedicationLabaICS);
+	//console.log(filteredMedication);
 			
 	return  _.chain(patientMedications)
 			//return to whatever is true to the param inside
@@ -144,19 +146,16 @@ const rule2 = ( patientMedications, masterMedications ) => {
 						//console.log(patientMedication.chemicalType === "laba");
 						if( (patientMedication.chemicalType === "laba") && (_.some(medicationElement,{chemicalType:"laba,ICS"})) ){
 							console.log("medication element laba,ICS");
-							console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
+							//console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
 							console.log(medicationElement);
-							return _.chain(masterMedications)
-										.filter( (medication) => {
-											return medication.chemicalType === "laba,ICS";
-										})
-									.value();
+							return _.filter(medicationElement, {chemicalType:"laba,ICS"});
 						}
 						else {
 							return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
 							
 						}
 					}
+					
 					//2: is it if they are all ICS is when it goes to number 2 or will both conditions always be executed
 					if(_.some(patientMedication,{chemicalType: "ltra"})) {
 						return patientMedication.chemicalType === "ltra";
