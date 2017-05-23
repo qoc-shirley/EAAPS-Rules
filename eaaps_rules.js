@@ -143,23 +143,33 @@ var sayHelloTo = _.partial( (Greeting,Name) => {
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
-	const filteredPatientMedication = _.chain(patientMedications)
+	/*const filteredPatientMedication = _.chain(patientMedications)
 			.filter( (patientMedication) => {
 				return patientMedication.chemicalType !== "ICS"
 			})
 			.value();
+			
 	return _.chain(masterMedications)
 				.filter( (medicationElement) => {
 					if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS")
 						return getChemTypeLaba.chemicalType === "laba";
 				})
-			.value();
+			.value();*/
+			
+	return  _.chain(patientMedications)
+			.filter(_.partial(masterMedication, patientMedication)	=> {
+				if(patientMedication.chemicalType !== "ICS"){
+					
+				}
+			}, masterMedications )	
+	
 	/*return  _.chain(patientMedications)
 					.filter( (patientMedication) => {
 						return patientMedication.chemicalType !== "ICS";
 					})
 					.value();*/
 						//.chain(masterMedications)
+						
 						//.filter( (filteredPatientMedication, medicationElement) => {
 							//return filteredPatientMedication.chemicalType === medicationElement.chemicalType === "ICS";
 							/*if(filteredPatientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS"){
