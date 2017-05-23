@@ -113,6 +113,7 @@ const rule1 = ( patientMedications ) => {
 const test = _.chain(masterMedications)
 	.filter( (medicationElement) => {
 		if(_.some(["chemicalType","laba,ICS"])){
+			//console.log(medicationElement.chemicalType === "saac");
 			return medicationElement.chemicalType === "saac";
 		}
 		return medicationElement.chemicalType === "saba"
@@ -122,31 +123,38 @@ const test = _.chain(masterMedications)
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
-return  _.chain(patientMedications)
-		//return to whatever is true to the param inside
-		.filter( 
-			_.partial( (medicationElement, patientMedication) => {
+	
+	/*const filteredPatientMedication = _.chain(patientMedications)
+			.filter( (patientMedication) => {
+				return patientMedication.chemicalType !== "ICS"
+			})
+			.value();*/
+			
+	return  _.chain(patientMedications)
+			//return to whatever is true to the param inside
+			.filter( 
+				_.partial( (medicationElement, patientMedication) => {
 				
-				console.log(_.some(medicationElement,{chemicalType:"laba,ICS"}));
-				
-				if(patientMedication.chemicalType !== "ICS" && medicationElement.chemicalType === "laba"){
-					console.log(_.some(medicationElement,{chemicalType:"laba,ICS"}));
-					//if(_.some(medicationElement,{chemicalType:"laba,ICS"})){
-						//return medicationElement.chemicalType === "laba,ICS";
-						//}
-				}
-					/*if(patientMedication.chemicalLABA === medicationElement.chemicalLABA){
-						return "c";
-						if(patientMedication.chemicalLABA === medicationElement.chemicalLABA){
-							return "d";
+					if(patientMedication.chemicalType !== "ICS" && patientMedication.chemicalType === "laba"){
+						if(_.some(medicationElement,{chemicalType:"laba,ICS"})){
+							//console.log("medication element laba,ICS");
+							console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
+							console.log(_.chain(medicationElement).filter((medication)=>{return medicationElement.chemicalType === "laba,ICS"}).value());
+							return _.filter(medicationElement.chemicalType === "laba,ICS");
 						}
-					}*/
-				else {
-					return patientMedication.chemicalType === "ltra";
+					}
+						/*if(patientMedication.chemicalLABA === medicationElement.chemicalLABA){
+							return "c";
+							if(patientMedication.chemicalLABA === medicationElement.chemicalLABA){
+								return "d";
+							}
+						}*/
+					else {
+						return patientMedication.chemicalType === "ltra";
+					}
 				}
-			}
-		,masterMedications))
-		.value();	
+			,masterMedications))
+			.value();	
 	/*const filteredPatientMedication = _.chain(patientMedications)
 			.filter( (patientMedication) => {
 				return patientMedication.chemicalType !== "ICS"
