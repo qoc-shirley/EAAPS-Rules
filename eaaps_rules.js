@@ -110,8 +110,43 @@ const rule1 = ( patientMedications ) => {
 		
 }
 
+const test = _.chain(masterMedications)
+	.filter( (medicationElement) => {
+		if(_.some(["chemicalType","laba,ICS"])){
+			return medicationElement.chemicalType === "saac";
+		}
+		return medicationElement.chemicalType === "saba"
+	}).value();
+//console.log(test);
+//console.log(_.some(masterMedications,{chemicalType:"laba,ICS"}));
+
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
+return  _.chain(patientMedications)
+		//return to whatever is true to the param inside
+		.filter( 
+			_.partial( (medicationElement, patientMedication) => {
+				
+				console.log(_.some(medicationElement,{chemicalType:"laba,ICS"}));
+				
+				if(patientMedication.chemicalType !== "ICS" && medicationElement.chemicalType === "laba"){
+					console.log(_.some(medicationElement,{chemicalType:"laba,ICS"}));
+					//if(_.some(medicationElement,{chemicalType:"laba,ICS"})){
+						//return medicationElement.chemicalType === "laba,ICS";
+						//}
+				}
+					/*if(patientMedication.chemicalLABA === medicationElement.chemicalLABA){
+						return "c";
+						if(patientMedication.chemicalLABA === medicationElement.chemicalLABA){
+							return "d";
+						}
+					}*/
+				else {
+					return patientMedication.chemicalType === "ltra";
+				}
+			}
+		,masterMedications))
+		.value();	
 	/*const filteredPatientMedication = _.chain(patientMedications)
 			.filter( (patientMedication) => {
 				return patientMedication.chemicalType !== "ICS"
@@ -124,21 +159,6 @@ const rule2 = ( patientMedications, masterMedications ) => {
 						return getChemTypeLaba.chemicalType === "laba";
 				})
 			.value();*/
-			
-	return  _.chain(patientMedications)
-			//return to whatever is true to the param inside
-			.filter( _.partial((medicationElement, patientMedication) => {
-				if(patientMedication.chemicalType !== "ICS"){
-					if(patientMedication.chemicalType === "laba" && medicationElement.chemicalType === "laba,ICS"){
-						
-					}
-						return "a";
-				}
-				else {
-					return patientMedication.chemicalType === "ltra"
-				}
-			}, masterMedications))
-			.value();	
 	
 	/*return  _.chain(patientMedications)
 					.filter( (patientMedication) => {
