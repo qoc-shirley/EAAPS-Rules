@@ -50,7 +50,7 @@ const data = _.filter (json, (item, index) => { return index !== 0});
 
 //patient's list of medications
 const patientMedications = [ 	
-	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS", chemicalLABA:"salmeterol", device:"diskus", doseICS:"50"},
+	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"laba,ICS", chemicalLABA:"salmeterol", device:"diskus", doseICS:"50"},
 	{id:"11",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ICS", chemicalLABA:"salmeterol",device:"diskus",doseICS:"50"},
 	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ICS",chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
 	{id:"14",function:"controller",name:"asmanex",type:"other",chemicalType:"laac", chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
@@ -141,12 +141,14 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			
 	return  _.chain(patientMedications)
 			//return to whatever is true to the param inside
-			.filter( 
+			.filter( 				
 				_.partial( (medicationElement, patientMedication) => {
 					//console.log(patientMedication.chemicalType)
 					//1
 					if(patientMedication.chemicalType !== "ICS"){
 						//console.log(patientMedication.chemicalType === "laba");
+						
+						//use .map to change the patientMedications
 						if( (patientMedication.chemicalType === "laba") && (_.some(medicationElement,{chemicalType:"laba,ICS"})) ){
 							console.log("medication element laba,ICS");
 							console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
@@ -155,6 +157,8 @@ const rule2 = ( patientMedications, masterMedications ) => {
 							//console.log(filteredMedication);
 							//return medicationElement.chemicalType === "laba,ICS";
 							//console.log(_.find(masterMedications,{chemicalType:"laba,ICS"}).chemicalLABA );
+							
+							//use filter function _.filter function
 							if( (_.find(masterMedications,{chemicalType:"laba,ICS"})).chemicalLABA === patientMedication.chemicalLABA){
 								console.log("chemicalLABA");
 								if((_.find(masterMedications,{chemicalType:"laba,ICS"})).device === patientMedication.device){
@@ -193,7 +197,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			, masterMedications))
 			.value();
 }
-//console.log(rule2(patientMedications, masterMedications));
+console.log(rule2(patientMedications, masterMedications));
 
 //Rule 6
 /*
@@ -210,13 +214,18 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 }*/
 
 //Rule 11
-const rule11 = ( patientMedications, masterMedications) => {
-	return _.chain( patientMedicaitons )
-				.filter(_.partial(medicationElement, patientMedication) =>{
-					
-				}, masterMedication)
+/*const rule11 = ( patientMedications, masterMedications) => {
+	return _.chain( patientMedications )
+				.filter(_.partial((medicationElement, patientMedication) => {
+					//console.log(patientMedication.chemicalType === "laba,ICS");
+					if( (_.some(medicationElement,{chemicalType:"ICS"})) && patientMedication.chemicalType === "laba,ICS"){
+						console.log("spreadsheet chemicalType = ICS and OrgMed = labamICS ")
+						return medicationElement.name === "singulair";
+					}
+				}, masterMedications))
 				.value();
-}
+}*/
+//console.log(rule11(patientMedications, masterMedications));
 debugger
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
