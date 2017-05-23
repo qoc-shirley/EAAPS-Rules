@@ -158,16 +158,28 @@ const rule2 = ( patientMedications, masterMedications ) => {
 							if( (_.find(masterMedications,{chemicalType:"laba,ICS"})).chemicalLABA === patientMedication.chemicalLABA){
 								console.log("chemicalLABA");
 								if((_.find(masterMedications,{chemicalType:"laba,ICS"})).device === patientMedication.device){
-									console.log("device: recommend new medication aat lowest ICS dose");
-									
+									console.log("device: recommend new medication at lowest ICS dose");
+									return "recommend new medication at lowest ICS dose";
 								}
 								else {
-									console.log("device: recommend new medication at lowest ICS dose");
+									console.log("device: recommend new medication at lowest ICS dose in any device available");
+									return ["recommend new medication at lowest ICS dose in any device available"];
 								}
+							}
+							else {
+								//only need one of each type??
+								console.log("chemicalLABA is not the same");
+								return [
+									_.find(medicationElement, {chemicalLABA:"salmeterol", chemicalICS:"fluticasone", device:"diskus"}),
+									_.find(medicationElement, {chemicalLABA:"salmeterol", chemicalICS:"fluticasone", device:"inhaler2"}),
+									_.find(medicationElement, {chemicalLABA:"formoterol", chemicalICS:"budesonide"}),
+									_.find(medicationElement, {chemicalLABA:"formoterol", chemicalICS:"mometasone"})
+								];
 							}
 							
 						}
 						else {
+							//how to get these new recommended medications
 							return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
 							
 						}
@@ -179,18 +191,9 @@ const rule2 = ( patientMedications, masterMedications ) => {
 					}
 				}
 			, masterMedications))
-			.value();	
-	
-			//return medicationElement.chemicalLABA === "salmeterol" 
-			//		&& medicationElement.chemicalICS === "fluticasone" 
-			//		&& medicationElement.device === "diskus";
-			//[
-			//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"diskus"},
-			//		{chemicalLABA:"salmeterol",chemicalICS:"fluticasone",device:"inhaler2"},
-			//		{chemicalLABA:"formoterol",chemicalICS:"budesonide",chemicalLABA:"formoterol", chemicalICS:"mometasone"}
-			//];
+			.value();
 }
-console.log(rule2(patientMedications, masterMedications));
+//console.log(rule2(patientMedications, masterMedications));
 
 //Rule 6
 /*
@@ -205,6 +208,15 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 	})
 	.value();
 }*/
+
+//Rule 11
+const rule11 = ( patientMedications, masterMedications) => {
+	return _.chain( patientMedicaitons )
+				.filter(_.partial(medicationElement, patientMedication) =>{
+					
+				}, masterMedication)
+				.value();
+}
 debugger
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
