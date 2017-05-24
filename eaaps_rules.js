@@ -136,7 +136,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 	//const filteredMedication = _.filter(masterMedications, { chemicalType:"laba,ICS"});
 	//console.log(filteredMedicationLabaICS);
 	//console.log(filteredMedication);
-	let filteredMedication = "";
+	//let filteredMedication = "";
 	//console.log(_.find(masterMedications,{chemicalType:"laba"}));
 			
 	return  _.chain(patientMedications)
@@ -159,9 +159,11 @@ const rule2 = ( patientMedications, masterMedications ) => {
 							//console.log(_.find(masterMedications,{chemicalType:"laba,ICS"}).chemicalLABA );
 							
 							//use filter function _.filter function
-							if( (_.find(masterMedications,{chemicalType:"laba,ICS"})).chemicalLABA === patientMedication.chemicalLABA){
+							if( _.filter( (masterMedications.chemicalType === "laba,ICS").chemicalLABA === patientMedication.chemicalLABA)
+							/*(_.find(masterMedications,{chemicalType:"laba,ICS"})).chemicalLABA === patientMedication.chemicalLABA*/){
 								console.log("chemicalLABA");
-								if((_.find(masterMedications,{chemicalType:"laba,ICS"})).device === patientMedication.device){
+								if(  _.filter((masterMedications.chemicalType === "laba,ICS").device === patientMedication.device)
+								/*(_.find(masterMedications,{chemicalType:"laba,ICS"})).device === patientMedication.device*/){
 									console.log("device: recommend new medication at lowest ICS dose");
 									return "recommend new medication at lowest ICS dose";
 								}
@@ -218,7 +220,7 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 	return _.chain( patientMedications )
 				.filter(_.partial((medicationElement, patientMedication) => {
 					//console.log(patientMedication.chemicalType === "laba,ICS");
-					if( (_.some(medicationElement,{chemicalType:"ICS"})) && patientMedication.chemicalType === "laba,ICS"){
+					if( patientMedication.chemicalType === "ICS" && patientMedication.chemicalType === "laba,ICS"){
 						console.log("spreadsheet chemicalType = ICS and OrgMed = labamICS ")
 						return medicationElement.name === "singulair";
 					}
