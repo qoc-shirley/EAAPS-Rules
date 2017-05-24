@@ -159,17 +159,21 @@ const rule2 = ( patientMedications, masterMedications ) => {
 							//console.log(_.find(masterMedications,{chemicalType:"laba,ICS"}).chemicalLABA );
 							
 							//use filter function _.filter function
-							if( _.filter( (masterMedications.chemicalType === "laba,ICS").chemicalLABA === patientMedication.chemicalLABA)
-							/*(_.find(masterMedications,{chemicalType:"laba,ICS"})).chemicalLABA === patientMedication.chemicalLABA*/){
+							if( _.filter( (masterMedications.chemicalType === "laba,ICS").chemicalLABA === patientMedication.chemicalLABA)){
 								console.log("chemicalLABA");
-								if(  _.filter((masterMedications.chemicalType === "laba,ICS").device === patientMedication.device)
-								/*(_.find(masterMedications,{chemicalType:"laba,ICS"})).device === patientMedication.device*/){
+								if(  _.filter((masterMedications.chemicalType === "laba,ICS").device === patientMedication.device)){
 									console.log("device: recommend new medication at lowest ICS dose");
-									return "recommend new medication at lowest ICS dose";
+									//return "recommend new medication at lowest ICS dose";
+									return _.map( (newMedication) => {
+												return 
+											});
 								}
 								else {
 									console.log("device: recommend new medication at lowest ICS dose in any device available");
-									return ["recommend new medication at lowest ICS dose in any device available"];
+									//return ["recommend new medication at lowest ICS dose in any device available"];
+									return _.map( (newMedication) => {
+												return
+											});
 								}
 							}
 							else {
