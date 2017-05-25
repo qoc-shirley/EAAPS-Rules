@@ -143,16 +143,12 @@ const rule2 = ( patientMedications, masterMedications ) => {
 								if(  _.filter((masterMedications.chemicalType === "laba,ICS").device === patientMedication.device)){
 									console.log("device: recommend new medication at lowest ICS dose");
 									//return "recommend new medication at lowest ICS dose";
-									return _.map( (newMedication) => {
-												return 
-											});
+									return _.map(_.filter( /*filter out doseICS, timesPerDay, maxPuffPerTime*/));
 								}
 								else {
 									console.log("device: recommend new medication at lowest ICS dose in any device available");
 									//return ["recommend new medication at lowest ICS dose in any device available"];
-									return _.map( (newMedication) => {
-												return
-											});
+									return _.map(_.filter(/*filter out doseICD, timesPerDat, maxPuffPerTime for any device*/));
 								}
 							}
 							else {
