@@ -123,32 +123,47 @@ const test = _.chain(masterMedications)
 
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
+	//let findLaba = [];
 	return  _.chain(patientMedications)
 			//return to whatever is true to the param inside
 			.filter( 				
 				_.partial( (medicationElement, patientMedication) => {
-					//console.log(patientMedication.chemicalType)
 					//1
 					if(patientMedication.chemicalType !== "ICS"){
-						//console.log(patientMedication.chemicalType === "laba");
-						
+						//console.log(patientMedication);
 						//use .map to change the patientMedications
-						if( (patientMedication.chemicalType === "laba") && (_.some(medicationElement,{chemicalType:"laba,ICS"})) ){
+						if( (patientMedication.chemicalType === "laba") && (_.some(medicationElement,{chemicalType:"laba,ICS"}))){
 							console.log("medication element laba,ICS");
-							console.log(_.some(medicationElement,["chemicalType","laba,ICS"]));
+							console.log(patientMedication);
+							//console.log(medicationElement);
+							console.log(_.filter(_.filter(medicationElement,{chemicalType:"laba,ICS"}), {chemicalLABA: patientMedication.chemicalLABA}));
+							
+							console.log(_.filter(_.filter(_.filter(medicationElement,{chemicalType:"laba,ICS"}), {chemicalLABA: patientMedication.chemicalLABA})
+							, {device: patientMedication.device}));
 							
 							//use filter function _.filter function
-							if( _.filter( (masterMedications.chemicalType === "laba,ICS").chemicalLABA === patientMedication.chemicalLABA)){
+							if( _.filter(
+										_.filter(medicationElement,{chemicalType:"laba,ICS"}), {chemicalLABA: patientMedication.chemicalLABA})){
+								//_.filter( (medicationElement.chemicalType === "laba,ICS").chemicalLABA === patientMedication.chemicalLABA)){
 								console.log("chemicalLABA");
-								if(  _.filter((masterMedications.chemicalType === "laba,ICS").device === patientMedication.device)){
+								if(_.filter(
+											_.filter(
+													_.filter(medicationElement,{chemicalType:"laba,ICS"})
+											, {chemicalLABA: patientMedication.chemicalLABA})
+									, {device: patientMedication.device})){
 									console.log("device: recommend new medication at lowest ICS dose");
-									//return "recommend new medication at lowest ICS dose";
-									return _.map(_.filter( /*filter out doseICS, timesPerDay, maxPuffPerTime*/));
+									console.log(_.find(masterMedications,{chemicalType:"laba,ICS"}).device);
+									console.log(patientMedication.device);
+									console.log(patientMedication);
+									return patientMedications.chemicalType === "laba";
+									//return _.map( (recommendNewMedication) => {
+												//return _.filter( masterMedication
+												///*filter out doseICS, timesPerDay, maxPuffPerTime*/)});
 								}
 								else {
 									console.log("device: recommend new medication at lowest ICS dose in any device available");
-									//return ["recommend new medication at lowest ICS dose in any device available"];
-									return _.map(_.filter(/*filter out doseICD, timesPerDat, maxPuffPerTime for any device*/));
+									return patientMedication.chemicalType === "laba";
+									//return _.map(_.filter(/*filter out doseICD, timesPerDat, maxPuffPerTime for any device*/));
 								}
 							}
 							else {
@@ -164,7 +179,8 @@ const rule2 = ( patientMedications, masterMedications ) => {
 						}
 						else {
 							//how to get these new recommended medications
-							return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
+							//return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
+							return patientMedication.chemicalType === "laac";
 						}
 					}
 					
