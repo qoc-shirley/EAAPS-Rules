@@ -55,7 +55,7 @@ const patientMedications = [
 	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ICS",chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
 	{id:"14",function:"controller",name:"asmanex",type:"other",chemicalType:"laac", chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
 	{id:"16",function:"controller",name:"asmanex",type:"combo",chemicalType:"ICS", chemicalLABA:"salmeterol",device:"diskus",doseICS:"30"},
-	{id:"18",function:"controller",name:"asmanex",type:"ltra",chemicalType:"laba", chemicalLABA:"salmeterol",device:"diskus", doseICS:"30"}
+	{id:"18",function:"controller",name:"asmanex",type:"ltra",chemicalType:"laba", chemicalLABA:"salmeterol",device:"diskus", doseICS:"30",timesPerDay: "2", maxPuffTime: "2"}
 ];
 
 /*const patientMedications = [ 	
@@ -159,22 +159,31 @@ const rule2 = ( patientMedications, masterMedications ) => {
 													_.filter(medicationElement,{chemicalType:"laba,ICS"})
 											, {chemicalLABA: patientMedication.chemicalLABA})
 										, {device: patientMedication.device});
-									//return patientMedication.chemicalType === "laba";
-									return _.map( (recommendNewMedication) => {
-										console.log(recommendNewMedication);
-										return _.chain(newMedication)
-													.mapValues( (lowestICSDose) => {
-														if(_.size(lowestICSDose.timesPerDay) > 1){
-															lowestICSDose.timesPerDay = _.get(lowestICSDose.timesPerDay[0]);
-															console.log(lowestICSDose.timesPerDay);
-															lowestICSDose.maxPuffPerTime = _.get(_.toString(_.toInteger(lowestICSDose.maxPuffPerTime[0]) / _.toInteger(lowestICSDose.maxPuffPerTime[0])));
-															console.log(lowestICSDose.maxPuffPerTime);
-															return lowestICSDose.timesPerDay;
-														}
-													})
-												}
-											);
-												/*filter out doseICS, timesPerDay, maxPuffPerTime*/
+									
+									console.log(patientMedication);
+									let createNewMedication = _.map( patientMedication,(recommendNewMedication) => {  
+																		console.log(recommendNewMedication);
+																		return _.chain(newMedication)
+																					.mapValues( (lowestICSDose) => { 
+																						if("timesPerDay")
+																							{return lowestICSDose.timesPerDay = "3";}
+																							/*if(_.size(lowestICSDose.timesPerDay) > 1){
+																								lowestICSDose.timesPerDay = _.get(lowestICSDose.timesPerDay[0]);
+																								console.log(lowestICSDose.timesPerDay);
+																								lowestICSDose.maxPuffPerTime = 
+																								_.get(
+																									_.toString(
+																										_.toInteger(lowestICSDose.maxPuffPerTime[0]) 
+																										/ _.toInteger(lowestICSDose.maxPuffPerTime[0])));
+																								console.log(lowestICSDose.maxPuffPerTime);
+																								return lowestICSDose.timesPerDay;
+																							}*/
+																						})
+																						.value();
+																					})
+																					
+									console.log(createNewMedication);
+									return patientMedication.chemicalType === "laba";
 								}
 								else {
 									console.log("device: recommend new medication at lowest ICS dose in any device available");
