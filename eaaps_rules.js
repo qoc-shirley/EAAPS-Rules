@@ -165,8 +165,12 @@ const rule2 = ( patientMedications, masterMedications ) => {
 																		console.log(recommendNewMedication);
 																		return _.chain(newMedication)
 																					.mapValues( (lowestICSDose) => { 
-																						if("timesPerDay")
-																							{return lowestICSDose.timesPerDay = "3";}
+																						console.log(lowestICSDose)
+																						if(lowestICSDose.timesPerDay){
+																							if(_.size(lowestICSDose.timesPerDay) > 1){
+																								return lowestICSDose.timesPerDay = "3";
+																							}
+																						}
 																							/*if(_.size(lowestICSDose.timesPerDay) > 1){
 																								lowestICSDose.timesPerDay = _.get(lowestICSDose.timesPerDay[0]);
 																								console.log(lowestICSDose.timesPerDay);
