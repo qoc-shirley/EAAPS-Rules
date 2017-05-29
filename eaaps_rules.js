@@ -217,8 +217,9 @@ const rule2 = (patientMedications, masterMedications) => {
               }), {
                 chemicalLABA: patientMedication.chemicalLABA
               })) {
-              //_.filter( (medicationElement.chemicalType === "laba,ICS").chemicalLABA === patientMedication.chemicalLABA)){
+          
               console.log("chemicalLABA");
+			  
               if (_.filter(
                   _.filter(
                     _.filter(medicationElement, {
@@ -229,9 +230,7 @@ const rule2 = (patientMedications, masterMedications) => {
                     device: patientMedication.device
                   })) {
                 console.log("device: recommend new medication at lowest ICS dose");
-                //console.log(_.find(masterMedications,{chemicalType:"laba,ICS"}).device);
-                //console.log(patientMedication.device);
-                //console.log(patientMedication);
+            
                 let newMedication = _.filter(
                   _.filter(
                     _.filter(medicationElement, {
@@ -245,9 +244,9 @@ const rule2 = (patientMedications, masterMedications) => {
                 //console.log(patientMedication);
 				patientMedication = [patientMedication];
 				patientMedication.push(newMedication);
-				console.log(_.flatten(patientMedication));
-				
-                return patientMedication.chemicalType === "laba";
+				patientMedication = _.flatten(patientMedication);
+				console.log(patientMedication);
+                return patientMedication.chemicalType === "laba,ICS";
               } else {
                 console.log("device: recommend new medication at lowest ICS dose in any device available");
                 return patientMedication.chemicalType === "laba";
@@ -278,6 +277,7 @@ const rule2 = (patientMedications, masterMedications) => {
               ];
             }
           } else {
+			console.log("No chemicalType Laba in OrgMeds");
             //how to get these new recommended medications
             //return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
             return patientMedication.chemicalType === "laac";
