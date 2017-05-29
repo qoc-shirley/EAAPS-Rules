@@ -195,7 +195,7 @@ const rule2 = (patientMedications, masterMedications) => {
               chemicalType: "laba,ICS"
             }))) {
             console.log("medication element laba,ICS");
-            console.log(patientMedication);
+            //console.log(patientMedication);
             //console.log(medicationElement);
             console.log(_.filter(_.filter(medicationElement, {
               chemicalType: "laba,ICS"
@@ -241,34 +241,12 @@ const rule2 = (patientMedications, masterMedications) => {
                     }), {
                     device: patientMedication.device
                   });
-
-                console.log(patientMedication);
-                let createNewMedication = _.map(patientMedication, (recommendNewMedication) => {
-                  console.log(recommendNewMedication);
-                  return _.chain(newMedication)
-                    .mapValues((lowestICSDose) => {
-                      console.log(lowestICSDose)
-                      if (lowestICSDose.timesPerDay) {
-                        if (_.size(lowestICSDose.timesPerDay) > 1) {
-                          return lowestICSDose.timesPerDay = "3";
-                        }
-                      }
-                      /*if(_.size(lowestICSDose.timesPerDay) > 1){
-                      	lowestICSDose.timesPerDay = _.get(lowestICSDose.timesPerDay[0]);
-                      	console.log(lowestICSDose.timesPerDay);
-                      	lowestICSDose.maxPuffPerTime = 
-                      	_.get(
-                      		_.toString(
-                      			_.toInteger(lowestICSDose.maxPuffPerTime[0]) 
-                      			/ _.toInteger(lowestICSDose.maxPuffPerTime[0])));
-                      	console.log(lowestICSDose.maxPuffPerTime);
-                      	return lowestICSDose.timesPerDay;
-                      }*/
-                    })
-                    .value();
-                })
-
-                console.log(createNewMedication);
+				  //console.log(newMedication);
+                //console.log(patientMedication);
+				patientMedication = [patientMedication];
+				patientMedication.push(newMedication);
+				console.log(_.flatten(patientMedication));
+				
                 return patientMedication.chemicalType === "laba";
               } else {
                 console.log("device: recommend new medication at lowest ICS dose in any device available");
