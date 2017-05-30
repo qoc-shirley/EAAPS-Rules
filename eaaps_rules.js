@@ -188,23 +188,15 @@ const rule2 = (patientMedications, masterMedications) => {
       _.partial((medicationElement, patientMedication) => {
         //1
         //console.log("Beginning: ", patientMedication);
-        if (patientMedication.chemicalType !== "ICS") {
+        if(patientMedication.chemicalType !== "ICS") {
           console.log(patientMedication);
           if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}))) {
             console.log("medication element laba,ICS");
 
             if (_.filter(_.filter(medicationElement, {chemicalType: "laba,ICS"}), {chemicalLABA: patientMedication.chemicalLABA})) {
               console.log("chemicalLABA");
-			  			console.log(patientMedication);
-              if (_.filter(
-                  _.filter(
-                    _.filter(medicationElement, {
-                      chemicalType: "laba,ICS"
-                    }), {
-                      chemicalLABA: patientMedication.chemicalLABA
-                    }), {
-                    device: patientMedication.device
-                  })) {
+			  			//console.log(patientMedication);
+              if (_.filter(_.filter(_.filter(medicationElement, {chemicalType: "laba,ICS"}), {chemicalLABA: patientMedication.chemicalLABA}), {device: patientMedication.device})) {
                 console.log("device: recommend new medication at lowest ICS dose");
             
                 let newMedication = _.filter(
@@ -234,7 +226,7 @@ const rule2 = (patientMedications, masterMedications) => {
 				  	 				}
 				 					})
 								 .value();
-								 console.log(patientMedication);
+								 //console.log(patientMedication);
    			   			if(!(_.isArray(patientMedication))){
    			      		patientMedication = [patientMedication];
    			    		}
@@ -246,7 +238,7 @@ const rule2 = (patientMedications, masterMedications) => {
               } 
 			        else {
                 console.log("device: recommend new medication at lowest ICS dose in any device available");
-                return patientMedication.chemicalType === "laba";
+                //return patientMedication.chemicalType === "laba";
               }
             } 
             else {
@@ -276,8 +268,9 @@ const rule2 = (patientMedications, masterMedications) => {
 			    		for(i=0;i<_.size(newMedication);i++){
 			  	  		patientMedication.push(newMedication[i]);
 			    		}
-							return patientMedication.chemicalType !== "laba";
+							//return patientMedication.chemicalType !== "laba";
             }
+           console.log(patientMedication);
           } 
           else if((patientMedication.chemicalType !== "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}))){
 			  		console.log("No chemicalType Laba in OrgMeds");
