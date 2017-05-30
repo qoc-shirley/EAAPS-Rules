@@ -189,7 +189,7 @@ const rule2 = (patientMedications, masterMedications) => {
       _.partial((medicationElement, patientMedication) => {
         //1
         if (patientMedication.chemicalType !== "ICS") {
-          //console.log(patientMedication);
+          console.log(patientMedication);
           //use .map to change the patientMedications
           if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {
               chemicalType: "laba,ICS"
@@ -240,19 +240,41 @@ const rule2 = (patientMedications, masterMedications) => {
                     }), {
                     device: patientMedication.device
                   });
-				  //console.log(newMedication);
+				 //console.log(newMedication);
                 //console.log(patientMedication);
+                let lowestICSDose = _.chain(newMedication)
+                  .mapValues( (filteredMasterMedication) => {
+                  //console.log(filteredMasterMedication)
+                    if (filteredMasterMedication.timesPerDay) {
+                      if (_.size(filteredMasterMedication.timesPerDay) > 1) {
+						console.log(filteredMasterMedication.timesPerDay[0])
+                        filteredMasterMedication.timesPerDay = filteredMasterMedication.timesPerDay[0];
+						return filteredMasterMedication;
+				      }
+				    }
+				    if(filteredMasterMedication.maxPuffPerTime){
+				  	  filteredMasterMedication.maxPuffPerTime = 
+						filteredMasterMedication.maxPuffPerTime
+	              		    / filteredMasterMedication.maxPuffPerTime;
+							filteredMasterMedication.maxPuffPerTime;
+							return filteredMasterMedication;
+				  	 }
+				 })
+				 .value();
+				//console.log(lowestICSDose);
 				patientMedication = [patientMedication];
-				patientMedication.push(newMedication);
-				patientMedication = _.flatten(patientMedication);
+				//patientMedication.push(newMedication);
+				for(i=0;i<_.size(lowestICSDose);i++){
+					patientMedication.push(lowestICSDose[i]);
+				}
+			
 				console.log(patientMedication);
                 return patientMedication.chemicalType === "laba,ICS";
               } else {
                 console.log("device: recommend new medication at lowest ICS dose in any device available");
                 return patientMedication.chemicalType === "laba";
-                //return _.map(_.filter(/*filter out doseICD, timesPerDat, maxPuffPerTime for any device*/));
-              }
-            } else {
+                }
+            } else if((patientMedication.chemicalType !== "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}) === false)){
               //only need one of each type??
               console.log("chemicalLABA is not the same");
               return [
@@ -273,15 +295,24 @@ const rule2 = (patientMedications, masterMedications) => {
                 _.find(medicationElement, {
                   chemicalLABA: "formoterol",
                   chemicalICS: "mometasone"
-                })
-              ];
-            }
+                })];
+              }
           } else {
-			console.log("No chemicalType Laba in OrgMeds");
-            //how to get these new recommended medications
-            //return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
-            return patientMedication.chemicalType === "laac";
-          }
+			  console.log("No chemicalType Laba in OrgMeds");
+              //how to get these new recommended medications
+              //return ["Recommend any of the following new medication: Flovent 125 ug 1 PUFF bid;..."];
+			  patientMedication = [patientMedication];
+			  const newMedication = ["Flovent 125 ug 1 PUFF bid", 
+			  						   "Discus Flovent 100 ug 1 PUFF puff bid", 
+			  						   "Pulmicort 200 ug 1 PUFF bid", 
+			  						   "Asmanex 200 ug I PUFF od", 
+			  						   "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"]
+			  for(i=0;i<_.size(newMedication);i++){
+			  	patientMedication.push(newMedication[i]);
+			  }
+			  console.log(patientMedication);
+              return patientMedication.chemicalType !== "laba";
+            }
         }
 
         //2: is it if they are all ICS is when it goes to number 2 or will both conditions always be executed
