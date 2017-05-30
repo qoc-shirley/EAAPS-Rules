@@ -187,22 +187,15 @@ const rule2 = (patientMedications, masterMedications) => {
     .filter(
       _.partial((medicationElement, patientMedication) => {
         //1
+        //console.log("Beginning: ", patientMedication);
         if (patientMedication.chemicalType !== "ICS") {
           console.log(patientMedication);
-          console.log(_.filter(patientMedication.chemicalType === "laba"));
-          if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {
-              chemicalType: "laba,ICS"
-            }))) {
+          if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}))) {
             console.log("medication element laba,ICS");
 
-            if (_.filter(_.filter(medicationElement, {
-                chemicalType: "laba,ICS"
-              }), {
-                chemicalLABA: patientMedication.chemicalLABA
-              })) {
-          
+            if (_.filter(_.filter(medicationElement, {chemicalType: "laba,ICS"}), {chemicalLABA: patientMedication.chemicalLABA})) {
               console.log("chemicalLABA");
-			  
+			  			console.log(patientMedication);
               if (_.filter(
                   _.filter(
                     _.filter(medicationElement, {
@@ -228,34 +221,37 @@ const rule2 = (patientMedications, masterMedications) => {
                   .mapValues( (filteredMasterMedication) => {
                     if (filteredMasterMedication.timesPerDay) {
                       if (_.size(filteredMasterMedication.timesPerDay) > 1) {
-						console.log(filteredMasterMedication.timesPerDay[0])
+												console.log(filteredMasterMedication.timesPerDay[0])
                         filteredMasterMedication.timesPerDay = filteredMasterMedication.timesPerDay[0];
-						return filteredMasterMedication;
-				      }
-				    }
-				    if(filteredMasterMedication.maxPuffPerTime){
-				  	  filteredMasterMedication.maxPuffPerTime = 
-						filteredMasterMedication.maxPuffPerTime
+												return filteredMasterMedication;
+				      				}
+				    				}
+				    				if(filteredMasterMedication.maxPuffPerTime){
+				  	  				filteredMasterMedication.maxPuffPerTime = 
+												filteredMasterMedication.maxPuffPerTime
 	              		    / filteredMasterMedication.maxPuffPerTime;
-							filteredMasterMedication.maxPuffPerTime;
-					  return filteredMasterMedication;
-				  	 }
-				 })
-				 .value();
-   			    if(!(_.isArray(patientMedication))){
-   			      patientMedication = [patientMedication];
-   			    }
-				for(i=0;i<_.size(lowestICSDose);i++){
-					patientMedication.push(lowestICSDose[i]);
-				}
+					  					return filteredMasterMedication;
+				  	 				}
+				 					})
+								 .value();
+								 console.log(patientMedication);
+   			   			if(!(_.isArray(patientMedication))){
+   			      		patientMedication = [patientMedication];
+   			    		}
+								for(i=0;i<_.size(lowestICSDose);i++){
+									patientMedication.push(lowestICSDose[i]);
+								}
+								//console.log(patientMedication);
                 return patientMedication.chemicalType === "laba,ICS";
-              } else {
+              } 
+			        else {
                 console.log("device: recommend new medication at lowest ICS dose in any device available");
                 return patientMedication.chemicalType === "laba";
-                }
-            } else if((patientMedication.chemicalType !== "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}) === false)){
+              }
+            } 
+            else {
               console.log("chemicalLABA is not the same");
-			  let newMedication = [
+			  			let newMedication = [
                 _.find(medicationElement, {
                   chemicalLABA: "salmeterol",
                   chemicalICS: "fluticasone",
@@ -274,36 +270,34 @@ const rule2 = (patientMedications, masterMedications) => {
                   chemicalLABA: "formoterol",
                   chemicalICS: "mometasone"
                 })];
-   			    if(!(_.isArray(patientMedication))){
+   			    	if(!(_.isArray(patientMedication))){
    			      patientMedication = [patientMedication];
-   			    }
-			    for(i=0;i<_.size(newMedication);i++){
-			  	  patientMedication.push(newMedication[i]);
-			    }
-				return patientMedication.chemicalType !== "laba";
-              }
-          } else {
-			  console.log("No chemicalType Laba in OrgMeds");
-			  const newMedication = ["Flovent 125 ug 1 PUFF bid", 
-			  						   "Discus Flovent 100 ug 1 PUFF puff bid", 
-			  						   "Pulmicort 200 ug 1 PUFF bid", 
-			  						   "Asmanex 200 ug I PUFF od", 
-			  						   "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"]
-			  if(!(_.isArray(patientMedication))){
-			    patientMedication = [patientMedication];
-			  }
-			  //console.log(_.isArray(patientMedication));
-			  for(i=0;i<_.size(newMedication);i++){
-			  	patientMedication.push(newMedication[i]);
-			  }
-              return patientMedication.chemicalType !== "laba";
+   			    	}
+			    		for(i=0;i<_.size(newMedication);i++){
+			  	  		patientMedication.push(newMedication[i]);
+			    		}
+							return patientMedication.chemicalType !== "laba";
             }
+          } 
+          else if((patientMedication.chemicalType !== "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}))){
+			  		console.log("No chemicalType Laba in OrgMeds");
+			  		const newMedication = ["Flovent 125 ug 1 PUFF bid", 
+			  						   						 "Discus Flovent 100 ug 1 PUFF puff bid", 
+			  						   						 "Pulmicort 200 ug 1 PUFF bid", 
+			  						               "Asmanex 200 ug I PUFF od", 
+			  						   						 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
+			  						   						]
+			   		patientMedication = [];
+			  		for(i=0;i<_.size(newMedication);i++){
+			  			patientMedication.push(newMedication[i]);
+			  		}
+			  		//console.log(patientMedication);
+            return patientMedication;
+          }
         }
-
+        //console.log("End: ",patientMedication);
         //2: is it if they are all ICS is when it goes to number 2 or will both conditions always be executed
-        if (_.some(patientMedication, {
-            chemicalType: "ltra"
-          })) {
+        if (_.some(patientMedication, {chemicalType: "ltra"})) {
           return patientMedication.chemicalType === "ltra";
         }
       }, masterMedications))
@@ -330,14 +324,16 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 /*const rule11 = ( patientMedications, masterMedications) => {
 	return _.chain( patientMedications )
 				.filter(_.partial((medicationElement, patientMedication) => {
-					//console.log(patientMedication.chemicalType === "laba,ICS");
-					if( patientMedication.chemicalType === "ICS" && patientMedication.chemicalType === "laba,ICS"){
+					console.log(_.filter(patientMedication,{chemicalType: "ICS"}));
+					if( _.filter(patientMedication.chemicalType === "ICS") && _.filter(patientMedication.chemicalType === "laba,ICS")){
 						console.log("spreadsheet chemicalType = ICS and OrgMed = labamICS ")
-						return medicationElement.name === "singulair";
+						//patientMedication = _.filter(patientMedication,{chemicalType: "ICS"});
+						console.log(patientMedication);
+						return patientMedication;
 					}
 				}, masterMedications))
 				.value();
-}*/
-//console.log(rule11(patientMedications, masterMedications));
+}
+console.log(rule11(patientMedications, masterMedications));*/
 debugger
 
