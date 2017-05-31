@@ -214,11 +214,11 @@ const getLowestICSDose = ( newMedications ) => {
 const rule2 = ( patientMedications, masterMedications ) => {
 	let result = [];
   return _.chain( patientMedications )
-    //return to whatever is true to the param inside
+    // return to whatever is true to the param inside
     .filter(
       _.partial( ( medicationElement, patientMedication ) => {
-        //1
-        if(patientMedication.chemicalType !== "ICS") {
+        // 1
+        if(patientMedication.chemicalType !== "ICS" /*&& patientMedication.chemicalType !== "ltra"*/) {
           console.log(patientMedication);
 
           if ( (patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"})) ) {
@@ -236,17 +236,30 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 });
 
                 const lowestICSDose = getLowestICSDose( newMedications );
-								console.log( lowestICSDose );
 
+								let recommendation = [];
+								recommendation.push(patientMedication);
    			    		// CONVERT THIS TO USE A REDUCE INSTEAD
 								for( i = 0; i < _.size( lowestICSDose ); i++){
-									result.push( lowestICSDose[i] );
+									recommendation.push( lowestICSDose[i] );
 								}
-								//console.log( result );
+								result.push(recommendation);
               } 
 			        else {
                 console.log( "device: recommend new medication at lowest ICS dose in any device available" );
-                //return patientMedication.chemicalType === "laba";
+                let newMedications = _.filter( medicationElement, {
+                	chemicalType: "laba,ICS", 
+                	chemicalLABA: patientMedication.chemicalLABA
+                });
+
+                const lowestICSDose = getLowestICSDose( newMedications );
+
+                let recommendation = [];
+                recommendation.push(patientMedication);
+                for( i = 0; i < _.size( lowestICSDose ); i++){
+									recommendation.push( lowestICSDose[i] );
+								}
+								result.push(recommendation);
               }
             } 
             else {
@@ -273,10 +286,13 @@ const rule2 = ( patientMedications, masterMedications ) => {
                   chemicalICS: "mometasone"
                 })];
 
+              let recommendation = [];
+              recommendation.push(patientMedication);
    			    	// REDUCE FUNCTION
-			    		for( i = 0; i < _.size(newMedications); i++){
-			  	  		result.push(newMedications[i]);
+			    		for( i = 0; i < _.size(newMedications); i++) {
+			  	  		recommendation.push(newMedications[i]);
 			    		}
+			    		result.push(recommendation);
             }
           } 
           else {
@@ -287,16 +303,19 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			  						               "Asmanex 200 ug I PUFF od", 
 			  						   						 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
 			  						   						];
-
+			  		let recommendation = [];
+			  		recommendation.push( patientMedication );
 			  		for( i = 0; i < _.size( newMedications ); i++ ){
-			  			result.push( newMedications[i] );
+			  			recommendation.push( newMedications[i] );
 			  		}
+			  		result.push(recommendation);
           }
         }
         //console.log("End: ",patientMedication);
         //2: is it if they are all ICS is when it goes to number 2 or will both conditions always be executed
-        if ( _.some( patientMedication, { chemicalType: "ltra" } ) ) {
-          return patientMedication.chemicalType === "ltra";
+        if ( patientMedication.chemicalType === "ltra" ) {
+        	console.log( "ltra" );
+          result.push( patientMedication );
         }
       }, masterMedications ))
 		.concat( result )
