@@ -303,6 +303,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			  						               "Asmanex 200 ug I PUFF od", 
 			  						   						 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
 			  						   						];
+
 			  		let recommendation = [];
 			  		recommendation.push( patientMedication );
 			  		for( i = 0; i < _.size( newMedications ); i++ ){
@@ -311,8 +312,8 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			  		result.push(recommendation);
           }
         }
-        //console.log("End: ",patientMedication);
-        //2: is it if they are all ICS is when it goes to number 2 or will both conditions always be executed
+
+        //2
         if ( patientMedication.chemicalType === "ltra" ) {
         	console.log( "ltra" );
           result.push( patientMedication );

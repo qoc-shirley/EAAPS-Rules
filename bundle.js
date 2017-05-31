@@ -306,6 +306,7 @@ var rule2 = function rule2(patientMedications, masterMedications) {
         } else {
           console.log("No chemicalType Laba in OrgMeds");
           var _newMedications3 = ["Flovent 125 ug 1 PUFF bid", "Discus Flovent 100 ug 1 PUFF puff bid", "Pulmicort 200 ug 1 PUFF bid", "Asmanex 200 ug I PUFF od", "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"];
+
           var _recommendation3 = [];
           _recommendation3.push(patientMedication);
           for (i = 0; i < _.size(_newMedications3); i++) {
@@ -314,8 +315,8 @@ var rule2 = function rule2(patientMedications, masterMedications) {
           result.push(_recommendation3);
         }
       }
-    //console.log("End: ",patientMedication);
-    //2: is it if they are all ICS is when it goes to number 2 or will both conditions always be executed
+
+    //2
     if (patientMedication.chemicalType === "ltra") {
       console.log("ltra");
       result.push(patientMedication);
