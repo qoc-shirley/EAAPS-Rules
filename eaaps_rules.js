@@ -109,7 +109,7 @@ const patientMedications = [{
     name: "asmanex",
     type: "ltra",
     chemicalType: "laba",
-    chemicalLABA: "salmeterol",
+    chemicalLABA: "sal",
     device: "diskus",
     doseICS: "30",
     timesPerDay: "2",
@@ -218,7 +218,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
     .filter(
       _.partial( ( medicationElement, patientMedication ) => {
         // 1
-        if(patientMedication.chemicalType !== "ICS" /*&& patientMedication.chemicalType !== "ltra"*/) {
+        if( patientMedication.chemicalType !== "ICS" ) {
           console.log(patientMedication);
 
           if ( (patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"})) ) {
@@ -264,27 +264,25 @@ const rule2 = ( patientMedications, masterMedications ) => {
             } 
             else {
               console.log( "chemicalLABA is not the same" );
-
-              // REDUCE
-			  			let newMedications = [
-                _.find(medicationElement, {
-                  chemicalLABA: "salmeterol",
-                  chemicalICS: "fluticasone",
-                  device: "diskus"
-                }),
-                _.find(medicationElement, {
-                  chemicalLABA: "salmeterol",
-                  chemicalICS: "fluticasone",
-                  device: "inhaler2"
-                }),
-                _.find(medicationElement, {
-                  chemicalLABA: "formoterol",
-                  chemicalICS: "budesonide"
-                }),
-                _.find(medicationElement, {
-                  chemicalLABA: "formoterol",
-                  chemicalICS: "mometasone"
-                })];
+ 
+              const newMedications2 = _.chain(medicationElement)
+              	.reduce( (recommend, medication) => {
+              		if(medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
+              			recommend.push( medication );
+              		}
+              		if(medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2") {
+              			recommend.push( medication );
+              		}
+              		if(medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+              			recommend.push( medication );
+              		}
+              		if(medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+              			recommend.push( medication );
+              		}
+   								return recommend;
+              	},[])
+              	.value();
+              //console.log(newMedications2);
 
               let recommendation = [];
               recommendation.push(patientMedication);

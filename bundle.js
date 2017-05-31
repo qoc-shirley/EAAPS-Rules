@@ -136,7 +136,7 @@ var patientMedications = [{
   name: "asmanex",
   type: "ltra",
   chemicalType: "laba",
-  chemicalLABA: "salmeterol",
+  chemicalLABA: "sal",
   device: "diskus",
   doseICS: "30",
   timesPerDay: "2",
@@ -233,88 +233,88 @@ var rule2 = function rule2(patientMedications, masterMedications) {
   // return to whatever is true to the param inside
   .filter(_.partial(function (medicationElement, patientMedication) {
     // 1
-    if (patientMedication.chemicalType !== "ICS" /*&& patientMedication.chemicalType !== "ltra"*/) {
-        console.log(patientMedication);
+    if (patientMedication.chemicalType !== "ICS") {
+      console.log(patientMedication);
 
-        if (patientMedication.chemicalType === "laba" && _.some(medicationElement, { chemicalType: "laba,ICS" })) {
-          console.log("medication element laba,ICS");
+      if (patientMedication.chemicalType === "laba" && _.some(medicationElement, { chemicalType: "laba,ICS" })) {
+        console.log("medication element laba,ICS");
 
-          if (!_.isEmpty(_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA }))) {
-            console.log("chemicalLABA");
+        if (!_.isEmpty(_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA }))) {
+          console.log("chemicalLABA");
 
-            if (!_.isEmpty(_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, device: patientMedication.device }))) {
+          if (!_.isEmpty(_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, device: patientMedication.device }))) {
 
-              var newMedications = _.filter(medicationElement, {
-                chemicalType: "laba,ICS",
-                chemicalLABA: patientMedication.chemicalLABA,
-                device: patientMedication.device
-              });
+            var _newMedications = _.filter(medicationElement, {
+              chemicalType: "laba,ICS",
+              chemicalLABA: patientMedication.chemicalLABA,
+              device: patientMedication.device
+            });
 
-              var lowestICSDose = getLowestICSDose(newMedications);
+            var lowestICSDose = getLowestICSDose(_newMedications);
 
-              var recommendation = [];
-              recommendation.push(patientMedication);
-              // CONVERT THIS TO USE A REDUCE INSTEAD
-              for (i = 0; i < _.size(lowestICSDose); i++) {
-                recommendation.push(lowestICSDose[i]);
-              }
-              result.push(recommendation);
-            } else {
-              console.log("device: recommend new medication at lowest ICS dose in any device available");
-              var _newMedications = _.filter(medicationElement, {
-                chemicalType: "laba,ICS",
-                chemicalLABA: patientMedication.chemicalLABA
-              });
-
-              var _lowestICSDose = getLowestICSDose(_newMedications);
-
-              var _recommendation = [];
-              _recommendation.push(patientMedication);
-              for (i = 0; i < _.size(_lowestICSDose); i++) {
-                _recommendation.push(_lowestICSDose[i]);
-              }
-              result.push(_recommendation);
+            var recommendation = [];
+            recommendation.push(patientMedication);
+            // CONVERT THIS TO USE A REDUCE INSTEAD
+            for (i = 0; i < _.size(lowestICSDose); i++) {
+              recommendation.push(lowestICSDose[i]);
             }
+            result.push(recommendation);
           } else {
-            console.log("chemicalLABA is not the same");
+            console.log("device: recommend new medication at lowest ICS dose in any device available");
+            var _newMedications2 = _.filter(medicationElement, {
+              chemicalType: "laba,ICS",
+              chemicalLABA: patientMedication.chemicalLABA
+            });
 
-            // REDUCE
-            var _newMedications2 = [_.find(medicationElement, {
-              chemicalLABA: "salmeterol",
-              chemicalICS: "fluticasone",
-              device: "diskus"
-            }), _.find(medicationElement, {
-              chemicalLABA: "salmeterol",
-              chemicalICS: "fluticasone",
-              device: "inhaler2"
-            }), _.find(medicationElement, {
-              chemicalLABA: "formoterol",
-              chemicalICS: "budesonide"
-            }), _.find(medicationElement, {
-              chemicalLABA: "formoterol",
-              chemicalICS: "mometasone"
-            })];
+            var _lowestICSDose = getLowestICSDose(_newMedications2);
 
-            var _recommendation2 = [];
-            _recommendation2.push(patientMedication);
-            // REDUCE FUNCTION
-            for (i = 0; i < _.size(_newMedications2); i++) {
-              _recommendation2.push(_newMedications2[i]);
+            var _recommendation = [];
+            _recommendation.push(patientMedication);
+            for (i = 0; i < _.size(_lowestICSDose); i++) {
+              _recommendation.push(_lowestICSDose[i]);
             }
-            result.push(_recommendation2);
+            result.push(_recommendation);
           }
         } else {
-          console.log("No chemicalType Laba in OrgMeds");
-          var _newMedications3 = ["Flovent 125 ug 1 PUFF bid", "Discus Flovent 100 ug 1 PUFF puff bid", "Pulmicort 200 ug 1 PUFF bid", "Asmanex 200 ug I PUFF od", "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"];
+          console.log("chemicalLABA is not the same");
 
-          var _recommendation3 = [];
-          _recommendation3.push(patientMedication);
-          for (i = 0; i < _.size(_newMedications3); i++) {
-            _recommendation3.push(_newMedications3[i]);
+          var newMedications2 = _.chain(medicationElement).reduce(function (recommend, medication) {
+            if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
+              recommend.push(medication);
+            }
+            if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2") {
+              recommend.push(medication);
+            }
+            if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+              recommend.push(medication);
+            }
+            if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+              recommend.push(medication);
+            }
+            return recommend;
+          }, []).value();
+          //console.log(newMedications2);
+
+          var _recommendation2 = [];
+          _recommendation2.push(patientMedication);
+          // REDUCE FUNCTION
+          for (i = 0; i < _.size(newMedications); i++) {
+            _recommendation2.push(newMedications[i]);
           }
-          result.push(_recommendation3);
+          result.push(_recommendation2);
         }
+      } else {
+        console.log("No chemicalType Laba in OrgMeds");
+        var _newMedications3 = ["Flovent 125 ug 1 PUFF bid", "Discus Flovent 100 ug 1 PUFF puff bid", "Pulmicort 200 ug 1 PUFF bid", "Asmanex 200 ug I PUFF od", "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"];
+
+        var _recommendation3 = [];
+        _recommendation3.push(patientMedication);
+        for (i = 0; i < _.size(_newMedications3); i++) {
+          _recommendation3.push(_newMedications3[i]);
+        }
+        result.push(_recommendation3);
       }
+    }
 
     //2
     if (patientMedication.chemicalType === "ltra") {
