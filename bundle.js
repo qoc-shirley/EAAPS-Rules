@@ -190,15 +190,33 @@ var rule1 = function rule1(patientMedications) {
   // 	.value();
 };
 
-var test = _.chain(masterMedications).filter(function (medicationElement) {
-  if (_.some(["chemicalType", "laba,ICS"])) {
-    //console.log(medicationElement.chemicalType === "saac");
-    return medicationElement.chemicalType === "saac";
-  }
-  return medicationElement.chemicalType === "saba";
-}).value();
+/*const test = _.chain(masterMedications)
+  .filter((medicationElement) => {
+    if (_.some(["chemicalType", "laba,ICS"])) {
+      //console.log(medicationElement.chemicalType === "saac");
+      return medicationElement.chemicalType === "saac";
+    }
+    return medicationElement.chemicalType === "saba"
+  }).value();*/
 //console.log(test);
 //console.log(_.some(masterMedications,{chemicalType:"laba,ICS"}));
+
+var getLowestICSDose = function getLowestICSDose(newMedications) {
+  return _.chain(newMedications).map(function (newMedicationTimesPerDay) {
+    if (newMedicationTimesPerDay.timesPerDay && _.size(newMedicationTimesPerDay.timesPerDay) > 1) {
+      console.log(newMedicationTimesPerDay.timesPerDay[0]);
+
+      newMedicationTimesPerDay.timesPerDay = _.head(newMedicationTimesPerDay.timesPerDay);
+    }
+    return newMedicationTimesPerDay;
+  }).map(function (newMedicationMaxPuffPerTime) {
+    console.log(newMedicationMaxPuffPerTime);
+    if (newMedicationMaxPuffPerTime.maxPuffPerTime) {
+      newMedicationMaxPuffPerTime.maxPuffPerTime = newMedicationMaxPuffPerTime.maxPuffPerTime / newMedicationMaxPuffPerTime.maxPuffPerTime;
+    }
+    return newMedicationMaxPuffPerTime;
+  }).value();
+};
 
 // Rule 2
 var rule2 = function rule2(patientMedications, masterMedications) {
@@ -212,55 +230,60 @@ var rule2 = function rule2(patientMedications, masterMedications) {
       if (patientMedication.chemicalType === "laba" && _.some(medicationElement, { chemicalType: "laba,ICS" })) {
         console.log("medication element laba,ICS");
 
-        if (_.filter(_.filter(medicationElement, { chemicalType: "laba,ICS" }), { chemicalLABA: patientMedication.chemicalLABA })) {
-          console.log("chemicalLABA");
-          console.log(patientMedication);
-          if (_.filter(_.filter(_.filter(medicationElement, {
-            chemicalType: "laba,ICS"
-          }), {
-            chemicalLABA: patientMedication.chemicalLABA
-          }), {
-            device: patientMedication.device
-          })) {
-            console.log("device: recommend new medication at lowest ICS dose");
+        // _.filter(medicationElement, {
+        // 	chemicalType: 'laba,ICS',
+        // 	chemicalLABA: patientMedication.chemicalLABA
+        // })
 
-            var newMedication = _.filter(_.filter(_.filter(medicationElement, {
-              chemicalType: "laba,ICS"
-            }), {
-              chemicalLABA: patientMedication.chemicalLABA
-            }), {
+        // _.filter (medicationElement, ( medication ) => {
+        // 	return medication.chemicalType === 'laba,ICS' && medicationElement.chemicalLABA === patientMedication.chemicalLABA;
+        // })
+
+
+        // JOIN THE TWO FILTERS
+        if (_.filter(medicationElement, { chemicalType: 'laba,ICS', chemicalLABA: patientMedication.chemicalLABA })) {
+          console.log("chemicalLABA");
+          //console.log(patientMedication);
+
+          // JOIN THE TWO FILTERS
+          if (_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, device: patientMedication.device })) {
+
+            // JOIN THE TWO FILTERS
+            var newMedications = _.filter(medicationElement, {
+              chemicalType: "laba,ICS",
+              chemicalLABA: patientMedication.chemicalLABA,
               device: patientMedication.device
             });
 
-            var lowestICSDose = _.chain(newMedication).mapValues(function (filteredMasterMedication) {
-              if (filteredMasterMedication.timesPerDay) {
-                if (_.size(filteredMasterMedication.timesPerDay) > 1) {
-                  console.log(filteredMasterMedication.timesPerDay[0]);
-                  filteredMasterMedication.timesPerDay = filteredMasterMedication.timesPerDay[0];
-                  return filteredMasterMedication;
-                }
-              }
-              if (filteredMasterMedication.maxPuffPerTime) {
-                filteredMasterMedication.maxPuffPerTime = filteredMasterMedication.maxPuffPerTime / filteredMasterMedication.maxPuffPerTime;
-                return filteredMasterMedication;
-              }
-            }).value();
-            console.log(patientMedication);
+            // ABSTRACT OUT AS A HELPER
+
+            // DO THIS INSTEAD - keep map function to do only one and only one thing
+            // _.chain().map().map().value()
+            var lowestICSDose = getLowestICSDose(newMedications);
+            console.log(lowestICSDose);
+            //console.log(patientMedication);
+
+            // USE _.HEAD
             if (!_.isArray(patientMedication)) {
               patientMedication = [patientMedication];
             }
+
+            // CONVERT THIS TO USE A REDUCE INSTEAD
             for (i = 0; i < _.size(lowestICSDose); i++) {
               patientMedication.push(lowestICSDose[i]);
             }
+
             //console.log(patientMedication);
             return patientMedication.chemicalType === "laba,ICS";
           } else {
             console.log("device: recommend new medication at lowest ICS dose in any device available");
-            return patientMedication.chemicalType === "laba";
+            //return patientMedication.chemicalType === "laba";
           }
         } else {
           console.log("chemicalLABA is not the same");
-          var _newMedication = [_.find(medicationElement, {
+
+          // REDUCE
+          var _newMedications = [_.find(medicationElement, {
             chemicalLABA: "salmeterol",
             chemicalICS: "fluticasone",
             device: "diskus"
@@ -278,17 +301,20 @@ var rule2 = function rule2(patientMedications, masterMedications) {
           if (!_.isArray(patientMedication)) {
             patientMedication = [patientMedication];
           }
-          for (i = 0; i < _.size(_newMedication); i++) {
-            patientMedication.push(_newMedication[i]);
+
+          // REDUCE FUNCTION
+          for (i = 0; i < _.size(_newMedications); i++) {
+            patientMedication.push(_newMedications[i]);
           }
-          return patientMedication.chemicalType !== "laba";
+          //return patientMedication.chemicalType !== "laba";
         }
+        console.log(patientMedication);
       } else if (patientMedication.chemicalType !== "laba" && _.some(medicationElement, { chemicalType: "laba,ICS" })) {
         console.log("No chemicalType Laba in OrgMeds");
-        var _newMedication2 = ["Flovent 125 ug 1 PUFF bid", "Discus Flovent 100 ug 1 PUFF puff bid", "Pulmicort 200 ug 1 PUFF bid", "Asmanex 200 ug I PUFF od", "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"];
+        var _newMedications2 = ["Flovent 125 ug 1 PUFF bid", "Discus Flovent 100 ug 1 PUFF puff bid", "Pulmicort 200 ug 1 PUFF bid", "Asmanex 200 ug I PUFF od", "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"];
         patientMedication = [];
-        for (i = 0; i < _.size(_newMedication2); i++) {
-          patientMedication.push(_newMedication2[i]);
+        for (i = 0; i < _.size(_newMedications2); i++) {
+          patientMedication.push(_newMedications2[i]);
         }
         //console.log(patientMedication);
         return patientMedication;

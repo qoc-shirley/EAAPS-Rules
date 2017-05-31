@@ -180,9 +180,28 @@ const rule1 = (patientMedications) => {
 //console.log(test);
 //console.log(_.some(masterMedications,{chemicalType:"laba,ICS"}));
 
-// const lowestICSDose = ( medicationElement ) => {
+const getLowestICSDose = ( newMedications ) => {
+	return _.chain( newMedications )
+	  .map( ( newMedicationTimesPerDay ) => {
+      if (newMedicationTimesPerDay.timesPerDay && (_.size(newMedicationTimesPerDay.timesPerDay) > 1)) {
+			  console.log(newMedicationTimesPerDay.timesPerDay[0])
 
-// }
+        newMedicationTimesPerDay.timesPerDay = _.head(newMedicationTimesPerDay.timesPerDay);
+			}
+			return newMedicationTimesPerDay;
+		})
+    .map( ( newMedicationMaxPuffPerTime ) => {
+      console.log(newMedicationMaxPuffPerTime);
+      if( newMedicationMaxPuffPerTime.maxPuffPerTime ) {
+				newMedicationMaxPuffPerTime.maxPuffPerTime = 
+					newMedicationMaxPuffPerTime.maxPuffPerTime
+	        / newMedicationMaxPuffPerTime.maxPuffPerTime;
+			}
+			return newMedicationMaxPuffPerTime;
+    })
+	.value();
+}
+
 // Rule 2
 const rule2 = ( patientMedications, masterMedications ) => {
   return _.chain(patientMedications)
@@ -225,26 +244,9 @@ const rule2 = ( patientMedications, masterMedications ) => {
 
                 // DO THIS INSTEAD - keep map function to do only one and only one thing
                 // _.chain().map().map().value()
-
-                const lowestICSDose = _.chain(newMedications)
-                  .map( ( newMedicationTimesPerDay ) => {
-
-                    if (newMedicationTimesPerDay.timesPerDay && (_.size(newMedicationTimesPerDay.timesPerDay) > 1)) {
-												console.log(newMedicationTimesPerDay.timesPerDay[0])
-
-                        newMedicationTimesPerDay.timesPerDay = _.head(newMedicationTimesPerDay.timesPerDay);
-												return newMedicationTimesPerDay;
-				    				}})
-                  .map( ( newMedicationMaxPuffPerTime ) =>{
-                    if(newMedicationMaxPuffPerTime.maxPuffPerTime){
-				  	  				newMedicationMaxPuffPerTime.maxPuffPerTime = 
-												newMedicationMaxPuffPerTime.maxPuffPerTime
-	              		    / newMedicationMaxPuffPerTime.maxPuffPerTime;
-					  					return newMedicationMaxPuffPerTime;
-				  	 				}
-                   })
-								 .value();
-								 //console.log(patientMedication);
+                const lowestICSDose = getLowestICSDose(newMedications);
+								console.log(lowestICSDose);
+								//console.log(patientMedication);
 
 								 // USE _.HEAD
    			   			if(!(_.isArray(patientMedication))){
