@@ -226,6 +226,13 @@ var getLowestICSDose = function getLowestICSDose(newMedications) {
   }).value();
 };
 
+var addToRecommendations = function addToRecommendations(elements) {
+  return _.chain(elements).reduce(function (recommend, addElement) {
+    recommend.push(addElement);
+    return recommend;
+  }, []).value();
+};
+
 // Rule 2
 var rule2 = function rule2(patientMedications, masterMedications) {
   var result = [];
@@ -244,41 +251,37 @@ var rule2 = function rule2(patientMedications, masterMedications) {
 
           if (!_.isEmpty(_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, device: patientMedication.device }))) {
 
-            var _newMedications = _.filter(medicationElement, {
+            var newMedications = _.filter(medicationElement, {
               chemicalType: "laba,ICS",
               chemicalLABA: patientMedication.chemicalLABA,
               device: patientMedication.device
             });
 
-            var lowestICSDose = getLowestICSDose(_newMedications);
+            var lowestICSDose = getLowestICSDose(newMedications);
 
             var recommendation = [];
             recommendation.push(patientMedication);
-            // CONVERT THIS TO USE A REDUCE INSTEAD
-            for (i = 0; i < _.size(lowestICSDose); i++) {
-              recommendation.push(lowestICSDose[i]);
-            }
+            recommendation.push(addToRecommendations(lowestICSDose));
             result.push(recommendation);
           } else {
             console.log("device: recommend new medication at lowest ICS dose in any device available");
-            var _newMedications2 = _.filter(medicationElement, {
+            var _newMedications = _.filter(medicationElement, {
               chemicalType: "laba,ICS",
               chemicalLABA: patientMedication.chemicalLABA
             });
 
-            var _lowestICSDose = getLowestICSDose(_newMedications2);
+            var _lowestICSDose = getLowestICSDose(_newMedications);
 
             var _recommendation = [];
             _recommendation.push(patientMedication);
-            for (i = 0; i < _.size(_lowestICSDose); i++) {
-              _recommendation.push(_lowestICSDose[i]);
-            }
+            _recommendation.push(addToRecommendations(_newMedications));
+
             result.push(_recommendation);
           }
         } else {
           console.log("chemicalLABA is not the same");
 
-          var newMedications2 = _.chain(medicationElement).reduce(function (recommend, medication) {
+          var _newMedications2 = _.chain(medicationElement).reduce(function (recommend, medication) {
             if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
               recommend.push(medication);
             }
@@ -293,14 +296,10 @@ var rule2 = function rule2(patientMedications, masterMedications) {
             }
             return recommend;
           }, []).value();
-          //console.log(newMedications2);
 
           var _recommendation2 = [];
           _recommendation2.push(patientMedication);
-          // REDUCE FUNCTION
-          for (i = 0; i < _.size(newMedications); i++) {
-            _recommendation2.push(newMedications[i]);
-          }
+          _recommendation2.push(addToRecommendations(_newMedications2));
           result.push(_recommendation2);
         }
       } else {
@@ -309,9 +308,7 @@ var rule2 = function rule2(patientMedications, masterMedications) {
 
         var _recommendation3 = [];
         _recommendation3.push(patientMedication);
-        for (i = 0; i < _.size(_newMedications3); i++) {
-          _recommendation3.push(_newMedications3[i]);
-        }
+        _recommendation3.push(addToRecommendations(_newMedications3));
         result.push(_recommendation3);
       }
     }

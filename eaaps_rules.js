@@ -109,8 +109,8 @@ const patientMedications = [{
     name: "asmanex",
     type: "ltra",
     chemicalType: "laba",
-    chemicalLABA: "sal",
-    device: "diskus",
+    chemicalLABA: "salmeterol",
+    device: "di",
     doseICS: "30",
     timesPerDay: "2",
     maxPuffTime: "2"
@@ -192,14 +192,11 @@ const getLowestICSDose = ( newMedications ) => {
 	return _.chain( newMedications )
 	  .map( ( newMedicationTimesPerDay ) => {
       if (newMedicationTimesPerDay.timesPerDay && (_.size(newMedicationTimesPerDay.timesPerDay) > 1)) {
-			  //console.log(newMedicationTimesPerDay.timesPerDay[0])
-
         newMedicationTimesPerDay.timesPerDay = _.head(newMedicationTimesPerDay.timesPerDay);
 			}
 			return newMedicationTimesPerDay;
 		})
     .map( ( newMedicationMaxPuffPerTime ) => {
-      //console.log(newMedicationMaxPuffPerTime);
       if( newMedicationMaxPuffPerTime.maxPuffPerTime ) {
 				newMedicationMaxPuffPerTime.maxPuffPerTime = 
 					newMedicationMaxPuffPerTime.maxPuffPerTime
@@ -208,6 +205,15 @@ const getLowestICSDose = ( newMedications ) => {
 			return newMedicationMaxPuffPerTime;
     })
 	.value();
+}
+
+const addToRecommendations = ( elements ) => {
+	return _.chain( elements )
+		.reduce( ( recommend, addElement ) => {
+			recommend.push( addElement );
+			return recommend;
+		}, [])
+		.value();
 }
 
 // Rule 2
@@ -219,15 +225,17 @@ const rule2 = ( patientMedications, masterMedications ) => {
       _.partial( ( medicationElement, patientMedication ) => {
         // 1
         if( patientMedication.chemicalType !== "ICS" ) {
-          console.log(patientMedication);
+          console.log( patientMedication );
 
-          if ( (patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"})) ) {
-            console.log("medication element laba,ICS");
+          if ( (patientMedication.chemicalType === "laba") && (_.some( medicationElement, { chemicalType: "laba,ICS" } )) ) {
+            console.log( "medication element laba,ICS" );
 
-            if (!_.isEmpty(_.filter(medicationElement, {chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA}))) {
-              console.log("chemicalLABA");
+            if ( !_.isEmpty(
+            				_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA }))) {
+              console.log( "chemicalLABA" );
 
-              if (!_.isEmpty(_.filter(medicationElement, {chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, device: patientMedication.device}))) {
+              if ( !_.isEmpty(
+              				 _.filter( medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, device: patientMedication.device } ) ) ) {
             
                 let newMedications = _.filter( medicationElement, {
                 	chemicalType: "laba,ICS", 
@@ -238,12 +246,9 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 const lowestICSDose = getLowestICSDose( newMedications );
 
 								let recommendation = [];
-								recommendation.push(patientMedication);
-   			    		// CONVERT THIS TO USE A REDUCE INSTEAD
-								for( i = 0; i < _.size( lowestICSDose ); i++){
-									recommendation.push( lowestICSDose[i] );
-								}
-								result.push(recommendation);
+								recommendation.push( patientMedication );
+   			    		recommendation.push( addToRecommendations( lowestICSDose ) );
+								result.push( recommendation );
               } 
 			        else {
                 console.log( "device: recommend new medication at lowest ICS dose in any device available" );
@@ -255,59 +260,52 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 const lowestICSDose = getLowestICSDose( newMedications );
 
                 let recommendation = [];
-                recommendation.push(patientMedication);
-                for( i = 0; i < _.size( lowestICSDose ); i++){
-									recommendation.push( lowestICSDose[i] );
-								}
-								result.push(recommendation);
+                recommendation.push( patientMedication );
+                recommendation.push( addToRecommendations( newMedications ) );
+								result.push( recommendation );
               }
             } 
             else {
               console.log( "chemicalLABA is not the same" );
  
-              const newMedications2 = _.chain(medicationElement)
-              	.reduce( (recommend, medication) => {
-              		if(medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
+              const newMedications = _.chain( medicationElement )
+              	.reduce( ( recommend, medication ) => {
+              		if( medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus" ) {
               			recommend.push( medication );
               		}
-              		if(medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2") {
+              		if( medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2" ) {
               			recommend.push( medication );
               		}
-              		if(medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+              		if( medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide" ) {
               			recommend.push( medication );
               		}
-              		if(medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+              		if( medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide" ) {
               			recommend.push( medication );
               		}
    								return recommend;
-              	},[])
+              	},[] )
               	.value();
-              //console.log(newMedications2);
 
               let recommendation = [];
-              recommendation.push(patientMedication);
-   			    	// REDUCE FUNCTION
-			    		for( i = 0; i < _.size(newMedications); i++) {
-			  	  		recommendation.push(newMedications[i]);
-			    		}
-			    		result.push(recommendation);
+              recommendation.push( patientMedication );
+			    		recommendation.push( addToRecommendations( newMedications ) );
+			    		result.push( recommendation );
             }
           } 
           else {
 			  		console.log( "No chemicalType Laba in OrgMeds" );
-			  		const newMedications = ["Flovent 125 ug 1 PUFF bid", 
-			  						   						 "Discus Flovent 100 ug 1 PUFF puff bid", 
-			  						   						 "Pulmicort 200 ug 1 PUFF bid", 
-			  						               "Asmanex 200 ug I PUFF od", 
-			  						   						 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
-			  						   						];
+			  		const newMedications = 
+			  			["Flovent 125 ug 1 PUFF bid", 
+			  			 "Discus Flovent 100 ug 1 PUFF puff bid", 
+			  			 "Pulmicort 200 ug 1 PUFF bid", 
+			  			 "Asmanex 200 ug I PUFF od", 
+			  			 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
+			  			];
 
 			  		let recommendation = [];
 			  		recommendation.push( patientMedication );
-			  		for( i = 0; i < _.size( newMedications ); i++ ){
-			  			recommendation.push( newMedications[i] );
-			  		}
-			  		result.push(recommendation);
+			  		recommendation.push( addToRecommendations( newMedications ) );
+			  		result.push( recommendation );
           }
         }
 
@@ -320,8 +318,16 @@ const rule2 = ( patientMedications, masterMedications ) => {
 		.concat( result )
     .value();
 }
-console.log( rule2( patientMedications, masterMedications ) );
+//console.log( rule2( patientMedications, masterMedications ) );
 
+// Rule of pg 4
+/*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
+	if( medicationElement.chemicalICS === patientMedication.chemicalICS ) {
+		if( calculateICSDOSE() === calculateICSDOSE() ) { // check if the ICS DOSE(puffperTimes x timesPerDay x dosePerStuff) of Org and New
+			function()
+		}
+	}
+}*/
 
 //Rule 6
 /*
