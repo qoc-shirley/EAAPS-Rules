@@ -320,7 +320,12 @@ const categorizeICSDose = ( medications ) => {
 		}
 	}
 	return doseLevel;
-}*/
+}
+
+const match = () => {
+	
+}
+*/
 
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
