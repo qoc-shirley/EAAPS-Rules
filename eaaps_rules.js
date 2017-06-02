@@ -181,12 +181,6 @@ const rule1 = (patientMedications) => {
 
 const getLowestICSDose = ( newMedications ) => {
 	return _.chain( newMedications )
-	  /*.map( ( newMedicationTimesPerDay ) => {
-      if (newMedicationTimesPerDay.timesPerDay && (_.size(newMedicationTimesPerDay.timesPerDay) > 1)) {
-        newMedicationTimesPerDay.timesPerDay = _.head(newMedicationTimesPerDay.timesPerDay);
-			}
-			return newMedicationTimesPerDay;
-		})*/
     .map( ( newMedicationMaxPuffPerTime ) => {
       if( newMedicationMaxPuffPerTime.maxPuffPerTime ) {
 				newMedicationMaxPuffPerTime.maxPuffPerTime = 
