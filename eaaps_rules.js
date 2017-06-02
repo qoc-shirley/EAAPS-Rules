@@ -344,19 +344,33 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 }*/
 
 //Rule 11
-/*const rule11 = ( patientMedications, masterMedications) => {
+const rule11 = ( patientMedications, masterMedications) => {
+	let result = [];
+	let labaICS = false;
+	let ICS = false;
 	return _.chain( patientMedications )
-				.filter(_.partial((medicationElement, patientMedication) => {
-					console.log(_.filter(patientMedication,{chemicalType: "ICS"}));
-					if( _.filter(patientMedication.chemicalType === "ICS") && _.filter(patientMedication.chemicalType === "laba,ICS")){
-						console.log("spreadsheet chemicalType = ICS and OrgMed = labamICS ")
+				.filter(
+						_.partial((medicationElements, patientMedication) => {
+					if( patientMedication.chemicalType === "ICS") {
+						console.log("ICS");
 						//patientMedication = _.filter(patientMedication,{chemicalType: "ICS"});
-						console.log(patientMedication);
-						return patientMedication;
+						//console.log(patientMedication);
+						ICS = true;
+					}
+					else if( patientMedication.chemicalType === "laba,ICS") {
+						console.log("laba,ICS");
+						labaICS = true;
+					}
+
+					if(labaICS && ICS) {
+						console.log("There is both ICS and laba,ICS in original Medication");
+						result.push( _.filter(medicationElements, {name: "singulair"}));
 					}
 				}, masterMedications))
+				.concat( result )
+				.flatten()
 				.value();
 }
-console.log(rule11(patientMedications, masterMedications));*/
+console.log(rule11(patientMedications, masterMedications));
 debugger
 
