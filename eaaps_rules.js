@@ -226,7 +226,9 @@ const rule2 = ( patientMedications, masterMedications ) => {
               console.log( "chemicalLABA" );
 
               if ( !_.isEmpty(
-              				 _.filter( medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, device: patientMedication.device } ) ) ) {
+              				 _.filter( medicationElement, {
+              				 					 chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, 
+              				 					 device: patientMedication.device } ) ) ) {
             
                 let newMedications = _.filter( medicationElement, {
                 	chemicalType: "laba,ICS", 
