@@ -320,6 +320,29 @@ const rule2 = ( patientMedications, masterMedications ) => {
 }
 //console.log( rule2( patientMedications, masterMedications ) );
 
+
+/*const calculateICSDOSE = ( medication ) => { 
+	let ICSDOSE = 0;
+	return ICSDOSE;
+}
+
+const categorizeICSDose = ( medications ) => {
+	let doseLevel = '';
+	for( i = 0; i < _.size(medications); i++) {
+		if(calculateICSDOSE(medications[i]) >= medication[i].highFloorICS){
+			doseLevel = 'high';
+		}
+		else if(calculateICSDOSE(medications[i]) >= medication[i].lowCeilICS) {
+			doseLevel = 'low';
+		}
+		else if( (calculateICSDOSE(medications[i]) > medication[i].lowCeilICS) && 
+						 (calculateICSDOSE(medications[i]) > medication[i].highFloorICS) ){ 
+			doseLevel = 'medium';
+		}
+	}
+	return doseLevel;
+}*/
+
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
 	if( medicationElement.chemicalICS === patientMedication.chemicalICS ) {
