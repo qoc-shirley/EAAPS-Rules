@@ -343,34 +343,66 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 	.value();
 }*/
 
-//Rule 11
-const rule11 = ( patientMedications, masterMedications) => {
+// Rule 8
+/*const rule8 = ( patientMedications, masterMedications ) => {
+	return _.chain( patientMedications )
+						.filter(
+							_.partial( ( medicationElements, patientMedication ) => {
+								if( patientMedication.name === "symbicort" &&
+										patientMedication.function === "controller,reliever" &&
+										function(calculate to see if ICS DOSE if "medium" or "high)) {
+										console.log( "recommend addition of new Medication name === singulair");
+								}
+							}, masterMedications )
+						)
+					.value();
+}*/
+
+// Rule 10
+/*const rule10 = ( patientMedications, masterMedications ) => {
+	return _.chain( patientMedications )
+						.filter(
+							_.partial( ( medicationElements, patientMedication ) => {
+								if(patientMedication.name === "symbicort" && 
+									 patientMedication.function === "controller,reliever" &&
+									 (patientMedication.timesPerDay * patientMedication.timesPerDay * patientMedication.timesPerDay >= patientMedication.maxGreenICS)) {
+									if(patientMedication.chemicalType === "ltra") {
+										console.log( "consult a respirologist" );
+									}
+
+								}
+
+							}, masterMedications )
+						)
+				.value();
+}*/
+
+// Rule 11
+const rule11 = ( patientMedications, masterMedications ) => {
 	let result = [];
 	let labaICS = false;
 	let ICS = false;
 	return _.chain( patientMedications )
 				.filter(
-						_.partial((medicationElements, patientMedication) => {
-					if( patientMedication.chemicalType === "ICS") {
-						console.log("ICS");
-						//patientMedication = _.filter(patientMedication,{chemicalType: "ICS"});
-						//console.log(patientMedication);
+						_.partial( ( medicationElements, patientMedication ) => {
+					if( patientMedication.chemicalType === "ICS" ) {
+						console.log( "ICS" );
 						ICS = true;
 					}
-					else if( patientMedication.chemicalType === "laba,ICS") {
-						console.log("laba,ICS");
+					else if( patientMedication.chemicalType === "laba,ICS" ) {
+						console.log( "laba,ICS" );
 						labaICS = true;
 					}
 
-					if(labaICS && ICS) {
-						console.log("There is both ICS and laba,ICS in original Medication");
-						result.push( _.filter(medicationElements, {name: "singulair"}));
+					if( labaICS && ICS ) {
+						console.log( "There is both ICS and laba,ICS in original Medication" );
+						result.push( _.filter( medicationElements, { name: "singulair" } ) );
 					}
-				}, masterMedications))
+				}, masterMedications ))
 				.concat( result )
 				.flatten()
 				.value();
 }
-console.log(rule11(patientMedications, masterMedications));
+//console.log(rule11(patientMedications, masterMedications));
 debugger
 
