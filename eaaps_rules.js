@@ -321,7 +321,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 //console.log( rule2( patientMedications, masterMedications ) );
 
 
-/*const calculateICSDOSE = ( medication ) => { 
+/*const calculateICSDose = ( medication ) => { 
 	let ICSDOSE = 0;
 	return ICSDOSE;
 }
@@ -329,14 +329,14 @@ const rule2 = ( patientMedications, masterMedications ) => {
 const categorizeICSDose = ( medications ) => {
 	let doseLevel = '';
 	for( i = 0; i < _.size(medications); i++) {
-		if(calculateICSDOSE(medications[i]) >= medication[i].highFloorICS){
+		if(calculateICSDose(medications[i]) >= medication[i].highFloorICS){
 			doseLevel = 'high';
 		}
-		else if(calculateICSDOSE(medications[i]) >= medication[i].lowCeilICS) {
+		else if(calculateICSDose(medications[i]) >= medication[i].lowCeilICS) {
 			doseLevel = 'low';
 		}
-		else if( (calculateICSDOSE(medications[i]) > medication[i].lowCeilICS) && 
-						 (calculateICSDOSE(medications[i]) > medication[i].highFloorICS) ){ 
+		else if( (calculateICSDose(medications[i]) > medication[i].lowCeilICS) && 
+						 (calculateICSDose(medications[i]) > medication[i].highFloorICS) ){ 
 			doseLevel = 'medium';
 		}
 	}
@@ -346,7 +346,7 @@ const categorizeICSDose = ( medications ) => {
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
 	if( medicationElement.chemicalICS === patientMedication.chemicalICS ) {
-		if( calculateICSDOSE() === calculateICSDOSE() ) { // check if the ICS DOSE(puffperTimes x timesPerDay x dosePerStuff) of Org and New
+		if( calculateICSDose() === calculateICSDose() ) { // check if the ICS DOSE(puffperTimes x timesPerDay x dosePerStuff) of Org and New
 			function()
 		}
 	}
