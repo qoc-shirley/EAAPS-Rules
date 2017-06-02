@@ -117,15 +117,6 @@ const patientMedications = [{
   }
 ];
 
-/*const patientMedications = [ 	
-	{id:"10",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ltra", chemicalLABA:"salmeterol", device:"diskus", doseICS:"50"},
-	{id:"11",function:"controller",name:"asmanex",type:"ICS",chemicalType:"ltra", chemicalLABA:"salmeterol",device:"diskus",doseICS:"50"},
-	{id:"13",function:"controller",name:"asmanex",type:"laac",chemicalType:"ltra",chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
-	{id:"14",function:"controller",name:"asmanex",type:"other",chemicalType:"laac", chemicalLABA:"salmeterol",device:"diskus",doseICS:"25"},
-	{id:"16",function:"controller",name:"asmanex",type:"combo",chemicalType:"abba", chemicalLABA:"salmeterol",device:"diskus",doseICS:"30"},
-	{id:"18",function:"controller",name:"asmanex",type:"ltra",chemicalType:"laba", chemicalLABA:"salmeterol",device:"diskus", doseICS:"30"}
-];*/
-
 //takes the data array and uses map to get a list of {[id:1, color: blue ...etc]}
 //maps a data value to 
 const masterMedications = _.chain(data)
@@ -227,11 +218,11 @@ const rule2 = ( patientMedications, masterMedications ) => {
         if( patientMedication.chemicalType !== "ICS" ) {
           console.log( patientMedication );
 
-          if ( (patientMedication.chemicalType === "laba") && (_.some( medicationElement, { chemicalType: "laba,ICS" } )) ) {
+          if ( (patientMedication.chemicalType === "laba") && (_.some( medicationElement, { chemicalType: "laba,ICS" } ) ) ) {
             console.log( "medication element laba,ICS" );
 
             if ( !_.isEmpty(
-            				_.filter(medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA }))) {
+            				_.filter( medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA } ) ) ) {
               console.log( "chemicalLABA" );
 
               if ( !_.isEmpty(
@@ -244,11 +235,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 });
 
                 const lowestICSDose = getLowestICSDose( newMedications );
-
-								let recommendation = [];
-								//recommendation.push( patientMedication );
-   			    		recommendation.push( addToRecommendations( lowestICSDose ) );
-								result.push( recommendation );
+								result.push( addToRecommendations( lowestICSDose ) );
               } 
 			        else {
                 console.log( "device: recommend new medication at lowest ICS dose in any device available" );
@@ -258,11 +245,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 });
 
                 const lowestICSDose = getLowestICSDose( newMedications );
-
-                let recommendation = [];
-                //recommendation.push( patientMedication );
-                recommendation.push( addToRecommendations( newMedications ) );
-								result.push( recommendation );
+								result.push( addToRecommendations( lowestICSDose ) );
               }
             } 
             else {
@@ -286,10 +269,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
               	},[] )
               	.value();
 
-              let recommendation = [];
-              //recommendation.push( patientMedication );
-			    		recommendation.push( addToRecommendations( newMedications ) );
-			    		result.push( recommendation );
+			    		result.push( addToRecommendations( newMedications ) );
             }
           } 
           else {
@@ -302,10 +282,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			  			 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
 			  			];
 
-			  		let recommendation = [];
-			  		//recommendation.push( patientMedication );
-			  		recommendation.push( addToRecommendations( newMedications ) );
-			  		result.push( recommendation );
+			  		result.push( addToRecommendations( newMedications ) );
           }
         }
 
@@ -318,7 +295,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 		.concat( result )
     .value();
 }
-//console.log( rule2( patientMedications, masterMedications ) );
+console.log( rule2( patientMedications, masterMedications ) );
 
 
 /*const calculateICSDose = ( medication ) => { 
