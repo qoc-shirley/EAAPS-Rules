@@ -246,7 +246,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 const lowestICSDose = getLowestICSDose( newMedications );
 
 								let recommendation = [];
-								recommendation.push( patientMedication );
+								//recommendation.push( patientMedication );
    			    		recommendation.push( addToRecommendations( lowestICSDose ) );
 								result.push( recommendation );
               } 
@@ -260,7 +260,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 const lowestICSDose = getLowestICSDose( newMedications );
 
                 let recommendation = [];
-                recommendation.push( patientMedication );
+                //recommendation.push( patientMedication );
                 recommendation.push( addToRecommendations( newMedications ) );
 								result.push( recommendation );
               }
@@ -287,7 +287,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
               	.value();
 
               let recommendation = [];
-              recommendation.push( patientMedication );
+              //recommendation.push( patientMedication );
 			    		recommendation.push( addToRecommendations( newMedications ) );
 			    		result.push( recommendation );
             }
@@ -303,7 +303,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 			  			];
 
 			  		let recommendation = [];
-			  		recommendation.push( patientMedication );
+			  		//recommendation.push( patientMedication );
 			  		recommendation.push( addToRecommendations( newMedications ) );
 			  		result.push( recommendation );
           }
