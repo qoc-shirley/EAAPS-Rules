@@ -378,7 +378,7 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 				.value();
 }*/
 
-const checkPatientMedications = ( patientMedications ) => {
+const getLabaICSAndICS = ( patientMedications ) => {
 	let result = [];
 	let labaICS = false;
 	let ICS = false;
@@ -407,12 +407,12 @@ const checkPatientMedications = ( patientMedications ) => {
 // what happens when there is no both "ICS" and "laba,ICS"? empty list?
 const rule11 = ( patientMedications, masterMedications ) => {
 	let newMedication = [];
-	let isLabaICSAndICS = checkPatientMedications(patientMedications);
-	if (_.find(isLabaICSAndICS, { chemicalType: "ICS" } ) && _.find(isLabaICSAndICS, { chemicalType: "laba,ICS" } ) ){
+	let filteredPatientMedications = getLabaICSAndICS(patientMedications);
+	if (_.find(filteredPatientMedications, { chemicalType: "ICS" } ) && _.find(filteredPatientMedications, { chemicalType: "laba,ICS" } ) ){
 		newMedication = _.filter( masterMedications, { name: "singulair" } );
 	}
-	return _.concat( newMedication, isLabaICSAndICS )
+	return _.concat( newMedication, filteredPatientMedications )
 }
-console.log( rule11( patientMedications, masterMedications ) );
+//console.log( rule11( patientMedications, masterMedications ) );
 debugger
 
