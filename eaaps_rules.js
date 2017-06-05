@@ -399,7 +399,6 @@ const rule8 = ( patientMedications, masterMedications ) => {
 								if( patientMedication.name === "symbicort" &&
 										patientMedication.function === "controller,reliever" &&
 										categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
-										//console.log("ICSDose: ", categorizeICSDose( patientMedication ));
 										console.log( "recommend addition of new Medication name === singulair");
 										result.push( patientMedication );
 										result.push( _.filter( medicationElements, { name: "singulair" } ) );
@@ -415,17 +414,17 @@ const rule8 = ( patientMedications, masterMedications ) => {
 // Rule 9
 /*
 * If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”; 
-* AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is < “maxGreenICS” 
+* AND ICS DOSE (puffPerTimes x timesPerDay x doseICS) is < “maxGreenICS” 
 * AND there also exists an original medication “chemicalType” is “LTRA.” 
 * RECOMMEND this original medication at the highest ICS dose “maxGreenICS” 
 * AND RECOMMEND original “LTRA” 
-* - attempt to match the orgMed[dosePerPuff] 
-* - if not possible to match the orgMed[dosePerPuff], minimize the new medication required [puffsPerTime] 
+* - attempt to match the orgMed[doseICS] *** Wouldn't the doseICS always be the same so we would not have to attempt to match?
+* - if not possible to match the orgMed[doseICS], minimize the new medication required [puffsPerTime] 
 */
 const rule9 = ( patientMedications ) => {
 	return _.chain( patientMedications )
 		.filter( ( patientMedication ) => {
-			
+
 		})
 }
 
