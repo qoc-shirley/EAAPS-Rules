@@ -58,7 +58,7 @@ const patientMedications = [{
     function: "controller",
     name: "asmanex",
     type: "ICS",
-    chemicalType: "laba,ICS",
+    chemicalType: "ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
     doseICS: "50"
@@ -291,7 +291,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 		.concat( result )
     .value();
 }
-console.log( rule2( patientMedications, masterMedications ) );
+//console.log( rule2( patientMedications, masterMedications ) );
 
 
 /*const calculateICSDose = ( medication ) => { 
@@ -378,8 +378,7 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 				.value();
 }*/
 
-// Rule 11
-const rule11 = ( patientMedications, masterMedications ) => {
+const checkPatientMedications = ( patientMedications ) => {
 	let result = [];
 	let labaICS = false;
 	let ICS = false;
@@ -389,23 +388,31 @@ const rule11 = ( patientMedications, masterMedications ) => {
 					if( patientMedication.chemicalType === "ICS" ) {
 						console.log( "ICS" );
 						ICS = true;
-						result.push(_.filter( medicationElements, { chemicalType: "ICS" } ) );
+						console.log(ICS);
+						result.push( patientMedication );
 					}
 					else if( patientMedication.chemicalType === "laba,ICS" ) {
 						console.log( "laba,ICS" );
 						labaICS = true;
-						result.push(_.filter( medicationElements, { chemicalType: "laba,ICS" } ) );
-					}
-
-					if( labaICS && ICS ) {
-						console.log( "There is both ICS and laba,ICS in original Medication" );
-						result.push( _.filter( medicationElements, { name: "singulair" } ) );
+						result.push( patientMedication );
 					}
 				}, masterMedications ))
 				.concat( result )
+
 				.flatten()
 				.value();
 }
-//console.log(rule11(patientMedications, masterMedications));
+
+// Rule 11
+// what happens when there is no both "ICS" and "laba,ICS"? empty list?
+const rule11 = ( patientMedications, masterMedications ) => {
+	let newMedication = [];
+	let isLabaICSAndICS = checkPatientMedications(patientMedications);
+	if (_.find(isLabaICSAndICS, { chemicalType: "ICS" } ) && _.find(isLabaICSAndICS, { chemicalType: "laba,ICS" } ) ){
+		newMedication = _.filter( masterMedications, { name: "singulair" } );
+	}
+	return _.concat( newMedication, isLabaICSAndICS )
+}
+console.log( rule11( patientMedications, masterMedications ) );
 debugger
 
