@@ -58,7 +58,7 @@ const patientMedications = [{
     function: "controller",
     name: "asmanex",
     type: "ICS",
-    chemicalType: "ICS",
+    chemicalType: "laba,ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
     doseICS: "50"
@@ -105,15 +105,17 @@ const patientMedications = [{
   },
   {
     id: "18",
-    function: "controller",
+    function: "controller,reliever",
     name: "asmanex",
     type: "ltra",
     chemicalType: "laba",
     chemicalLABA: "salmeterol",
-    device: "di",
-    doseICS: "30",
+    device: "diskus",
+    doseICS: "300",
     timesPerDay: "2",
-    maxPuffTime: "2"
+    maxPuffPerTime: "2",
+    name: "symbicort",
+    maxGreenICS: "1000"
   }
 ];
 
@@ -360,14 +362,14 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 }*/
 
 // Rule 10
-/*const rule10 = ( patientMedications, masterMedications ) => {
+const rule10 = ( patientMedications, masterMedications ) => {
 	return _.chain( patientMedications )
 						.filter(
 							_.partial( ( medicationElements, patientMedication ) => {
 								if(patientMedication.name === "symbicort" && 
 									 patientMedication.function === "controller,reliever" &&
-									 (patientMedication.timesPerDay * patientMedication.timesPerDay * patientMedication.timesPerDay >= patientMedication.maxGreenICS)) {
-									if(patientMedication.chemicalType === "ltra") {
+									 ((patientMedication.doseICS * patientMedication.timesPerDay * patientMedication.maxPuffPerTime) >= patientMedication.maxGreenICS)) {
+									if(_.find(patientMedications, { chemicalType: "ltra"})) {
 										console.log( "consult a respirologist" );
 									}
 
@@ -376,7 +378,8 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 							}, masterMedications )
 						)
 				.value();
-}*/
+}
+console.log( rule10( patientMedications, masterMedications ) );
 
 const getLabaICSAndICS = ( patientMedications ) => {
 	let result = [];
@@ -398,7 +401,6 @@ const getLabaICSAndICS = ( patientMedications ) => {
 					}
 				}, masterMedications ))
 				.concat( result )
-
 				.flatten()
 				.value();
 }
