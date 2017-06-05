@@ -389,10 +389,12 @@ const rule11 = ( patientMedications, masterMedications ) => {
 					if( patientMedication.chemicalType === "ICS" ) {
 						console.log( "ICS" );
 						ICS = true;
+						result.push(_.filter( medicationElements, { chemicalType: "ICS" } ) );
 					}
 					else if( patientMedication.chemicalType === "laba,ICS" ) {
 						console.log( "laba,ICS" );
 						labaICS = true;
+						result.push(_.filter( medicationElements, { chemicalType: "laba,ICS" } ) );
 					}
 
 					if( labaICS && ICS ) {
