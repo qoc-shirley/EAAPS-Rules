@@ -357,17 +357,31 @@ const categorizeICSDose = ( medications ) => {
 
 //Rule 6
 /*
-If there exists an original medication that DOES NOT have “name” is “symbicort” AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND there also exists an original medication “chemicalType” is “LTRA” AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), Recommend consulting a respirologist
+If there exists an original medication that DOES NOT have “name” is “symbicort” AND 
+has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND 
+there also exists an original medication “chemicalType” is “LTRA” AND 
+ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), 
+Recommend consulting a respirologist
 */
-/*const rule6 = ( patientMedications ) => {
-	return _.chain(patientMedications)
-	.filter( (patientMedication) => {
-		( (patientMedication !== "symbicort" && patientMedication === "laba,ICS") 
-		|| (patientMedication !== "symbicort" && patientMedication === "laba,ICS"))
-		return 
+//**NEED TO CLARIFY: AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”
+const rule6 = ( patientMedications ) => {
+	let result = [];
+	return _.chain( patientMedications )
+	.filter( ( patientMedication ) => {
+			if( patientMedication.name !== "symbicort" && 
+
+					(patientMedication.chemicalType === "laba,ICS" || 
+					patientMedication.chemicalType === "ICS" || 
+					patientMedication.chemicalType === "laba" ) &&
+
+				_.some( patientMedications, { chemicalType: "ltra" } ) &&
+				calculateICSDose( _.find( patientMedications,{ chemicalType: "ltra" } ) ) >= 
+				_.find( patientMedications, { chemicalType: "ltra" } ).maxGreenICS ) {
+				console.log("consult a respirologist");
+		}
 	})
 	.value();
-}*/
+}
 
 // Rule 8
 const rule8 = ( patientMedications, masterMedications ) => {
@@ -378,7 +392,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
 								if( patientMedication.name === "symbicort" &&
 										patientMedication.function === "controller,reliever" &&
 										categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
-										console.log("ICSDose: ", categorizeICSDose( patientMedication ));
+										//console.log("ICSDose: ", categorizeICSDose( patientMedication ));
 										console.log( "recommend addition of new Medication name === singulair");
 										result.push( patientMedication );
 										result.push( _.filter( medicationElements, { name: "singulair" } ) );
@@ -389,7 +403,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
 						.flatten()
 					.value();
 }
-console.log( rule8( patientMedications, masterMedications ) );
+//console.log( rule8( patientMedications, masterMedications ) );
 
 // Rule 10
 const rule10 = ( patientMedications, masterMedications ) => {
@@ -441,6 +455,9 @@ const rule11 = ( patientMedications, masterMedications ) => {
 	if (_.find(filteredPatientMedications, { chemicalType: "ICS" } ) && _.find(filteredPatientMedications, { chemicalType: "laba,ICS" } ) ){
 		newMedication = _.filter( masterMedications, { name: "singulair" } );
 	}
+	/*else {
+		filteredPatientMedications = [];
+	}*/
 	return _.concat( newMedication, filteredPatientMedications )
 }
 //console.log( rule11( patientMedications, masterMedications ) );
