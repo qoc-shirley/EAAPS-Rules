@@ -61,7 +61,7 @@ const patientMedications = [{
     chemicalType: "laba,ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "50",
+    doseICS: "5000",
     lowCeilICS: "250",
     highFloorICS: "501",
     timesPerDay: "2",
@@ -318,22 +318,25 @@ const calculateICSDose = ( medication ) => {
 
 const categorizeICSDose = ( medications ) => {
 	let doseLevel = '';
-	for( i = 0; i < _.size(medications); i++) {
-		console.log(calculateICSDose(medications[i]));
-		if(calculateICSDose(medications[i]) >= medications[i].highFloorICS){
+	console.log( "medications: ", medications );
+	//for( i = 0; i < _.size(medications); i++) {
+		console.log(medications);
+		console.log(calculateICSDose(medications));
+		console.log(medications.highFloorICS);
+		if(calculateICSDose(medications) >= medications.highFloorICS){
 			console.log( "high" );
-			doseLevel = 'high';
+			doseLevel = "high";
 		}
-		else if(calculateICSDose(medications[i]) >= medications[i].lowCeilICS) {
+		else if(calculateICSDose(medications) >= medications.lowCeilICS) {
 			console.log( "low" );
-			doseLevel = 'low';
+			doseLevel = "low";
 		}
-		else if( (calculateICSDose(medications[i]) > medications[i].lowCeilICS) && 
-						 (calculateICSDose(medications[i]) > medications[i].highFloorICS) ){
+		else if( (calculateICSDose(medications) > medications.lowCeilICS) && 
+						 (calculateICSDose(medications) > medications.highFloorICS) ){
 			console.log( "medium" ); 
-			doseLevel = 'medium';
+			doseLevel = "medium";
 		}
-	}
+	//}
 	return doseLevel;
 }
 //console.log( categorizeICSDose( patientMedications ) );
@@ -375,6 +378,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
 								if( patientMedication.name === "symbicort" &&
 										patientMedication.function === "controller,reliever" &&
 										categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
+										console.log("ICSDose: ", categorizeICSDose( patientMedication ));
 										console.log( "recommend addition of new Medication name === singulair");
 										result.push( patientMedication );
 										result.push( _.filter( medicationElements, { name: "singulair" } ) );
@@ -382,6 +386,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
 							}, masterMedications )
 						)
 						.concat( result )
+						.flatten()
 					.value();
 }
 console.log( rule8( patientMedications, masterMedications ) );
