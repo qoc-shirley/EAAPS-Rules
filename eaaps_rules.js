@@ -359,19 +359,18 @@ const categorizeICSDose = ( medications ) => {
 
 //Rule 6
 /*
-If there exists an original medication that DOES NOT have “name” is “symbicort” AND 
-has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND 
-there also exists an original medication “chemicalType” is “LTRA” AND 
-ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), 
-Recommend consulting a respirologist
+* If there exists an original medication that DOES NOT have “name” is “symbicort” AND 
+* has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND 
+* there also exists an original medication “chemicalType” is “LTRA” AND 
+* ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), 
+* Recommend consulting a respirologist
 */
-//**NEED TO CLARIFY: AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”
+// NEED TO CLARIFY: AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”
 const rule6 = ( patientMedications ) => {
 	let result = [];
 	let recommend = "";
 	return _.chain( patientMedications )
 	.filter( ( patientMedication ) => {
-		//console.log(_.some( patientMedications, { chemicalType: "ltra" } ), _.find( patientMedications, { chemicalType: "ltra" } ) );
 			if( patientMedication.name !== "symbicort" && 
 
 					(patientMedication.chemicalType === "laba,ICS" || 
@@ -381,6 +380,7 @@ const rule6 = ( patientMedications ) => {
 				_.some( patientMedications, { chemicalType: "ltra" } ) &&
 				calculateICSDose( _.find( patientMedications,{ chemicalType: "ltra" } ) ) >= 
 				_.find( patientMedications, { chemicalType: "ltra" } ).maxGreenICS ) {
+
 				console.log("consult a respirologist");
 				result.push("consult a respirologist");
 		}
@@ -388,7 +388,7 @@ const rule6 = ( patientMedications ) => {
 	.concat( result )
 	.value();
 }
-console.log( rule6( patientMedications ) );
+// console.log( rule6( patientMedications ) );
 
 // Rule 8
 const rule8 = ( patientMedications, masterMedications ) => {
@@ -422,10 +422,12 @@ const rule8 = ( patientMedications, masterMedications ) => {
 * - attempt to match the orgMed[dosePerPuff] 
 * - if not possible to match the orgMed[dosePerPuff], minimize the new medication required [puffsPerTime] 
 */
-/*const rule9 = ( patientMedications ) => {
+const rule9 = ( patientMedications ) => {
 	return _.chain( patientMedications )
-		.
-}*/
+		.filter( ( patientMedication ) => {
+			
+		})
+}
 
 // Rule 10
 const rule10 = ( patientMedications, masterMedications ) => {
