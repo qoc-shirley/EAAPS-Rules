@@ -61,7 +61,11 @@ const patientMedications = [{
     chemicalType: "laba,ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "50"
+    doseICS: "50",
+    lowCeilICS: "250",
+    highFloorICS: "501",
+    timesPerDay: "2",
+    maxPuffPerTime: "2"
   },
   {
     id: "11",
@@ -71,7 +75,11 @@ const patientMedications = [{
     chemicalType: "ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "50"
+    doseICS: "50",
+    lowCeilICS: "250",
+    highFloorICS: "501",
+    timesPerDay: "2",
+    maxPuffPerTime: "2"
   },
   {
     id: "13",
@@ -81,7 +89,11 @@ const patientMedications = [{
     chemicalType: "ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "25"
+    doseICS: "100",
+    lowCeilICS: "250",
+    highFloorICS: "501",
+    timesPerDay: "2",
+    maxPuffPerTime: "2"
   },
   {
     id: "14",
@@ -91,7 +103,9 @@ const patientMedications = [{
     chemicalType: "laac",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "25"
+    doseICS: "25",
+    timesPerDay: "2",
+    maxPuffPerTime: "2"
   },
   {
     id: "16",
@@ -101,7 +115,9 @@ const patientMedications = [{
     chemicalType: "ltra",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "30"
+    doseICS: ".",
+    timesPerDay: "2",
+    maxPuffPerTime: "2"
   },
   {
     id: "18",
@@ -296,29 +312,33 @@ const rule2 = ( patientMedications, masterMedications ) => {
 //console.log( rule2( patientMedications, masterMedications ) );
 
 
-/*const calculateICSDose = ( medication ) => { 
-	let ICSDOSE = 0;
-	return ICSDOSE;
+const calculateICSDose = ( medication ) => { 
+	return medication.doseICS * medication.timesPerDay * medication.maxPuffPerTime
 }
 
 const categorizeICSDose = ( medications ) => {
 	let doseLevel = '';
 	for( i = 0; i < _.size(medications); i++) {
-		if(calculateICSDose(medications[i]) >= medication[i].highFloorICS){
+		console.log(calculateICSDose(medications[i]));
+		if(calculateICSDose(medications[i]) >= medications[i].highFloorICS){
+			console.log( "high" );
 			doseLevel = 'high';
 		}
-		else if(calculateICSDose(medications[i]) >= medication[i].lowCeilICS) {
+		else if(calculateICSDose(medications[i]) >= medications[i].lowCeilICS) {
+			console.log( "low" );
 			doseLevel = 'low';
 		}
-		else if( (calculateICSDose(medications[i]) > medication[i].lowCeilICS) && 
-						 (calculateICSDose(medications[i]) > medication[i].highFloorICS) ){ 
+		else if( (calculateICSDose(medications[i]) > medications[i].lowCeilICS) && 
+						 (calculateICSDose(medications[i]) > medications[i].highFloorICS) ){
+			console.log( "medium" ); 
 			doseLevel = 'medium';
 		}
 	}
 	return doseLevel;
 }
+//console.log( categorizeICSDose( patientMedications ) );
 
-const match = () => {
+/*const match = () => {
 	
 }
 */
@@ -347,19 +367,24 @@ If there exists an original medication that DOES NOT have “name” is “symbi
 }*/
 
 // Rule 8
-/*const rule8 = ( patientMedications, masterMedications ) => {
+const rule8 = ( patientMedications, masterMedications ) => {
+	let result = [];
 	return _.chain( patientMedications )
 						.filter(
 							_.partial( ( medicationElements, patientMedication ) => {
 								if( patientMedication.name === "symbicort" &&
 										patientMedication.function === "controller,reliever" &&
-										function(calculate to see if ICS DOSE if "medium" or "high)) {
+										categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
 										console.log( "recommend addition of new Medication name === singulair");
+										result.push( patientMedication );
+										result.push( _.filter( medicationElements, { name: "singulair" } ) );
 								}
 							}, masterMedications )
 						)
+						.concat( result )
 					.value();
-}*/
+}
+console.log( rule8( patientMedications, masterMedications ) );
 
 // Rule 10
 const rule10 = ( patientMedications, masterMedications ) => {
@@ -368,18 +393,16 @@ const rule10 = ( patientMedications, masterMedications ) => {
 							_.partial( ( medicationElements, patientMedication ) => {
 								if(patientMedication.name === "symbicort" && 
 									 patientMedication.function === "controller,reliever" &&
-									 ((patientMedication.doseICS * patientMedication.timesPerDay * patientMedication.maxPuffPerTime) >= patientMedication.maxGreenICS)) {
+									 ( calculateICSDose( patientMedication ) >= patientMedication.maxGreenICS)) {
 									if(_.find(patientMedications, { chemicalType: "ltra"})) {
 										console.log( "consult a respirologist" );
 									}
-
 								}
-
 							}, masterMedications )
 						)
 				.value();
 }
-console.log( rule10( patientMedications, masterMedications ) );
+//console.log( rule10( patientMedications, masterMedications ) );
 
 const getLabaICSAndICS = ( patientMedications ) => {
 	let result = [];
