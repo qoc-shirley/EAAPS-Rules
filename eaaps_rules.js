@@ -115,9 +115,11 @@ const patientMedications = [{
     chemicalType: "ltra",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: ".",
+    doseICS: "3000",
     timesPerDay: "2",
-    maxPuffPerTime: "2"
+    maxPuffPerTime: "2",
+    name: "symbicort",
+    maxGreenICS: "1000"
   },
   {
     id: "18",
@@ -127,7 +129,7 @@ const patientMedications = [{
     chemicalType: "laba",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "300",
+    doseICS: "3000",
     timesPerDay: "2",
     maxPuffPerTime: "2",
     name: "symbicort",
@@ -366,8 +368,10 @@ Recommend consulting a respirologist
 //**NEED TO CLARIFY: AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”
 const rule6 = ( patientMedications ) => {
 	let result = [];
+	let recommend = "";
 	return _.chain( patientMedications )
 	.filter( ( patientMedication ) => {
+		//console.log(_.some( patientMedications, { chemicalType: "ltra" } ), _.find( patientMedications, { chemicalType: "ltra" } ) );
 			if( patientMedication.name !== "symbicort" && 
 
 					(patientMedication.chemicalType === "laba,ICS" || 
@@ -378,10 +382,13 @@ const rule6 = ( patientMedications ) => {
 				calculateICSDose( _.find( patientMedications,{ chemicalType: "ltra" } ) ) >= 
 				_.find( patientMedications, { chemicalType: "ltra" } ).maxGreenICS ) {
 				console.log("consult a respirologist");
+				result.push("consult a respirologist");
 		}
 	})
+	.concat( result )
 	.value();
 }
+console.log( rule6( patientMedications ) );
 
 // Rule 8
 const rule8 = ( patientMedications, masterMedications ) => {
@@ -404,6 +411,21 @@ const rule8 = ( patientMedications, masterMedications ) => {
 					.value();
 }
 //console.log( rule8( patientMedications, masterMedications ) );
+
+// Rule 9
+/*
+* If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”; 
+* AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is < “maxGreenICS” 
+* AND there also exists an original medication “chemicalType” is “LTRA.” 
+* RECOMMEND this original medication at the highest ICS dose “maxGreenICS” 
+* AND RECOMMEND original “LTRA” 
+* - attempt to match the orgMed[dosePerPuff] 
+* - if not possible to match the orgMed[dosePerPuff], minimize the new medication required [puffsPerTime] 
+*/
+/*const rule9 = ( patientMedications ) => {
+	return _.chain( patientMedications )
+		.
+}*/
 
 // Rule 10
 const rule10 = ( patientMedications, masterMedications ) => {
