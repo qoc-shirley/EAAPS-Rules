@@ -313,7 +313,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 }
 //console.log( rule2( patientMedications, masterMedications ) );
 
-
+/////////////////////////////////////////////////////////////HELPER FUNCTIONS////////////////////////////////////////////////////////
 const calculateICSDose = ( medication ) => { 
 	return medication.doseICS * medication.timesPerDay
 }
@@ -358,7 +358,7 @@ const adjustICSDose = ( medication, level ) => {
 		let counter = 1;
 		let testAdjustment;
 		while( lowMediumICSDose === false ) {
-			 testAdjustment = medication.doseICS * medication.timesPerDay * counter;
+			testAdjustment = medication.doseICS * medication.timesPerDay * counter;
 			if( (testAdjustment > medication.lowCeilICS) && (testAdjustment < medication.highFloorICS) ) {
 				medication.maxPuffPerTime = counter; // should the maxPuffPerTIme be adjusted so the doctor can use it to calculate
 																						 //
@@ -368,7 +368,7 @@ const adjustICSDose = ( medication, level ) => {
 		}
 	}
 }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
@@ -433,6 +433,11 @@ const rule7 = ( patientMedications ) => {
 }
 
 // Rule 8
+/*
+* If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”; 
+* AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is medium or high, 
+* recommend addition of a new medication “name” is “singulair” 
+*/
 const rule8 = ( patientMedications, masterMedications ) => {
 	let result = [];
 	return _.chain( patientMedications )
