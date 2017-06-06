@@ -315,7 +315,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
 
 
 const calculateICSDose = ( medication ) => { 
-	return medication.doseICS * medication.timesPerDay * medication.maxPuffPerTime
+	return medication.doseICS * medication.timesPerDay
 }
 
 const getHighestDose = ( medication ) => {
@@ -333,7 +333,7 @@ const categorizeICSDose = ( medication ) => {
 			console.log( "high" );
 			doseLevel = "high";
 		}
-		else if(calculateICSDose(medication) >= medication.lowCeilICS) {
+		else if(calculateICSDose(medication) <= medication.lowCeilICS) {
 			console.log( "low" );
 			doseLevel = "low";
 		}
@@ -342,15 +342,33 @@ const categorizeICSDose = ( medication ) => {
 			console.log( "medium" ); 
 			doseLevel = "medium";
 		}
+		else if( calculateICSDose(medication) > medication.maxGreenICS) {
+			console.log( "excessive" );
+			doseLevel = "excessive";
+		}
 	//}
 	return doseLevel;
 }
 //console.log( categorizeICSDose( patientMedications ) );
 
-/*const match = () => {
-	
+const adjustICSDose = ( medication, level ) => {
+	if( level === "lowestMedium" ) {
+		const max = medication.maxPuffPerTime;
+		let lowMediumICSDose = false;
+		let counter = 1;
+		let testAdjustment;
+		while( lowMediumICSDose === false ) {
+			 testAdjustment = medication.doseICS * medication.timesPerDay * counter;
+			if( (testAdjustment > medication.lowCeilICS) && (testAdjustment < medication.highFloorICS) ) {
+				medication.maxPuffPerTime = counter; // should the maxPuffPerTIme be adjusted so the doctor can use it to calculate
+																						 //
+				lowMediumICSDose = true;
+			}
+			counter ++;
+		}
+	}
 }
-*/
+
 
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
@@ -403,7 +421,15 @@ const rule6 = ( patientMedications ) => {
 * - if not possible to match the orgMed[doseICS], minimize the new medication required  [puffsPerTime] 
 */
 const rule7 = ( patientMedications ) => {
-
+	let result = [];
+	for(i = 0; i < _.size(patientMedications); i++ ) {
+		if( patientMedications[i].name === "symbicort" && 
+				patientMedications[i].function === "controller,reliever" &&
+				categorizeICSDose( patientMedications[i] ) === "low") {
+				result.push( adjustICSDose( patientMedications[i], "lowestMedium" ) );
+		}
+	}
+	return result;
 }
 
 // Rule 8
