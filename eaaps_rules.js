@@ -370,6 +370,28 @@ const adjustICSDose = ( medication, level ) => {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Rule on page 9 (Rule 4)
+const rule4 = ( patientMedications, masterMedications) => {
+	let result = [];
+  return _.chain( patientMedications )
+    .filter(
+      _.partial( ( medicationElement, patientMedication ) => {
+      	if( patientMedication.chemicalType === "ICS" && 
+      			patientMedication.name !== "symbicort" &&
+      			(calculateICSDose( patientMedication ) === "medium" || calculateICSDose( patientMedication ) === "high") &&
+      			_.some( patientMedications, { chemicalType: "laba" } ) ) {
+      		if( patientMedication.chemicalType === "laba,ICS" ) {
+      			result.push( patientMedication );
+      			result.push( _.filter( medicationElement, { name: "singulair" } ) );
+      		}
+      		else if( patientMedication.chemicalType === "laba" && _.some( patientMedications, { chemicalType: "ICS" } ) ) {
+
+      		}
+      	}
+      }, masterMedications)
+    )
+  .value();
+}
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
 	if( medicationElement.chemicalICS === patientMedication.chemicalICS ) {
