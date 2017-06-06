@@ -318,23 +318,27 @@ const calculateICSDose = ( medication ) => {
 	return medication.doseICS * medication.timesPerDay * medication.maxPuffPerTime
 }
 
-const categorizeICSDose = ( medications ) => {
+const getHighestDose = ( medication ) => {
+	
+}
+
+const categorizeICSDose = ( medication ) => {
 	let doseLevel = '';
-	console.log( "medications: ", medications );
+	console.log( "medication: ", medication );
 	//for( i = 0; i < _.size(medications); i++) {
-		console.log(medications);
-		console.log(calculateICSDose(medications));
-		console.log(medications.highFloorICS);
-		if(calculateICSDose(medications) >= medications.highFloorICS){
+		console.log(medication);
+		console.log(calculateICSDose(medication));
+		console.log(medication.highFloorICS);
+		if(calculateICSDose(medication) >= medication.highFloorICS){
 			console.log( "high" );
 			doseLevel = "high";
 		}
-		else if(calculateICSDose(medications) >= medications.lowCeilICS) {
+		else if(calculateICSDose(medication) >= medication.lowCeilICS) {
 			console.log( "low" );
 			doseLevel = "low";
 		}
-		else if( (calculateICSDose(medications) > medications.lowCeilICS) && 
-						 (calculateICSDose(medications) > medications.highFloorICS) ){
+		else if( (calculateICSDose(medication) > medication.lowCeilICS) && 
+						 (calculateICSDose(medication) < medication.highFloorICS) ){
 			console.log( "medium" ); 
 			doseLevel = "medium";
 		}
@@ -390,6 +394,18 @@ const rule6 = ( patientMedications ) => {
 }
 // console.log( rule6( patientMedications ) );
 
+// Rule 7
+/*
+* If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”; 
+* AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is low, 
+* recommend this original medication at the lowest possible medium ICS dose (puffPerTimes x timesPerDay x dosePerPuff) in a SMART approach 
+* - attempt to match the orgMed[doseICS] 
+* - if not possible to match the orgMed[doseICS], minimize the new medication required  [puffsPerTime] 
+*/
+const rule7 = ( patientMedications ) => {
+
+}
+
 // Rule 8
 const rule8 = ( patientMedications, masterMedications ) => {
 	let result = [];
@@ -422,10 +438,16 @@ const rule8 = ( patientMedications, masterMedications ) => {
 * - if not possible to match the orgMed[doseICS], minimize the new medication required [puffsPerTime] 
 */
 const rule9 = ( patientMedications ) => {
-	return _.chain( patientMedications )
-		.filter( ( patientMedication ) => {
-
-		})
+	let result = [];
+	for( i = 0; i < _.size( patientMedications ); i ++ ){
+		if( patientMedication[i].name === "symbicort" && patientMedication[i].controller === "controller,reliever" &&
+					( calculateICSDose( patientMedication[i] ) < patientMedication[i].maxGreenICS ) &&
+					_.some( patientMedications, { chemicalType: "ltra" } ) ){
+				result.push( _.filter( patientMedications, { chemicalType: "ltra" } ) );
+				result.push( patientMedications[i] );
+			}
+	}
+	return result;
 }
 
 // Rule 10
@@ -435,8 +457,8 @@ const rule10 = ( patientMedications, masterMedications ) => {
 							_.partial( ( medicationElements, patientMedication ) => {
 								if(patientMedication.name === "symbicort" && 
 									 patientMedication.function === "controller,reliever" &&
-									 ( calculateICSDose( patientMedication ) >= patientMedication.maxGreenICS)) {
-									if(_.find(patientMedications, { chemicalType: "ltra"})) {
+									 ( calculateICSDose( patientMedication ) >= patientMedication.maxGreenICS )) {
+									if(_.find(patientMedications, { chemicalType: "ltra" } ) ) {
 										console.log( "consult a respirologist" );
 									}
 								}
@@ -478,9 +500,9 @@ const rule11 = ( patientMedications, masterMedications ) => {
 	if (_.find(filteredPatientMedications, { chemicalType: "ICS" } ) && _.find(filteredPatientMedications, { chemicalType: "laba,ICS" } ) ){
 		newMedication = _.filter( masterMedications, { name: "singulair" } );
 	}
-	/*else {
+	else {
 		filteredPatientMedications = [];
-	}*/
+	}
 	return _.concat( newMedication, filteredPatientMedications )
 }
 //console.log( rule11( patientMedications, masterMedications ) );
