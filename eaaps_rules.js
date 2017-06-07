@@ -316,13 +316,16 @@ const rule2 = ( patientMedications, masterMedications ) => {
 ///////////////////////////////////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////////////////////////
 
 const stringToInteger = ( medications ) => {
-	return _.chain(medications)
-		.map( ( medication ) => {
-			medication.id = _.toInteger(medication.id);
-			medication.id = _.toInteger(medication.id);
-			return medication;
-		})
+	const changeToInteger = ['id', 'din', 'doseLABA', 'doseICS', 'doseOther', 'maxGreenLABA', 'maxGreenICS', 'maxYellowICS', 'lowCeilICS','highFloorICS','maxPuffPerTime'];
+	
+	for( i = 0; i < _.size(changeToInteger); i++ ) {
+		for( j = 0; j < _.size(medications); i++) {
+			medications[j][changeToInteger[i]] = _.toInteger(medications[j][changeToInteger[i]]);
+		}
+	}
+	return medications;
 }
+console.log( stringToInteger([masterMedications[0],masterMedications[1]]) );
 
 const calculateICSDose = ( medication ) => { // Will I have to check if there is a value in the column or can I assume that
 																						 // 	the medication that will be checked will have values?
@@ -390,7 +393,7 @@ const match = ( recommendedMedications, dataCol ) => {
 const minimize = ( recommendedMedications, dataCol ) => {
 	return _.maxBy( recommendedMedications, dataCol );
 }
-console.log( minimize( patientMedications, 'doseICS' ) );
+// console.log( minimize( patientMedications, 'doseICS' ) );
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rule on page 9 (Rule 4)
@@ -503,6 +506,20 @@ const rule8 = ( patientMedications, masterMedications ) => {
 								}
 							}, masterMedications )
 						)
+
+
+// _.chain( patientMedications)
+// .filter( (patientMedication) => {
+// 	if( patientMedication.name === "symbicort" &&
+// 			patientMedication.function === "controller,reliever" &&
+// 			categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
+// 		return true;
+// 	}
+// 	return false;
+// })
+// .concat( _.chain( masterMedications).filter( { name: "singulair" }))
+// .value()
+
 						.concat( result )
 						.flatten()
 					.value();
