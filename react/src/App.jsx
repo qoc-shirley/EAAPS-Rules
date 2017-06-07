@@ -11,7 +11,7 @@ class App extends Component {
           <h2>EAAPs Escalation Rules</h2>
         </div>
         <div className="patientMedicationRow">
-          <button>Delete</button>
+          <button>Delete Medication</button>
           <select>
           </select>
           <label>Enter: </label>
@@ -20,7 +20,7 @@ class App extends Component {
           <input type="textfield" placeholder="Dose ICS"></input>
         </div>
           <p><button>Add Medication</button></p>
-          <p><button>Submit</button></p>
+          <p><button type="submit">Submit</button></p>
       </div>
     );
   }

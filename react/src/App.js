@@ -11,16 +11,21 @@ class App extends Component {
           <h2>EAAPs Escalation Rules</h2>
         </div>
         <div className="patientMedicationRow">
-          <button>Delete</button>
-          <select>
-          </select>
-          <label>Enter: </label>
-          <input type="textfield" placeholder="Puffs Per Time"></input>
-          <input type="textfield" placeholder="Times Per Day"></input>
-          <input type="textfield" placeholder="Dose ICS"></input>
+            <label>Enter Information: </label>
+            <input type="textfield" placeholder="Puffs Per Time"></input>
+            <input type="textfield" placeholder="Times Per Day"></input>
+            <input type="textfield" placeholder="Dose ICS"></input>
+            <select>
+              <option></option>
+              <option>a</option>
+              <option>b</option>
+              <option>c</option>
+            </select>
+         
+          <button>Delete Medication</button>
         </div>
-          <p><button>Add Medication</button></p>
-          <p><button>Submit</button></p>
+        <button>Add Medication</button>
+        <button>Submit</button>
       </div>
     );
   }

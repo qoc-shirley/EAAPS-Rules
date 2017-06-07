@@ -1,7 +1,7 @@
-.App {
+
+.App{
   text-align: center;
 }
-
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -16,6 +16,27 @@
 
 .App-intro {
   font-size: large;
+}
+
+.patientMedicationRow {
+  background-color: #d9dadb;
+  margin: 10px;
+}
+
+.getICS{
+  background-color: #a6a7a8;
+}
+
+button {
+  margin: 10px;
+}
+
+select{
+  margin: 10px;
+  width: 100px;
+}
+input{
+  margin: 5px;
 }
 
 @keyframes App-logo-spin {
