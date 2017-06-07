@@ -372,6 +372,14 @@ const adjustICSDose = ( medication, level ) => {
 		}
 	}
 }
+
+const match = ( recommendedMedication) => {
+
+}
+
+const minimize = ( recommendedMedication ) => {
+	
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rule on page 9 (Rule 4)
@@ -458,7 +466,10 @@ const rule7 = ( patientMedications ) => {
 	}
 	// attempt to match the orgMed[doseICS] -> QUESTION: wouldn't the doseICS be the same? would this then go directly to
 	// "if not possible to match the orgMed[doseICS], minimize the new medicaiton required [puffsPerTime]"
-	return result;
+	if( match( result ) === [] ) {
+		return minimize( result );
+	}
+	return match( result );
 }
 
 // Rule 8
@@ -497,7 +508,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
 * - attempt to match the orgMed[doseICS]
 * - if not possible to match the orgMed[doseICS], minimize the new medication required [puffsPerTime] 
 */
-const rule9 = ( patientMedications ) => {
+/*const rule9 = ( patientMedications ) => {
 	let result = [];
 	for( i = 0; i < _.size( patientMedications ); i++ ){
 		if( patientMedication[i].name === "symbicort" && patientMedication[i].controller === "controller,reliever" &&
@@ -509,7 +520,7 @@ const rule9 = ( patientMedications ) => {
 	}
 	// attempt to match -> SAME QUESTION AS RULE 7
 	return result;
-}
+}*/
 
 // Rule 10
 const rule10 = ( patientMedications, masterMedications ) => {
