@@ -61,7 +61,7 @@ const patientMedications = [{
     chemicalType: "laba,ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "5000",
+    doseICS: "500",
     lowCeilICS: "250",
     highFloorICS: "501",
     timesPerDay: "2",
@@ -89,7 +89,7 @@ const patientMedications = [{
     chemicalType: "ICS",
     chemicalLABA: "salmeterol",
     device: "diskus",
-    doseICS: "100",
+    doseICS: "100000",
     lowCeilICS: "250",
     highFloorICS: "501",
     timesPerDay: "2",
@@ -314,6 +314,16 @@ const rule2 = ( patientMedications, masterMedications ) => {
 //console.log( rule2( patientMedications, masterMedications ) );
 
 ///////////////////////////////////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////////////////////////
+
+const stringToInteger = ( medications ) => {
+	return _.chain(medications)
+		.map( ( medication ) => {
+			medication.id = _.toInteger(medication.id);
+			medication.id = _.toInteger(medication.id);
+			return medication;
+		})
+}
+
 const calculateICSDose = ( medication ) => { // Will I have to check if there is a value in the column or can I assume that
 																						 // 	the medication that will be checked will have values?
 																						 // Does this mean calculateICSDose will be essentially the same as calulating the
@@ -378,22 +388,9 @@ const match = ( recommendedMedications, dataCol ) => {
 }
 
 const minimize = ( recommendedMedications, dataCol ) => {
-	let greaterValue = recommendedMedications[0];
-	for( i = 0; i < _.size( recommendedMedications ) - 1; i++) {
-		if( greaterValue !== [] && (i+1) > (_.size( recommendedMedications ) - 1) ) {
-			return greaterValue;
-		}
-		else {
-			if( greaterValue.doseICS < recommendedMedications[i+1].doseICS ) {
-				greaterValue = recommendedMedications[i+1];
-			}
-			else {
-				greaterValue = recommendedMedications[i];
-			}
-		}
-	}
-	return ;
+	return _.maxBy( recommendedMedications, dataCol );
 }
+console.log( minimize( patientMedications, 'doseICS' ) );
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rule on page 9 (Rule 4)
