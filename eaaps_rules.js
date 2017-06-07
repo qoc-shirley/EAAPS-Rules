@@ -373,12 +373,26 @@ const adjustICSDose = ( medication, level ) => {
 	}
 }
 
-const match = ( recommendedMedication) => {
-
+const match = ( recommendedMedications, dataCol ) => {
+	return [];
 }
 
-const minimize = ( recommendedMedication ) => {
-	
+const minimize = ( recommendedMedications, dataCol ) => {
+	let greaterValue = recommendedMedications[0];
+	for( i = 0; i < _.size( recommendedMedications ) - 1; i++) {
+		if( greaterValue !== [] && (i+1) > (_.size( recommendedMedications ) - 1) ) {
+			return greaterValue;
+		}
+		else {
+			if( greaterValue.doseICS < recommendedMedications[i+1].doseICS ) {
+				greaterValue = recommendedMedications[i+1];
+			}
+			else {
+				greaterValue = recommendedMedications[i];
+			}
+		}
+	}
+	return ;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -466,10 +480,10 @@ const rule7 = ( patientMedications ) => {
 	}
 	// attempt to match the orgMed[doseICS] -> QUESTION: wouldn't the doseICS be the same? would this then go directly to
 	// "if not possible to match the orgMed[doseICS], minimize the new medicaiton required [puffsPerTime]"
-	if( match( result ) === [] ) {
-		return minimize( result );
+	if( match( result, "doseICS" ) === [] ) {
+		return minimize( result, "dose,ICS" );
 	}
-	return match( result );
+	return match( result, "doseICS" );
 }
 
 // Rule 8
