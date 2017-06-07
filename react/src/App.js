@@ -3,6 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  
+  handleAddMedication(){
+  }
+  handleDeleteMedication(){
+  }
+  handleSubmit(){
+  }
+
   render() {
     return (
       <div className="App">
