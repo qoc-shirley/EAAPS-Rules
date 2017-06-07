@@ -313,13 +313,16 @@ const rule2 = ( patientMedications, masterMedications ) => {
 }
 //console.log( rule2( patientMedications, masterMedications ) );
 
-/////////////////////////////////////////////////////////////HELPER FUNCTIONS////////////////////////////////////////////////////////
-const calculateICSDose = ( medication ) => { 
-	return medication.doseICS * medication.timesPerDay
+///////////////////////////////////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////////////////////////
+const calculateICSDose = ( medication ) => { // Will I have to check if there is a value in the column or can I assume that
+																						 // 	the medication that will be checked will have values?
+																						 // Does this mean calculateICSDose will be essentially the same as calulating the
+																						 // 	lowestICSDose?
+	return medication.doseICS * medication.timesPerDay;
 }
 
 const getHighestDose = ( medication ) => {
-	
+	return medication.doseICS * medication.timesPerDay * medication.maxPuffPerTime;
 }
 
 const categorizeICSDose = ( medication ) => {
@@ -357,11 +360,12 @@ const adjustICSDose = ( medication, level ) => {
 		let lowMediumICSDose = false;
 		let counter = 1;
 		let testAdjustment;
-		while( lowMediumICSDose === false ) {
+		while( lowMediumICSDose === false && (counter < lowMediumICSDose) ) {
 			testAdjustment = medication.doseICS * medication.timesPerDay * counter;
 			if( (testAdjustment > medication.lowCeilICS) && (testAdjustment < medication.highFloorICS) ) {
-				medication.maxPuffPerTime = counter; // should the maxPuffPerTIme be adjusted so the doctor can use it to calculate
-																						 //
+				medication.maxPuffPerTime = counter; // Should the maxPuffPerTIme be adjusted so the doctor can use it to calculate?
+																						 // Am I allowed to change the maxPuffPerTime? or will I need to create another
+																						 // 	column for puffPerTime?
 				lowMediumICSDose = true;
 			}
 			counter ++;
@@ -371,7 +375,7 @@ const adjustICSDose = ( medication, level ) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rule on page 9 (Rule 4)
-const rule4 = ( patientMedications, masterMedications) => {
+/*const rule4 = ( patientMedications, masterMedications) => {
 	let result = [];
   return _.chain( patientMedications )
     .filter(
@@ -391,7 +395,7 @@ const rule4 = ( patientMedications, masterMedications) => {
       }, masterMedications)
     )
   .value();
-}
+}*/
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
 	if( medicationElement.chemicalICS === patientMedication.chemicalICS ) {
@@ -409,6 +413,7 @@ const rule4 = ( patientMedications, masterMedications) => {
 * ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), 
 * Recommend consulting a respirologist
 */
+
 // NEED TO CLARIFY: AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”
 const rule6 = ( patientMedications ) => {
 	let result = [];
@@ -451,6 +456,8 @@ const rule7 = ( patientMedications ) => {
 				result.push( adjustICSDose( patientMedications[i], "lowestMedium" ) );
 		}
 	}
+	// attempt to match the orgMed[doseICS] -> QUESTION: wouldn't the doseICS be the same? would this then go directly to
+	// "if not possible to match the orgMed[doseICS], minimize the new medicaiton required [puffsPerTime]"
 	return result;
 }
 
@@ -487,12 +494,12 @@ const rule8 = ( patientMedications, masterMedications ) => {
 * AND there also exists an original medication “chemicalType” is “LTRA.” 
 * RECOMMEND this original medication at the highest ICS dose “maxGreenICS” 
 * AND RECOMMEND original “LTRA” 
-* - attempt to match the orgMed[doseICS] *** Wouldn't the doseICS always be the same so we would not have to attempt to match?
+* - attempt to match the orgMed[doseICS]
 * - if not possible to match the orgMed[doseICS], minimize the new medication required [puffsPerTime] 
 */
 const rule9 = ( patientMedications ) => {
 	let result = [];
-	for( i = 0; i < _.size( patientMedications ); i ++ ){
+	for( i = 0; i < _.size( patientMedications ); i++ ){
 		if( patientMedication[i].name === "symbicort" && patientMedication[i].controller === "controller,reliever" &&
 					( calculateICSDose( patientMedication[i] ) < patientMedication[i].maxGreenICS ) &&
 					_.some( patientMedications, { chemicalType: "ltra" } ) ){
@@ -500,6 +507,7 @@ const rule9 = ( patientMedications ) => {
 				result.push( patientMedications[i] );
 			}
 	}
+	// attempt to match -> SAME QUESTION AS RULE 7
 	return result;
 }
 
@@ -546,7 +554,6 @@ const getLabaICSAndICS = ( patientMedications ) => {
 }
 
 // Rule 11
-// what happens when there is no both "ICS" and "laba,ICS"? empty list?
 const rule11 = ( patientMedications, masterMedications ) => {
 	let newMedication = [];
 	let filteredPatientMedications = getLabaICSAndICS(patientMedications);
