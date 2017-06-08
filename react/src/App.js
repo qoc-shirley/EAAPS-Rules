@@ -25,7 +25,7 @@ class App extends Component {
   handleAddRow( newMedication ) {
     console.log( "addRow" );
     /*
-     var medication = {
+     let medication = {
       puffValue: '',
       timesPerDayValue: '',
       doseICSValue: '',
@@ -39,34 +39,43 @@ class App extends Component {
   handleDeleteRow( medication ) {
     console.log( "deleteMedication" );
     /*
-      var index = this.state.medications.indexOf(medication);
+      let index = this.state.medications.indexOf(medication);
       this.state.products.splice(index, 1);
       this.setState(this.state.medications);
     */
   }
 
-  /*
-  handleProductTable(evt) {
-    var item = {
-      id: evt.target.id,
-      name: evt.target.name,
-      value: evt.target.value
+  
+  handleMedicationList( event ) {
+    let patientMedication = {
+      puffValue: event.target.puffValue,
+      timesPerDayValue: event.target.timesPerDayValue,
+      doseICSValue: event.target.doseICSValue,
+      selectMedication: event.target.selectMedication
     };
-    var medications = this.state.medications;
+    let medications = this.state.patientMedications;
 
-    var newProducts = medications.map(function(product) {
-      for (var key in product) {
-        if (key == item.name && product.id == item.id) {
-          product[key] = item.value;
-
+    let newMedications = medications.map( (medication) => {
+      for ( let key in medication ) {
+        if ( key === patientMedication.puffValue ) {
+          medication[key] = patientMedication.puffValue;
+        }
+        else if( key === patientMedication.timesPerDayValue ) {
+          medication[key] = patientMedication.timesPerDayValue;
+        }
+        else if( key === patientMedication.doseICSValue ) {
+          medication[key] = patientMedication.doseICSValue;
+        }
+        else if( key === patientMedication.selectMedication ) {
+          medication[key] = patientMedication.selectMedication;
         }
       }
-      return product;
+      return medication;
     });
-    this.setState(newProducts);
-    console.log(this.state.medications);
+    this.setState({patientMedications: newMedications});
+    console.log(this.state.patientMedications);
   };
-  */
+  
 
   handlePuffOnChange( event ) {
     console.log( "Puff");
