@@ -111,8 +111,8 @@ class App extends Component {
         </div>
 
         <MedicationList 
-          onDelEvent={this.handleDeleteRow} 
-          onAddEvent={this.handleAddRow} 
+          onDelRow={this.handleDeleteRow} 
+          onAddRow={this.handleAddRow} 
           onSubmit={this.handleSubmit} 
           onSelection={this.handleMedicationSelection}
           puffOnChange={this.handlePuffOnChange}

@@ -3,8 +3,10 @@ import AddRow from './MedicationRow.js';
 import './App.css';
 
 class MedicationList extends Component {
-
 	render() {
+		const onDelEvent = this.props.onDelRow;
+		const onSelection = this.props.onSelection;
+
 		return (
 			<div>
 				<table onSubmit={this.props.handleSubmit} className="patientMedicationRow">
@@ -16,10 +18,10 @@ class MedicationList extends Component {
             </tr>
           </thead>
           <tbody>
-        		<AddRow />
+        		<AddRow onDelEvent={onDelEvent} onSelection={onSelection} />
           </tbody>
         </table>
-        <button onClick={this.props.onAddEvent}>Add Row</button>
+        <button onClick={this.props.onAddRow}>Add Row</button>
         <input type="submit" value="Submit" onClick={this.props.onSubmit} />
 			</div>
 		);
