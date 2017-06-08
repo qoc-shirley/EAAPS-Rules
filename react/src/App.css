@@ -2,6 +2,7 @@
 .App{
   text-align: center;
 }
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -20,7 +21,6 @@
 
 .patientMedicationRow {
   background-color: #d9dadb;
-  margin: 10px;
 }
 
 .getICS{
@@ -33,10 +33,12 @@ button {
 
 select{
   margin: 10px;
-  width: 100px;
+  width: 135px;
 }
-input{
-  margin: 5px;
+
+table{
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 @keyframes App-logo-spin {
