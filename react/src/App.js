@@ -7,11 +7,11 @@ class App extends Component {
   constructor( props ) {
     super( props );
     this.state = {
-      patientMedications: '',
+      patientMedications: [],
       puffValue: '',
       timesPerDayValue: '',
       doseICSValue: '',
-      medications: [],
+      selectMedication: '',
     };
     this.handleDeleteRow = this.handleDeleteRow.bind( this );
     this.handleAddRow = this.handleAddRow.bind( this );
@@ -25,16 +25,14 @@ class App extends Component {
   handleAddRow( newMedication ) {
     console.log( "addRow" );
     /*
-     var id = (+ new Date() + Math.floor(Math.random() * 999999)).toString(36);
      var medication = {
-      id: id,
-      name: "",
-      price: "",
-      category: "",
-      qty: 0
+      puffValue: '',
+      timesPerDayValue: '',
+      doseICSValue: '',
+      selectMedication: '',
     }
-    this.state.products.push(medication);
-    this.setState(this.state.medications);
+    let addMedication = this.state.patientMedications.concat(medication);
+    this.setState({patientMedications: addMedication});
     */
   }
 
@@ -87,11 +85,11 @@ class App extends Component {
 
   handleMedicationSelection( event ){
     console.log( "Selection" );
-    this.setState({patientMedications: event.target.value});
+    this.setState({selectMedication: event.target.value});
   }
 
   handleSubmit( event ) {
-    console.log( this.state.puffValue, " ", this.state.timesPerDayValue ," ", this.state.doseICSValue, " ", this.state.patientMedications);
+    console.log( this.state.puffValue, " ", this.state.timesPerDayValue ," ", this.state.doseICSValue, " ", this.state.selectMedication);
     event.preventDefault();
   }
 
@@ -102,7 +100,19 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>EAAPs Escalation Rules</h2>
         </div>
-        <MedicationList onDelEvent={this.handleDeleteRow} onAddEvent={this.handleAddRow} />
+
+        <MedicationList 
+          onDelEvent={this.handleDeleteRow} 
+          onAddEvent={this.handleAddRow} 
+          onSubmit={this.handleSubmit} 
+          onSelection={this.handleMedicationSelection}
+          puffOnChange={this.handlePuffOnChange}
+          timesOnChange={this.handleTimesOnChange}
+          doseICSOnChange={this.handleDoseICSOnChange}
+          puffValue={this.state.puffValue}
+          timesPerDayValue={this.state.timesPerDayValue}
+          doseICSValue={this.state.doseICSValue}
+        />
       </div>
     );
   }
