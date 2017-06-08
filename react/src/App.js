@@ -105,23 +105,22 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
+          <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>EAAPs Escalation Rules</h2>
-        </div>
-
-        <MedicationList 
-          onDelRow={this.handleDeleteRow} 
-          onAddRow={this.handleAddRow} 
-          onSubmit={this.handleSubmit} 
-          onSelection={this.handleMedicationSelection}
-          puffOnChange={this.handlePuffOnChange}
-          timesOnChange={this.handleTimesOnChange}
-          doseICSOnChange={this.handleDoseICSOnChange}
-          puffValue={this.state.puffValue}
-          timesPerDayValue={this.state.timesPerDayValue}
-          doseICSValue={this.state.doseICSValue}
-        />
+          </div>
+          <MedicationList 
+            onDelRow={this.handleDeleteRow} 
+            onAddRow={this.handleAddRow} 
+            onSubmit={this.handleSubmit} 
+            onSelection={this.handleMedicationSelection}
+            puffOnChange={this.handlePuffOnChange}
+            timesOnChange={this.handleTimesOnChange}
+            doseICSOnChange={this.handleDoseICSOnChange}
+            puffValue={this.state.puffValue}
+            timesPerDayValue={this.state.timesPerDayValue}
+            doseICSValue={this.state.doseICSValue}
+          />
       </div>
     );
   }

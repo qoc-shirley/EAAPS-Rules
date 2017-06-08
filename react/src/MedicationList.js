@@ -8,19 +8,16 @@ class MedicationList extends Component {
 		const onSelection = this.props.onSelection;
 
 		return (
-			<div>
-				<table onSubmit={this.props.handleSubmit} className="patientMedicationRow">
-          <thead>
-            <tr>
-              <td>Puffs Per Time</td>
-              <td>Times Per Day</td>
-              <td>Dose ICS</td>
-            </tr>
-          </thead>
-          <tbody>
-        		<AddRow onDelEvent={onDelEvent} onSelection={onSelection} />
-          </tbody>
-        </table>
+			<div className="childContainer" onSubmit={this.props.handleSubmit}>
+				<div>
+          <ul>
+            <li>Puffs Per Time</li>
+            <li>Times Per Day</li>
+            <li>Dose ICS</li>
+          </ul>
+         </div>
+
+				<AddRow onDelEvent={onDelEvent} onSelection={onSelection} />
         <button onClick={this.props.onAddRow}>Add Row</button>
         <input type="submit" value="Submit" onClick={this.props.onSubmit} />
 			</div>

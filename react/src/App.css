@@ -1,8 +1,16 @@
-
 .App{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   text-align: center;
 }
-
+.childContainter{
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  background-color: #d9dadb;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -19,26 +27,16 @@
   font-size: large;
 }
 
-.patientMedicationRow {
-  background-color: #d9dadb;
-}
-
 .getICS{
   background-color: #a6a7a8;
 }
 
-button {
-  margin: 10px;
-}
-
-select{
-  margin: 10px;
-  width: 135px;
-}
-
-table{
+table {
   width: 100%;
-  margin-bottom: 10px;
+}
+
+ul{
+  list-style-type: none;
 }
 
 @keyframes App-logo-spin {
