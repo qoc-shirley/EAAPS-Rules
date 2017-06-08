@@ -1,16 +1,15 @@
-.App{
+.App {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-between;
   text-align: center;
 }
-.childContainter{
-  display: flex;
-  flex-direction: row;
-  margin: auto;
-  background-color: #d9dadb;
-}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -35,8 +34,13 @@ table {
   width: 100%;
 }
 
-ul{
+ul {
   list-style-type: none;
+}
+
+li {
+  display: inline;
+  margin: 10px;
 }
 
 @keyframes App-logo-spin {
