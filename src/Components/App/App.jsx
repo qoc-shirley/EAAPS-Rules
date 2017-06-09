@@ -108,7 +108,7 @@ class App extends Component {
     return (
       <div className="app">
         <div className="app__header">
-          <img src={logo} className="app__logo" alt="logo" />
+          <img src={logo} className="header__logo" alt="logo" />
           <h2>EAAPs Escalation Rules</h2>
         </div>
         <MedicationList

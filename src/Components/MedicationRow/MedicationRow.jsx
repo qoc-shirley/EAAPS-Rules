@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class MedicationRow extends Component{
 	render() {
 		return (
-			<tr>
+			<div className="app__row">
         <td>
           <input type="textfield" value={this.props.puffValue} onChange={this.props.puffOnChange} />
         </td>
@@ -23,7 +23,7 @@ class MedicationRow extends Component{
         <td>
           <button onClick={this.props.onDelEvent}>Delete Row</button>
         </td>
-      </tr>
+      </div>
 		);
 	}
 }
