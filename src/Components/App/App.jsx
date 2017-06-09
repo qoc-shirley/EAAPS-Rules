@@ -106,9 +106,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <div className="app">
+        <div className="app__header">
+          <img src={logo} className="app__logo" alt="logo" />
           <h2>EAAPs Escalation Rules</h2>
         </div>
         <MedicationList
