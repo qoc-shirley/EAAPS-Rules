@@ -54,19 +54,19 @@ const data = _.filter(json, (item, index) => {
 
 //patient's list of medications
 const patientMedications = [{
-    id: "10",
-    function: "controller",
-    name: "asmanex",
-    type: "ICS",
-    chemicalType: "laba,ICS",
-    chemicalLABA: "salmeterol",
-    device: "diskus",
-    doseICS: "500",
-    lowCeilICS: "250",
-    highFloorICS: "501",
-    timesPerDay: "2",
-    maxPuffPerTime: "2"
-  },
+  id: "10",
+  function: "controller",
+  name: "asmanex",
+  type: "ICS",
+  chemicalType: "laba,ICS",
+  chemicalLABA: "salmeterol",
+  device: "diskus",
+  doseICS: "500",
+  lowCeilICS: "250",
+  highFloorICS: "501",
+  timesPerDay: "2",
+  maxPuffPerTime: "2"
+},
   {
     id: "11",
     function: "controller",
@@ -140,10 +140,10 @@ const patientMedications = [{
 //takes the data array and uses map to get a list of {[id:1, color: blue ...etc]}
 //maps a data value to 
 const masterMedications = _.chain(data)
-  //map data to header element
+//map data to header element
   .map((dataVal) => {
     return _.chain(header)
-      //gets first element of array
+    //gets first element of array
       .head()
       .filter((headerVal) => {
         return headerVal !== ""
@@ -181,428 +181,432 @@ const rule1 = (patientMedications) => {
 }
 
 /*const test = _.chain(masterMedications)
-  .filter((medicationElement) => {
-    if (_.some(["chemicalType", "laba,ICS"])) {
-      //console.log(medicationElement.chemicalType === "saac");
-      return medicationElement.chemicalType === "saac";
-    }
-    return medicationElement.chemicalType === "saba"
-  }).value();*/
+ .filter((medicationElement) => {
+ if (_.some(["chemicalType", "laba,ICS"])) {
+ //console.log(medicationElement.chemicalType === "saac");
+ return medicationElement.chemicalType === "saac";
+ }
+ return medicationElement.chemicalType === "saba"
+ }).value();*/
 //console.log(test);
 //console.log(_.some(masterMedications,{chemicalType:"laba,ICS"}));
 // _.filter(medicationElement, {
-            // 	chemicalType: 'laba,ICS',
-            // 	chemicalLABA: patientMedication.chemicalLABA
-            // })
+// 	chemicalType: 'laba,ICS',
+// 	chemicalLABA: patientMedication.chemicalLABA
+// })
 
-            // _.filter (medicationElement, ( medication ) => {
-            // 	return medication.chemicalType === 'laba,ICS' && medicationElement.chemicalLABA === patientMedication.chemicalLABA;
-            // })
+// _.filter (medicationElement, ( medication ) => {
+// 	return medication.chemicalType === 'laba,ICS' && medicationElement.chemicalLABA === patientMedication.chemicalLABA;
+// })
 
-const getLowestICSDose = ( newMedications ) => {
-	return _.chain( newMedications )
-    .map( ( newMedicationMaxPuffPerTime ) => {
-      if( newMedicationMaxPuffPerTime.maxPuffPerTime ) {
-				newMedicationMaxPuffPerTime.maxPuffPerTime = 
-					newMedicationMaxPuffPerTime.maxPuffPerTime
-	        / newMedicationMaxPuffPerTime.maxPuffPerTime;
-			}
-			return newMedicationMaxPuffPerTime;
+const getLowestICSDose = (newMedications) => {
+  return _.chain(newMedications)
+    .map((newMedicationMaxPuffPerTime) => {
+      if (newMedicationMaxPuffPerTime.maxPuffPerTime) {
+        newMedicationMaxPuffPerTime.maxPuffPerTime =
+          newMedicationMaxPuffPerTime.maxPuffPerTime
+          / newMedicationMaxPuffPerTime.maxPuffPerTime;
+      }
+      return newMedicationMaxPuffPerTime;
     })
-	.value();
+    .value();
 }
 
-const addToRecommendations = ( elements ) => {
-	return _.chain( elements )
-		.reduce( ( recommend, addElement ) => {
-			recommend.push( addElement );
-			return recommend;
-		}, [])
-		.value();
+const addToRecommendations = (elements) => {
+  return _.chain(elements)
+    .reduce((recommend, addElement) => {
+      recommend.push(addElement);
+      return recommend;
+    }, [])
+    .value();
 }
 
 // Rule 2
-const rule2 = ( patientMedications, masterMedications ) => {
-	let result = [];
-  return _.chain( patientMedications )
-    // return to whatever is true to the param inside
+const rule2 = (patientMedications, masterMedications) => {
+  let result = [];
+  return _.chain(patientMedications)
+  // return to whatever is true to the param inside
     .filter(
-      _.partial( ( medicationElement, patientMedication ) => {
+      _.partial((medicationElement, patientMedication) => {
         // 1
-        if( patientMedication.chemicalType !== "ICS" ) {
-          console.log( patientMedication );
+        if (patientMedication.chemicalType !== "ICS") {
+          console.log(patientMedication);
 
-          if ( (patientMedication.chemicalType === "laba") && (_.some( medicationElement, { chemicalType: "laba,ICS" } ) ) ) {
-            console.log( "medication element laba,ICS" );
+          if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}) )) {
+            console.log("medication element laba,ICS");
 
-            if ( !_.isEmpty(
-            				_.filter( medicationElement, { chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA } ) ) ) {
-              console.log( "chemicalLABA" );
+            if (!_.isEmpty(
+                _.filter(medicationElement, {
+                  chemicalType: "laba,ICS",
+                  chemicalLABA: patientMedication.chemicalLABA
+                }))) {
+              console.log("chemicalLABA");
 
-              if ( !_.isEmpty(
-              				 _.filter( medicationElement, {
-              				 					 chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA, 
-              				 					 device: patientMedication.device } ) ) ) {
-            
-                let newMedications = _.filter( medicationElement, {
-                	chemicalType: "laba,ICS", 
-                	chemicalLABA: patientMedication.chemicalLABA, 
-                	device: patientMedication.device
+              if (!_.isEmpty(
+                  _.filter(medicationElement, {
+                    chemicalType: "laba,ICS", chemicalLABA: patientMedication.chemicalLABA,
+                    device: patientMedication.device
+                  }))) {
+
+                let newMedications = _.filter(medicationElement, {
+                  chemicalType: "laba,ICS",
+                  chemicalLABA: patientMedication.chemicalLABA,
+                  device: patientMedication.device
                 });
 
-                const lowestICSDose = getLowestICSDose( newMedications );
-								result.push( addToRecommendations( lowestICSDose ) );
-              } 
-			        else {
-                console.log( "device: recommend new medication at lowest ICS dose in any device available" );
-                let newMedications = _.filter( medicationElement, {
-                	chemicalType: "laba,ICS", 
-                	chemicalLABA: patientMedication.chemicalLABA
-                });
-
-                const lowestICSDose = getLowestICSDose( newMedications );
-								result.push( addToRecommendations( lowestICSDose ) );
+                const lowestICSDose = getLowestICSDose(newMedications);
+                result.push(addToRecommendations(lowestICSDose));
               }
-            } 
-            else {
-              console.log( "chemicalLABA is not the same" );
- 
-              const newMedications = _.chain( medicationElement )
-              	.reduce( ( recommend, medication ) => {
-              		if( medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus" ) {
-              			recommend.push( medication );
-              		}
-              		if( medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2" ) {
-              			recommend.push( medication );
-              		}
-              		if( medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide" ) {
-              			recommend.push( medication );
-              		}
-              		if( medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide" ) {
-              			recommend.push( medication );
-              		}
-   								return recommend;
-              	},[] )
-              	.value();
+              else {
+                console.log("device: recommend new medication at lowest ICS dose in any device available");
+                let newMedications = _.filter(medicationElement, {
+                  chemicalType: "laba,ICS",
+                  chemicalLABA: patientMedication.chemicalLABA
+                });
 
-			    		result.push( addToRecommendations( newMedications ) );
+                const lowestICSDose = getLowestICSDose(newMedications);
+                result.push(addToRecommendations(lowestICSDose));
+              }
             }
-          } 
-          else {
-			  		console.log( "No chemicalType Laba in OrgMeds" );
-			  		const newMedications = 
-			  			["Flovent 125 ug 1 PUFF bid", 
-			  			 "Discus Flovent 100 ug 1 PUFF puff bid", 
-			  			 "Pulmicort 200 ug 1 PUFF bid", 
-			  			 "Asmanex 200 ug I PUFF od", 
-			  			 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
-			  			];
+            else {
+              console.log("chemicalLABA is not the same");
 
-			  		result.push( addToRecommendations( newMedications ) );
+              const newMedications = _.chain(medicationElement)
+                .reduce((recommend, medication) => {
+                  if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
+                    recommend.push(medication);
+                  }
+                  if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2") {
+                    recommend.push(medication);
+                  }
+                  if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+                    recommend.push(medication);
+                  }
+                  if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+                    recommend.push(medication);
+                  }
+                  return recommend;
+                }, [])
+                .value();
+
+              result.push(addToRecommendations(newMedications));
+            }
+          }
+          else {
+            console.log("No chemicalType Laba in OrgMeds");
+            const newMedications =
+              ["Flovent 125 ug 1 PUFF bid",
+                "Discus Flovent 100 ug 1 PUFF puff bid",
+                "Pulmicort 200 ug 1 PUFF bid",
+                "Asmanex 200 ug I PUFF od",
+                "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
+              ];
+
+            result.push(addToRecommendations(newMedications));
           }
         }
 
         //2
-        if ( patientMedication.chemicalType === "ltra" ) {
-        	console.log( "ltra" );
-          result.push( patientMedication );
+        if (patientMedication.chemicalType === "ltra") {
+          console.log("ltra");
+          result.push(patientMedication);
         }
-      }, masterMedications ))
-		.concat( result )
+      }, masterMedications))
+    .concat(result)
     .value();
 }
 //console.log( rule2( patientMedications, masterMedications ) );
 
 ///////////////////////////////////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////////////////////////
 
-const stringToInteger = ( medications ) => {
-	const changeToInteger = ['id', 'din', 'doseLABA', 'doseICS', 'doseOther', 'maxGreenLABA', 'maxGreenICS', 'maxYellowICS', 'lowCeilICS','highFloorICS','maxPuffPerTime'];
-	
-	for( i = 0; i < _.size(changeToInteger); i++ ) {
-		for( j = 0; j < _.size(medications); i++) {
-			medications[j][changeToInteger[i]] = _.toInteger(medications[j][changeToInteger[i]]);
-		}
-	}
-	return medications;
-}
-console.log( stringToInteger([masterMedications[0],masterMedications[1]]) );
+const stringToInteger = (medications) => {
+  const changeToInteger = ['id', 'din', 'doseLABA', 'doseICS', 'doseOther', 'maxGreenLABA', 'maxGreenICS', 'maxYellowICS', 'lowCeilICS', 'highFloorICS', 'maxPuffPerTime'];
 
-const calculateICSDose = ( medication ) => { // Will I have to check if there is a value in the column or can I assume that
-																						 // 	the medication that will be checked will have values?
-																						 // Does this mean calculateICSDose will be essentially the same as calulating the
-																						 // 	lowestICSDose?
-	return medication.doseICS * medication.timesPerDay;
+  for (i = 0; i < _.size(changeToInteger); i++) {
+    for (j = 0; j < _.size(medications); i++) {
+      medications[j][changeToInteger[i]] = _.toInteger(medications[j][changeToInteger[i]]);
+    }
+  }
+  return medications;
 }
+console.log(stringToInteger([masterMedications[0], masterMedications[1]]));
 
-const getHighestDose = ( medication ) => {
-	return medication.doseICS * medication.timesPerDay * medication.maxPuffPerTime;
+const calculateICSDose = (medication) => { // Will I have to check if there is a value in the column or can I assume that
+  // 	the medication that will be checked will have values?
+  // Does this mean calculateICSDose will be essentially the same as calulating the
+  // 	lowestICSDose?
+  return medication.doseICS * medication.timesPerDay;
 }
 
-const categorizeICSDose = ( medication ) => {
-	let doseLevel = '';
-	console.log( "medication: ", medication );
-	//for( i = 0; i < _.size(medications); i++) {
-		console.log(medication);
-		console.log(calculateICSDose(medication));
-		console.log(medication.highFloorICS);
-		if(calculateICSDose(medication) >= medication.highFloorICS){
-			console.log( "high" );
-			doseLevel = "high";
-		}
-		else if(calculateICSDose(medication) <= medication.lowCeilICS) {
-			console.log( "low" );
-			doseLevel = "low";
-		}
-		else if( (calculateICSDose(medication) > medication.lowCeilICS) && 
-						 (calculateICSDose(medication) < medication.highFloorICS) ){
-			console.log( "medium" ); 
-			doseLevel = "medium";
-		}
-		else if( calculateICSDose(medication) > medication.maxGreenICS) {
-			console.log( "excessive" );
-			doseLevel = "excessive";
-		}
-	//}
-	return doseLevel;
+const getHighestDose = (medication) => {
+  return medication.doseICS * medication.timesPerDay * medication.maxPuffPerTime;
+}
+
+const categorizeICSDose = (medication) => {
+  let doseLevel = '';
+  console.log("medication: ", medication);
+  //for( i = 0; i < _.size(medications); i++) {
+  console.log(medication);
+  console.log(calculateICSDose(medication));
+  console.log(medication.highFloorICS);
+  if (calculateICSDose(medication) >= medication.highFloorICS) {
+    console.log("high");
+    doseLevel = "high";
+  }
+  else if (calculateICSDose(medication) <= medication.lowCeilICS) {
+    console.log("low");
+    doseLevel = "low";
+  }
+  else if ((calculateICSDose(medication) > medication.lowCeilICS) &&
+    (calculateICSDose(medication) < medication.highFloorICS)) {
+    console.log("medium");
+    doseLevel = "medium";
+  }
+  else if (calculateICSDose(medication) > medication.maxGreenICS) {
+    console.log("excessive");
+    doseLevel = "excessive";
+  }
+  //}
+  return doseLevel;
 }
 //console.log( categorizeICSDose( patientMedications ) );
 
-const adjustICSDose = ( medication, level ) => {
-	if( level === "lowestMedium" ) {
-		const max = medication.maxPuffPerTime;
-		let lowMediumICSDose = false;
-		let counter = 1;
-		let testAdjustment;
-		while( lowMediumICSDose === false && (counter < lowMediumICSDose) ) {
-			testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-			if( (testAdjustment > medication.lowCeilICS) && (testAdjustment < medication.highFloorICS) ) {
-				medication.maxPuffPerTime = counter; // Should the maxPuffPerTIme be adjusted so the doctor can use it to calculate?
-																						 // Am I allowed to change the maxPuffPerTime? or will I need to create another
-																						 // 	column for puffPerTime?
-				lowMediumICSDose = true;
-			}
-			counter ++;
-		}
-	}
+const adjustICSDose = (medication, level) => {
+  if (level === "lowestMedium") {
+    const max = medication.maxPuffPerTime;
+    let lowMediumICSDose = false;
+    let counter = 1;
+    let testAdjustment;
+    while (lowMediumICSDose === false && (counter < lowMediumICSDose)) {
+      testAdjustment = medication.doseICS * medication.timesPerDay * counter;
+      if ((testAdjustment > medication.lowCeilICS) && (testAdjustment < medication.highFloorICS)) {
+        medication.maxPuffPerTime = counter; // Should the maxPuffPerTIme be adjusted so the doctor can use it to calculate?
+                                             // Am I allowed to change the maxPuffPerTime? or will I need to create another
+                                             // 	column for puffPerTime?
+        lowMediumICSDose = true;
+      }
+      counter++;
+    }
+  }
 }
 
-const match = ( recommendedMedications, dataCol ) => {
-	return [];
+const match = (recommendedMedications, dataCol) => {
+  return [];
 }
 
-const minimize = ( recommendedMedications, dataCol ) => {
-	return _.maxBy( recommendedMedications, dataCol );
+const minimize = (recommendedMedications, dataCol) => {
+  return _.maxBy(recommendedMedications, dataCol);
 }
 // console.log( minimize( patientMedications, 'doseICS' ) );
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Rule on page 9 (Rule 4)
 /*const rule4 = ( patientMedications, masterMedications) => {
-	let result = [];
-  return _.chain( patientMedications )
-    .filter(
-      _.partial( ( medicationElement, patientMedication ) => {
-      	if( patientMedication.chemicalType === "ICS" && 
-      			patientMedication.name !== "symbicort" &&
-      			(calculateICSDose( patientMedication ) === "medium" || calculateICSDose( patientMedication ) === "high") &&
-      			_.some( patientMedications, { chemicalType: "laba" } ) ) {
-      		if( patientMedication.chemicalType === "laba,ICS" ) {
-      			result.push( patientMedication );
-      			result.push( _.filter( medicationElement, { name: "singulair" } ) );
-      		}
-      		else if( patientMedication.chemicalType === "laba" && _.some( patientMedications, { chemicalType: "ICS" } ) ) {
+ let result = [];
+ return _.chain( patientMedications )
+ .filter(
+ _.partial( ( medicationElement, patientMedication ) => {
+ if( patientMedication.chemicalType === "ICS" &&
+ patientMedication.name !== "symbicort" &&
+ (calculateICSDose( patientMedication ) === "medium" || calculateICSDose( patientMedication ) === "high") &&
+ _.some( patientMedications, { chemicalType: "laba" } ) ) {
+ if( patientMedication.chemicalType === "laba,ICS" ) {
+ result.push( patientMedication );
+ result.push( _.filter( medicationElement, { name: "singulair" } ) );
+ }
+ else if( patientMedication.chemicalType === "laba" && _.some( patientMedications, { chemicalType: "ICS" } ) ) {
 
-      		}
-      	}
-      }, masterMedications)
-    )
-  .value();
-}*/
+ }
+ }
+ }, masterMedications)
+ )
+ .value();
+ }*/
 // Rule of pg 4
 /*if (patientMedication.chemicalType === "ICS" && medicationElement.chemicalType === "laba,ICS") {
-	if( medicationElement.chemicalICS === patientMedication.chemicalICS ) {
-		if( calculateICSDose() === calculateICSDose() ) { // check if the ICS DOSE(puffperTimes x timesPerDay x dosePerStuff) of Org and New
-			function()
-		}
-	}
-}*/
+ if( medicationElement.chemicalICS === patientMedication.chemicalICS ) {
+ if( calculateICSDose() === calculateICSDose() ) { // check if the ICS DOSE(puffperTimes x timesPerDay x dosePerStuff) of Org and New
+ function()
+ }
+ }
+ }*/
 
 //Rule 6
 /*
-* If there exists an original medication that DOES NOT have “name” is “symbicort” AND 
-* has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND 
-* there also exists an original medication “chemicalType” is “LTRA” AND 
-* ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS), 
-* Recommend consulting a respirologist
-*/
+ * If there exists an original medication that DOES NOT have “name” is “symbicort” AND
+ * has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”  AND
+ * there also exists an original medication “chemicalType” is “LTRA” AND
+ * ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) >=  max ICS (column maxGreenICS),
+ * Recommend consulting a respirologist
+ */
 
 // NEED TO CLARIFY: AND has the following: “chemicalType” is “LABA, ICS”; OR “chemicalType” is “LABA” AND “chemicalType” is “ICS”
-const rule6 = ( patientMedications ) => {
-	let result = [];
-	let recommend = "";
-	return _.chain( patientMedications )
-	.filter( ( patientMedication ) => {
-			if( patientMedication.name !== "symbicort" && 
+const rule6 = (patientMedications) => {
+  let result = [];
+  let recommend = "";
+  return _.chain(patientMedications)
+    .filter((patientMedication) => {
+      if (patientMedication.name !== "symbicort" &&
 
-					(patientMedication.chemicalType === "laba,ICS" || 
-					patientMedication.chemicalType === "ICS" || 
-					patientMedication.chemicalType === "laba" ) &&
+        (patientMedication.chemicalType === "laba,ICS" ||
+        patientMedication.chemicalType === "ICS" ||
+        patientMedication.chemicalType === "laba" ) &&
 
-				_.some( patientMedications, { chemicalType: "ltra" } ) &&
-				calculateICSDose( _.find( patientMedications,{ chemicalType: "ltra" } ) ) >= 
-				_.find( patientMedications, { chemicalType: "ltra" } ).maxGreenICS ) {
+        _.some(patientMedications, {chemicalType: "ltra"}) &&
+        calculateICSDose(_.find(patientMedications, {chemicalType: "ltra"})) >=
+        _.find(patientMedications, {chemicalType: "ltra"}).maxGreenICS) {
 
-				console.log("consult a respirologist");
-				result.push("consult a respirologist");
-		}
-	})
-	.concat( result )
-	.value();
+        console.log("consult a respirologist");
+        result.push("consult a respirologist");
+      }
+    })
+    .concat(result)
+    .value();
 }
 // console.log( rule6( patientMedications ) );
 
 // Rule 7
 /*
-* If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”; 
-* AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is low, 
-* recommend this original medication at the lowest possible medium ICS dose (puffPerTimes x timesPerDay x dosePerPuff) in a SMART approach 
-* - attempt to match the orgMed[doseICS] 
-* - if not possible to match the orgMed[doseICS], minimize the new medication required  [puffsPerTime] 
-*/
-const rule7 = ( patientMedications ) => {
-	let result = [];
-	for(i = 0; i < _.size(patientMedications); i++ ) {
-		if( patientMedications[i].name === "symbicort" && 
-				patientMedications[i].function === "controller,reliever" &&
-				categorizeICSDose( patientMedications[i] ) === "low") {
-				result.push( adjustICSDose( patientMedications[i], "lowestMedium" ) );
-		}
-	}
-	// attempt to match the orgMed[doseICS] -> QUESTION: wouldn't the doseICS be the same? would this then go directly to
-	// "if not possible to match the orgMed[doseICS], minimize the new medicaiton required [puffsPerTime]"
-	if( match( result, "doseICS" ) === [] ) {
-		return minimize( result, "dose,ICS" );
-	}
-	return match( result, "doseICS" );
+ * If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”;
+ * AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is low,
+ * recommend this original medication at the lowest possible medium ICS dose (puffPerTimes x timesPerDay x dosePerPuff) in a SMART approach
+ * - attempt to match the orgMed[doseICS]
+ * - if not possible to match the orgMed[doseICS], minimize the new medication required  [puffsPerTime]
+ */
+const rule7 = (patientMedications) => {
+  let result = [];
+  for (i = 0; i < _.size(patientMedications); i++) {
+    if (patientMedications[i].name === "symbicort" &&
+      patientMedications[i].function === "controller,reliever" &&
+      categorizeICSDose(patientMedications[i]) === "low") {
+      result.push(adjustICSDose(patientMedications[i], "lowestMedium"));
+    }
+  }
+  // attempt to match the orgMed[doseICS] -> QUESTION: wouldn't the doseICS be the same? would this then go directly to
+  // "if not possible to match the orgMed[doseICS], minimize the new medicaiton required [puffsPerTime]"
+  if (match(result, "doseICS") === []) {
+    return minimize(result, "dose,ICS");
+  }
+  return match(result, "doseICS");
 }
 
 // Rule 8
 /*
-* If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”; 
-* AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is medium or high, 
-* recommend addition of a new medication “name” is “singulair” 
-*/
-const rule8 = ( patientMedications, masterMedications ) => {
-	let result = [];
-	return _.chain( patientMedications )
-						.filter(
-							_.partial( ( medicationElements, patientMedication ) => {
-								if( patientMedication.name === "symbicort" &&
-										patientMedication.function === "controller,reliever" &&
-										categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
-										console.log( "recommend addition of new Medication name === singulair");
-										result.push( patientMedication );
-										result.push( _.filter( medicationElements, { name: "singulair" } ) );
-								}
-							}, masterMedications )
-						)
+ * If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”;
+ * AND ICS DOSE (puffPerTimes x timesPerDay x dosePerPuff) is medium or high,
+ * recommend addition of a new medication “name” is “singulair”
+ */
+const rule8 = (patientMedications, masterMedications) => {
+  let result = [];
+  return _.chain(patientMedications)
+    .filter(
+      _.partial((medicationElements, patientMedication) => {
+        if (patientMedication.name === "symbicort" &&
+          patientMedication.function === "controller,reliever" &&
+          categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high") {
+          console.log("recommend addition of new Medication name === singulair");
+          result.push(patientMedication);
+          result.push(_.filter(medicationElements, {name: "singulair"}));
+        }
+      }, masterMedications)
+    )
 
 
-// _.chain( patientMedications)
-// .filter( (patientMedication) => {
-// 	if( patientMedication.name === "symbicort" &&
-// 			patientMedication.function === "controller,reliever" &&
-// 			categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
-// 		return true;
-// 	}
-// 	return false;
-// })
-// .concat( _.chain( masterMedications).filter( { name: "singulair" }))
-// .value()
+    // _.chain( patientMedications)
+    // .filter( (patientMedication) => {
+    // 	if( patientMedication.name === "symbicort" &&
+    // 			patientMedication.function === "controller,reliever" &&
+    // 			categorizeICSDose( patientMedication ) === "medium" || categorizeICSDose( patientMedication ) === "high") {
+    // 		return true;
+    // 	}
+    // 	return false;
+    // })
+    // .concat( _.chain( masterMedications).filter( { name: "singulair" }))
+    // .value()
 
-						.concat( result )
-						.flatten()
-					.value();
+    .concat(result)
+    .flatten()
+    .value();
 }
 //console.log( rule8( patientMedications, masterMedications ) );
 
 // Rule 9
 /*
-* If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”; 
-* AND ICS DOSE (puffPerTimes x timesPerDay x doseICS) is < “maxGreenICS” 
-* AND there also exists an original medication “chemicalType” is “LTRA.” 
-* RECOMMEND this original medication at the highest ICS dose “maxGreenICS” 
-* AND RECOMMEND original “LTRA” 
-* - attempt to match the orgMed[doseICS]
-* - if not possible to match the orgMed[doseICS], minimize the new medication required [puffsPerTime] 
-*/
+ * If there exists an original medication with the “name” is “Symbicort” and this medication is listed in both “controllers” and “relievers”;
+ * AND ICS DOSE (puffPerTimes x timesPerDay x doseICS) is < “maxGreenICS”
+ * AND there also exists an original medication “chemicalType” is “LTRA.”
+ * RECOMMEND this original medication at the highest ICS dose “maxGreenICS”
+ * AND RECOMMEND original “LTRA”
+ * - attempt to match the orgMed[doseICS]
+ * - if not possible to match the orgMed[doseICS], minimize the new medication required [puffsPerTime]
+ */
 /*const rule9 = ( patientMedications ) => {
-	let result = [];
-	for( i = 0; i < _.size( patientMedications ); i++ ){
-		if( patientMedication[i].name === "symbicort" && patientMedication[i].controller === "controller,reliever" &&
-					( calculateICSDose( patientMedication[i] ) < patientMedication[i].maxGreenICS ) &&
-					_.some( patientMedications, { chemicalType: "ltra" } ) ){
-				result.push( _.filter( patientMedications, { chemicalType: "ltra" } ) );
-				result.push( patientMedications[i] );
-			}
-	}
-	// attempt to match -> SAME QUESTION AS RULE 7
-	return result;
-}*/
+ let result = [];
+ for( i = 0; i < _.size( patientMedications ); i++ ){
+ if( patientMedication[i].name === "symbicort" && patientMedication[i].controller === "controller,reliever" &&
+ ( calculateICSDose( patientMedication[i] ) < patientMedication[i].maxGreenICS ) &&
+ _.some( patientMedications, { chemicalType: "ltra" } ) ){
+ result.push( _.filter( patientMedications, { chemicalType: "ltra" } ) );
+ result.push( patientMedications[i] );
+ }
+ }
+ // attempt to match -> SAME QUESTION AS RULE 7
+ return result;
+ }*/
 
 // Rule 10
-const rule10 = ( patientMedications, masterMedications ) => {
-	return _.chain( patientMedications )
-						.filter(
-							_.partial( ( medicationElements, patientMedication ) => {
-								if(patientMedication.name === "symbicort" && 
-									 patientMedication.function === "controller,reliever" &&
-									 ( calculateICSDose( patientMedication ) >= patientMedication.maxGreenICS )) {
-									if(_.find(patientMedications, { chemicalType: "ltra" } ) ) {
-										console.log( "consult a respirologist" );
-									}
-								}
-							}, masterMedications )
-						)
-				.value();
+const rule10 = (patientMedications, masterMedications) => {
+  return _.chain(patientMedications)
+    .filter(
+      _.partial((medicationElements, patientMedication) => {
+        if (patientMedication.name === "symbicort" &&
+          patientMedication.function === "controller,reliever" &&
+          ( calculateICSDose(patientMedication) >= patientMedication.maxGreenICS )) {
+          if (_.find(patientMedications, {chemicalType: "ltra"})) {
+            console.log("consult a respirologist");
+          }
+        }
+      }, masterMedications)
+    )
+    .value();
 }
 //console.log( rule10( patientMedications, masterMedications ) );
 
-const getLabaICSAndICS = ( patientMedications ) => {
-	let result = [];
-	let labaICS = false;
-	let ICS = false;
-	return _.chain( patientMedications )
-				.filter(
-						_.partial( ( medicationElements, patientMedication ) => {
-					if( patientMedication.chemicalType === "ICS" ) {
-						console.log( "ICS" );
-						ICS = true;
-						console.log(ICS);
-						result.push( patientMedication );
-					}
-					else if( patientMedication.chemicalType === "laba,ICS" ) {
-						console.log( "laba,ICS" );
-						labaICS = true;
-						result.push( patientMedication );
-					}
-				}, masterMedications ))
-				.concat( result )
-				.flatten()
-				.value();
+const getLabaICSAndICS = (patientMedications) => {
+  let result = [];
+  let labaICS = false;
+  let ICS = false;
+  return _.chain(patientMedications)
+    .filter(
+      _.partial((medicationElements, patientMedication) => {
+        if (patientMedication.chemicalType === "ICS") {
+          console.log("ICS");
+          ICS = true;
+          console.log(ICS);
+          result.push(patientMedication);
+        }
+        else if (patientMedication.chemicalType === "laba,ICS") {
+          console.log("laba,ICS");
+          labaICS = true;
+          result.push(patientMedication);
+        }
+      }, masterMedications))
+    .concat(result)
+    .flatten()
+    .value();
 }
 
 // Rule 11
-const rule11 = ( patientMedications, masterMedications ) => {
-	let newMedication = [];
-	let filteredPatientMedications = getLabaICSAndICS(patientMedications);
-	if (_.find(filteredPatientMedications, { chemicalType: "ICS" } ) && _.find(filteredPatientMedications, { chemicalType: "laba,ICS" } ) ){
-		newMedication = _.filter( masterMedications, { name: "singulair" } );
-	}
-	else {
-		filteredPatientMedications = [];
-	}
-	return _.concat( newMedication, filteredPatientMedications )
+const rule11 = (patientMedications, masterMedications) => {
+  let newMedication = [];
+  let filteredPatientMedications = getLabaICSAndICS(patientMedications);
+  if (_.find(filteredPatientMedications, {chemicalType: "ICS"}) && _.find(filteredPatientMedications, {chemicalType: "laba,ICS"})) {
+    newMedication = _.filter(masterMedications, {name: "singulair"});
+  }
+  else {
+    filteredPatientMedications = [];
+  }
+  return _.concat(newMedication, filteredPatientMedications)
 }
 //console.log( rule11( patientMedications, masterMedications ) );
 debugger
