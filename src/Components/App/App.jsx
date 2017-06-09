@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MedicationList from '../MedicationList.jsx';
+import MedicationList from '../MedicationList/MedicationList.jsx';
 import logo from './svg/logo.svg';
 import './App.css';
 
@@ -110,19 +110,19 @@ class App extends Component {
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>EAAPs Escalation Rules</h2>
-          </div>
-          <MedicationList
-            onDelRow={ this.handleDeleteRow }
-            onAddRow={ this.handleAddRow }
-            onSubmit={ this.handleSubmit }
-            onSelection={ this.handleMedicationSelection }
-            puffOnChange={ this.handlePuffOnChange }
-            timesOnChange={ this.handleTimesOnChange }
-            doseICSOnChange={ this.handleDoseICSOnChange }
-            puffValue={ this.state.puffValue }
-            timesPerDayValue={ this.state.timesPerDayValue }
-            doseICSValue={ this.state.doseICSValue }
-          />
+        </div>
+        <MedicationList
+          onDelRow={ this.handleDeleteRow }
+          onAddRow={ this.handleAddRow }
+          onSubmit={ this.handleSubmit }
+          onSelection={ this.handleMedicationSelection }
+          puffOnChange={ this.handlePuffOnChange }
+          timesOnChange={ this.handleTimesOnChange }
+          doseICSOnChange={ this.handleDoseICSOnChange }
+          puffValue={ this.state.puffValue }
+          timesPerDayValue={ this.state.timesPerDayValue }
+          doseICSValue={ this.state.doseICSValue }
+        />
       </div>
     );
   }
