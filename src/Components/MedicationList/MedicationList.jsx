@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AddRow from '../MedicationRow/MedicationRow.jsx';
-import './App.css';
+
 
 class MedicationList extends Component {
 	render() {
