@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   handleAddRow( newMedication ) {
-    console.log( "addRow", newMedication );
+    console.log( "addRow: ", newMedication );
 
     /*
      let medication = {
@@ -38,7 +38,7 @@ class App extends Component {
   }
 
   handleDeleteRow( medication ) {
-    console.log( "deleteMedication", medication );
+    console.log( "deleteMedication: ", medication );
 
     /*
       let index = this.state.medications.indexOf(medication);
