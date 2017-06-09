@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import MedicationList from './MedicationList.js';
-import logo from './logo.svg';
+import MedicationList from '../MedicationList.jsx';
+import logo from './svg/logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -23,7 +23,8 @@ class App extends Component {
   }
 
   handleAddRow( newMedication ) {
-    console.log( "addRow" );
+    console.log( "addRow", newMedication );
+
     /*
      let medication = {
       puffValue: '',
@@ -37,7 +38,8 @@ class App extends Component {
   }
 
   handleDeleteRow( medication ) {
-    console.log( "deleteMedication" );
+    console.log( "deleteMedication", medication );
+
     /*
       let index = this.state.medications.indexOf(medication);
       this.state.products.splice(index, 1);
@@ -46,7 +48,7 @@ class App extends Component {
   }
 
   
-  handleMedicationList( event ) {
+  /*handleMedicationList( event ) {
     let patientMedication = {
       puffValue: event.target.puffValue,
       timesPerDayValue: event.target.timesPerDayValue,
@@ -74,31 +76,31 @@ class App extends Component {
     });
     this.setState({patientMedications: newMedications});
     console.log(this.state.patientMedications);
-  };
+  };*/
   
 
   handlePuffOnChange( event ) {
-    console.log( "Puff");
-    this.setState({puffValue: event.target.value});
+    console.log( "Puff" );
+    this.setState({ puffValue: event.target.value });
   }
 
   handleTimesOnChange( event ) {
-    console.log( "Times");
-    this.setState({timesPerDayValue: event.target.value});
+    console.log( "Times" );
+    this.setState({ timesPerDayValue: event.target.value });
   }
 
   handleDoseICSOnChange( event ) {
     console.log( "doseICS" );
-    this.setState({doseICSValue: event.target.value});
+    this.setState({ doseICSValue: event.target.value });
   }
 
-  handleMedicationSelection( event ){
+  handleMedicationSelection( event ) {
     console.log( "Selection" );
-    this.setState({selectMedication: event.target.value});
+    this.setState({ selectMedication: event.target.value });
   }
 
   handleSubmit( event ) {
-    console.log( this.state.puffValue, " ", this.state.timesPerDayValue ," ", this.state.doseICSValue, " ", this.state.selectMedication);
+    console.log( this.state.puffValue, " ", this.state.timesPerDayValue ," ", this.state.doseICSValue, " ", this.state.selectMedication );
     event.preventDefault();
   }
 
@@ -110,22 +112,20 @@ class App extends Component {
           <h2>EAAPs Escalation Rules</h2>
           </div>
           <MedicationList 
-            onDelRow={this.handleDeleteRow} 
-            onAddRow={this.handleAddRow} 
-            onSubmit={this.handleSubmit} 
-            onSelection={this.handleMedicationSelection}
-            puffOnChange={this.handlePuffOnChange}
-            timesOnChange={this.handleTimesOnChange}
-            doseICSOnChange={this.handleDoseICSOnChange}
-            puffValue={this.state.puffValue}
-            timesPerDayValue={this.state.timesPerDayValue}
-            doseICSValue={this.state.doseICSValue}
+            onDelRow={ this.handleDeleteRow }
+            onAddRow={ this.handleAddRow }
+            onSubmit={ this.handleSubmit }
+            onSelection={ this.handleMedicationSelection }
+            puffOnChange={ this.handlePuffOnChange }
+            timesOnChange={ this.handleTimesOnChange }
+            doseICSOnChange={ this.handleDoseICSOnChange }
+            puffValue={ this.state.puffValue }
+            timesPerDayValue={ this.state.timesPerDayValue }
+            doseICSValue={ this.state.doseICSValue }
           />
       </div>
     );
   }
 }
-
-
 
 export default App;

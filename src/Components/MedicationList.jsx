@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddRow from './MedicationRow.js';
+import AddRow from './MedicationRow.jsx';
 import './App.css';
 
 class MedicationList extends Component {
