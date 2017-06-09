@@ -1,5 +1,5 @@
 //importing .json file of the medications rules
-var json = [
+const json = [
   ["id", "atc", "din", "href", "colour", "device", "function", "name", "type", "chemicalType", "chemicalLABA", "chemicalICS", "chemicalOther", "doseLABA", "doseICS", "doseOther", "maxGreenLABA", "maxGreenICS", "maxYellowLABA", "maxYellowICS", "lowCeilICS", "highFloorICS", "timesPerDay", "maxPuffPerTime", "dose (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)", "maxGreen (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)", "maxYellow (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)", "trade", "chemical", "appears in questionnaire", ""],
   ["21", "R03AC13", "2230898", "m24e4c9bed24c8c20ce0b560445df2cc0", "blue", "aerolizer", "controller,reliever", "foradil", "laba", "laba", "formoterol", ".", ".", "12", ".", ".", "24", ".", "48", ".", ".", ".", "2", "2", "12", "24", "", "Foradil", "formoterol", "Y", ""],
   ["2", "R03AK06", "2240835", "m6f6c7924b86047e8195d31fc0c481569", "purple", "diskus", "controller", "advair", "combo", "laba,ICS", "salmeterol", "fluticasone", ".", "50", "100", ".", "100", "1000", "100", "2000", "250", "501", "2", "2", "50, 100", "100, 1000", "100, 2000", "Advair", "salmeterol,fluticasone", "Y", ""],
@@ -39,7 +39,7 @@ var json = [
   ["33", "R03AK07", "2245386", "m2326e00d3b6b382cf8b556e5fdf6ae29", "red", "turbuhaler", "controller,reliever", "symbicort", "combo", "laba,ICS", "formoterol", "budesonide", ".", "6", "200", ".", "24", "800", "48", "2400", "400", "801", "2", "4", "6, 200", "24, 800", "48, 2400", "Symbicort", "formoterol, budesonide", "Y", ""],
   ["10", "R03BA07", "2243595", "mcb897f3461a9850d8a1d6e4f059ea4c2", "pink", "twisthaler", "controller", "asmanex", "ICS", "ICS", ".", "mometasone", ".", ".", "200", ".", ".", "800", ".", "800", "399", "801", "1 OR 2", "4", "200", "800", "800", "Asmanex", "mometasone", "Y", ""],
   ["11", "R03BA07", "2243596", "me8cd8c870d0ea88706be758acbdefaaf", "pink", "twisthaler", "controller", "asmanex", "ICS", "ICS", ".", "mometasone", ".", ".", "400", ".", ".", "800", ".", "800", "399", "801", "1 OR 2", "2", "400", "800", "800", "Asmanex", "mometasone", "Y", ""]
-]
+];
 
 //...spread operator
 //var combine = _.zip(...json);
@@ -110,7 +110,6 @@ const patientMedications = [{
   {
     id: "16",
     function: "controller",
-    name: "asmanex",
     type: "combo",
     chemicalType: "ltra",
     chemicalLABA: "salmeterol",
@@ -124,7 +123,6 @@ const patientMedications = [{
   {
     id: "18",
     function: "controller,reliever",
-    name: "asmanex",
     type: "ltra",
     chemicalType: "laba",
     chemicalLABA: "salmeterol",
@@ -178,7 +176,7 @@ const rule1 = (patientMedications) => {
   // 	})
   // 	.value();
 
-}
+};
 
 /*const test = _.chain(masterMedications)
  .filter((medicationElement) => {
@@ -210,7 +208,7 @@ const getLowestICSDose = (newMedications) => {
       return newMedicationMaxPuffPerTime;
     })
     .value();
-}
+};
 
 const addToRecommendations = (elements) => {
   return _.chain(elements)
@@ -219,7 +217,7 @@ const addToRecommendations = (elements) => {
       return recommend;
     }, [])
     .value();
-}
+};
 
 // Rule 2
 const rule2 = (patientMedications, masterMedications) => {
@@ -314,7 +312,7 @@ const rule2 = (patientMedications, masterMedications) => {
       }, masterMedications))
     .concat(result)
     .value();
-}
+};
 //console.log( rule2( patientMedications, masterMedications ) );
 
 ///////////////////////////////////////////////////////////// HELPER FUNCTIONS ////////////////////////////////////////////////////////
@@ -328,7 +326,7 @@ const stringToInteger = (medications) => {
     }
   }
   return medications;
-}
+};
 console.log(stringToInteger([masterMedications[0], masterMedications[1]]));
 
 const calculateICSDose = (medication) => { // Will I have to check if there is a value in the column or can I assume that
@@ -336,11 +334,11 @@ const calculateICSDose = (medication) => { // Will I have to check if there is a
   // Does this mean calculateICSDose will be essentially the same as calulating the
   // 	lowestICSDose?
   return medication.doseICS * medication.timesPerDay;
-}
+};
 
 const getHighestDose = (medication) => {
   return medication.doseICS * medication.timesPerDay * medication.maxPuffPerTime;
-}
+};
 
 const categorizeICSDose = (medication) => {
   let doseLevel = '';
@@ -368,7 +366,7 @@ const categorizeICSDose = (medication) => {
   }
   //}
   return doseLevel;
-}
+};
 //console.log( categorizeICSDose( patientMedications ) );
 
 const adjustICSDose = (medication, level) => {
@@ -388,15 +386,15 @@ const adjustICSDose = (medication, level) => {
       counter++;
     }
   }
-}
+};
 
 const match = (recommendedMedications, dataCol) => {
   return [];
-}
+};
 
 const minimize = (recommendedMedications, dataCol) => {
   return _.maxBy(recommendedMedications, dataCol);
-}
+};
 // console.log( minimize( patientMedications, 'doseICS' ) );
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -462,7 +460,7 @@ const rule6 = (patientMedications) => {
     })
     .concat(result)
     .value();
-}
+};
 // console.log( rule6( patientMedications ) );
 
 // Rule 7
@@ -488,7 +486,7 @@ const rule7 = (patientMedications) => {
     return minimize(result, "dose,ICS");
   }
   return match(result, "doseICS");
-}
+};
 
 // Rule 8
 /*
@@ -527,7 +525,7 @@ const rule8 = (patientMedications, masterMedications) => {
     .concat(result)
     .flatten()
     .value();
-}
+};
 //console.log( rule8( patientMedications, masterMedications ) );
 
 // Rule 9
@@ -569,7 +567,7 @@ const rule10 = (patientMedications, masterMedications) => {
       }, masterMedications)
     )
     .value();
-}
+};
 //console.log( rule10( patientMedications, masterMedications ) );
 
 const getLabaICSAndICS = (patientMedications) => {
@@ -594,7 +592,7 @@ const getLabaICSAndICS = (patientMedications) => {
     .concat(result)
     .flatten()
     .value();
-}
+};
 
 // Rule 11
 const rule11 = (patientMedications, masterMedications) => {
@@ -607,7 +605,7 @@ const rule11 = (patientMedications, masterMedications) => {
     filteredPatientMedications = [];
   }
   return _.concat(newMedication, filteredPatientMedications)
-}
+};
 //console.log( rule11( patientMedications, masterMedications ) );
 debugger
 

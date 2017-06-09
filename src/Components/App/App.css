@@ -1,8 +1,8 @@
 .app {
-  /*display: flex;
+  display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: space-between;*/
+  justify-content: space-between;
   text-align: center;
 }
 

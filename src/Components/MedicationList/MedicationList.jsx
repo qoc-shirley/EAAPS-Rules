@@ -25,8 +25,6 @@ class MedicationList extends Component {
           onChangePuffs={puffOnChange}
           onChangeTimes={timesOnChange}
           onChangeDose={doseICSOnChange} />
-        <button className="body__button--add" onClick={onAddRow}>Add Row</button>
-        <input className="body__button--submit" type="submit" value="Submit" onClick={onSubmit} />
 			</div>
 		);
 	}

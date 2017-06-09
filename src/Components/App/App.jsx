@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   handleAddRow( newMedication ) {
-    console.log( "addRow: ", newMedication );
+    console.log( "addRow" );
 
     /*
      let medication = {
@@ -38,7 +38,7 @@ class App extends Component {
   }
 
   handleDeleteRow( medication ) {
-    console.log( "deleteMedication: ", medication );
+    console.log( "deleteMedication" );
 
     /*
       let index = this.state.medications.indexOf(medication);
@@ -113,7 +113,6 @@ class App extends Component {
         </div>
         <MedicationList
           onDelRow={ this.handleDeleteRow }
-          onAddRow={ this.handleAddRow }
           onSubmit={ this.handleSubmit }
           onSelection={ this.handleMedicationSelection }
           puffOnChange={ this.handlePuffOnChange }
@@ -123,6 +122,8 @@ class App extends Component {
           timesPerDayValue={ this.state.timesPerDayValue }
           doseICSValue={ this.state.doseICSValue }
         />
+        <button className="body__button--add" onClick={this.handleAddRow}>Add Row</button>
+        <input className="body__button--submit" type="submit" value="Submit" onClick={this.handleSubmit} />
       </div>
     );
   }
