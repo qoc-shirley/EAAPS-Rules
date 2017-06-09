@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class MedicationRow extends Component {
 	render() {
     const puffValueOnChange = this.props.onChangePuffs;
-    const timesOnChange = this.props.onChangeTimes.
+    const timesOnChange = this.props.onChangeTimes;
 		return (
 			<div className="body__row">
         <div className="body__textfield--puff">
