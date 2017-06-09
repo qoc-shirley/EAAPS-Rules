@@ -14,7 +14,7 @@ class MedicationList extends Component {
           <li>Times Per Day</li>
           <li>Dose ICS</li>
         </ul>
-		<AddRow onDelEvent={onDelEvent} onSelection={onSelection} />
+				<AddRow onDelEvent={onDelEvent} onSelection={onSelection} />
         <button onClick={this.props.onAddRow}>Add Row</button>
         <input type="submit" value="Submit" onClick={this.props.onSubmit} />
 			</div>
