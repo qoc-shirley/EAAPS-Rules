@@ -104,12 +104,19 @@ class App extends Component {
     event.preventDefault();
   }
 
+  // .header__logo {
+  //   img {
+  //     border: 2px solid #000;
+  //   }
+  // }
+  //
+
   render() {
     return (
       <div className="app">
         <div className="app__header">
-          <img src={logo} className="header__logo" alt="logo" />
-          <h2>EAAPs Escalation Rules</h2>
+
+          <Header />
         </div>
         <MedicationList
           onDelRow={ this.handleDeleteRow }
@@ -130,3 +137,16 @@ class App extends Component {
 }
 
 export default App;
+
+const Header = () => {
+  return (
+    <div className="header">
+      <div className="header__logo">
+        <img src={logo} className="header__logo" alt="logo" />
+      </div>
+      <div className="header__heading">
+        <h2>EAAPs Escalation Rules</h2>
+      </div>
+    </div>
+  );
+};

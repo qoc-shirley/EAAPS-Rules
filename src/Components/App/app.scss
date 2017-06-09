@@ -21,3 +21,52 @@
 
   }
 }
+
+
+.app {
+
+  &__header {
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+  }
+
+  &__body {
+
+  }
+
+  table {
+    width: 100%;
+  }
+
+  ul {
+    list-style-type: none;
+  }
+
+  li {
+    display: inline;
+    margin: 10px;
+  }
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  text-align: center;
+}
+
+
+.header__logo {
+  animation: header__logo--spin infinite 20s linear;
+  height: 80px;
+}
+
+.getICS{
+  background-color: #a6a7a8;
+}
+
+@keyframes header__logo--spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

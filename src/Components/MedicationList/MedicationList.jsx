@@ -10,7 +10,6 @@ class MedicationList extends Component {
     const timesOnChange = this.props.timesOnChange;
     const doseICSOnChange = this.props.doseICSOnChange;
 		const onSubmit = this.props.onSubmit;
-		const onAddRow = this.props.onAddRow;
 
 		return (
 			<div className="app__body" onSubmit={onSubmit}>
