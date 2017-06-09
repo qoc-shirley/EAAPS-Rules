@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MedicationList from '../MedicationList/MedicationList.jsx';
-import logo from './svg/logo.svg';
+import logo from './img/logo.svg';
 import './App.css';
 
 class App extends Component {
