@@ -13,7 +13,7 @@ class MedicationList extends Component {
 
 		return (
 			<div className="app__body" onSubmit={onSubmit}>
-        <ul className="body__header">
+        <ul className="header">
           <li>Puffs Per Time</li>
           <li>Times Per Day</li>
           <li>Dose ICS</li>

@@ -18,7 +18,15 @@
   }
 
   &__body {
-
+    .row {
+      &__textfield {
+        &--puff {  }
+        &--times {  }
+        &--doseICS { }
+      }
+      &__select { }
+      &__button { }
+    }
   }
 }
 

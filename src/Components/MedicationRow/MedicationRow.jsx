@@ -17,33 +17,33 @@ class MedicationRow extends Component {
     const onSelection = this.props.onSelection;
 
     return (
-			<div className="body__row">
+			<div className="row">
         <AddField
-          fieldName="body__textfield--puff"
+          fieldName="row__textfield--puff"
           value={this.props.puffValue}
           onChange={puffValueOnChange}
         />
 
         <AddField
-          fieldName="body__textfield--times"
+          fieldName="row__textfield--times"
           value={this.props.timesPerDayValue}
           onChange={timesOnChange}
         />
 
         <AddField
-          fieldName="body__textfield--doseICS"
+          fieldName="row__body__textfield--doseICS"
           value={this.props.doseICSValue}
           onChange={doseICSOnChange}
         />
 
-        <select className="body__select" value={this.props.patientMedications} onChange={onSelection}>
+        <select className="row__select" value={this.props.patientMedications} onChange={onSelection}>
           <option>-Select Medication-</option>
           <option>ddd</option>
           <option>b</option>
           <option>c</option>
         </select>
 
-        <div className="body__button--delete">
+        <div className="row__button">
           <button onClick={onDelEvent}>Delete Row</button>
         </div>
       </div>
