@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+//import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import MedicationList from '../MedicationList/MedicationList.jsx';
+import * as appActions from '../../redux/actions/app_actions';
 import logo from './img/logo.svg';
 import './App.css';
 
@@ -8,9 +12,9 @@ class App extends Component {
     super( props );
     this.state = {
       patientMedications: [],
-      puffValue: '',
+      /*puffValue: '',
       timesPerDayValue: '',
-      doseICSValue: '',
+      doseICSValue: '',*/
       selectMedication: '',
     };
     this.handleDeleteRow = this.handleDeleteRow.bind( this );
@@ -81,17 +85,21 @@ class App extends Component {
 
   handlePuffOnChange( event ) {
     console.log( "Puff" );
-    this.setState({ puffValue: event.target.value });
+    //this.setState({ puffValue: event.target.value });
+    appActions.getPuffValue( event.target.value );
+    //console.log(this.props.puffValue);
   }
 
   handleTimesOnChange( event ) {
     console.log( "Times" );
-    this.setState({ timesPerDayValue: event.target.value });
+    //this.setState({ timesPerDayValue: event.target.value });
+    appActions.getTimesPerDayValue( event.target.value );
   }
 
   handleDoseICSOnChange( event ) {
     console.log( "doseICS" );
-    this.setState({ doseICSValue: event.target.value });
+    //this.setState({ doseICSValue: event.target.value });
+    appActions.getDoseICSValue( event.target.value );
   }
 
   handleMedicationSelection( event ) {
@@ -100,7 +108,7 @@ class App extends Component {
   }
 
   handleSubmit( event ) {
-    console.log( this.state.puffValue, " ", this.state.timesPerDayValue ," ", this.state.doseICSValue, " ", this.state.selectMedication );
+    console.log( this.props.puffValue, " ", this.props.timesPerDayValue ," ", this.props.doseICSValue, " ", this.state.selectMedication );
     event.preventDefault();
   }
 
@@ -124,9 +132,6 @@ class App extends Component {
           puffOnChange={ this.handlePuffOnChange }
           timesOnChange={ this.handleTimesOnChange }
           doseICSOnChange={ this.handleDoseICSOnChange }
-          puffValue={ this.state.puffValue }
-          timesPerDayValue={ this.state.timesPerDayValue }
-          doseICSValue={ this.state.doseICSValue }
         />
         <button className="body__button--add" onClick={this.handleAddRow}>Add Row</button>
         <input className="body__button--submit" type="submit" value="Submit" onClick={this.handleSubmit} />
@@ -135,7 +140,22 @@ class App extends Component {
   }
 }
 
-export default App;
+/*
+App.PropTypes = {
+
+};
+*/
+
+const mapStateToProps = state => ({
+  app: state.app,
+});
+
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(appActions, dispatch)
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 const Header = () => {
   return (
@@ -149,3 +169,4 @@ const Header = () => {
     </div>
   );
 };
+
