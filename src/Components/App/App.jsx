@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import Header from '../Header/Header';
 import MedicationList from '../MedicationList/MedicationList.jsx';
-import * as appActions from '../../redux/App/actions';
-import * as appReducers from '../../redux/App/reducer';
-import logo from './img/logo.svg';
-import './App.css';
+import './style.css';
 
 class App extends Component {
   constructor( props ) {
@@ -87,7 +83,7 @@ class App extends Component {
   handlePuffOnChange( event ) {
     console.log( "Puff" );
     //this.setState({ puffValue: event.target.value });
-    appActions.getPuffValue( event.target.value );
+    this.props.getPuffValue( event.target.value );
     console.log( event.target.value );
     console.log(this.props.puffValue);
     //console.log(this.props.puffValue);
@@ -96,13 +92,13 @@ class App extends Component {
   handleTimesOnChange( event ) {
     console.log( "Times" );
     //this.setState({ timesPerDayValue: event.target.value });
-    appActions.getTimesPerDayValue( event.target.value );
+    this.props.getTimesPerDayValue( event.target.value );
   }
 
   handleDoseICSOnChange( event ) {
     console.log( "doseICS" );
     //this.setState({ doseICSValue: event.target.value });
-    appActions.getDoseICSValue( event.target.value );
+    this.props.getDoseICSValue( event.target.value );
   }
 
   handleMedicationSelection( event ) {
@@ -143,35 +139,10 @@ class App extends Component {
   }
 }
 
-
 App.PropTypes = {
   puffValue: PropTypes.number,
   timesPerDayValue: PropTypes.number,
   doesICSValue: PropTypes.number,
 };
 
-
-const mapStateToProps = state => ({
-  app: state.app,
-});
-
-
-const mapDispatchToProps = dispatch => (
-  bindActionCreators(appActions, dispatch)
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-const Header = () => {
-  return (
-    <div className="header">
-      <div className="header__logo">
-        <img src={logo} className="header__logo" alt="logo" />
-      </div>
-      <div className="header__heading">
-        <h2>EAAPs Escalation Rules</h2>
-      </div>
-    </div>
-  );
-};
-
+export default App;
