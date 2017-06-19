@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MedicationList from '../MedicationList/MedicationList.jsx';
-import * as appActions from '../../redux/actions/app_actions';
-import * as appReducers from '../../redux/reducer/app_reducer';
+import * as appActions from '../../redux/App/actions';
+import * as appReducers from '../../redux/App/reducer';
 import logo from './img/logo.svg';
 import './App.css';
 

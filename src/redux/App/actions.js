@@ -1,4 +1,4 @@
-import { PUFF_VALUE, TIMES_PER_DAY_VALUE, DOSE_ICS_VALUE } from '../constants/index';
+import { PUFF_VALUE, TIMES_PER_DAY_VALUE, DOSE_ICS_VALUE } from './constants';
 
 
 export const getPuffValue = ( puffValue ) => {
