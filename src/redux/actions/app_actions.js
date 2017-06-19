@@ -2,22 +2,25 @@ import { PUFF_VALUE, TIMES_PER_DAY_VALUE, DOSE_ICS_VALUE } from '../constants/in
 
 
 export const getPuffValue = ( puffValue ) => {
+  console.log(puffValue);
   return {
     type: PUFF_VALUE,
-    payload: { puffValue },
+    data: puffValue,
   };
 };
 
 export const getTimesPerDayValue = ( timesPerDayValue ) => {
+  console.log(timesPerDayValue);
   return {
     type: TIMES_PER_DAY_VALUE,
-    payload: { timesPerDayValue },
+    data: timesPerDayValue,
   };
 };
 
 export const getDoseICSValue = ( doseICSValue ) => {
+  console.log(doseICSValue);
   return {
     type: DOSE_ICS_VALUE,
-    payload: { doseICSValue },
+    data: doseICSValue,
   };
 };

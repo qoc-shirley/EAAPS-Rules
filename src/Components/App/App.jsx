@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-//import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MedicationList from '../MedicationList/MedicationList.jsx';
 import * as appActions from '../../redux/actions/app_actions';
+import * as appReducers from '../../redux/reducer/app_reducer';
 import logo from './img/logo.svg';
 import './App.css';
 
@@ -87,6 +88,8 @@ class App extends Component {
     console.log( "Puff" );
     //this.setState({ puffValue: event.target.value });
     appActions.getPuffValue( event.target.value );
+    console.log( event.target.value );
+    console.log(this.props.puffValue);
     //console.log(this.props.puffValue);
   }
 
@@ -140,20 +143,22 @@ class App extends Component {
   }
 }
 
-/*
-App.PropTypes = {
 
+App.PropTypes = {
+  puffValue: PropTypes.number,
+  timesPerDayValue: PropTypes.number,
+  doesICSValue: PropTypes.number,
 };
-*/
+
 
 const mapStateToProps = state => ({
   app: state.app,
 });
 
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(appActions, dispatch)
-};
+const mapDispatchToProps = dispatch => (
+  bindActionCreators(appActions, dispatch)
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
