@@ -1,5 +1,4 @@
-import React from 'react';
-import connect from 'react-redux';
+import { connect } from 'react-redux';
 import App from '../../Components/App/App';
 import * as actions from '../../redux/App/actions';
 

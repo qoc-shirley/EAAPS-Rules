@@ -12,20 +12,21 @@ export const initialState = {
 
 const reducer = ( state = initialState, action ) => {
   switch(action.type) {
-    case "PUFF_VALUE":
+    case PUFF_VALUE:
       return Object.assign({}, state, {
         puffValue: action.data
     });
 
-    case "TIMES_PER_DAY_VALUE":
+    case TIMES_PER_DAY_VALUE:
     return Object.assign({}, state, {
       timesPerDayValue: action.data
     });
 
-  case "DOSE_ICS_VALUE":
+  case DOSE_ICS_VALUE:
     return Object.assign({}, state, {
       doseICSValue: action.data
     });
+
   default:
     return state;
   }

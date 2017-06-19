@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationList from '../MedicationList/MedicationList.jsx';
-import './style.css';
+import './styles.css';
 
 class App extends Component {
   constructor( props ) {
