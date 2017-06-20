@@ -44,16 +44,6 @@
 
 }
 
-
-.getICS{
-  background-color: #a6a7a8;
-}
-
-table {
-  width: 100%;
-}
-
-
 @keyframes header__logo--spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

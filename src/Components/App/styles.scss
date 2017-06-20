@@ -18,7 +18,28 @@
   }
 
   &__body {
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      display: flex;
+      list-style-type: none;
+      text-align: left;
+      margin-left: 350px;
+
+      li {
+        text-align: left;
+        margin: 0 180px 0 30px;
+      }
+    }
     .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      margin: 0 300px 50px 300px;
+      background-color: #ccc;
+      padding: 20px;
       &__textfield {
         &--puff {  }
         &--times {  }

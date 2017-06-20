@@ -9,9 +9,6 @@ class App extends Component {
     super( props );
     this.state = {
       patientMedications: [],
-      /*puffValue: '',
-      timesPerDayValue: '',
-      doseICSValue: '',*/
       selectMedication: '',
     };
     this.handleDeleteRow = this.handleDeleteRow.bind( this );
@@ -84,9 +81,8 @@ class App extends Component {
     console.log( "Puff" );
     //this.setState({ puffValue: event.target.value });
     this.props.getPuffValue( event.target.value );
-    console.log( event.target.value );
-    console.log(this.props.puffValue);
-    //console.log(this.props.puffValue);
+    console.log( "handle puff event: ", event.target.value );
+    console.log( "puff value props:", this.props.puffValue);
   }
 
   handleTimesOnChange( event ) {
@@ -111,13 +107,6 @@ class App extends Component {
     event.preventDefault();
   }
 
-  // .header__logo {
-  //   img {
-  //     border: 2px solid #000;
-  //   }
-  // }
-  //
-
   render() {
     return (
       <div className="app">
@@ -140,9 +129,9 @@ class App extends Component {
 }
 
 App.PropTypes = {
-  puffValue: PropTypes.number,
-  timesPerDayValue: PropTypes.number,
-  doesICSValue: PropTypes.number,
+  getPuffValue: PropTypes.func.isRequired,
+  getTimesPerDayValue: PropTypes.func.isRequired,
+  getDoseICSValue: PropTypes.func.isRequired,
 };
 
 export default App;
