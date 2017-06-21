@@ -3,7 +3,7 @@ import InputField from '../InputField/InputField.jsx';
 
 const MedicationRow = ( props ) => {
 
-  /*const {
+  const {
     onDelEvent,
     onSelection,
     puffOnChange,
@@ -13,29 +13,29 @@ const MedicationRow = ( props ) => {
     timesPerDayValue,
     doseICSValue,
     patientMedications,
-  } = props;*/
+  } = props;
 
     return (
 			<div className="row">
         <InputField
           fieldName="row__textfield--puff"
-          value={props.puffValue}
-          onChange={props.puffOnChange}
+          value={puffValue}
+          onChange={puffOnChange}
         />
 
         <InputField
           fieldName="row__textfield--times"
-          value={props.timesPerDayValue}
-          onChange={props.timesOnChange}
+          value={timesPerDayValue}
+          onChange={timesOnChange}
         />
 
         <InputField
           fieldName="row__body__textfield--doseICS"
-          value={props.doseICSValue}
-          onChange={props.doseICSOnChange}
+          value={doseICSValue}
+          onChange={doseICSOnChange}
         />
 
-        <select className="row__select" value={props.patientMedications} onChange={props.onSelection}>
+        <select className="row__select" value={patientMedications} onChange={onSelection}>
           <option>-Select Medication-</option>
           <option>ddd</option>
           <option>b</option>
@@ -43,7 +43,7 @@ const MedicationRow = ( props ) => {
         </select>
 
         <div className="row__button">
-          <button onClick={props.onDelEvent}>Delete Row</button>
+          <button onClick={onDelEvent}>Delete Row</button>
         </div>
       </div>
 		);
