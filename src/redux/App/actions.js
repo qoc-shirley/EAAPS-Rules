@@ -24,3 +24,10 @@ export const getDoseICSValue = ( doseICSValue ) => {
     data: doseICSValue,
   };
 };
+
+export const getMedicationSelection = ( medicationSelection ) => {
+  return {
+    type: MEDICATION_SELECTION,
+    data: medicationSelection,
+  }
+};

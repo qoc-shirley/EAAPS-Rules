@@ -8,7 +8,6 @@ class App extends Component {
   constructor( props ) {
     super( props );
     this.state = {
-      patientMedications: [],
       selectMedication: '',
     };
     this.onDeleteRow = this.onDeleteRow.bind( this );
