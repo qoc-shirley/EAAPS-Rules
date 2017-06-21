@@ -1,5 +1,6 @@
 import React from 'react';
 import MedicationRow from '../MedicationRow/MedicationRow.jsx';
+import InputField from '../InputField/InputField.jsx';
 
 const MedicationList = (
   {
@@ -19,6 +20,37 @@ const MedicationList = (
        puffOnChange={puffOnChange}
        timesOnChange={timesOnChange}
        doseICSOnChange={doseICSOnChange}/>
+     {/*
+     <ul className="header">
+        <Row elements={["Puff/Time", "Times/Day", "DoseICS"]} />
+     </ul>
+
+     <ul>
+      <Row elements={
+        {
+          <InputField
+            fieldName="puff"
+            defaultValue={puffValue}
+            onChangeInputField={puffOnChange}
+          />
+        }
+        {
+          <InputField
+            fieldName="times"
+            defaultValue={puffValue}
+            onChangeInputField={puffOnChange}
+          />
+        }
+        {
+          <InputField
+            fieldName="doseICS"
+            defaultValue={puffValue}
+            onChangeInputField={puffOnChange}
+          />
+        }
+      } />
+     </ul>
+     */}
    </div>
  );
 };
