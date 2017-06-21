@@ -1,15 +1,25 @@
 import React from 'react';
-import MedicationRow from '../MedicationRow/MedicationRow.jsx';
+//import MedicationRow from '../MedicationRow/MedicationRow.jsx';
 import InputField from '../InputField/InputField.jsx';
+import Row from '../Row/Row.jsx';
+
 
 const MedicationList = (
   {
-    onDelEvent, onSelection, puffOnChange, timesOnChange, doseICSOnChange, onSubmit
+    puffValue,
+    timesPerDayValue,
+    doseICSValue,
+    onDelEvent,
+    onSelection,
+    puffOnChange,
+    timesOnChange,
+    doseICSOnChange,
+    onSubmit,
   } ) => {
 
  return (
    <div className="app__body" onSubmit={onSubmit}>
-     <ul className="header">
+     {/*<ul className="header">
        <li>Puffs Per Time</li>
        <li>Times Per Day</li>
        <li>Dose ICS</li>
@@ -19,38 +29,34 @@ const MedicationList = (
        onSelection={onSelection}
        puffOnChange={puffOnChange}
        timesOnChange={timesOnChange}
-       doseICSOnChange={doseICSOnChange}/>
-     {/*
+       doseICSOnChange={doseICSOnChange}/>*/}
+
      <div className="row__header">
         <Row elements={["Puff/Time", "Times/Day", "DoseICS"]} />
      </div>
 
      <div className="row__main" >
         <Row elements={
-          {
-            <InputField
-              fieldName="puff"
-              defaultValue={puffValue}
-              onChangeInputField={puffOnChange}
-            />
-          }
-          {
-            <InputField
-              fieldName="times"
-              defaultValue={puffValue}
-              onChangeInputField={puffOnChange}
-            />
-          }
-          {
-            <InputField
-             fieldName="doseICS"
-              defaultValue={puffValue}
-              onChangeInputField={puffOnChange}
-            />
-          }
-        } />
+          <div>
+          <InputField
+            fieldName="puff"
+            defaultValue={puffValue}
+            onChangeInputField={puffOnChange}
+          />
+          <InputField
+          fieldName="times"
+          defaultValue={timesPerDayValue}
+          onChangeInputField={timesOnChange}
+          />
+          <InputField
+          fieldName="doseICS"
+          defaultValue={doseICSValue}
+          onChangeInputField={doseICSOnChange}
+          />
+          </div>
+        }/>
      </div>
-     */}
+
    </div>
  );
 };
