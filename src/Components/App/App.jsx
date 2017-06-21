@@ -14,7 +14,7 @@ class App extends Component {
     this.onDeleteRow = this.onDeleteRow.bind( this );
     this.onAddRow = this.onAddRow.bind( this );
     this.onPuffChange = this.onPuffChange.bind( this );
-    this.handleTimesOnChange = this.handleTimesOnChange.bind( this );
+    this.onTimesChange = this.onTimesChange.bind( this );
     this.handleDoseICSOnChange = this.handleDoseICSOnChange.bind( this );
     this.handleMedicationSelection = this.handleMedicationSelection.bind( this );
     this.onSubmit = this.onSubmit.bind( this );
@@ -36,7 +36,7 @@ class App extends Component {
     //console.log( "puff value props:", this.props.puffValue);
   }
 
-  handleTimesOnChange( event ) {
+  onTimesChange( event ) {
     console.log( "Times" );
     //this.setState({ timesPerDayValue: event.target.value });
     this.props.getTimesPerDayValue( event.target.value );
