@@ -31,7 +31,7 @@ const reducer = ( state = initialState, action ) => {
 
   case MEDICATION_SELECTION:
     return Object.assign({}, state, {
-      doseICSValue: action.data
+      medicationSelection: action.data
   });
 
   default:
