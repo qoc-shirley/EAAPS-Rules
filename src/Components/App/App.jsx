@@ -12,7 +12,7 @@ class App extends Component {
       selectMedication: '',
     };
     this.onDeleteRow = this.onDeleteRow.bind( this );
-    this.handleAddRow = this.handleAddRow.bind( this );
+    this.onAddRow = this.onAddRow.bind( this );
     this.handlePuffOnChange = this.handlePuffOnChange.bind( this );
     this.handleTimesOnChange = this.handleTimesOnChange.bind( this );
     this.handleDoseICSOnChange = this.handleDoseICSOnChange.bind( this );
@@ -20,7 +20,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind( this );
   }
 
-  handleAddRow( newMedication ) {
+  onAddRow( newMedication ) {
     console.log( "addRow" );
   }
 
