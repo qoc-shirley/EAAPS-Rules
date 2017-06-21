@@ -16,7 +16,7 @@ class App extends Component {
     this.onPuffChange = this.onPuffChange.bind( this );
     this.onTimesChange = this.onTimesChange.bind( this );
     this.onDoseICSChange = this.onDoseICSChange.bind( this );
-    this.handleMedicationSelection = this.handleMedicationSelection.bind( this );
+    this.onMedicationSelection = this.onMedicationSelection.bind( this );
     this.onSubmit = this.onSubmit.bind( this );
   }
 
@@ -48,7 +48,7 @@ class App extends Component {
     this.props.getDoseICSValue( event.target.value );
   }
 
-  handleMedicationSelection( event ) {
+  onMedicationSelection( event ) {
     console.log( "Selection" );
     this.setState({ selectMedication: event.target.value });
   }
@@ -67,7 +67,7 @@ class App extends Component {
         <MedicationList
           onDelRow={ this.onDeleteRow }
           onSubmit={ this.onSubmit }
-          onSelection={ this.handleMedicationSelection }
+          onSelection={ this.onMedicationSelection }
           puffOnChange={ this.onPuffChange }
           timesOnChange={ this.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
