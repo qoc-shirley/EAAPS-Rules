@@ -15,7 +15,7 @@ class App extends Component {
     this.onAddRow = this.onAddRow.bind( this );
     this.onPuffChange = this.onPuffChange.bind( this );
     this.onTimesChange = this.onTimesChange.bind( this );
-    this.handleDoseICSOnChange = this.handleDoseICSOnChange.bind( this );
+    this.onDoseICSChange = this.onDoseICSChange.bind( this );
     this.handleMedicationSelection = this.handleMedicationSelection.bind( this );
     this.onSubmit = this.onSubmit.bind( this );
   }
@@ -42,7 +42,7 @@ class App extends Component {
     this.props.getTimesPerDayValue( event.target.value );
   }
 
-  handleDoseICSOnChange( event ) {
+  onDoseICSChange( event ) {
     console.log( "doseICS" );
     //this.setState({ doseICSValue: event.target.value });
     this.props.getDoseICSValue( event.target.value );
@@ -69,8 +69,8 @@ class App extends Component {
           onSubmit={ this.onSubmit }
           onSelection={ this.handleMedicationSelection }
           puffOnChange={ this.onPuffChange }
-          timesOnChange={ this.handleTimesOnChange }
-          doseICSOnChange={ this.handleDoseICSOnChange }
+          timesOnChange={ this.onTimesChange }
+          doseICSOnChange={ this.onDoseICSChange }
         />
         <button className="body__button--add" onClick={this.handleAddRow}>Add Row</button>
         <input className="body__button--submit" type="submit" value="Submit" onClick={this.handleSubmit} />
