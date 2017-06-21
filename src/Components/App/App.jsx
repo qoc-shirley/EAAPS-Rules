@@ -13,7 +13,7 @@ class App extends Component {
     };
     this.onDeleteRow = this.onDeleteRow.bind( this );
     this.onAddRow = this.onAddRow.bind( this );
-    this.handlePuffOnChange = this.handlePuffOnChange.bind( this );
+    this.onPuffChange = this.onPuffChange.bind( this );
     this.handleTimesOnChange = this.handleTimesOnChange.bind( this );
     this.handleDoseICSOnChange = this.handleDoseICSOnChange.bind( this );
     this.handleMedicationSelection = this.handleMedicationSelection.bind( this );
@@ -28,7 +28,7 @@ class App extends Component {
     console.log("deleteMedication");
   }
 
-  handlePuffOnChange( event ) {
+  onPuffChange( event ) {
     console.log( "Puff" );
     //this.setState({ puffValue: event.target.value });
     this.props.getPuffValue( event.target.value );
@@ -68,7 +68,7 @@ class App extends Component {
           onDelRow={ this.onDeleteRow }
           onSubmit={ this.onSubmit }
           onSelection={ this.handleMedicationSelection }
-          puffOnChange={ this.handlePuffOnChange }
+          puffOnChange={ this.onPuffChange }
           timesOnChange={ this.handleTimesOnChange }
           doseICSOnChange={ this.handleDoseICSOnChange }
         />
