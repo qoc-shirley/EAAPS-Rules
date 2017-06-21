@@ -54,7 +54,7 @@ class App extends Component {
   }
 
   onSubmit( event ) {
-    console.log( this.props.medication.puffValue, " ", this.props.medication.timesPerDayValue ," ", this.props.medication.doseICSValue, " ", this.props.mediction.selectMedication );
+    console.log( this.props.medication.puffValue, " ", this.props.medication.timesPerDayValue ," ", this.props.medication.doseICSValue, " ", this.props.medication.medicationSelection );
     event.preventDefault();
   }
 
