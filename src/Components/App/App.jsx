@@ -22,60 +22,11 @@ class App extends Component {
 
   handleAddRow( newMedication ) {
     console.log( "addRow" );
-
-    /*
-     let medication = {
-      puffValue: '',
-      timesPerDayValue: '',
-      doseICSValue: '',
-      selectMedication: '',
-    }
-    let addMedication = this.state.patientMedications.concat(medication);
-    this.setState({patientMedications: addMedication});
-    */
   }
 
   handleDeleteRow( medication ) {
-    console.log( "deleteMedication" );
-
-    /*
-      let index = this.state.medications.indexOf(medication);
-      this.state.products.splice(index, 1);
-      this.setState(this.state.medications);
-    */
+    console.log("deleteMedication");
   }
-
-  
-  /*handleMedicationList( event ) {
-    let patientMedication = {
-      puffValue: event.target.puffValue,
-      timesPerDayValue: event.target.timesPerDayValue,
-      doseICSValue: event.target.doseICSValue,
-      selectMedication: event.target.selectMedication
-    };
-    let medications = this.state.patientMedications;
-
-    let newMedications = medications.map( (medication) => {
-      for ( let key in medication ) {
-        if ( key === patientMedication.puffValue ) {
-          medication[key] = patientMedication.puffValue;
-        }
-        else if( key === patientMedication.timesPerDayValue ) {
-          medication[key] = patientMedication.timesPerDayValue;
-        }
-        else if( key === patientMedication.doseICSValue ) {
-          medication[key] = patientMedication.doseICSValue;
-        }
-        else if( key === patientMedication.selectMedication ) {
-          medication[key] = patientMedication.selectMedication;
-        }
-      }
-      return medication;
-    });
-    this.setState({patientMedications: newMedications});
-    console.log(this.state.patientMedications);
-  };*/
-  
 
   handlePuffOnChange( event ) {
     console.log( "Puff" );
