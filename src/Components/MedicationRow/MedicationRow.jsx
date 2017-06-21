@@ -1,44 +1,41 @@
-import React, { Component } from 'react';
+import React from 'react';
 import InputField from '../InputField/InputField.jsx';
 
-class MedicationRow extends Component {
-	render() {
+const MedicationRow = ( props ) => {
 
-    // const {
-    //  onDelEvent,
-    //   onSelection,
-    //   puffOnChange,
-    //   timesOnChange,
-    //   doseICSOnChange,
-    // } = this.props;
-
-    const puffValueOnChange = this.props.onChangePuffs;
-    const timesOnChange = this.props.onChangeTimes;
-    const doseICSOnChange = this.props.onChangeDose;
-    const onDelEvent = this.props.onDelEvent;
-    const onSelection = this.props.onSelection;
+  /*const {
+    onDelEvent,
+    onSelection,
+    puffOnChange,
+    timesOnChange,
+    doseICSOnChange,
+    puffValue,
+    timesPerDayValue,
+    doseICSValue,
+    patientMedications,
+  } = props;*/
 
     return (
 			<div className="row">
         <InputField
           fieldName="row__textfield--puff"
-          value={this.props.puffValue}
-          onChange={puffValueOnChange}
+          value={props.puffValue}
+          onChange={props.puffOnChange}
         />
 
         <InputField
           fieldName="row__textfield--times"
-          value={this.props.timesPerDayValue}
-          onChange={timesOnChange}
+          value={props.timesPerDayValue}
+          onChange={props.timesOnChange}
         />
 
         <InputField
           fieldName="row__body__textfield--doseICS"
-          value={this.props.doseICSValue}
-          onChange={doseICSOnChange}
+          value={props.doseICSValue}
+          onChange={props.doseICSOnChange}
         />
 
-        <select className="row__select" value={this.props.patientMedications} onChange={onSelection}>
+        <select className="row__select" value={props.patientMedications} onChange={props.onSelection}>
           <option>-Select Medication-</option>
           <option>ddd</option>
           <option>b</option>
@@ -46,11 +43,10 @@ class MedicationRow extends Component {
         </select>
 
         <div className="row__button">
-          <button onClick={onDelEvent}>Delete Row</button>
+          <button onClick={props.onDelEvent}>Delete Row</button>
         </div>
       </div>
 		);
-	}
-}
+};
 
 export default MedicationRow;

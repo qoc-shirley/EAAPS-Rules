@@ -21,9 +21,9 @@ const MedicationList = ( props ) => {
      <MedicationRow
        onDelEvent={onDelEvent}
        onSelection={onSelection}
-       onChangePuffs={puffOnChange}
-       onChangeTimes={timesOnChange}
-       onChangeDose={doseICSOnChange}/>
+       puffOnChange={puffOnChange}
+       timesOnChange={timesOnChange}
+       doseICSOnChange={doseICSOnChange}/>
    </div>
  );
 };
