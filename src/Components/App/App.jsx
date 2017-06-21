@@ -72,8 +72,8 @@ class App extends Component {
           timesOnChange={ this.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
         />
-        <button className="body__button--add" onClick={this.handleAddRow}>Add Row</button>
-        <input className="body__button--submit" type="submit" value="Submit" onClick={this.handleSubmit} />
+        <button className="body__button--add" onClick={this.onAddRow}>Add Row</button>
+        <input className="body__button--submit" type="submit" value="Submit" onClick={this.onSubmit} />
       </div>
     );
   }
