@@ -4,6 +4,7 @@ import {
   DOSE_ICS_VALUE,
   MEDICATION_SELECTION,
   ON_SUBMIT,
+  ON_DELETE_ROW,
 } from './constants';
 
 export const initialState = {
@@ -12,6 +13,7 @@ export const initialState = {
   doseICSValue: '',
   medicationSelection: '',
   onSubmit: '',
+  onDeleteRow: '',
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -35,9 +37,16 @@ const reducer = ( state = initialState, action ) => {
     return Object.assign({}, state, {
       medicationSelection: action.data
   });
+
+  // if this happens print out the list of patient medications
   case ON_SUBMIT:
     return Object.assign({}, state, {
       onSubmit: action.data
+  });
+
+  case ON_DELETE_ROW:
+    return Object.assign({}, state, {
+      onDeleteRow: action.data
   });
 
   default:

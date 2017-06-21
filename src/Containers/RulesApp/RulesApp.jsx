@@ -12,6 +12,7 @@ const mapDispatchToProps = dispatch => ( {
   getDoseICSValue: (value) => dispatch( actions.getDoseICSValue(value) ),
   getMedicationSelection: (value) => dispatch( actions.getMedicationSelection(value) ),
   onSubmit: (e) => dispatch( actions.onSubmit(e.target.value) ),
+  onDeleteRow: (e) => dispatch( actions.onDeleteRow(e.target.value) ),
 } );
 
 const RulesApp = connect(mapStateToProps, mapDispatchToProps)(App);

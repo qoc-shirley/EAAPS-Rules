@@ -13,7 +13,7 @@ class App extends Component {
     this.onTimesChange = this.onTimesChange.bind( this );
     this.onDoseICSChange = this.onDoseICSChange.bind( this );
     this.onMedicationSelection = this.onMedicationSelection.bind( this );
-    this.onSubmit = this.onSubmit.bind( this );
+    //this.onSubmit = this.onSubmit.bind( this );
   }
 
   onAddRow( newMedication ) {
@@ -70,7 +70,7 @@ class App extends Component {
           doseICSOnChange={ this.onDoseICSChange }
         />
         <button className="body__button--add" onClick={this.onAddRow}>Add Row</button>
-        <input className="body__button--submit" type="submit" value="Submit" onClick={this.onSubmit} />
+        <input className="body__button--submit" type="submit" value="Submit" onClick={this.props.onSubmit} />
       </div>
     );
   }

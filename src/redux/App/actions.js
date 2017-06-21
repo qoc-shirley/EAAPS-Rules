@@ -4,6 +4,7 @@ import {
   DOSE_ICS_VALUE,
   MEDICATION_SELECTION,
   ON_SUBMIT,
+  ON_DELETE_ROW,
 } from './constants';
 
 
@@ -45,14 +46,14 @@ export const onSubmit = ( event ) => {
   }
 };
 
-/*export const onDeleteRow = ( event ) => {
+export const onDeleteRow = ( event ) => {
   return {
     type: ON_DELETE_ROW,
     data: event,
   }
 };
 
-export const onAddRow = ( event ) => {
+/*export const onAddRow = ( event ) => {
   return {
     type: ON_ADD_ROW,
     data: event,
