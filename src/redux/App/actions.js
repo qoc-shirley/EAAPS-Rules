@@ -38,10 +38,10 @@ export const getMedicationSelection = ( medicationSelection ) => {
   }
 };
 
-export const onSubmit = ( information ) => {
+export const onSubmit = ( event ) => {
   return {
     type: ON_SUBMIT,
-    data: information,
+    data: event,
   }
 };
 

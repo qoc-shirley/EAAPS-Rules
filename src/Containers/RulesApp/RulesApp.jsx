@@ -11,6 +11,7 @@ const mapDispatchToProps = dispatch => ( {
   getTimesPerDayValue: (value) => dispatch( actions.getTimesPerDayValue(value) ),
   getDoseICSValue: (value) => dispatch( actions.getDoseICSValue(value) ),
   getMedicationSelection: (value) => dispatch( actions.getMedicationSelection(value) ),
+  onSubmit: (e) => dispatch( actions.onSubmit(e.target.value) ),
 } );
 
 const RulesApp = connect(mapStateToProps, mapDispatchToProps)(App);
