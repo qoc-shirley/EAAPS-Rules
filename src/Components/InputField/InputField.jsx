@@ -1,11 +1,11 @@
 import React from 'react';
 
-const InputField = ( {value, onChange} ) => {
+const InputField = ( {defaultValue, onChangeInputField} ) => {
 
   return (
     <div className="field">
       <div className="field_main">
-        <input type="textfield" value={value} onChange={onChange} />
+        <input type="textfield" value={defaultValue} onChange={onChangeInputField} />
       </div>
     </div>
   );
