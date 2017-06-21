@@ -2,7 +2,9 @@ import {
   PUFF_VALUE,
   TIMES_PER_DAY_VALUE,
   DOSE_ICS_VALUE,
-  MEDICATION_SELECTION } from './constants';
+  MEDICATION_SELECTION,
+  ON_SUBMIT,
+} from './constants';
 
 
 export const getPuffValue = ( puffValue ) => {
@@ -43,7 +45,7 @@ export const onSubmit = ( information ) => {
   }
 };
 
-export const onDeleteRow = ( event ) => {
+/*export const onDeleteRow = ( event ) => {
   return {
     type: ON_DELETE_ROW,
     data: event,
@@ -83,4 +85,4 @@ export const onMedicationSelection = ( event ) => {
     type: ON_MEDICATION_SELECTION,
     data: event,
   }
-};
+};*/
