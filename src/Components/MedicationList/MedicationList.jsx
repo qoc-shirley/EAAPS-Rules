@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddRow from '../MedicationRow/MedicationRow.jsx';
+import MedicationRow from '../MedicationRow/MedicationRow.jsx';
 
 
 class MedicationList extends Component {
@@ -18,7 +18,7 @@ class MedicationList extends Component {
           <li>Times Per Day</li>
           <li>Dose ICS</li>
         </ul>
-				<AddRow
+				<MedicationRow
           onDelEvent={onDelEvent}
           onSelection={onSelection}
           onChangePuffs={puffOnChange}
