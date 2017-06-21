@@ -17,7 +17,7 @@ class App extends Component {
     this.handleTimesOnChange = this.handleTimesOnChange.bind( this );
     this.handleDoseICSOnChange = this.handleDoseICSOnChange.bind( this );
     this.handleMedicationSelection = this.handleMedicationSelection.bind( this );
-    this.handleSubmit = this.handleSubmit.bind( this );
+    this.onSubmit = this.onSubmit.bind( this );
   }
 
   onAddRow( newMedication ) {
@@ -53,7 +53,7 @@ class App extends Component {
     this.setState({ selectMedication: event.target.value });
   }
 
-  handleSubmit( event ) {
+  onSubmit( event ) {
     console.log( this.props.puffValue, " ", this.props.timesPerDayValue ," ", this.props.doseICSValue, " ", this.state.selectMedication );
     event.preventDefault();
   }
@@ -66,7 +66,7 @@ class App extends Component {
         </div>
         <MedicationList
           onDelRow={ this.onDeleteRow }
-          onSubmit={ this.handleSubmit }
+          onSubmit={ this.onSubmit }
           onSelection={ this.handleMedicationSelection }
           puffOnChange={ this.handlePuffOnChange }
           timesOnChange={ this.handleTimesOnChange }
