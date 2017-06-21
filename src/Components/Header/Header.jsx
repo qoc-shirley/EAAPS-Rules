@@ -2,8 +2,7 @@ import React from 'react';
 import logo from './img/logo.svg';
 import './styles.scss';
 
-const Header = () => {
-  return (
+const Header = (
     <div className="header">
       <div className="header__logo">
         <img src={logo} className="header__logo" alt="logo" />
@@ -12,7 +11,6 @@ const Header = () => {
         <h2>EAAPs Escalation Rules</h2>
       </div>
     </div>
-  );
-};
+);
 
 export default Header;
