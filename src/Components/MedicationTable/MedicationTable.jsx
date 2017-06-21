@@ -1,15 +1,10 @@
 import React from 'react';
 import MedicationRow from '../MedicationRow/MedicationRow.jsx';
 
-const MedicationList = ( props ) => {
-  const {
-    onDelEvent,
-    onSelection,
-    puffOnChange,
-    timesOnChange,
-    doseICSOnChange,
-    onSubmit,
-  } = props;
+const MedicationList = (
+  {
+    onDelEvent, onSelection, puffOnChange, timesOnChange, doseICSOnChange, onSubmit
+  } ) => {
 
  return (
    <div className="app__body" onSubmit={onSubmit}>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
-import MedicationList from '../MedicationList/MedicationList.jsx';
+import MedicationTable from '../MedicationTable/MedicationTable.jsx';
 import './styles.css';
 
 class App extends Component {
@@ -61,7 +61,7 @@ class App extends Component {
         <div className="app__header">
           {Header}
         </div>
-        <MedicationList
+        <MedicationTable
           onDelRow={ this.onDeleteRow }
           onSubmit={ this.onSubmit }
           onSelection={ this.onMedicationSelection }
