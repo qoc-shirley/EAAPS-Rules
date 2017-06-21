@@ -30,3 +30,24 @@ class MedicationList extends Component {
 }
 
 export default MedicationList;
+
+/*
+ const MedicationList = (onDelEvent, onSelection, puffOnChange, timesOnChange, doseICSOnChange, onSubmit) =>
+ {
+ return (
+ <div className="app__body" onSubmit={onSubmit}>
+ <ul className="header">
+ <li>Puffs Per Time</li>
+ <li>Times Per Day</li>
+ <li>Dose ICS</li>
+ </ul>
+ <AddRow
+ onDelEvent={onDelEvent}
+ onSelection={onSelection}
+ onChangePuffs={puffOnChange}
+ onChangeTimes={timesOnChange}
+ onChangeDose={doseICSOnChange}/>
+ </div>
+ );
+ };
+ */

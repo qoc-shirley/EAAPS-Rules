@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddField from '../AddField/AddField.jsx';
+import InputField from '../InputField/InputField.jsx';
 
 class MedicationRow extends Component {
 	render() {
@@ -18,19 +18,19 @@ class MedicationRow extends Component {
 
     return (
 			<div className="row">
-        <AddField
+        <InputField
           fieldName="row__textfield--puff"
           value={this.props.puffValue}
           onChange={puffValueOnChange}
         />
 
-        <AddField
+        <InputField
           fieldName="row__textfield--times"
           value={this.props.timesPerDayValue}
           onChange={timesOnChange}
         />
 
-        <AddField
+        <InputField
           fieldName="row__body__textfield--doseICS"
           value={this.props.doseICSValue}
           onChange={doseICSOnChange}
