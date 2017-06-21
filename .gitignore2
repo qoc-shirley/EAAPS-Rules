@@ -38,7 +38,7 @@ yarn-error.log
 .log
 
 # Dependency directories
-node_modules/
+/node_modules
 
 # BUCK
 buck-out/
@@ -55,3 +55,4 @@ buck-out/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+/node_modules/
