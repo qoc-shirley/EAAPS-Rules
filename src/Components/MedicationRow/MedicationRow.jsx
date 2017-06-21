@@ -5,9 +5,11 @@ class MedicationRow extends Component {
 	render() {
 
     // const {
-    //  onChangePuffs,
-    //   onChangeTimes,
-    //   onDeleteEvent,
+    //  onDelEvent,
+    //   onSelection,
+    //   puffOnChange,
+    //   timesOnChange,
+    //   doseICSOnChange,
     // } = this.props;
 
     const puffValueOnChange = this.props.onChangePuffs;
