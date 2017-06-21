@@ -21,35 +21,35 @@ const MedicationList = (
        timesOnChange={timesOnChange}
        doseICSOnChange={doseICSOnChange}/>
      {/*
-     <ul className="header">
+     <div className="row__header">
         <Row elements={["Puff/Time", "Times/Day", "DoseICS"]} />
-     </ul>
+     </div>
 
-     <ul>
-      <Row elements={
-        {
-          <InputField
-            fieldName="puff"
-            defaultValue={puffValue}
-            onChangeInputField={puffOnChange}
-          />
-        }
-        {
-          <InputField
-            fieldName="times"
-            defaultValue={puffValue}
-            onChangeInputField={puffOnChange}
-          />
-        }
-        {
-          <InputField
-            fieldName="doseICS"
-            defaultValue={puffValue}
-            onChangeInputField={puffOnChange}
-          />
-        }
-      } />
-     </ul>
+     <div className="row__main" >
+        <Row elements={
+          {
+            <InputField
+              fieldName="puff"
+              defaultValue={puffValue}
+              onChangeInputField={puffOnChange}
+            />
+          }
+          {
+            <InputField
+              fieldName="times"
+              defaultValue={puffValue}
+              onChangeInputField={puffOnChange}
+            />
+          }
+          {
+            <InputField
+             fieldName="doseICS"
+              defaultValue={puffValue}
+              onChangeInputField={puffOnChange}
+            />
+          }
+        } />
+     </div>
      */}
    </div>
  );

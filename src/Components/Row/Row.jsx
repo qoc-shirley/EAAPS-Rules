@@ -1,14 +1,13 @@
 import React from 'react';
 
 const Row = ( elements ) => {
+  const items = elements.map((element) => (<li>{element}</li>));
 
  return (
    <div className="row">
-     <ul className="row__content">
-       <li></li>
-       <li></li>
-       <li></li>
-     </ul>
+      <ul>
+        {items}
+      </ul>
    </div>
   );
 };
