@@ -11,7 +11,7 @@ class App extends Component {
       patientMedications: [],
       selectMedication: '',
     };
-    this.handleDeleteRow = this.handleDeleteRow.bind( this );
+    this.onDeleteRow = this.onDeleteRow.bind( this );
     this.handleAddRow = this.handleAddRow.bind( this );
     this.handlePuffOnChange = this.handlePuffOnChange.bind( this );
     this.handleTimesOnChange = this.handleTimesOnChange.bind( this );
@@ -24,7 +24,7 @@ class App extends Component {
     console.log( "addRow" );
   }
 
-  handleDeleteRow( medication ) {
+  onDeleteRow( medication ) {
     console.log("deleteMedication");
   }
 
@@ -65,7 +65,7 @@ class App extends Component {
           {Header}
         </div>
         <MedicationList
-          onDelRow={ this.handleDeleteRow }
+          onDelRow={ this.onDeleteRow }
           onSubmit={ this.handleSubmit }
           onSelection={ this.handleMedicationSelection }
           puffOnChange={ this.handlePuffOnChange }
