@@ -1,7 +1,13 @@
 import React from 'react';
+import _ from 'lodash';
 
 const Row = ( elements ) => {
-  const items = elements.map((element) => (<li>{element}</li>));
+  const items = _
+    .chain( elements )
+      .map( ( element, index ) => (
+       <li key={index}>{element}</li>
+      ))
+    .value();
 
  return (
    <div className="row">
