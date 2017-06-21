@@ -35,3 +35,52 @@ export const getMedicationSelection = ( medicationSelection ) => {
     data: medicationSelection,
   }
 };
+
+export const onSubmit = ( information ) => {
+  return {
+    type: ON_SUBMIT,
+    data: information,
+  }
+};
+
+export const onDeleteRow = ( event ) => {
+  return {
+    type: ON_DELETE_ROW,
+    data: event,
+  }
+};
+
+export const onAddRow = ( event ) => {
+  return {
+    type: ON_ADD_ROW,
+    data: event,
+  }
+};
+
+export const onPuffChange = ( event ) => {
+  return {
+    type: ON_PUFF_CHANGE,
+    data: event,
+  }
+};
+
+export const onTimesChange = ( event ) => {
+  return {
+    type: ON_TIMES_CHANGE,
+    data: event,
+  }
+};
+
+export const onDoseICSChange = ( event ) => {
+  return {
+    type: ON_DOSEICS_CHANGE,
+    data: event,
+  }
+};
+
+export const onMedicationSelection = ( event ) => {
+  return {
+    type: ON_MEDICATION_SELECTION,
+    data: event,
+  }
+};

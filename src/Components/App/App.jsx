@@ -7,9 +7,6 @@ import './styles.css';
 class App extends Component {
   constructor( props ) {
     super( props );
-    this.state = {
-      selectMedication: '',
-    };
     this.onDeleteRow = this.onDeleteRow.bind( this );
     this.onAddRow = this.onAddRow.bind( this );
     this.onPuffChange = this.onPuffChange.bind( this );
