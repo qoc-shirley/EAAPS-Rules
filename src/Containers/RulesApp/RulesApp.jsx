@@ -7,9 +7,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ( {
-  getPuffValue: () => dispatch( actions.getPuffValue() ),
-  getTimesPerDayValue: () => dispatch( actions.getTimesPerDayValue() ),
-  getDoseICSValue: () => dispatch( actions.getDoseICSValue() ),
+  getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
+  getTimesPerDayValue: (value) => dispatch( actions.getTimesPerDayValue(value) ),
+  getDoseICSValue: (value) => dispatch( actions.getDoseICSValue(value) ),
 } );
 
 const RulesApp = connect(mapStateToProps, mapDispatchToProps)(App);

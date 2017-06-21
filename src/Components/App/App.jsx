@@ -81,8 +81,8 @@ class App extends Component {
     console.log( "Puff" );
     //this.setState({ puffValue: event.target.value });
     this.props.getPuffValue( event.target.value );
-    console.log( "handle puff event: ", event.target.value );
-    console.log( "puff value props:", this.props.puffValue);
+    //console.log( "handle puff event: ", event.target.value );
+    //console.log( "puff value props:", this.props.puffValue);
   }
 
   handleTimesOnChange( event ) {
