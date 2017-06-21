@@ -49,11 +49,12 @@ class App extends Component {
 
   onMedicationSelection( event ) {
     console.log( "Selection" );
-    this.setState({ selectMedication: event.target.value });
+    //this.setState({ selectMedication: event.target.value });
+    this.props.getMedicationSelection( event.target.value );
   }
 
   onSubmit( event ) {
-    console.log( this.props.medication.puffValue, " ", this.props.medication.timesPerDayValue ," ", this.props.medication.doseICSValue, " ", this.state.selectMedication );
+    console.log( this.props.medication.puffValue, " ", this.props.medication.timesPerDayValue ," ", this.props.medication.doseICSValue, " ", this.props.mediction.selectMedication );
     event.preventDefault();
   }
 
@@ -82,6 +83,7 @@ App.PropTypes = {
   getPuffValue: PropTypes.func.isRequired,
   getTimesPerDayValue: PropTypes.func.isRequired,
   getDoseICSValue: PropTypes.func.isRequired,
+  getMedicationSelection: PropTypes.func.isRequired,
 };
 
 export default App;
