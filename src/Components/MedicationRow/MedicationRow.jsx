@@ -19,20 +19,20 @@ const MedicationRow = ( props ) => {
     <div className="row">
       <InputField
         fieldName="row__textfield--puff"
-        value={puffValue}
-        onChange={puffOnChange}
+        defaultValue={puffValue}
+        onChangeInputField={puffOnChange}
       />
 
       <InputField
         fieldName="row__textfield--times"
-        value={timesPerDayValue}
-        onChange={timesOnChange}
+        defaultValue={timesPerDayValue}
+        onChangeInputField={timesOnChange}
       />
 
       <InputField
         fieldName="row__body__textfield--doseICS"
-        value={doseICSValue}
-        onChange={doseICSOnChange}
+        defaultValue={doseICSValue}
+        onChangeInputField={doseICSOnChange}
       />
 
       <select className="row__select" value={patientMedications} onChange={onSelection}>
