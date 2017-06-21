@@ -1,10 +1,6 @@
 import React from 'react';
 
-const InputField = ( props ) => {
-  const {
-    value,
-    onChange,
-  } = props;
+const InputField = ( {value, onChange} ) => {
 
   return (
     <div className="field">
