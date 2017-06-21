@@ -3,6 +3,7 @@ import {
   TIMES_PER_DAY_VALUE,
   DOSE_ICS_VALUE,
   MEDICATION_SELECTION
+  ON_SUBMIT,
 } from './constants';
 
 export const initialState = {
@@ -10,6 +11,7 @@ export const initialState = {
   timesPerDayValue: '',
   doseICSValue: '',
   medicationSelection: '',
+  onSubmit: '',
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -32,6 +34,10 @@ const reducer = ( state = initialState, action ) => {
   case MEDICATION_SELECTION:
     return Object.assign({}, state, {
       medicationSelection: action.data
+  });
+  case ON_SUBMIT:
+    return Object.assign({}, state, {
+      onSubmit: action.data
   });
 
   default:
