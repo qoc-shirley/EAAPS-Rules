@@ -29,16 +29,12 @@ build/
 .idea
 .gradle
 local.properties
-*.iml
 
 # Log
 #
 npm-debug.log
 yarn-error.log
 .log
-
-# Dependency directories
-node_modules/
 
 # BUCK
 buck-out/
@@ -55,3 +51,5 @@ buck-out/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+/package.json
+/node_modules/
