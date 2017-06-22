@@ -1,21 +1,3 @@
 .app {
   text-align: center;
 }
-
-.header__logo {
-  animation: header__logo--spin infinite 20s linear;
-  height: 80px;
-}
-
-.app__header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-
-}
-
-@keyframes header__logo--spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
