@@ -15,7 +15,7 @@ const Stack = ( {
                   doseICSOnChange,
                   puffOnChange,
                   timesOnChange} ) => {
-  let stack = [<h1>hi</h1>];//passed in as props
+  let stack = [];//passed in as props
 
   /*removeRowAtIndex(){
 
@@ -53,11 +53,12 @@ const Stack = ( {
     ];
 
 
-    stack.push(
-      <div className="main" >
-        <h1>row</h1>
-        <Row elements={rowElements} />
-      </div>);
+      stack.push(
+        <div className="main" >
+          <h1>row</h1>
+          <Row elements={rowElements} />
+        </div>)
+        ;
 
   };
   console.log(stack);

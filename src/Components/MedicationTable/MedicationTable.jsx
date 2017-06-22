@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import InputField from '../InputField/InputField.jsx';
+import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
 import Stack from '../Stack/Stack.jsx';
 import './styles.css';
@@ -26,7 +26,7 @@ const MedicationTable = (
         <Row elements={["Puff/Time", "Times/Day", "DoseICS", "Select Medication", "   "]} />
      </div>
 
-     {/*<div className="main" >
+     {/* <div className="main" >
         <Row elements={[
           <InputField
           fieldName="puff"
@@ -60,7 +60,7 @@ const MedicationTable = (
  );
 };
 
-Row.propTypes = {
+MedicationTable.propTypes = {
   puffValue: PropTypes.string,
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
@@ -73,7 +73,7 @@ Row.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-Row.defaultProps = {
+MedicationTable.defaultProps = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',

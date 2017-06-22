@@ -7,22 +7,11 @@ import './styles.css';
 class App extends Component {
   constructor( props ) {
     super( props );
-    this.onDeleteRow = this.onDeleteRow.bind( this );
-    this.onAddRow = this.onAddRow.bind( this );
     this.onPuffChange = this.onPuffChange.bind( this );
     this.onTimesChange = this.onTimesChange.bind( this );
     this.onDoseICSChange = this.onDoseICSChange.bind( this );
     this.onMedicationSelection = this.onMedicationSelection.bind( this );
-    //this.onSubmit = this.onSubmit.bind( this );
-  }
-
-  onAddRow( newMedication ) {
-    console.log( "addRow" );
-
-  }
-
-  onDeleteRow( medication ) {
-    console.log("deleteMedication");
+    this.onSubmit = this.onSubmit.bind( this );
   }
 
   onPuffChange( event ) {
@@ -72,7 +61,7 @@ class App extends Component {
           addRow={ this.onAddRow }
         />
         {/*<button className="body__button--add" onClick={this.onAddRow}>Add Row</button>*/}
-        <input className="body__button--submit" type="submit" value="Submit" onClick={this.props.onSubmit} />
+        <input className="body__button--submit" type="submit" value="Submit" onClick={this.onSubmit} />
       </div>
     );
   }
@@ -85,4 +74,7 @@ App.PropTypes = {
   getMedicationSelection: PropTypes.func.isRequired,
 };
 
+App.defaultProps = {
+
+};
 export default App;
