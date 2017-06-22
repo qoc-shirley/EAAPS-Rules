@@ -1,0 +1,8 @@
+.app__body .header {
+    background: #ccc;
+}
+
+.app__body .main {
+    padding: 20px;
+    background: #e2e2e2;
+}
