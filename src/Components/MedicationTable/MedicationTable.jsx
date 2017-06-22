@@ -1,8 +1,8 @@
 import React from 'react';
-//import MedicationRow from '../MedicationRow/MedicationRow.jsx';
-import InputField from '../InputField/InputField.jsx';
-import Row from '../Row/Row.jsx';
 import PropTypes from 'prop-types';
+// import InputField from '../InputField/InputField.jsx';
+import Row from '../Row/Row.jsx';
+import Stack from '../Stack/Stack.jsx';
 import './styles.css';
 
 
@@ -26,7 +26,7 @@ const MedicationTable = (
         <Row elements={["Puff/Time", "Times/Day", "DoseICS", "Select Medication", "   "]} />
      </div>
 
-     <div className="main" >
+     {/*<div className="main" >
         <Row elements={[
           <InputField
           fieldName="puff"
@@ -48,7 +48,14 @@ const MedicationTable = (
           </select>,
           <button onClick={onDelEvent}>Delete Row</button>
         ]}/>
-     </div>
+     </div>*/}
+     <Stack
+       onDelete={onDelEvent}
+       onSelection={onSelection}
+       puffOnChange={puffOnChange}
+       timesOnChange={timesOnChange}
+       doseICSOnChange={doseICSOnChange}
+      />
    </div>
  );
 };

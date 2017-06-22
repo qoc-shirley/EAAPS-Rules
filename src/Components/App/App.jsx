@@ -18,6 +18,7 @@ class App extends Component {
 
   onAddRow( newMedication ) {
     console.log( "addRow" );
+
   }
 
   onDeleteRow( medication ) {
@@ -68,8 +69,9 @@ class App extends Component {
           puffOnChange={ this.onPuffChange }
           timesOnChange={ this.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
+          addRow={ this.onAddRow }
         />
-        <button className="body__button--add" onClick={this.onAddRow}>Add Row</button>
+        {/*<button className="body__button--add" onClick={this.onAddRow}>Add Row</button>*/}
         <input className="body__button--submit" type="submit" value="Submit" onClick={this.props.onSubmit} />
       </div>
     );
