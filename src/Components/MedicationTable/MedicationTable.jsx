@@ -2,6 +2,7 @@ import React from 'react';
 //import MedicationRow from '../MedicationRow/MedicationRow.jsx';
 import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
+// import createFragment from 'react-addons-create-fragment';
 
 
 const MedicationList = (
@@ -36,27 +37,21 @@ const MedicationList = (
      </div>
 
      <div className="row__main" >
-        <Row elements={
-          <div>
+        <Row elements={[
           <InputField
-            fieldName="puff"
-            defaultValue={puffValue}
-            onChangeInputField={puffOnChange}
-          />
+          fieldName="puff"
+          defaultValue={puffValue}
+          onChangeInputField={puffOnChange}/>,
           <InputField
           fieldName="times"
           defaultValue={timesPerDayValue}
-          onChangeInputField={timesOnChange}
-          />
+          onChangeInputField={timesOnChange}/>,
           <InputField
           fieldName="doseICS"
           defaultValue={doseICSValue}
-          onChangeInputField={doseICSOnChange}
-          />
-          </div>
-        }/>
+          onChangeInputField={doseICSOnChange}/>
+        ]}/>
      </div>
-
    </div>
  );
 };

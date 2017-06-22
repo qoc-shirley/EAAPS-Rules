@@ -1,12 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
+// import createFragment from 'react-addons-create-fragment';
 
-const Row = ( object ) => {
-  console.log(object.elements);
-  //const elements = object.elements;
+const Row = ( {elements} ) => {
+  console.log(elements);
 
   const items = _
-    .chain( object.elements )
+    .chain( elements )
       .map( ( element, index ) => (
        <li key={index}>{element}</li>
       ))
