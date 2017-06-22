@@ -11,7 +11,6 @@ const MedicationTable = (
     puffValue,
     timesPerDayValue,
     doseICSValue,
-    onDelEvent,
     patientMedications,
     onSelection,
     puffOnChange,
@@ -20,42 +19,60 @@ const MedicationTable = (
     onSubmit,
   } ) => {
 
- return (
-   <div className="app__body" onSubmit={onSubmit}>
-     <div className="header">
-        <Row elements={["Puff/Time", "Times/Day", "DoseICS", "Select Medication", "   "]} />
-     </div>
+  const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
 
-     {/* <div className="main" >
-        <Row elements={[
-          <InputField
-          fieldName="puff"
-          defaultValue={puffValue}
-          onChangeInputField={puffOnChange}/>,
-          <InputField
-          fieldName="times"
-          defaultValue={timesPerDayValue}
-          onChangeInputField={timesOnChange}/>,
-          <InputField
-          fieldName="doseICS"
-          defaultValue={doseICSValue}
-          onChangeInputField={doseICSOnChange}/>,
-          <select className="row__select" value={patientMedications} onChange={onSelection}>
-            <option>-Select Medication-</option>
-            <option>ddd</option>
-            <option>b</option>
-            <option>c</option>
-          </select>,
-          <button onClick={onDelEvent}>Delete Row</button>
-        ]}/>
-     </div>*/}
-     <Stack
-       onDelete={onDelEvent}
-       onSelection={onSelection}
-       puffOnChange={puffOnChange}
-       timesOnChange={timesOnChange}
-       doseICSOnChange={doseICSOnChange}
-      />
+  const renderAddRow = () => {
+    console.log("Add Row");
+    const rowElements = [
+      <InputField
+        fieldName="puff"
+        defaultValue={puffValue}
+        onChangeInputField={puffOnChange}
+      />,
+      <InputField
+        fieldName="times"
+        defaultValue={timesPerDayValue}
+        onChangeInputField={timesOnChange}
+      />,
+      <InputField
+        fieldName="doseICS"
+        defaultValue={doseICSValue}
+        onChangeInputField={doseICSOnChange}
+      />,
+      <select
+        className="row__select"
+        onChange={onSelection}
+        value={patientMedications}
+      >
+        <option>-Select Medication-</option>
+        <option>ddd</option>
+        <option>b</option>
+        <option>c</option>
+      </select>,
+      <button onClick={onDelete}>Delete Row</button>
+    ];
+
+    return(
+      <div className="main" >
+        <Row elements={rowElements} />
+      </div>
+    );
+  };
+
+  const deleteRow = () => {};
+
+ return (
+   <div className="medication-table" onSubmit={onSubmit}>
+     <div className="header">
+        <Row elements={headerElements} />
+     </div>
+     <div className="main">
+      <Stack
+        onAddRow={renderAddRow}
+        onDelete={deleteRow}
+        buttonLabel="Add Row"
+        />
+     </div>
    </div>
  );
 };

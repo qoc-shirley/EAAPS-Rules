@@ -39,6 +39,7 @@ export const getMedicationSelection = ( medicationSelection ) => {
   }
 };
 
+// Rename to a more explicit function onSubmit[OF SOMETHING?]
 export const onSubmit = ( event ) => {
   return {
     type: ON_SUBMIT,

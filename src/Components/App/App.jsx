@@ -52,16 +52,14 @@ class App extends Component {
           <Header />
         </div>
         <MedicationTable
-          onDelRow={ this.onDeleteRow }
           onSubmit={ this.onSubmit }
           onSelection={ this.onMedicationSelection }
           puffOnChange={ this.onPuffChange }
           timesOnChange={ this.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
-          addRow={ this.onAddRow }
         />
-        {/*<button className="body__button--add" onClick={this.onAddRow}>Add Row</button>*/}
-        <input className="body__button--submit" type="submit" value="Submit" onClick={this.onSubmit} />
+
+        <input className="button__submit" type="submit" value="Submit" onClick={this.onSubmit} />
       </div>
     );
   }
@@ -75,6 +73,6 @@ App.PropTypes = {
 };
 
 App.defaultProps = {
-
+  // missing prop declarations
 };
 export default App;

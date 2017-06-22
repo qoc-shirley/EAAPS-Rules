@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './styles.css';
 
 const InputField = ( {defaultValue, onChangeInputField} ) => {
-
+  //figure out why onChange isn't working
   return (
     <div className="field">
       <div className="field__main">
@@ -19,7 +19,7 @@ InputField.propTypes = {
 };
 
 InputField.defaultProps = {
-
+  defaultValue: '',
 };
 
 export default InputField;
