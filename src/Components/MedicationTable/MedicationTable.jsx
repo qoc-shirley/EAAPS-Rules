@@ -2,10 +2,10 @@ import React from 'react';
 //import MedicationRow from '../MedicationRow/MedicationRow.jsx';
 import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
-// import createFragment from 'react-addons-create-fragment';
+import PropTypes from 'prop-types';
 
 
-const MedicationList = (
+const MedicationTable = (
   {
     puffValue,
     timesPerDayValue,
@@ -56,4 +56,22 @@ const MedicationList = (
  );
 };
 
-export default MedicationList;
+Row.propTypes = {
+  puffValue: PropTypes.string,
+  timesPerDayValue: PropTypes.string,
+  doseICSValue: PropTypes.string,
+  onDelEvent: PropTypes.func,
+  onSelection: PropTypes.func,
+  puffOnChange: PropTypes.func,
+  timesOnChange: PropTypes.func,
+  doseICSOnChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+};
+
+Row.defaultProps = {
+  puffValue: '',
+  timesPerDayValue: '',
+  doseICSValue: '',
+};
+
+export default MedicationTable;

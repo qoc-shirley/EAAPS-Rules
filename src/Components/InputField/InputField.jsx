@@ -13,13 +13,12 @@ const InputField = ( {defaultValue, onChangeInputField} ) => {
 };
 
 InputField.propTypes = {
-  defaultValue: PropTypes.number,
+  defaultValue: PropTypes.string,
   onChangeInputField: PropTypes.func,
 };
 
 InputField.defaultProps = {
-  defaultValue: null,
-  onChangeInputField: null,
+  defaultValue: '',
 };
 
 export default InputField;
