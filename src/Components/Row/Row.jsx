@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-// import createFragment from 'react-addons-create-fragment';
+import PropTypes from 'prop-types';
 
 const Row = ( {elements} ) => {
   console.log(elements);
@@ -19,6 +19,14 @@ const Row = ( {elements} ) => {
       </ul>
    </div>
   );
+};
+
+Row.propTypes = {
+  elements: PropTypes.array,
+};
+
+Row.defaultProps = {
+  elements: null,
 };
 
 export default Row;
