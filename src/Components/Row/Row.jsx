@@ -1,9 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
 
-const Row = ( elements ) => {
+const Row = ( object ) => {
+  console.log(object.elements);
+  //const elements = object.elements;
+
   const items = _
-    .chain( elements )
+    .chain( object.elements )
       .map( ( element, index ) => (
        <li key={index}>{element}</li>
       ))
