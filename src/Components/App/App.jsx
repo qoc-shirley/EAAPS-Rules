@@ -59,7 +59,7 @@ class App extends Component {
     return (
       <div className="app">
         <div className="app__header">
-          {Header}
+          <Header />
         </div>
         <MedicationTable
           onDelRow={ this.onDeleteRow }
