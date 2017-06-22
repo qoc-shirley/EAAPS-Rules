@@ -22,18 +22,6 @@ const MedicationTable = (
 
  return (
    <div className="app__body" onSubmit={onSubmit}>
-     {/*<ul className="header">
-       <li>Puffs Per Time</li>
-       <li>Times Per Day</li>
-       <li>Dose ICS</li>
-     </ul>
-     <MedicationRow
-       onDelEvent={onDelEvent}
-       onSelection={onSelection}
-       puffOnChange={puffOnChange}
-       timesOnChange={timesOnChange}
-       doseICSOnChange={doseICSOnChange}/>*/}
-
      <div className="header">
         <Row elements={["Puff/Time", "Times/Day", "DoseICS", "Select Medication", "   "]} />
      </div>
