@@ -12,6 +12,7 @@ const MedicationTable = (
     timesPerDayValue,
     doseICSValue,
     onDelEvent,
+    patientMedications,
     onSelection,
     puffOnChange,
     timesOnChange,
@@ -34,7 +35,7 @@ const MedicationTable = (
        doseICSOnChange={doseICSOnChange}/>*/}
 
      <div className="header">
-        <Row elements={["Puff/Time", "Times/Day", "DoseICS"]} />
+        <Row elements={["Puff/Time", "Times/Day", "DoseICS", "Select Medication", "   "]} />
      </div>
 
      <div className="main" >
@@ -50,7 +51,14 @@ const MedicationTable = (
           <InputField
           fieldName="doseICS"
           defaultValue={doseICSValue}
-          onChangeInputField={doseICSOnChange}/>
+          onChangeInputField={doseICSOnChange}/>,
+          <select className="row__select" value={patientMedications} onChange={onSelection}>
+            <option>-Select Medication-</option>
+            <option>ddd</option>
+            <option>b</option>
+            <option>c</option>
+          </select>,
+          <button onClick={onDelEvent}>Delete Row</button>
         ]}/>
      </div>
    </div>
@@ -61,6 +69,7 @@ Row.propTypes = {
   puffValue: PropTypes.string,
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
+  patientMedications: PropTypes.string,
   onDelEvent: PropTypes.func,
   onSelection: PropTypes.func,
   puffOnChange: PropTypes.func,
