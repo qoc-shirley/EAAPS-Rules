@@ -15,7 +15,7 @@ const Stack = ( {
                   doseICSOnChange,
                   puffOnChange,
                   timesOnChange} ) => {
-  let stack = [<h1>hi</h1>];//passed in as props
+  let stack = [<h1 key={0} >hi</h1>];//passed in as props
 
   /*removeRowAtIndex(){
 
