@@ -32,11 +32,11 @@ const MedicationTable = (
        timesOnChange={timesOnChange}
        doseICSOnChange={doseICSOnChange}/>*/}
 
-     <div className="row__header">
+     <div className="header">
         <Row elements={["Puff/Time", "Times/Day", "DoseICS"]} />
      </div>
 
-     <div className="row__main" >
+     <div className="main" >
         <Row elements={[
           <InputField
           fieldName="puff"

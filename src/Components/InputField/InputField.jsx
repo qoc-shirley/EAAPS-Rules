@@ -18,7 +18,6 @@ InputField.propTypes = {
 };
 
 InputField.defaultProps = {
-  defaultValue: '',
 };
 
 export default InputField;

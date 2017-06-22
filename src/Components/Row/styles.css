@@ -1,0 +1,13 @@
+.row {
+
+    /*background-color: #ccc;*/
+}
+
+.row ul {
+    display: flex;
+    justify-content: space-around;
+}
+
+.row li {
+    list-style-type: none;
+}
