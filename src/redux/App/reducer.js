@@ -5,6 +5,7 @@ import {
   MEDICATION_SELECTION,
   ON_SUBMIT,
   ON_DELETE_ROW,
+  ON_PUFF_CHANGE,
 } from './constants';
 
 export const initialState = {
@@ -37,7 +38,10 @@ const reducer = ( state = initialState, action ) => {
     return Object.assign({}, state, {
       medicationSelection: action.data
   });
-
+  case ON_PUFF_CHANGE:
+    return Object.assign({}, state, {
+      puffValue: action.data
+  });
   // if this happens print out the list of patient medications
   case ON_SUBMIT:
     return Object.assign({}, state, {

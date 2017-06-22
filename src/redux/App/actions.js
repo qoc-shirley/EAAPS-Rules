@@ -5,6 +5,7 @@ import {
   MEDICATION_SELECTION,
   ON_SUBMIT,
   ON_DELETE_ROW,
+  ON_PUFF_CHANGE,
 } from './constants';
 
 
@@ -39,7 +40,13 @@ export const getMedicationSelection = ( medicationSelection ) => {
   }
 };
 
-// Rename to a more explicit function onSubmit[OF SOMETHING?]
+export const onPuffChange = ( valueChange ) => {
+  return {
+    type: ON_PUFF_CHANGE,
+    data: valueChange,
+  }
+};
+
 export const onSubmit = ( event ) => {
   return {
     type: ON_SUBMIT,

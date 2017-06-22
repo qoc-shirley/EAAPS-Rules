@@ -1,8 +1,8 @@
 import React from 'react';
 // import _ from 'lodash';
-import PropTypes from 'prop-types';
-import InputField from '../InputField/InputField.jsx';
-import Row from '../Row/Row.jsx';
+// import PropTypes from 'prop-types';
+// import InputField from '../InputField/InputField.jsx';
+// import Row from '../Row/Row.jsx';
 import './styles.css';
 
 const Stack = ( {

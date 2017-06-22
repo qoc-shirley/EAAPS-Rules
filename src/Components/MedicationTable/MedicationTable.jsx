@@ -26,30 +26,29 @@ const MedicationTable = (
     const rowElements = [
       <InputField
         fieldName="puff"
-        defaultValue={puffValue}
+        value={puffValue}
         onChangeInputField={puffOnChange}
       />,
       <InputField
         fieldName="times"
-        defaultValue={timesPerDayValue}
+        value={timesPerDayValue}
         onChangeInputField={timesOnChange}
       />,
       <InputField
         fieldName="doseICS"
-        defaultValue={doseICSValue}
+        value={doseICSValue}
         onChangeInputField={doseICSOnChange}
       />,
       <select
-        className="row__select"
-        onChange={onSelection}
-        value={patientMedications}
+        className="row__select" onChange={onSelection}
+        defaultValue={patientMedications}
       >
         <option>-Select Medication-</option>
         <option>ddd</option>
         <option>b</option>
         <option>c</option>
       </select>,
-      <button onClick={onDelete}>Delete Row</button>
+      <button>Delete Row</button>
     ];
 
     return(
@@ -67,7 +66,7 @@ const MedicationTable = (
         <Row elements={headerElements} />
      </div>
      <div className="main">
-      <Stack
+       <Stack
         onAddRow={renderAddRow}
         onDelete={deleteRow}
         buttonLabel="Add Row"
