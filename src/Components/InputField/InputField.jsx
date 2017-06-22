@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const InputField = ( {defaultValue, onChangeInputField} ) => {
 
@@ -9,6 +10,16 @@ const InputField = ( {defaultValue, onChangeInputField} ) => {
       </div>
     </div>
   );
+};
+
+InputField.propTypes = {
+  defaultValue: PropTypes.number,
+  onChangeInputField: PropTypes.func,
+};
+
+InputField.defaultProps = {
+  defaultValue: null,
+  onChangeInputField: null,
 };
 
 export default InputField;
