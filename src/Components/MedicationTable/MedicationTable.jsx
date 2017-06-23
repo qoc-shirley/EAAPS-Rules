@@ -84,19 +84,28 @@ const MedicationTable = (
       <button>Delete Row</button>
     ];
 
-    const medicationRow = (<Row key ="" elements={rowElements} />);
-
-    // change to use set[FunctionName] or append[FUnctionName]
+    const medicationRow = (<Row key = "" elements={rowElements} />);
     appendMedicationToStack(createFragment({ medicationRow }));
+    //add empty inputfield values(puffValue, times, dose) to stack array
   };
 
   const deleteRow = () => {};
 
+  // stack will have input field information
+  // use map to go though stack and output the medicationRow
+  // use index of each row as a key
  return (
    <div className="medication-table" onSubmit={onSubmit}>
      <div className="header">
         <Row elements={headerElements} />
      </div>
+     {/*
+      - maybe create another Row component for medicene rows
+      - ul outside and inside the component <li>row</li>
+      here:
+      stack.map and add information to element tags
+
+     */}
      <div className="main">
        <Row elements={rowElements} />
      </div>
