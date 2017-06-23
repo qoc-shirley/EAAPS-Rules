@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
-import Stack from '../Stack/Stack.jsx';
+// import Stack from '../Stack/Stack.jsx';
 import * as actions from '../../redux/App/actions';
 import createFragment from 'react-addons-create-fragment';
-import keyIndex from 'react-key-index';
+// import keyIndex from 'react-key-index';
 import './styles.css';
 
 
@@ -22,10 +22,37 @@ const MedicationTable = (
     doseICSOnChange,
     onSubmit,
     appendMedicationToStack,
-    stack,
+    // stack,
   } ) => {
 
   const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
+  const rowElements = [
+    <InputField
+      fieldName="puff"
+      value={puffValue}
+      onChangeInputField={puffOnChange}
+    />,
+    <InputField
+      fieldName="times"
+      value={timesPerDayValue}
+      onChangeInputField={timesOnChange}
+    />,
+    <InputField
+      fieldName="doseICS"
+      value={doseICSValue}
+      onChangeInputField={doseICSOnChange}
+    />,
+    <select
+      className="row__select" onChange={onSelection}
+      defaultValue={patientMedications}
+    >
+      <option>-Select Medication-</option>
+      <option>ddd</option>
+      <option>b</option>
+      <option>c</option>
+    </select>,
+    <button>Delete Row</button>
+  ];
 
   const renderAddRow = () => {
     console.log("Add Row");
@@ -71,12 +98,7 @@ const MedicationTable = (
         <Row elements={headerElements} />
      </div>
      <div className="main">
-       <Stack
-        onAddRow={renderAddRow}
-        onDelete={deleteRow}
-        buttonLabel="Add Row"
-        stack={stack}
-        />
+       <Row elements={rowElements} />
      </div>
    </div>
  );
