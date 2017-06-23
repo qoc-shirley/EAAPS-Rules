@@ -6,6 +6,7 @@ import {
   ON_SUBMIT,
   ON_DELETE_ROW,
   ON_PUFF_CHANGE,
+  MEDICATION_TO_STACK,
 } from './constants';
 
 export const initialState = {
@@ -15,6 +16,7 @@ export const initialState = {
   medicationSelection: '',
   onSubmit: '',
   onDeleteRow: '',
+  stack: [],
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -37,6 +39,11 @@ const reducer = ( state = initialState, action ) => {
   case MEDICATION_SELECTION:
     return Object.assign({}, state, {
       medicationSelection: action.data
+  });
+    //example used ...state.projects, ...action.projects
+    case MEDICATION_TO_STACK:
+    return Object.assign({}, state, {
+      stack: state.stack.concat(action.data)
   });
   case ON_PUFF_CHANGE:
     return Object.assign({}, state, {

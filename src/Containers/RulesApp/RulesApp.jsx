@@ -16,6 +16,7 @@ const mapDispatchToProps = dispatch => ( {
   onPuffChange: (event) => dispatch( actions.onPuffChange(event.target.value) ),
   onSubmit: (e) => dispatch( actions.onSubmit(e.target.value) ),
   onDeleteRow: (e) => dispatch( actions.onDeleteRow(e.target.value) ),
+  getMedicationToStack: (medicationRow) => dispatch( actions.getMedicationToStack(medicationRow) ),
 } );
 
 const RulesApp = connect(mapStateToProps, mapDispatchToProps)(App);

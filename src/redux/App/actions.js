@@ -6,8 +6,10 @@ import {
   ON_SUBMIT,
   ON_DELETE_ROW,
   ON_PUFF_CHANGE,
+  MEDICATION_TO_STACK,
 } from './constants';
 
+let stackId = 0;
 
 export const getPuffValue = ( puffValue ) => {
   // console.log("action PUFF_VALUE:", puffValue);
@@ -37,6 +39,17 @@ export const getMedicationSelection = ( medicationSelection ) => {
   return {
     type: MEDICATION_SELECTION,
     data: medicationSelection,
+  }
+};
+
+export const getMedicationToStack = ( medicationRow ) => {
+  return {
+    type: MEDICATION_TO_STACK,
+    id: stackId++,
+    data: {
+      id: stackId++,
+      row: medicationRow
+    },
   }
 };
 
