@@ -1,6 +1,8 @@
 .row {
 
-    /*background-color: #ccc;*/
+    background-color: #ccc;
+    margin:20px;
+    padding:5px;
 }
 
 .row ul {
