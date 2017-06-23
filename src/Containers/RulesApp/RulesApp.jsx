@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => ( {
   getTimesPerDayValue: (value) => dispatch( actions.getTimesPerDayValue(value) ),
   getDoseICSValue: (value) => dispatch( actions.getDoseICSValue(value) ),
   getMedicationSelection: (value) => dispatch( actions.getMedicationSelection(value) ),
-  getMedicationToStack: (medicationRow) => dispatch( actions.getMedicationToStack(medicationRow) ),
+  appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
 
   onPuffChange: (event) => dispatch( actions.onPuffChange(event.target.value) ),
   onSubmit: (e) => dispatch( actions.onSubmit(e.target.value) ),

@@ -6,6 +6,7 @@ import Row from '../Row/Row.jsx';
 import Stack from '../Stack/Stack.jsx';
 import * as actions from '../../redux/App/actions';
 import createFragment from 'react-addons-create-fragment';
+import keyIndex from 'react-key-index';
 import './styles.css';
 
 
@@ -20,7 +21,7 @@ const MedicationTable = (
     timesOnChange,
     doseICSOnChange,
     onSubmit,
-    getMedicationToStack,
+    appendMedicationToStack,
     stack,
   } ) => {
 
@@ -56,12 +57,10 @@ const MedicationTable = (
       <button>Delete Row</button>
     ];
 
-    const medicationRow = (
-      <div className="main" >
-        <Row key={"creatingRowInStack"} elements={rowElements} />
-      </div>);
+    const medicationRow = (<Row key ="" elements={rowElements} />);
 
-    getMedicationToStack(createFragment({ medicationRow }));
+    // change to use set[FunctionName] or append[FUnctionName]
+    appendMedicationToStack(createFragment({ medicationRow }));
   };
 
   const deleteRow = () => {};
@@ -108,7 +107,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ( {
-  getMedicationToStack: (medicationRow) => dispatch( actions.getMedicationToStack(medicationRow) ),
+  appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);

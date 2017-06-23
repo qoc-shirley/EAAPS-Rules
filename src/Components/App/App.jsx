@@ -58,7 +58,7 @@ class App extends Component {
           puffOnChange={ this.onPuffChange }
           timesOnChange={ this.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
-          getMedicationToStack={this.props.getMedicationToStack}
+          appendMedicationToStack={this.props.appendMedicationToStack}
           stack={this.props.medication.stack}
         />
 

@@ -42,7 +42,7 @@ export const getMedicationSelection = ( medicationSelection ) => {
   }
 };
 
-export const getMedicationToStack = ( medicationRow ) => {
+export const appendMedicationToStack = ( medicationRow ) => {
   return {
     type: MEDICATION_TO_STACK,
     data: {

@@ -8,17 +8,17 @@ import keyIndex from 'react-key-index';
 import './styles.css';
 
 const Row = ( {elements} ) => {
-  console.log(elements);
+  console.log("elements: ",elements);
 
   const uniqueKey = keyIndex(elements,1);
-  console.log("hello: ", uniqueKey );
+  console.log("elements with UniqueId: ", uniqueKey );
   const items = _
     .chain( elements )
       .map( ( element, index ) => (
        <li key={uniqueKey[index]._id}>{element}</li>
       ))
     .value();
-
+  console.log("elements: ", items);
  return (
    <div className="row">
       <ul>

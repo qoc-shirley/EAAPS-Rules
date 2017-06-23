@@ -10,7 +10,7 @@ const Stack = ( {
                   onAddRow,
                   buttonLabel,
                 } ) => {
-
+  console.log("stack: ", stack);
   return (
     <div className="stack">
       <div className="stack__contents">
