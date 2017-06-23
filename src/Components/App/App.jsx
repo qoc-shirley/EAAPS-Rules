@@ -38,6 +38,7 @@ class App extends Component {
     console.log( "Selection" );
     //this.setState({ selectMedication: event.target.value });
     this.props.getMedicationSelection( event.target.value );
+    this.props.getMedicationtoStack();
   }
 
   onSubmit( event ) {
@@ -57,6 +58,8 @@ class App extends Component {
           puffOnChange={ this.onPuffChange }
           timesOnChange={ this.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
+          getMedicationToStack={this.props.getMedicationToStack}
+          stack={this.props.medication.stack}
         />
 
         <input className="button__submit" type="submit" value="Submit" onClick={this.onSubmit} />

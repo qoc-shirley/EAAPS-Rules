@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
 import Stack from '../Stack/Stack.jsx';
+import * as actions from '../../redux/App/actions';
 import './styles.css';
 
 
@@ -17,6 +19,8 @@ const MedicationTable = (
     timesOnChange,
     doseICSOnChange,
     onSubmit,
+    getMedicationToStack,
+    stack,
   } ) => {
 
   const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
@@ -51,11 +55,12 @@ const MedicationTable = (
       <button>Delete Row</button>
     ];
 
-    return(
+    const medicationRow = (
       <div className="main" >
         <Row elements={rowElements} />
-      </div>
-    );
+      </div>);
+
+    getMedicationToStack(medicationRow);
   };
 
   const deleteRow = () => {};
@@ -70,6 +75,7 @@ const MedicationTable = (
         onAddRow={renderAddRow}
         onDelete={deleteRow}
         buttonLabel="Add Row"
+        stack={stack}
         />
      </div>
    </div>
@@ -87,6 +93,7 @@ MedicationTable.propTypes = {
   timesOnChange: PropTypes.func,
   doseICSOnChange: PropTypes.func,
   onSubmit: PropTypes.func,
+  getMedicationToStack: PropTypes.func.isRequired,
 };
 
 MedicationTable.defaultProps = {
@@ -95,4 +102,12 @@ MedicationTable.defaultProps = {
   doseICSValue: '',
 };
 
-export default MedicationTable;
+const mapStateToProps = state => ({
+  medication: state.medication,
+});
+
+const mapDispatchToProps = dispatch => ( {
+  getMedicationToStack: (medicationRow) => dispatch( actions.getMedicationToStack(medicationRow) ),
+} );
+
+export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);

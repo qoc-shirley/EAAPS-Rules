@@ -1,15 +1,15 @@
 import React from 'react';
 // import _ from 'lodash';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import InputField from '../InputField/InputField.jsx';
 // import Row from '../Row/Row.jsx';
 import './styles.css';
 
 const Stack = ( {
+                  stack,
                   onAddRow,
                   buttonLabel,
                 } ) => {
-  let stack = [<h1 key={0} >hi</h1>];//passed in as props
 
   return (
     <div className="stack">
@@ -27,11 +27,14 @@ const Stack = ( {
 };
 
 Stack.propTypes = {
-
+  buttonLabel: PropTypes.string.isRequired,
+  stack: PropTypes.array.isRequired,
+  onAddRow: PropTypes.func.isRequired,
 };
 
 Stack.defaultProps = {
-
+  buttonLabel: '',
+  stack: [],
 };
 
 export default Stack;
