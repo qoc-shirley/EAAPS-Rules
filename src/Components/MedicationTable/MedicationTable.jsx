@@ -58,7 +58,7 @@ const MedicationTable = (
 
     const medicationRow = (
       <div className="main" >
-        <Row elements={rowElements} />
+        <Row key={"creatingRowInStack"} elements={rowElements} />
       </div>);
 
     getMedicationToStack(createFragment({ medicationRow }));

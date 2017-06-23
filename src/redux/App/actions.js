@@ -45,10 +45,9 @@ export const getMedicationSelection = ( medicationSelection ) => {
 export const getMedicationToStack = ( medicationRow ) => {
   return {
     type: MEDICATION_TO_STACK,
-    id: stackId++,
     data: {
       id: stackId++,
-      row: medicationRow
+      medicationRow
     },
   }
 };
