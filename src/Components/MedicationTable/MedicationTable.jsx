@@ -5,6 +5,7 @@ import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
 import Stack from '../Stack/Stack.jsx';
 import * as actions from '../../redux/App/actions';
+import createFragment from 'react-addons-create-fragment';
 import './styles.css';
 
 
@@ -60,7 +61,7 @@ const MedicationTable = (
         <Row elements={rowElements} />
       </div>);
 
-    getMedicationToStack(medicationRow);
+    getMedicationToStack(createFragment({ medicationRow }));
   };
 
   const deleteRow = () => {};
