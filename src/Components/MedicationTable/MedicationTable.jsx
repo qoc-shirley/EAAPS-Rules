@@ -59,7 +59,7 @@ const MedicationTable = (
               <InputField
                 fieldName="puff"
                 value={puffValue}
-                onChangeInputField={ (event) => puffOnChange(event.target.value) }
+                onChangeInputField={ (event) => puffOnChange(index, event.target.value) }
               />
               <InputField
                 fieldName="times"
@@ -127,7 +127,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ( {
   appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
   getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
-  onPuffChange: (value) => dispatch( actions.onPuffChange(value) ),
+  onPuffChange: (index, value) => dispatch( actions.onPuffChange(index, value) ),
   onTimesChange: (value) => dispatch( actions.onPuffChange(value) ),
   onDoseICSChange: (value) => dispatch( actions.onDoseICSChange(value) ),
   onMedicationSelection: (value) => dispatch( actions.onMedicationSelection(value) ),
