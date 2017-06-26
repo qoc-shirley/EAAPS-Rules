@@ -1,11 +1,7 @@
 .row {
-
     background-color: #ccc;
     margin:20px;
     padding:5px;
-}
-
-.row ul {
     display: flex;
     justify-content: space-around;
 }

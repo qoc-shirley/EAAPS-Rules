@@ -52,7 +52,9 @@ const MedicationTable = (
  return (
    <div className="medication-table" onSubmit={onSubmit}>
      <div className="header">
+       <ul>
         <Row elements={headerElements} />
+       </ul>
      </div>
      {/*
       - maybe create another Row component for medicene rows
@@ -87,6 +89,9 @@ const MedicationTable = (
          <option>c</option>
        </select>
        <button>Delete Row</button>
+     </div>
+     <div className="test">
+
      </div>
      <button
        className="button__addRow"

@@ -21,9 +21,7 @@ const Row = ( {elements} ) => {
   // console.log("elements: ", items);
  return (
    <div className="row">
-      <ul>
-        {items}
-      </ul>
+     {items}
    </div>
   );
 };
