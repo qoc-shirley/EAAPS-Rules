@@ -64,15 +64,15 @@ const MedicationTable = (
               <InputField
                 fieldName="times"
                 value={timesPerDayValue}
-                onChangeInputField={ (event) => timesOnChange(event.target.value) }
+                onChangeInputField={ (event) => timesOnChange(index, event.target.value) }
                 />
               <InputField
                 fieldName="doseICS"
                 value={doseICSValue}
-                onChangeInputField={ (event) => doseICSOnChange(event.target.value) }
+                onChangeInputField={ (event) => doseICSOnChange(index, event.target.value) }
               />
               <select
-                className="row__select" onChange={ (event) => onMedicationSelection(event.target.value) }
+                className="row__select" onChange={ (event) => onMedicationSelection(index, event.target.value) }
                 defaultValue={patientMedications}
               >
                 <option>-Select Medication-</option>
@@ -128,9 +128,9 @@ const mapDispatchToProps = dispatch => ( {
   appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
   getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
   onPuffChange: (index, value) => dispatch( actions.onPuffChange(index, value) ),
-  onTimesChange: (value) => dispatch( actions.onPuffChange(value) ),
-  onDoseICSChange: (value) => dispatch( actions.onDoseICSChange(value) ),
-  onMedicationSelection: (value) => dispatch( actions.onMedicationSelection(value) ),
+  onTimesChange: (index, value) => dispatch( actions.onPuffChange(index, value) ),
+  onDoseICSChange: (index, value) => dispatch( actions.onDoseICSChange(index, value) ),
+  onMedicationSelection: (index, value) => dispatch( actions.onMedicationSelection(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
 } );
 

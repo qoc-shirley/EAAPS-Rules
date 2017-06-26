@@ -15,9 +15,9 @@ const mapDispatchToProps = dispatch => ( {
   getMedicationSelection: (value) => dispatch( actions.getMedicationSelection(value) ),
   appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
   onPuffChange: (index, value) => dispatch( actions.onPuffChange(index,value) ),
-  onTimesChange: (value) => dispatch( actions.onTimesChange(value) ),
-  onDoseICSChange: (value) => dispatch( actions.onDoseICSChange(value) ),
-  onMedicationSelection: (value) => dispatch( actions.onMedicationSelection(value) ),
+  onTimesChange: (index, value) => dispatch( actions.onTimesChange(index, value) ),
+  onDoseICSChange: (index, value) => dispatch( actions.onDoseICSChange(index, value) ),
+  onMedicationSelection: (index, value) => dispatch( actions.onMedicationSelection(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
 
   onSubmit: (e) => dispatch( actions.onSubmit(e.target.value) ),

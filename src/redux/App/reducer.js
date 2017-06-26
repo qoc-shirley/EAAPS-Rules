@@ -60,15 +60,30 @@ const reducer = ( state = initialState, action ) => {
   });
   case ON_TIMES_CHANGE:
     return Object.assign({}, state, {
-      timesPerDayValue: action.data
+      timesPerDayValue: action.data,
+      stack: state.stack.map(
+        (row,index) =>
+          action.data.index === index ?
+            { ...row, timesPerDayValue: action.data.timesValueChange }
+            : row)
   });
   case ON_DOSEICS_CHANGE:
     return Object.assign({}, state, {
-      doseICSValue: action.data
+      doseICSValue: action.data,
+      stack: state.stack.map(
+        (row,index) =>
+          action.data.index === index ?
+            { ...row, doseICSValue: action.data.doseICSValueChange }
+            : row)
   });
   case ON_MEDICATION_SELECTION:
     return Object.assign({}, state, {
-      medicationSelection: action.data
+      medicationSelection: action.data,
+      stack: state.stack.map(
+        (row,index) =>
+          action.data.index === index ?
+            { ...row, medicationSelection: action.data.selectionChange }
+            : row)
   });
 
   // if this happens print out the list of patient medications
