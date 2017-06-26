@@ -9,8 +9,6 @@ import {
   MEDICATION_TO_STACK,
 } from './constants';
 
-let stackId = 0;
-
 export const getPuffValue = ( puffValue ) => {
   // console.log("action PUFF_VALUE:", puffValue);
   return {
@@ -45,10 +43,7 @@ export const getMedicationSelection = ( medicationSelection ) => {
 export const appendMedicationToStack = ( medicationRow ) => {
   return {
     type: MEDICATION_TO_STACK,
-    data: {
-      id: stackId++,
-      medicationRow
-    },
+    data: medicationRow,
   }
 };
 

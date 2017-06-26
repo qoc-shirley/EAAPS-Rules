@@ -55,7 +55,7 @@ class App extends Component {
         <MedicationTable
           onSubmit={ this.onSubmit }
           onSelection={ this.onMedicationSelection }
-          puffOnChange={ this.onPuffChange }
+          puffOnChange={ this.props.onPuffChange }
           timesOnChange={ this.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
           appendMedicationToStack={this.props.appendMedicationToStack}

@@ -5,7 +5,7 @@ import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
 // import Stack from '../Stack/Stack.jsx';
 import * as actions from '../../redux/App/actions';
-import createFragment from 'react-addons-create-fragment';
+// import createFragment from 'react-addons-create-fragment';
 // import keyIndex from 'react-key-index';
 import './styles.css';
 
@@ -54,40 +54,20 @@ const MedicationTable = (
     <button>Delete Row</button>
   ];
 
-  /*const renderAddRow = () => {
+  const renderAddRow = () => {
     console.log("Add Row");
-    const rowElements = [
-      <InputField
-        fieldName="puff"
-        value={puffValue}
-        onChangeInputField={puffOnChange}
-      />,
-      <InputField
-        fieldName="times"
-        value={timesPerDayValue}
-        onChangeInputField={timesOnChange}
-      />,
-      <InputField
-        fieldName="doseICS"
-        value={doseICSValue}
-        onChangeInputField={doseICSOnChange}
-      />,
-      <select
-        className="row__select" onChange={onSelection}
-        defaultValue={patientMedications}
-      >
-        <option>-Select Medication-</option>
-        <option>ddd</option>
-        <option>b</option>
-        <option>c</option>
-      </select>,
-      <button>Delete Row</button>
-    ];
-
-    const medicationRow = (<Row key = "" elements={rowElements} />);
-    appendMedicationToStack(createFragment({ medicationRow }));
-    //add empty inputfield values(puffValue, times, dose) to stack array
-  };*/
+    // const medicationRow = (<Row key = "" elements={rowElements} />);
+    // appendMedicationToStack(createFragment({ medicationRow }));
+    // add empty inputfield values(puffValue, times, dose) to stack array
+    const initalInputValues =
+      {
+        puffValue: '',
+        timesPerDayValue: '',
+        doseICS: '',
+        patientMedications: '',
+      };
+    appendMedicationToStack(initalInputValues);
+  };
 
   const deleteRow = () => {};
 
@@ -139,6 +119,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ( {
   appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
+  getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);
