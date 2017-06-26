@@ -7,8 +7,6 @@ import './styles.css';
 class App extends Component {
   render() {
 
-    console.log("results: ", this.props.medication.results);
-
     const onSubmitMedications = () => {
       this.props.displayResult(this.props.medication.medicationList);
     };

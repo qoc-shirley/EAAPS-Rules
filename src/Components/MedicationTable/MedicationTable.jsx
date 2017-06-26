@@ -6,10 +6,9 @@ import Row from '../Row/Row.jsx';
 import * as actions from '../../redux/App/actions';
 import './styles.css';
 
-
 const MedicationTable = (
   {
-    appendMedicationList, // onChangeMedicationList (suggestion, change "Change action" to something more meaningful
+    appendMedicationList,
     availableMedications,
     doseICSValue,
     medicationList,
@@ -22,8 +21,6 @@ const MedicationTable = (
     puffValue,
     timesPerDayValue,
   } ) => {
-
-  console.log("medicationList: ", medicationList);
 
   const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
 
