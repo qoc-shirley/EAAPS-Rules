@@ -6,6 +6,7 @@ import {
   ON_SUBMIT,
   ON_DELETE_ROW,
   ON_PUFF_CHANGE,
+  ON_TIMES_CHANGE,
   MEDICATION_TO_STACK,
 } from './constants';
 
@@ -48,6 +49,10 @@ const reducer = ( state = initialState, action ) => {
   case ON_PUFF_CHANGE:
     return Object.assign({}, state, {
       puffValue: action.data
+  });
+  case ON_TIMES_CHANGE:
+    return Object.assign({}, state, {
+      timesPerDayValue: action.data
   });
   // if this happens print out the list of patient medications
   case ON_SUBMIT:

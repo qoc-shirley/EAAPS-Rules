@@ -97,7 +97,7 @@ const MedicationTable = (
        <InputField
          fieldName="times"
          value={timesPerDayValue}
-         onChangeInputField={timesOnChange}
+         onChangeInputField={ (event) => timesOnChange(event.target.value) }
        />
        <InputField
          fieldName="doseICS"
@@ -153,6 +153,7 @@ const mapDispatchToProps = dispatch => ( {
   appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
   getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
   onPuffChange: (value) => dispatch( actions.onPuffChange(value) ),
+  onTimesChange: (value) => dispatch( actions.onPuffChange(value) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);

@@ -56,7 +56,7 @@ class App extends Component {
           onSubmit={ this.onSubmit }
           onSelection={ this.onMedicationSelection }
           puffOnChange={ this.props.onPuffChange }
-          timesOnChange={ this.onTimesChange }
+          timesOnChange={ this.props.onTimesChange }
           doseICSOnChange={ this.onDoseICSChange }
           appendMedicationToStack={this.props.appendMedicationToStack}
           stack={this.props.medication.stack}

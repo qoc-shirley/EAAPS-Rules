@@ -6,6 +6,7 @@ import {
   ON_SUBMIT,
   ON_DELETE_ROW,
   ON_PUFF_CHANGE,
+  ON_TIMES_CHANGE,
   MEDICATION_TO_STACK,
 } from './constants';
 
@@ -47,10 +48,17 @@ export const appendMedicationToStack = ( medicationRow ) => {
   }
 };
 
-export const onPuffChange = ( valueChange ) => {
+export const onPuffChange = ( puffValueChange ) => {
   return {
     type: ON_PUFF_CHANGE,
-    data: valueChange,
+    data: puffValueChange,
+  }
+};
+
+export const onTimesChange = ( timesValuesChange ) => {
+  return {
+    type: ON_TIMES_CHANGE,
+    data: timesValuesChange,
   }
 };
 
@@ -68,20 +76,7 @@ export const onDeleteRow = ( event ) => {
   }
 };
 
-/*export const onAddRow = ( event ) => {
-  return {
-    type: ON_ADD_ROW,
-    data: event,
-  }
-};
-
-export const onPuffChange = ( event ) => {
-  return {
-    type: ON_PUFF_CHANGE,
-    data: event,
-  }
-};
-
+/*
 export const onTimesChange = ( event ) => {
   return {
     type: ON_TIMES_CHANGE,
