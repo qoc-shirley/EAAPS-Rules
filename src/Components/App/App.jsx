@@ -4,17 +4,11 @@ import Header from '../Header/Header.jsx';
 import MedicationTable from '../MedicationTable/MedicationTable.jsx';
 import './styles.css';
 
+const onSubmit = ( event ) => {
+  console.log( this.props.medication.puffValue, " ", this.props.medication.timesPerDayValue ," ", this.props.medication.doseICSValue, " ", this.props.medication.medicationSelection );
+};
+
 class App extends Component {
-  constructor( props ) {
-    super( props );
-    this.onSubmit = this.onSubmit.bind( this );
-  }
-
-  onSubmit( event ) {
-    console.log( this.props.medication.puffValue, " ", this.props.medication.timesPerDayValue ," ", this.props.medication.doseICSValue, " ", this.props.medication.medicationSelection );
-    event.preventDefault();
-  }
-
   render() {
     return (
       <div className="app">
@@ -32,7 +26,7 @@ class App extends Component {
           onDeleteRow={this.props.onDeleteRow}
         />
 
-        <input className="button__submit" type="submit" value="Submit" onClick={this.onSubmit} />
+        <input className="button__submit" type="submit" value="Submit" onClick={onSubmit} />
       </div>
     );
   }

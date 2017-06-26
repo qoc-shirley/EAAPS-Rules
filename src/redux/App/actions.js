@@ -98,9 +98,9 @@ export const onDeleteRow = ( deleteRowIndex ) => {
   }
 };
 
-export const onSubmit = ( event ) => {
+export const onSubmit = ( submit ) => {
   return {
     type: ON_SUBMIT,
-    data: event,
+    data: submit,
   }
 };

@@ -17,9 +17,8 @@ export const initialState = {
   timesPerDayValue: '',
   doseICSValue: '',
   medicationSelection: '',
-  onSubmit: '',
-  onDeleteRow: '',
   stack: [],
+  results: [],
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -43,6 +42,7 @@ const reducer = ( state = initialState, action ) => {
     return Object.assign({}, state, {
       medicationSelection: action.data
   });
+
   case MEDICATION_TO_STACK:
     return Object.assign({}, state, {
       stack: state.stack.concat(action.data)
@@ -58,6 +58,7 @@ const reducer = ( state = initialState, action ) => {
           { ...row, puffValue: action.data.puffValueChange }
           : row)
   });
+
   case ON_TIMES_CHANGE:
     return Object.assign({}, state, {
       timesPerDayValue: action.data,
@@ -67,6 +68,7 @@ const reducer = ( state = initialState, action ) => {
             { ...row, timesPerDayValue: action.data.timesValueChange }
             : row)
   });
+
   case ON_DOSEICS_CHANGE:
     return Object.assign({}, state, {
       doseICSValue: action.data,
@@ -76,6 +78,7 @@ const reducer = ( state = initialState, action ) => {
             { ...row, doseICSValue: action.data.doseICSValueChange }
             : row)
   });
+
   case ON_MEDICATION_SELECTION:
     return Object.assign({}, state, {
       medicationSelection: action.data,
@@ -86,12 +89,6 @@ const reducer = ( state = initialState, action ) => {
             : row)
   });
 
-  // if this happens print out the list of patient medications
-  case ON_SUBMIT:
-    return Object.assign({}, state, {
-      onSubmit: action.data
-  });
-
   case ON_DELETE_ROW:
     return Object.assign({}, state, {
       stack: state.stack.filter( (row, index) => {
@@ -99,6 +96,11 @@ const reducer = ( state = initialState, action ) => {
       })
     }
   );
+
+  case ON_SUBMIT:
+    return Object.assign({}, state, {
+      result: action.data
+  });
 
   default:
     return state;
