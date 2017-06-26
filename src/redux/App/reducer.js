@@ -7,6 +7,7 @@ import {
   ON_DELETE_ROW,
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
+  ON_DOSEICS_CHANGE,
   MEDICATION_TO_STACK,
 } from './constants';
 
@@ -51,6 +52,10 @@ const reducer = ( state = initialState, action ) => {
       puffValue: action.data
   });
   case ON_TIMES_CHANGE:
+    return Object.assign({}, state, {
+      timesPerDayValue: action.data
+  });
+  case ON_DOSEICS_CHANGE:
     return Object.assign({}, state, {
       timesPerDayValue: action.data
   });

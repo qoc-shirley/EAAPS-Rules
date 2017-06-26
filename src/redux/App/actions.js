@@ -7,6 +7,7 @@ import {
   ON_DELETE_ROW,
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
+  ON_DOSEICS_CHANGE,
   MEDICATION_TO_STACK,
 } from './constants';
 
@@ -55,10 +56,17 @@ export const onPuffChange = ( puffValueChange ) => {
   }
 };
 
-export const onTimesChange = ( timesValuesChange ) => {
+export const onTimesChange = ( timesValueChange ) => {
   return {
     type: ON_TIMES_CHANGE,
-    data: timesValuesChange,
+    data: timesValueChange,
+  }
+};
+
+export const onDoseICSChange = ( doseICSValueChange ) => {
+  return {
+    type: ON_DOSEICS_CHANGE,
+    data: doseICSValueChange,
   }
 };
 
@@ -77,20 +85,6 @@ export const onDeleteRow = ( event ) => {
 };
 
 /*
-export const onTimesChange = ( event ) => {
-  return {
-    type: ON_TIMES_CHANGE,
-    data: event,
-  }
-};
-
-export const onDoseICSChange = ( event ) => {
-  return {
-    type: ON_DOSEICS_CHANGE,
-    data: event,
-  }
-};
-
 export const onMedicationSelection = ( event ) => {
   return {
     type: ON_MEDICATION_SELECTION,

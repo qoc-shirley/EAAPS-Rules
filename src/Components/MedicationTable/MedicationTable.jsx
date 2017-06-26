@@ -102,7 +102,7 @@ const MedicationTable = (
        <InputField
          fieldName="doseICS"
          value={doseICSValue}
-         onChangeInputField={doseICSOnChange}
+         onChangeInputField={ (event) => doseICSOnChange(event.target.value) }
        />
        <select
          className="row__select" onChange={onSelection}
@@ -154,6 +154,7 @@ const mapDispatchToProps = dispatch => ( {
   getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
   onPuffChange: (value) => dispatch( actions.onPuffChange(value) ),
   onTimesChange: (value) => dispatch( actions.onPuffChange(value) ),
+  onDoseICSChange: (value) => dispatch( actions.onDoseICSChange(value) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);
