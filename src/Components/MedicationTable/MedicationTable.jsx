@@ -12,7 +12,7 @@ const MedicationTable = (
     puffValue,
     timesPerDayValue,
     doseICSValue,
-    patientMedications,
+    medicationSelection,
     onMedicationSelection,
     puffOnChange,
     timesOnChange,
@@ -33,7 +33,7 @@ const MedicationTable = (
         puffValue: '',
         timesPerDayValue: '',
         doseICSValue: '',
-        patientMedications: '',
+        medicationSelection: '',
       };
     appendMedicationToStack(initalInputValues);
   };
@@ -73,7 +73,7 @@ const MedicationTable = (
               />
               <select
                 className="row__select" onChange={ (event) => onMedicationSelection(index, event.target.value) }
-                defaultValue={patientMedications}
+                defaultValue={medicationSelection}
               >
                 <option>-Select Medication-</option>
                 <option>ddd</option>
