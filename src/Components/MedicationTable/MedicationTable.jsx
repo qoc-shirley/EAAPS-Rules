@@ -141,7 +141,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ( {
   appendMedicationList: (medicationRow) => dispatch( actions.appendMedicationList(medicationRow) ),
-  getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
   onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index, value) ),
   onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),
   onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),

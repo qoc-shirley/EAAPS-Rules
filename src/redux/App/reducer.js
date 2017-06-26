@@ -1,8 +1,4 @@
 import {
-  PUFF_VALUE,
-  TIMES_PER_DAY_VALUE,
-  DOSE_ICS_VALUE,
-  MEDICATION_SELECTION,
   ON_SUBMIT,
   ON_DELETE_ROW,
   ON_PUFF_CHANGE,
@@ -23,26 +19,6 @@ export const initialState = {
 
 const reducer = ( state = initialState, action ) => {
   switch(action.type) {
-    case PUFF_VALUE:
-      return Object.assign({}, state, {
-        puffValue: action.data
-    });
-
-    case TIMES_PER_DAY_VALUE:
-    return Object.assign({}, state, {
-      timesPerDayValue: action.data
-    });
-
-  case DOSE_ICS_VALUE:
-    return Object.assign({}, state, {
-      doseICSValue: action.data
-    });
-
-  case MEDICATION_SELECTION:
-    return Object.assign({}, state, {
-      availableMedications: action.data
-  });
-
   case MEDICATION_TO_STACK:
     return Object.assign({}, state, {
       medicationList: state.medicationList.concat(action.data)

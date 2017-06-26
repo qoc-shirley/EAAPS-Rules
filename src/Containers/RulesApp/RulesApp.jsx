@@ -7,10 +7,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ( {
-  getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
-  getTimesPerDayValue: (value) => dispatch( actions.getTimesPerDayValue(value) ),
-  getDoseICSValue: (value) => dispatch( actions.getDoseICSValue(value) ),
-  getMedicationSelection: (value) => dispatch( actions.getMedicationSelection(value) ),
   appendMedicationList: (medicationRow) => dispatch( actions.appendMedicationList(medicationRow) ),
   onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index,value) ),
   onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),

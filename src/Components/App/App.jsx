@@ -2,14 +2,30 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header.jsx';
 import MedicationTable from '../MedicationTable/MedicationTable.jsx';
-// import medicationData from '../MedicationData.js';
+import _ from 'lodash';
+import medicationData from '../MedicationData.js';
 import './styles.css';
 
 class App extends Component {
   render() {
     const onSubmitMedications = () => {
       //filter data from medicationList from medicationData and display it in results
+      const filteredData = _
+        .chain( this.props.medication.medicationList )
+        .reduce(filteredData, medication => {
+          filteredData.push(_
+            .chain(medicationData)
+            .filter((masterMedication) => {
+              return medication.timesPerDayValue === masterMedication.timesPerDay &&
+                     medication.doseICSValue === masterMedication.doseICS
+            })
+            .value()
+          );
+        }, [])
+        .value();
       this.props.displayResult(this.props.medication.medicationList);
+      console.log("display: ", filteredData);
+
     };
 
     return (
