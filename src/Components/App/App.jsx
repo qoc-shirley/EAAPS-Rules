@@ -10,7 +10,7 @@ class App extends Component {
     console.log("results: ", this.props.medication.results);
 
     const onSubmit = () => {
-      this.props.displayResult("display results");
+      this.props.displayResult(this.props.medication.stack);
     };
 
     return (
@@ -34,7 +34,15 @@ class App extends Component {
 
         <div className="results">
           <p>Your Medication(s): </p>
-          {this.props.medication.results}
+          {this.props.medication.results.map( (row, index) => (
+            <div key={index}>
+              <p>{index}: </p>
+              <p>Puff Value: {row.puffValue}</p>
+              <p>Times Per Day: {row.timesPerDayValue}</p>
+              <p>Dose ICS: {row.doseICSValue}</p>
+              <p>Medication: {row.medicationSelection}</p>
+            </div>
+          ))}
         </div>
       </div>
     );
