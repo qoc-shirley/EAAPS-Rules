@@ -49,9 +49,14 @@ const reducer = ( state = initialState, action ) => {
   });
 
   // OnChange functions
-  case ON_PUFF_CHANGE:
+    case ON_PUFF_CHANGE:
     return Object.assign({}, state, {
-      puffValue: action.data
+      puffValue: action.data,
+      stack: state.stack.map(
+        (row,index) =>
+          action.data.index === index ?
+          { ...row, puffValue: action.data.puffValueChange }
+          : row)
   });
   case ON_TIMES_CHANGE:
     return Object.assign({}, state, {

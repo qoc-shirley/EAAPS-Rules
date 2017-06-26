@@ -50,31 +50,44 @@ export const appendMedicationToStack = ( medicationRow ) => {
   }
 };
 
-export const onPuffChange = ( puffValueChange ) => {
+//OnChange Functions
+export const onPuffChange = ( index, puffValueChange ) => {
   return {
     type: ON_PUFF_CHANGE,
-    data: puffValueChange,
+    data: {
+      index,
+      puffValueChange,
+    },
   }
 };
 
-export const onTimesChange = ( timesValueChange ) => {
+export const onTimesChange = ( index, timesValueChange ) => {
   return {
     type: ON_TIMES_CHANGE,
-    data: timesValueChange,
+    data: {
+      index,
+      timesValueChange,
+    },
   }
 };
 
-export const onDoseICSChange = ( doseICSValueChange ) => {
+export const onDoseICSChange = ( index, doseICSValueChange ) => {
   return {
     type: ON_DOSEICS_CHANGE,
-    data: doseICSValueChange,
+    data: {
+      index,
+      doseICSValueChange,
+    },
   }
 };
 
-export const onMedicationSelection = ( selectionChange ) => {
+export const onMedicationSelection = ( index, selectionChange ) => {
   return {
     type: ON_MEDICATION_SELECTION,
-    data: selectionChange,
+    data: {
+      index,
+      selectionChange,
+    },
   }
 };
 
