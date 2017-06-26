@@ -78,16 +78,16 @@ export const onMedicationSelection = ( selectionChange ) => {
   }
 };
 
-export const onSubmit = ( event ) => {
+export const onDeleteRow = ( deleteRowIndex ) => {
   return {
-    type: ON_SUBMIT,
-    data: event,
+    type: ON_DELETE_ROW,
+    data: deleteRowIndex,
   }
 };
 
-export const onDeleteRow = ( event ) => {
+export const onSubmit = ( event ) => {
   return {
-    type: ON_DELETE_ROW,
+    type: ON_SUBMIT,
     data: event,
   }
 };

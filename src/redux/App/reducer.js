@@ -74,8 +74,11 @@ const reducer = ( state = initialState, action ) => {
 
   case ON_DELETE_ROW:
     return Object.assign({}, state, {
-      onDeleteRow: action.data
-  });
+      stack: state.stack.filter( (row, index) => {
+        return index !== action.data
+      })
+    }
+  );
 
   default:
     return state;
