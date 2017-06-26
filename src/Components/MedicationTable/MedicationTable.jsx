@@ -85,7 +85,7 @@ const MedicationTable = (
       - maybe create another Row component for medicene rows
       - ul outside and inside the component <li>row</li>
       here:
-      stack.map and add information to element tags
+      stack.map(item, index) => return add information to element tags to render row
 
      */}
      <div className="main">
