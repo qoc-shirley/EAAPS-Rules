@@ -142,10 +142,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ( {
   appendMedicationList: (medicationRow) => dispatch( actions.appendMedicationList(medicationRow) ),
   getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
-  onPuffChange: (index, value) => dispatch( actions.onPuffChange(index, value) ),
-  onTimesChange: (index, value) => dispatch( actions.onPuffChange(index, value) ),
-  onDoseICSChange: (index, value) => dispatch( actions.onDoseICSChange(index, value) ),
-  onMedicationSelection: (index, value) => dispatch( actions.onMedicationSelection(index, value) ),
+  onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index, value) ),
+  onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),
+  onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),
+  onChangeMedication: (index, value) => dispatch( actions.onChangeMedication(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
 } );
 

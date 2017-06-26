@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header.jsx';
 import MedicationTable from '../MedicationTable/MedicationTable.jsx';
-import medicationData from '../MedicationData.js';
+// import medicationData from '../MedicationData.js';
 import './styles.css';
 
 class App extends Component {
@@ -19,9 +19,9 @@ class App extends Component {
         <MedicationTable
           onSubmitMedications={ this.onSubmitMedications }
           onChangeMedication={ this.props.onMedicationSelection }
-          onChangePuffValue={ this.props.onPuffChange }
-          onChangeTimesPerDayValue={ this.props.onTimesChange }
-          onChangeDoseICS={ this.props.onDoseICSChange }
+          onChangePuffValue={ this.props.onChangePuffValue }
+          onChangeTimesPerDayValue={ this.props.onChangeTimesPerDayValue }
+          onChangeDoseICS={ this.props.onChangeDoseICS }
           appendMedicationList={this.props.appendMedicationList}
           medicationList={this.props.medication.medicationList}
           onClickDeleteMedication={this.props.onDeleteRow}

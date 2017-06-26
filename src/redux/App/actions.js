@@ -48,7 +48,7 @@ export const appendMedicationList = ( medicationRow ) => {
 };
 
 //OnChange Functions
-export const onPuffChange = ( index, puffValueChange ) => {
+export const onChangePuffValue = ( index, puffValueChange ) => {
   return {
     type: ON_PUFF_CHANGE,
     data: {
@@ -58,7 +58,7 @@ export const onPuffChange = ( index, puffValueChange ) => {
   }
 };
 
-export const onTimesChange = ( index, timesValueChange ) => {
+export const onChangeTimesPerDayValue = ( index, timesValueChange ) => {
   return {
     type: ON_TIMES_CHANGE,
     data: {
@@ -68,7 +68,7 @@ export const onTimesChange = ( index, timesValueChange ) => {
   }
 };
 
-export const onDoseICSChange = ( index, doseICSValueChange ) => {
+export const onChangeDoseICS = ( index, doseICSValueChange ) => {
   return {
     type: ON_DOSEICS_CHANGE,
     data: {
@@ -78,7 +78,7 @@ export const onDoseICSChange = ( index, doseICSValueChange ) => {
   }
 };
 
-export const onMedicationSelection = ( index, selectionChange ) => {
+export const onChangeMedication = ( index, selectionChange ) => {
   return {
     type: ON_MEDICATION_SELECTION,
     data: {
