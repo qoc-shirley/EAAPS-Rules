@@ -92,7 +92,7 @@ const MedicationTable = (
        <InputField
          fieldName="puff"
          value={puffValue}
-         onChangeInputField={puffOnChange}
+         onChangeInputField={ (event) => puffOnChange(event.target.value) }
        />
        <InputField
          fieldName="times"
@@ -152,6 +152,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ( {
   appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
   getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
+  onPuffChange: (value) => dispatch( actions.onPuffChange(value) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);
