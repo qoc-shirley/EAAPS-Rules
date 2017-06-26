@@ -9,8 +9,8 @@ class App extends Component {
 
     console.log("results: ", this.props.medication.results);
 
-    const onSubmit = () => {
-      this.props.displayResult(this.props.medication.stack);
+    const onSubmitMedications = () => {
+      this.props.displayResult(this.props.medication.medicationList);
     };
 
     return (
@@ -19,17 +19,17 @@ class App extends Component {
           <Header />
         </div>
         <MedicationTable
-          onSubmit={ this.onSubmit }
-          onMedicationSelection={ this.props.onMedicationSelection }
-          puffOnChange={ this.props.onPuffChange }
-          timesOnChange={ this.props.onTimesChange }
-          doseICSOnChange={ this.props.onDoseICSChange }
-          appendMedicationToStack={this.props.appendMedicationToStack}
-          stack={this.props.medication.stack}
-          onDeleteRow={this.props.onDeleteRow}
+          onSubmitMedications={ this.onSubmitMedications }
+          onChangeMedication={ this.props.onMedicationSelection }
+          onChangePuffValue={ this.props.onPuffChange }
+          onChangeTimesPerDayValue={ this.props.onTimesChange }
+          onChangeDoseICS={ this.props.onDoseICSChange }
+          appendMedicationList={this.props.appendMedicationList}
+          medicationList={this.props.medication.medicationList}
+          onClickDeleteMedication={this.props.onDeleteRow}
         />
         <div className="button">
-          <input className="submit" type="submit" value="Submit" onClick={ onSubmit } />
+          <input className="submit" type="submit" value="Submit" onClick={ onSubmitMedications } />
         </div>
 
         <div className="results">
@@ -40,7 +40,7 @@ class App extends Component {
               <p>Puff Value: {row.puffValue}</p>
               <p>Times Per Day: {row.timesPerDayValue}</p>
               <p>Dose ICS: {row.doseICSValue}</p>
-              <p>Medication: {row.medicationSelection}</p>
+              <p>Medication: {row.availableMedications}</p>
             </div>
           ))}
         </div>

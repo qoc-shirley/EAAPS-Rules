@@ -9,85 +9,103 @@ import './styles.css';
 
 const MedicationTable = (
   {
+    appendMedicationList, // onChangeMedicationList (suggestion, change "Change action" to something more meaningful
+    availableMedications,
+    doseICSValue,
+    medicationList,
+    onChangeDoseICS,
+    onChangeMedication,
+    onChangePuffValue,
+    onChangeTimesPerDayValue,
+    onClickDeleteMedication,
+    onSubmitMedications,
     puffValue,
     timesPerDayValue,
-    doseICSValue,
-    medicationSelection,
-    onMedicationSelection,
-    puffOnChange,
-    timesOnChange,
-    doseICSOnChange,
-    onSubmit,
-    appendMedicationToStack,
-    stack,
-    onDeleteRow,
   } ) => {
 
-  console.log("stack: ", stack);
+  console.log("medicationList: ", medicationList);
 
   const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
 
   const renderAddRow = () => {
     const initalInputValues =
       {
+        doseICSValue: '',
+        availableMedications: '',
         puffValue: '',
         timesPerDayValue: '',
-        doseICSValue: '',
-        medicationSelection: '',
       };
-    appendMedicationToStack(initalInputValues);
+    appendMedicationList(initalInputValues);
   };
 
   const deleteRow = (index) => {
-    console.log("delete Row: index to delete from stack", index);
-    onDeleteRow(index);
-
+    onClickDeleteMedication(index);
   };
 
+  const displayRowContents = () => {
+    return(
+      medicationList.map( (rowFields, index) => (
+        <div key={index} className="row">
+          <InputField
+            fieldName="puff"
+            value={puffValue}
+            onChangeInputField={ (event) => onChangePuffValue(index, event.target.value) }
+          />
+          <InputField
+            fieldName="times"
+            value={timesPerDayValue}
+            onChangeInputField={ (event) => onChangeTimesPerDayValue(index, event.target.value) }
+          />
+          <InputField
+            fieldName="doseICS"
+            value={doseICSValue}
+            onChangeInputField={ (event) => onChangeDoseICS(index, event.target.value) }
+          />
+          <select
+            className="row__select" onChange={ (event) => onChangeMedication(index, event.target.value) }
+            defaultValue={availableMedications}
+          >
+            {/*get it from external list*/}
+            <option>ChemicalLABA-ChemicalICS-ChemicalOther</option>
+              <option>formoterol-.-. </option>
+              <option>salmeterol-fluticasone-.</option>
+              <option>.-fluticasone-.</option>
+              <option>salmeterol-.-.</option>
+              <option>.-.-salbutamol</option>
+              <option>.-.-tiotropium</option>
+              <option>.-ciclesonide-.</option>
+              <option>.-beclomethasone-.</option>
+              <option>.-.-ipratropium</option>
+              <option>formoterol-mometasone-.</option>
+              <option>.-.-zafirlukast</option>
+              <option>.-.-montelukast</option>
+              <option>.-.-terbutaline</option>
+              <option>.-budesonide-.</option>
+              <option>formoterol-budesonide-.</option>
+              <option>.-mometasone-.</option>
+        </select>
+        <button
+          className="button_deleteRow"
+          onClick={ () => deleteRow(index) }
+        >
+          Delete Row
+        </button>
+      </div>
+    )));
+  };
  return (
-   <div className="medication-table" onSubmit={onSubmit}>
+   <div className="medication-table" onSubmit={onSubmitMedications}>
      <div className="header">
        <ul>
-        <Row elements={headerElements} />
+        <Row>
+          {headerElements}
+        </Row>
        </ul>
      </div>
 
      <div className="main">
         <ul>
-          {stack.map( (rowFields, index) => (
-            <div key={index} className="row">
-              <InputField
-                fieldName="puff"
-                value={puffValue}
-                onChangeInputField={ (event) => puffOnChange(index, event.target.value) }
-              />
-              <InputField
-                fieldName="times"
-                value={timesPerDayValue}
-                onChangeInputField={ (event) => timesOnChange(index, event.target.value) }
-                />
-              <InputField
-                fieldName="doseICS"
-                value={doseICSValue}
-                onChangeInputField={ (event) => doseICSOnChange(index, event.target.value) }
-              />
-              <select
-                className="row__select" onChange={ (event) => onMedicationSelection(index, event.target.value) }
-                defaultValue={medicationSelection}
-              >
-                <option>-Select Medication-</option>
-                <option>ddd</option>
-                <option>b</option>
-                <option>c</option>
-                </select>
-                <button
-                  className="button_deleteRow"
-                  onClick={ () => deleteRow(index) }
-                >
-                  Delete Row
-                </button>
-            </div>
-          ))}
+          {displayRowContents()}
         </ul>
      </div>
      <button
@@ -111,7 +129,7 @@ MedicationTable.propTypes = {
   timesOnChange: PropTypes.func,
   doseICSOnChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  appendMedicationToStack: PropTypes.func.isRequired,
+  appendMedicationList: PropTypes.func.isRequired,
 };
 
 MedicationTable.defaultProps = {
@@ -125,7 +143,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ( {
-  appendMedicationToStack: (medicationRow) => dispatch( actions.appendMedicationToStack(medicationRow) ),
+  appendMedicationList: (medicationRow) => dispatch( actions.appendMedicationList(medicationRow) ),
   getPuffValue: (value) => dispatch( actions.getPuffValue(value) ),
   onPuffChange: (index, value) => dispatch( actions.onPuffChange(index, value) ),
   onTimesChange: (index, value) => dispatch( actions.onPuffChange(index, value) ),

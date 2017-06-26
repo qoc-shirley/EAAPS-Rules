@@ -16,8 +16,8 @@ export const initialState = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',
-  medicationSelection: '',
-  stack: [],
+  availableMedications: '',
+  medicationList: [],
   results: [],
 };
 
@@ -40,19 +40,19 @@ const reducer = ( state = initialState, action ) => {
 
   case MEDICATION_SELECTION:
     return Object.assign({}, state, {
-      medicationSelection: action.data
+      availableMedications: action.data
   });
 
   case MEDICATION_TO_STACK:
     return Object.assign({}, state, {
-      stack: state.stack.concat(action.data)
+      medicationList: state.medicationList.concat(action.data)
   });
 
   // OnChange functions
     case ON_PUFF_CHANGE:
     return Object.assign({}, state, {
       puffValue: action.data,
-      stack: state.stack.map(
+      medicationList: state.medicationList.map(
         (row,index) =>
           action.data.index === index ?
           { ...row, puffValue: action.data.puffValueChange }
@@ -62,7 +62,7 @@ const reducer = ( state = initialState, action ) => {
   case ON_TIMES_CHANGE:
     return Object.assign({}, state, {
       timesPerDayValue: action.data,
-      stack: state.stack.map(
+      medicationList: state.medicationList.map(
         (row,index) =>
           action.data.index === index ?
             { ...row, timesPerDayValue: action.data.timesValueChange }
@@ -72,7 +72,7 @@ const reducer = ( state = initialState, action ) => {
   case ON_DOSEICS_CHANGE:
     return Object.assign({}, state, {
       doseICSValue: action.data,
-      stack: state.stack.map(
+      medicationList: state.medicationList.map(
         (row,index) =>
           action.data.index === index ?
             { ...row, doseICSValue: action.data.doseICSValueChange }
@@ -81,17 +81,17 @@ const reducer = ( state = initialState, action ) => {
 
   case ON_MEDICATION_SELECTION:
     return Object.assign({}, state, {
-      medicationSelection: action.data,
-      stack: state.stack.map(
+      availableMedications: action.data,
+      medicationList: state.medicationList.map(
         (row,index) =>
           action.data.index === index ?
-            { ...row, medicationSelection: action.data.selectionChange }
+            { ...row, availableMedications: action.data.selectionChange }
             : row)
   });
 
   case ON_DELETE_ROW:
     return Object.assign({}, state, {
-      stack: state.stack.filter( (row, index) => {
+      medicationList: state.medicationList.filter( (row, index) => {
         return index !== action.data
       })
     }

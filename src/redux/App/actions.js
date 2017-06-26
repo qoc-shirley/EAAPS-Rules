@@ -13,7 +13,6 @@ import {
 } from './constants';
 
 export const getPuffValue = ( puffValue ) => {
-  // console.log("action PUFF_VALUE:", puffValue);
   return {
     type: PUFF_VALUE,
     data: puffValue,
@@ -21,7 +20,6 @@ export const getPuffValue = ( puffValue ) => {
 };
 
 export const getTimesPerDayValue = ( timesPerDayValue ) => {
-  // console.log("action TIMES_PER_DAY_VALUE: ",timesPerDayValue);
   return {
     type: TIMES_PER_DAY_VALUE,
     data: timesPerDayValue,
@@ -29,7 +27,6 @@ export const getTimesPerDayValue = ( timesPerDayValue ) => {
 };
 
 export const getDoseICSValue = ( doseICSValue ) => {
-  // console.log("action DOSE_ICS_VALUE: ", doseICSValue);
   return {
     type: DOSE_ICS_VALUE,
     data: doseICSValue,
@@ -43,7 +40,7 @@ export const getMedicationSelection = ( medicationSelection ) => {
   }
 };
 
-export const appendMedicationToStack = ( medicationRow ) => {
+export const appendMedicationList = ( medicationRow ) => {
   return {
     type: MEDICATION_TO_STACK,
     data: medicationRow,
