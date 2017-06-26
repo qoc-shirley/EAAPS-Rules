@@ -8,6 +8,7 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
+  ON_MEDICATION_SELECTION,
   MEDICATION_TO_STACK,
 } from './constants';
 
@@ -57,7 +58,11 @@ const reducer = ( state = initialState, action ) => {
   });
   case ON_DOSEICS_CHANGE:
     return Object.assign({}, state, {
-      timesPerDayValue: action.data
+      doesICSValue: action.data
+  });
+  case ON_MEDICATION_SELECTION:
+    return Object.assign({}, state, {
+      medicationSelection: action.data
   });
   // if this happens print out the list of patient medications
   case ON_SUBMIT:

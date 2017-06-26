@@ -16,7 +16,7 @@ const MedicationTable = (
     timesPerDayValue,
     doseICSValue,
     patientMedications,
-    onSelection,
+    onMedicationSelection,
     puffOnChange,
     timesOnChange,
     doseICSOnChange,
@@ -28,33 +28,6 @@ const MedicationTable = (
   console.log("stack: ", stack);
 
   const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
-  const rowElements = [
-    <InputField
-      fieldName="puff"
-      value={puffValue}
-      onChangeInputField={puffOnChange}
-    />,
-    <InputField
-      fieldName="times"
-      value={timesPerDayValue}
-      onChangeInputField={timesOnChange}
-    />,
-    <InputField
-      fieldName="doseICS"
-      value={doseICSValue}
-      onChangeInputField={doseICSOnChange}
-    />,
-    <select
-      className="row__select" onChange={onSelection}
-      defaultValue={patientMedications}
-    >
-      <option>-Select Medication-</option>
-      <option>ddd</option>
-      <option>b</option>
-      <option>c</option>
-    </select>,
-    <button>Delete Row</button>
-  ];
 
   const renderAddRow = () => {
     console.log("Add Row");
@@ -65,7 +38,7 @@ const MedicationTable = (
       {
         puffValue: '',
         timesPerDayValue: '',
-        doseICS: '',
+        doseICSValue: '',
         patientMedications: '',
       };
     appendMedicationToStack(initalInputValues);
@@ -105,7 +78,7 @@ const MedicationTable = (
          onChangeInputField={ (event) => doseICSOnChange(event.target.value) }
        />
        <select
-         className="row__select" onChange={onSelection}
+         className="row__select" onChange={ (event) => onMedicationSelection(event.target.value) }
          defaultValue={patientMedications}
        >
          <option>-Select Medication-</option>
@@ -155,6 +128,7 @@ const mapDispatchToProps = dispatch => ( {
   onPuffChange: (value) => dispatch( actions.onPuffChange(value) ),
   onTimesChange: (value) => dispatch( actions.onPuffChange(value) ),
   onDoseICSChange: (value) => dispatch( actions.onDoseICSChange(value) ),
+  onMedicationSelection: (value) => dispatch( actions.onMedicationSelection(value) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);

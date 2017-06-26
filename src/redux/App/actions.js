@@ -8,6 +8,7 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
+  ON_MEDICATION_SELECTION,
   MEDICATION_TO_STACK,
 } from './constants';
 
@@ -67,6 +68,13 @@ export const onDoseICSChange = ( doseICSValueChange ) => {
   return {
     type: ON_DOSEICS_CHANGE,
     data: doseICSValueChange,
+  }
+};
+
+export const onMedicationSelection = ( selectionChange ) => {
+  return {
+    type: ON_MEDICATION_SELECTION,
+    data: selectionChange,
   }
 };
 

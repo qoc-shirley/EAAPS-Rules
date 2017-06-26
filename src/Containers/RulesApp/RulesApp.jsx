@@ -17,6 +17,7 @@ const mapDispatchToProps = dispatch => ( {
   onPuffChange: (value) => dispatch( actions.onPuffChange(value) ),
   onTimesChange: (value) => dispatch( actions.onTimesChange(value) ),
   onDoseICSChange: (value) => dispatch( actions.onDoseICSChange(value) ),
+  onMedicationSelection: (value) => dispatch( actions.onMedicationSelection(value) ),
 
   onSubmit: (e) => dispatch( actions.onSubmit(e.target.value) ),
   onDeleteRow: (e) => dispatch( actions.onDeleteRow(e.target.value) ),

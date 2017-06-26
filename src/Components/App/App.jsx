@@ -54,7 +54,7 @@ class App extends Component {
         </div>
         <MedicationTable
           onSubmit={ this.onSubmit }
-          onSelection={ this.onMedicationSelection }
+          onMedicationSelection={ this.props.onMedicationSelection }
           puffOnChange={ this.props.onPuffChange }
           timesOnChange={ this.props.onTimesChange }
           doseICSOnChange={ this.props.onDoseICSChange }
