@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
-// import Stack from '../Stack/Stack.jsx';
 import * as actions from '../../redux/App/actions';
-// import createFragment from 'react-addons-create-fragment';
-// import keyIndex from 'react-key-index';
 import './styles.css';
 
 
@@ -30,8 +27,6 @@ const MedicationTable = (
   const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
 
   const renderAddRow = () => {
-    console.log("Add Row");
-    // add empty inputfield values(puffValue, times, dose) to stack array
     const initalInputValues =
       {
         puffValue: '',
@@ -42,11 +37,11 @@ const MedicationTable = (
     appendMedicationToStack(initalInputValues);
   };
 
-  // const deleteRow = () => {};
+  const deleteRow = () => {
+    console.log("delete Row");
 
-  // stack will have input field information
-  // use map to go though stack and output the medicationRow
-  // use index of each row as a key
+  };
+
  return (
    <div className="medication-table" onSubmit={onSubmit}>
      <div className="header">
@@ -83,7 +78,12 @@ const MedicationTable = (
                 <option>b</option>
                 <option>c</option>
                 </select>
-                <button>Delete Row</button>
+                <button
+                  className="button_deleteRow"
+                  onClick={deleteRow}
+                >
+                  Delete Row
+                </button>
             </div>
           ))}
         </ul>
