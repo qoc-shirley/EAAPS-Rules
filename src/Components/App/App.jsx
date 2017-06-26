@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header.jsx';
 import MedicationTable from '../MedicationTable/MedicationTable.jsx';
+import medicationData from '../MedicationData.js';
 import './styles.css';
 
 class App extends Component {
   render() {
-
     const onSubmitMedications = () => {
       this.props.displayResult(this.props.medication.medicationList);
     };
@@ -41,6 +41,9 @@ class App extends Component {
               <p>Medication: {row.availableMedications}</p>
             </div>
           ))}
+        </div>
+        <div>
+
         </div>
       </div>
     );
