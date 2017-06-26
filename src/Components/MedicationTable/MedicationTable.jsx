@@ -22,8 +22,10 @@ const MedicationTable = (
     doseICSOnChange,
     onSubmit,
     appendMedicationToStack,
-    // stack,
+    stack,
   } ) => {
+
+  console.log("stack: ", stack);
 
   const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
   const rowElements = [
@@ -69,7 +71,7 @@ const MedicationTable = (
     appendMedicationToStack(initalInputValues);
   };
 
-  const deleteRow = () => {};
+  // const deleteRow = () => {};
 
   // stack will have input field information
   // use map to go though stack and output the medicationRow
@@ -87,8 +89,38 @@ const MedicationTable = (
 
      */}
      <div className="main">
-       <Row elements={rowElements} />
+       <InputField
+         fieldName="puff"
+         value={puffValue}
+         onChangeInputField={puffOnChange}
+       />
+       <InputField
+         fieldName="times"
+         value={timesPerDayValue}
+         onChangeInputField={timesOnChange}
+       />
+       <InputField
+         fieldName="doseICS"
+         value={doseICSValue}
+         onChangeInputField={doseICSOnChange}
+       />
+       <select
+         className="row__select" onChange={onSelection}
+         defaultValue={patientMedications}
+       >
+         <option>-Select Medication-</option>
+         <option>ddd</option>
+         <option>b</option>
+         <option>c</option>
+       </select>
+       <button>Delete Row</button>
      </div>
+     <button
+       className="button__addRow"
+       onClick={renderAddRow}
+     >
+       Add Row
+     </button>
    </div>
  );
 };
@@ -104,7 +136,7 @@ MedicationTable.propTypes = {
   timesOnChange: PropTypes.func,
   doseICSOnChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  getMedicationToStack: PropTypes.func.isRequired,
+  appendMedicationToStack: PropTypes.func.isRequired,
 };
 
 MedicationTable.defaultProps = {
