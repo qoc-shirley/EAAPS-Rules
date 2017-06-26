@@ -5,3 +5,7 @@
 .medication-table .main .row{
     background: #e2e2e2;
 }
+
+.medication-table .main ul {
+    padding: 0;
+}

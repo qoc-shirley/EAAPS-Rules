@@ -1,3 +1,16 @@
 .app {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.app .button .submit {
+    margin: 10px;
+}
+
+.app .results {
+    border: solid 2px #ccc;
+    padding: 10px;
+    margin: 20px;
 }

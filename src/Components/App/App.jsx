@@ -7,16 +7,10 @@ import './styles.css';
 class App extends Component {
   render() {
 
-    console.log("results: ", this.props.medication.result);
+    console.log("results: ", this.props.medication.results);
 
     const onSubmit = () => {
       this.props.displayResult("display results");
-      return(
-        <div className="results">
-          <p>Your Medication(s): </p>
-         {this.props.medication.result}
-        </div>
-      );
     };
 
     return (
@@ -34,8 +28,14 @@ class App extends Component {
           stack={this.props.medication.stack}
           onDeleteRow={this.props.onDeleteRow}
         />
+        <div className="button">
+          <input className="submit" type="submit" value="Submit" onClick={ onSubmit } />
+        </div>
 
-        <input className="button__submit" type="submit" value="Submit" onClick={ onSubmit } />
+        <div className="results">
+          <p>Your Medication(s): </p>
+          {this.props.medication.results}
+        </div>
       </div>
     );
   }

@@ -99,7 +99,7 @@ const reducer = ( state = initialState, action ) => {
 
   case ON_SUBMIT:
     return Object.assign({}, state, {
-      results: action.data
+      results: action.data,
   });
 
   default:
