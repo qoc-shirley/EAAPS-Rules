@@ -8,6 +8,7 @@ import './styles.css';
 class App extends Component {
   render() {
     const onSubmitMedications = () => {
+      //filter data from medicationList from medicationData and display it in results
       this.props.displayResult(this.props.medication.medicationList);
     };
 
