@@ -31,8 +31,6 @@ const MedicationTable = (
 
   const renderAddRow = () => {
     console.log("Add Row");
-    // const medicationRow = (<Row key = "" elements={rowElements} />);
-    // appendMedicationToStack(createFragment({ medicationRow }));
     // add empty inputfield values(puffValue, times, dose) to stack array
     const initalInputValues =
       {
@@ -56,42 +54,39 @@ const MedicationTable = (
         <Row elements={headerElements} />
        </ul>
      </div>
-     {/*
-      - maybe create another Row component for medicene rows
-      - ul outside and inside the component <li>row</li>
-      here:
-      stack.map(item, index) => return add information to element tags to render row
 
-     */}
      <div className="main">
-       <InputField
-         fieldName="puff"
-         value={puffValue}
-         onChangeInputField={ (event) => puffOnChange(event.target.value) }
-       />
-       <InputField
-         fieldName="times"
-         value={timesPerDayValue}
-         onChangeInputField={ (event) => timesOnChange(event.target.value) }
-       />
-       <InputField
-         fieldName="doseICS"
-         value={doseICSValue}
-         onChangeInputField={ (event) => doseICSOnChange(event.target.value) }
-       />
-       <select
-         className="row__select" onChange={ (event) => onMedicationSelection(event.target.value) }
-         defaultValue={patientMedications}
-       >
-         <option>-Select Medication-</option>
-         <option>ddd</option>
-         <option>b</option>
-         <option>c</option>
-       </select>
-       <button>Delete Row</button>
-     </div>
-     <div className="test">
-
+        <ul>
+          {stack.map( (rowFields, index) => (
+            <div key={index} className="row">
+              <InputField
+                fieldName="puff"
+                value={puffValue}
+                onChangeInputField={ (event) => puffOnChange(event.target.value) }
+              />
+              <InputField
+                fieldName="times"
+                value={timesPerDayValue}
+                onChangeInputField={ (event) => timesOnChange(event.target.value) }
+                />
+              <InputField
+                fieldName="doseICS"
+                value={doseICSValue}
+                onChangeInputField={ (event) => doseICSOnChange(event.target.value) }
+              />
+              <select
+                className="row__select" onChange={ (event) => onMedicationSelection(event.target.value) }
+                defaultValue={patientMedications}
+              >
+                <option>-Select Medication-</option>
+                <option>ddd</option>
+                <option>b</option>
+                <option>c</option>
+                </select>
+                <button>Delete Row</button>
+            </div>
+          ))}
+        </ul>
      </div>
      <button
        className="button__addRow"

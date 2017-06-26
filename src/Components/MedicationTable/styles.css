@@ -2,7 +2,6 @@
     background: #ccc;
 }
 
-.medication-table .main {
-    padding: 20px;
+.medication-table .main .row{
     background: #e2e2e2;
 }
