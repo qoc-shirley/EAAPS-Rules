@@ -54,7 +54,7 @@ const MedicationTable = (
     <button>Delete Row</button>
   ];
 
-  const renderAddRow = () => {
+  /*const renderAddRow = () => {
     console.log("Add Row");
     const rowElements = [
       <InputField
@@ -87,7 +87,7 @@ const MedicationTable = (
     const medicationRow = (<Row key = "" elements={rowElements} />);
     appendMedicationToStack(createFragment({ medicationRow }));
     //add empty inputfield values(puffValue, times, dose) to stack array
-  };
+  };*/
 
   const deleteRow = () => {};
 
