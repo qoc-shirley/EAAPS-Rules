@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import './styles.css';
 
 const Row = ( {elements} ) => {
-  console.log("elements: ",elements);
+  // console.log("elements: ",elements);
 
   // const uniqueKey = keyIndex(elements,1);
   // console.log("elements with UniqueId: ", uniqueKey );
@@ -18,7 +18,7 @@ const Row = ( {elements} ) => {
        <li key={index}>{element}</li>
       ))
     .value();
-  console.log("elements: ", items);
+  // console.log("elements: ", items);
  return (
    <div className="row">
       <ul>

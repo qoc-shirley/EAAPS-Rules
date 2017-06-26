@@ -59,7 +59,7 @@ const reducer = ( state = initialState, action ) => {
   });
   case ON_DOSEICS_CHANGE:
     return Object.assign({}, state, {
-      doesICSValue: action.data
+      doseICSValue: action.data
   });
   case ON_MEDICATION_SELECTION:
     return Object.assign({}, state, {
