@@ -29,6 +29,7 @@ class App extends Component {
           doseICSOnChange={ this.props.onDoseICSChange }
           appendMedicationToStack={this.props.appendMedicationToStack}
           stack={this.props.medication.stack}
+          onDeleteRow={this.props.onDeleteRow}
         />
 
         <input className="button__submit" type="submit" value="Submit" onClick={this.onSubmit} />

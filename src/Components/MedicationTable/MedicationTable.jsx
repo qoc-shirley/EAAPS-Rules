@@ -20,6 +20,7 @@ const MedicationTable = (
     onSubmit,
     appendMedicationToStack,
     stack,
+    onDeleteRow,
   } ) => {
 
   console.log("stack: ", stack);
@@ -37,8 +38,9 @@ const MedicationTable = (
     appendMedicationToStack(initalInputValues);
   };
 
-  const deleteRow = () => {
-    console.log("delete Row");
+  const deleteRow = (index) => {
+    console.log("delete Row: index to delete from stack", index);
+    onDeleteRow(index);
 
   };
 
@@ -80,7 +82,7 @@ const MedicationTable = (
                 </select>
                 <button
                   className="button_deleteRow"
-                  onClick={deleteRow}
+                  onClick={ () => deleteRow(index) }
                 >
                   Delete Row
                 </button>
@@ -129,6 +131,7 @@ const mapDispatchToProps = dispatch => ( {
   onTimesChange: (value) => dispatch( actions.onPuffChange(value) ),
   onDoseICSChange: (value) => dispatch( actions.onDoseICSChange(value) ),
   onMedicationSelection: (value) => dispatch( actions.onMedicationSelection(value) ),
+  onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);
