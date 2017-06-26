@@ -91,11 +91,3 @@ export const onDeleteRow = ( event ) => {
     data: event,
   }
 };
-
-/*
-export const onMedicationSelection = ( event ) => {
-  return {
-    type: ON_MEDICATION_SELECTION,
-    data: event,
-  }
-};*/

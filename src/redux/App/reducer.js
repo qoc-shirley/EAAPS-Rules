@@ -43,11 +43,12 @@ const reducer = ( state = initialState, action ) => {
     return Object.assign({}, state, {
       medicationSelection: action.data
   });
-    //example used ...state.projects, ...action.projects
-    case MEDICATION_TO_STACK:
+  case MEDICATION_TO_STACK:
     return Object.assign({}, state, {
       stack: state.stack.concat(action.data)
   });
+
+  // OnChange functions
   case ON_PUFF_CHANGE:
     return Object.assign({}, state, {
       puffValue: action.data
@@ -64,6 +65,7 @@ const reducer = ( state = initialState, action ) => {
     return Object.assign({}, state, {
       medicationSelection: action.data
   });
+
   // if this happens print out the list of patient medications
   case ON_SUBMIT:
     return Object.assign({}, state, {
