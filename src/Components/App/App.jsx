@@ -40,6 +40,8 @@ const App = (
     }, [])
     .value();
 
+
+
   return (
     <div className="app">
       <div className="app__header">
@@ -58,7 +60,7 @@ const App = (
         <input className="submit" type="submit" value="Submit" onClick={onSubmitMedications} />
       </div>
 
-      <div className="results">
+      {/*<div className="results">
         <p>Your Medication(s): </p>
         {
           medication.results.map(
@@ -76,17 +78,24 @@ const App = (
             )
           )
         }
-      </div>
-      <div>
+      </div>*/}
+      <div className="results">
         <p>Filtered Medications:</p>
         {
           displayMedications.map(
-            (row) => {
-              return row.map(
-                ( medication, index ) => (
-                  <p key={index}>id: {medication.id}</p>
-                )
-              );
+            (row, rowIndex) => {
+              return(
+                <div key={rowIndex}>
+                  <p>{rowIndex}</p>
+                  {
+                    row.map(
+                      ( medication, index ) => (
+                        <p key={index}>id: {medication.id}</p>
+                      )
+                    )
+                  }
+                </div>
+                );
             }
           )
         }
