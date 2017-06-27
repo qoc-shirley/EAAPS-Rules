@@ -50,7 +50,6 @@ const MedicationTable = (
             chemicalICS: medication.chemicalICS,
             chemicalOther: medication.chemicalOther
           }
-
         );
       });
 
@@ -77,7 +76,7 @@ const MedicationTable = (
             onChangeInputField={ (event) => onChangeDoseICS(index, event.target.value) }
           />
           <select
-            className="row__select" onChange={ (event) => onChangeMedication(index, event.target.value) }
+            className="row__select" onChange={ (event) => onChangeMedication(index, _.split(event.target.value, ",")) }
             defaultValue={availableMedications}
           >
             <option>ChemicalLABA,ChemicalICS,ChemicalOther</option>

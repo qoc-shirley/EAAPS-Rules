@@ -63,9 +63,9 @@ export const onDeleteRow = ( deleteRowIndex ) => {
   }
 };
 
-export const displayResult = ( submit ) => {
+export const displayResult = ( medication ) => {
   return {
     type: ON_SUBMIT,
-    data: submit,
+    data: medication,
   }
 };

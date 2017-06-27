@@ -71,7 +71,10 @@ class App extends Component {
               <p>Puff Value: {row.puffValue}</p>
               <p>Times Per Day: {row.timesPerDayValue}</p>
               <p>Dose ICS: {row.doseICSValue}</p>
-              <p>Medication: {row.availableMedications}</p>
+              <p>Medication: </p>
+              <p>ChemicalLABA: {row.availableMedications.chemicalLABA}</p>
+              <p>ChemicalICS: {row.availableMedications.chemicalICS}</p>
+              <p>ChemicalOther: {row.availableMedications.chemicalOther}</p>
             </div>
           ))}
         </div>

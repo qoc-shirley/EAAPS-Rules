@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   ON_SUBMIT,
   ON_DELETE_ROW,
@@ -61,7 +62,11 @@ const reducer = ( state = initialState, action ) => {
       medicationList: state.medicationList.map(
         (row,index) =>
           action.data.index === index ?
-            { ...row, availableMedications: action.data.selectionChange }
+            { ...row, availableMedications: {
+              chemicalLABA: action.data.selectionChange[0],
+              chemicalICS: action.data.selectionChange[1],
+              chemicalOther: action.data.selectionChange[2],
+            } }
             : row)
   });
 
