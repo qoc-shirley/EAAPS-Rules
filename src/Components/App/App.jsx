@@ -39,6 +39,7 @@ const App = (
       return filteredData;
     }, [])
     .value();
+  console.log("displayMedications: ", displayMedications);
 
   return (
     <div className="app">
@@ -82,9 +83,9 @@ const App = (
         <p>Filtered Medications:</p>
         {
           displayMedications.map(
-            (row, index) => {
+            (row) => {
               return row.map(
-                ( medication ) => (
+                ( medication, index ) => (
                   <p key={index}>id: {medication.id}</p>
                 )
               );
