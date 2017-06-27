@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InputField from '../InputField/InputField.jsx';
 import Row from '../Row/Row.jsx';
+import _ from 'lodash';
 import * as actions from '../../redux/App/actions';
+import medicationData from '../MedicationData.js';
 import './styles.css';
 
 const MedicationTable = (
@@ -39,6 +41,22 @@ const MedicationTable = (
     onClickDeleteMedication(index);
   };
 
+  let getMedicationColumns =
+    medicationData.map(
+      ( medication ) => {
+        return (
+          {
+            chemicalLABA: medication.chemicalLABA,
+            chemicalICS: medication.chemicalICS,
+            chemicalOther: medication.chemicalOther
+          }
+
+        );
+      });
+
+  getMedicationColumns = _.uniqWith(getMedicationColumns, _.isEqual);
+  // console.log("medication chemical",getMedicationColumns);
+
   const displayRowContents = () => {
     return(
       medicationList.map( (rowFields, index) => (
@@ -62,24 +80,10 @@ const MedicationTable = (
             className="row__select" onChange={ (event) => onChangeMedication(index, event.target.value) }
             defaultValue={availableMedications}
           >
-            {/*get it from external list*/}
-            <option>ChemicalLABA-ChemicalICS-ChemicalOther</option>
-              <option>formoterol-.-. </option>
-              <option>salmeterol-fluticasone-.</option>
-              <option>.-fluticasone-.</option>
-              <option>salmeterol-.-.</option>
-              <option>.-.-salbutamol</option>
-              <option>.-.-tiotropium</option>
-              <option>.-ciclesonide-.</option>
-              <option>.-beclomethasone-.</option>
-              <option>.-.-ipratropium</option>
-              <option>formoterol-mometasone-.</option>
-              <option>.-.-zafirlukast</option>
-              <option>.-.-montelukast</option>
-              <option>.-.-terbutaline</option>
-              <option>.-budesonide-.</option>
-              <option>formoterol-budesonide-.</option>
-              <option>.-mometasone-.</option>
+            <option>ChemicalLABA,ChemicalICS,ChemicalOther</option>
+            {getMedicationColumns.map( (chemicalGroup, index) => (
+              <option key={index}>{chemicalGroup.chemicalLABA},{chemicalGroup.chemicalICS},{chemicalGroup.chemicalOther}</option>
+            ))}
         </select>
         <button
           className="button_deleteRow"

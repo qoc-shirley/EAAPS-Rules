@@ -9,16 +9,21 @@ import './styles.css';
 class App extends Component {
   render() {
 
-    const getMedicationColumns =
-      medicationData.map(
-        ( medication ) => {
-          return {
-            chemicalLABA: medication.chemicalLABA,
-            chemicalICS: medication.chemicalICS,
-            chemicalOther: medication.chemicalOther
-          }
-        } );
-    console.log("medication chemical",getMedicationColumns);
+    // let getMedicationColumns =
+    //   medicationData.map(
+    //     ( medication ) => {
+    //       return (
+    //         {
+    //         chemicalLABA: medication.chemicalLABA,
+    //         chemicalICS: medication.chemicalICS,
+    //         chemicalOther: medication.chemicalOther
+    //         }
+    //
+    //      );
+    //     });
+    //
+    // getMedicationColumns = _.uniqWith(getMedicationColumns, _.isEqual);
+    // // console.log("medication chemical",getMedicationColumns);
 
     const onSubmitMedications = () => {
       //filter data from medicationList from medicationData and display it in results
