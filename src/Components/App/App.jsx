@@ -9,23 +9,27 @@ import './styles.css';
 class App extends Component {
   render() {
     const onSubmitMedications = () => {
-      //filter data from medicationList from medicationData and display it in results
-      const filteredData = _
-        .chain( this.props.medication.medicationList )
-        .reduce(filteredData, medication => {
-          filteredData.push(_
-            .chain(medicationData)
-            .filter((masterMedication) => {
-              return medication.timesPerDayValue === masterMedication.timesPerDay &&
-                     medication.doseICSValue === masterMedication.doseICS
-            })
-            .value()
-          );
-        }, [])
-        .value();
       this.props.displayResult(this.props.medication.medicationList);
-      // console.log("display: ", filteredData);
     };
+
+    const displayMedications = _
+      .chain( this.props.medication.medicationList )
+      .reduce( (filteredData, medication) => {
+        filteredData.push(_
+          .chain(medicationData)
+          .filter( (masterMedication) => {
+            return ((medication.timesPerDayValue === masterMedication.timesPerDay) &&
+              (medication.doseICSValue === masterMedication.doseICS) &&
+              (medication.availableMedications.chemicalLABA === masterMedication.chemicalLABA) &&
+              (medication.availableMedications.chemicalICS === masterMedication.chemicalICS) &&
+              (medication.availableMedications.chemicalOther === masterMedication.chemicalOther))
+          })
+          .value()
+        );
+        return filteredData;
+      }, [])
+      .value();
+    console.log("displayMedications: ", displayMedications);
 
     return (
       <div className="app">
@@ -62,7 +66,11 @@ class App extends Component {
           ))}
         </div>
         <div>
-
+          <p>Filtered Medications:</p>
+            {displayMedications.map( (col, colKey, index) => (
+              <p key={index}>{col.index}</p>
+              )
+            )}
         </div>
       </div>
     );
