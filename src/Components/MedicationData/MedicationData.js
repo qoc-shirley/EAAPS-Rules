@@ -1,5 +1,5 @@
-import masterMedication from '../masterMedications.js';
 import _ from 'lodash';
+import masterMedication from './masterMedications';
 
 const header = _.filter(masterMedication, (item, index) => {
   return index === 0
@@ -14,7 +14,7 @@ const masterMedications = _.chain(data)
     return _.chain(header)
     //gets first element of array
       .head()
-      .filter((headerVal) => {
+      .filter( (headerVal) => {
         return headerVal !== ""
       })
       //	(headerVal) => !headerVal

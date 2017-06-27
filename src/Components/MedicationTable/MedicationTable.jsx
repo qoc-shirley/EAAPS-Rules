@@ -5,7 +5,7 @@ import _ from 'lodash';
 import InputField from '../InputField/InputField';
 import Row from '../Row/Row';
 import * as actions from '../../redux/App/actions';
-import medicationData from '../MedicationData';
+import medicationData from '../MedicationData/MedicationData';
 import './styles.css';
 
 const MedicationTable = (
@@ -19,7 +19,6 @@ const MedicationTable = (
     onChangePuffValue,
     onChangeTimesPerDayValue,
     onClickDeleteMedication,
-    onSubmitMedications,
     puffValue,
     timesPerDayValue,
   } ) => {

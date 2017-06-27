@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
-import medicationData from '../MedicationData';
+import medicationData from '../MedicationData/MedicationData';
 import './styles.css';
 
 const App = (
