@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import InputField from '../InputField/InputField.jsx';
-import Row from '../Row/Row.jsx';
 import _ from 'lodash';
+import InputField from '../InputField/InputField';
+import Row from '../Row/Row';
 import * as actions from '../../redux/App/actions';
-import medicationData from '../MedicationData.js';
+import medicationData from '../MedicationData';
 import './styles.css';
 
 const MedicationTable = (
@@ -62,50 +62,54 @@ const MedicationTable = (
           <InputField
             fieldName="puff"
             value={puffValue}
-            onChangeInputField={ (event) => onChangePuffValue(index, event.target.value) }
+            onChangeInputField={(event) => onChangePuffValue(index, event.target.value)}
           />
           <InputField
             fieldName="times"
             value={timesPerDayValue}
-            onChangeInputField={ (event) => onChangeTimesPerDayValue(index, event.target.value) }
+            onChangeInputField={(event) => onChangeTimesPerDayValue(index, event.target.value)}
           />
           <InputField
             fieldName="doseICS"
             value={doseICSValue}
-            onChangeInputField={ (event) => onChangeDoseICS(index, event.target.value) }
+            onChangeInputField={(event) => onChangeDoseICS(index, event.target.value)}
           />
           <select
-            className="row__select" onChange={ (event) => onChangeMedication(index, _.split(event.target.value, ",")) }
+            className="row__select"
+            onChange={
+              (event) => onChangeMedication(index, _.split(event.target.value, ","))}
             defaultValue={availableMedications}
           >
             <option>ChemicalLABA,ChemicalICS,ChemicalOther</option>
-            {getMedicationColumns.map( (chemicalGroup, index) => (
-              <option key={index}>{chemicalGroup.chemicalLABA},{chemicalGroup.chemicalICS},{chemicalGroup.chemicalOther}</option>
+            {
+              getMedicationColumns.map(
+                (chemicalGroup, index) => (
+                  <option key={index}>{chemicalGroup.chemicalLABA},{chemicalGroup.chemicalICS},{chemicalGroup.chemicalOther}</option>
             ))}
-        </select>
-        <button
-          className="button_deleteRow"
-          onClick={ () => deleteRow(index) }
-        >
-          Delete Row
-        </button>
-      </div>
+          </select>
+          <button
+            className="button_deleteRow"
+            onClick={() => deleteRow(index)}
+          >
+            Delete Row
+          </button>
+        </div>
     )));
   };
  return (
    <div className="medication-table" onSubmit={onSubmitMedications}>
      <div className="header">
        <ul>
-        <Row>
-          {headerElements}
-        </Row>
+         <Row>
+           {headerElements}
+         </Row>
        </ul>
      </div>
 
      <div className="main">
-        <ul>
-          {displayRowContents()}
-        </ul>
+       <ul>
+         {displayRowContents()}
+       </ul>
      </div>
      <button
        className="button__addRow"
@@ -121,15 +125,15 @@ MedicationTable.propTypes = {
   puffValue: PropTypes.string,
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
-  onClickDeleteMedication: PropTypes.func,
-  onChangeMedication: PropTypes.func,
-  onChangePuffValue: PropTypes.func,
-  onChangeTimesPerDayValue: PropTypes.func,
-  onChangeDoseICS: PropTypes.func,
-  onSubmitMedications: PropTypes.func,
+  onClickDeleteMedication: PropTypes.func.isRequired,
+  onChangeMedication: PropTypes.func.isRequired,
+  onChangePuffValue: PropTypes.func.isRequired,
+  onChangeTimesPerDayValue: PropTypes.func.isRequired,
+  onChangeDoseICS: PropTypes.func.isRequired,
+  onSubmitMedications: PropTypes.func.isRequired,
   appendMedicationList: PropTypes.func.isRequired,
-  availableMedications: PropTypes.string,
-  medicationList: PropTypes.array,
+  availableMedications: PropTypes.string.isRequired,
+  medicationList: PropTypes.array.isRequired,
 };
 
 MedicationTable.defaultProps = {
