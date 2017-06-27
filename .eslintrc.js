@@ -3,8 +3,11 @@ module.exports = {
         "browser": true,
         "es6": true
     },
-    "extends": "airbnb-base/legacy",
-    "parserOptions": {
+  "extends": [
+    "eslint:recommended",
+    "airbnb"
+  ],
+  "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
             "jsx": true

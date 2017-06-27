@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Header from '../Header/Header.jsx';
-import MedicationTable from '../MedicationTable/MedicationTable.jsx';
 import _ from 'lodash';
-import medicationData from '../MedicationData.js';
+import PropTypes from 'prop-types';
+import Header from '../Header/Header';
+import MedicationTable from '../MedicationTable/MedicationTable';
+import medicationData from '../MedicationData';
 import './styles.css';
 
 const App = (
@@ -46,17 +46,17 @@ const App = (
         <Header />
       </div>
       <MedicationTable
-        onSubmitMedications={ this.onSubmitMedications }
-        onChangeMedication={ onMedicationSelection }
-        onChangePuffValue={ onChangePuffValue }
-        onChangeTimesPerDayValue={ onChangeTimesPerDayValue }
-        onChangeDoseICS={ onChangeDoseICS }
-        appendMedicationList={ appendMedicationList }
+        onSubmitMedications={this.onSubmitMedications}
+        onChangeMedication={onMedicationSelection}
+        onChangePuffValue={onChangePuffValue}
+        onChangeTimesPerDayValue={onChangeTimesPerDayValue}
+        onChangeDoseICS={onChangeDoseICS}
+        appendMedicationList={appendMedicationList}
         medicationList={medication.medicationList}
         onClickDeleteMedication={onDeleteRow}
       />
       <div className="button">
-        <input className="submit" type="submit" value="Submit" onClick={ onSubmitMedications } />
+        <input className="submit" type="submit" value="Submit" onClick={onSubmitMedications} />
       </div>
 
       <div className="results">
@@ -98,6 +98,8 @@ const App = (
 
 App.PropTypes = {
   appendMedicationList: PropTypes.func,
+  displayResult: PropTypes.func,
+  medication: PropTypes.array,
   medicationList: PropTypes.array,
   onChangeDoseICS: PropTypes.func,
   onMedicationSelection: PropTypes.func,

@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RulesApp from './Containers/RulesApp/RulesApp';
-import { Provider } from 'react-redux';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 import {
   applyMiddleware,
   combineReducers,
   createStore,
 } from 'redux';
-
-import logger from 'redux-logger';
-import thunk from 'redux-thunk';
-
+import { Provider } from 'react-redux';
+import RulesApp from './Containers/RulesApp/RulesApp';
 import registerServiceWorker from './registerServiceWorker';
 import reducer from './redux/App/reducer';
 import './index.css';
