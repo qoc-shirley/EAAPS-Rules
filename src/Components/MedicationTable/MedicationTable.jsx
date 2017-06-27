@@ -97,7 +97,7 @@ const MedicationTable = (
     )));
   };
  return (
-   <div className="medication-table" onSubmit={onSubmitMedications}>
+   <div className="medication-table">
      <div className="header">
        <ul>
          <Row>
@@ -130,9 +130,8 @@ MedicationTable.propTypes = {
   onChangePuffValue: PropTypes.func.isRequired,
   onChangeTimesPerDayValue: PropTypes.func.isRequired,
   onChangeDoseICS: PropTypes.func.isRequired,
-  onSubmitMedications: PropTypes.func.isRequired,
   appendMedicationList: PropTypes.func.isRequired,
-  availableMedications: PropTypes.string.isRequired,
+  availableMedications: PropTypes.string,
   medicationList: PropTypes.array.isRequired,
 };
 

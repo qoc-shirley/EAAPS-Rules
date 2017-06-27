@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const InputField = ( {defaultValue, onChangeInputField} ) => {
+const InputField = ( { defaultValue, onChangeInputField } ) => {
 
   return (
     <div className="field">
@@ -10,7 +10,8 @@ const InputField = ( {defaultValue, onChangeInputField} ) => {
         <input
           type="textfield"
           value={defaultValue}
-          onChange={onChangeInputField} />
+          onChange={onChangeInputField}
+        />
       </div>
     </div>
   );
@@ -18,11 +19,10 @@ const InputField = ( {defaultValue, onChangeInputField} ) => {
 
 InputField.propTypes = {
   defaultValue: PropTypes.string,
-  onChangeInputField: PropTypes.func,
+  onChangeInputField: PropTypes.func.isRequired,
 };
 
 InputField.defaultProps = {
-
 };
 
 export default InputField;

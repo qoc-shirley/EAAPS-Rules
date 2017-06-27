@@ -46,7 +46,6 @@ const App = (
         <Header />
       </div>
       <MedicationTable
-        onSubmitMedications={this.onSubmitMedications}
         onChangeMedication={onMedicationSelection}
         onChangePuffValue={onChangePuffValue}
         onChangeTimesPerDayValue={onChangeTimesPerDayValue}
