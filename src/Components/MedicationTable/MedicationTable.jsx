@@ -121,20 +121,22 @@ MedicationTable.propTypes = {
   puffValue: PropTypes.string,
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
-  patientMedications: PropTypes.string,
-  onDelEvent: PropTypes.func,
-  onSelection: PropTypes.func,
-  puffOnChange: PropTypes.func,
-  timesOnChange: PropTypes.func,
-  doseICSOnChange: PropTypes.func,
-  onSubmit: PropTypes.func,
+  onClickDeleteMedication: PropTypes.func,
+  onChangeMedication: PropTypes.func,
+  onChangePuffValue: PropTypes.func,
+  onChangeTimesPerDayValue: PropTypes.func,
+  onChangeDoseICS: PropTypes.func,
+  onSubmitMedications: PropTypes.func,
   appendMedicationList: PropTypes.func.isRequired,
+  availableMedications: PropTypes.string,
+  medicationList: PropTypes.array,
 };
 
 MedicationTable.defaultProps = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',
+  medicationList: [],
 };
 
 const mapStateToProps = state => ({

@@ -67,10 +67,10 @@ class App extends Component {
         </div>
         <div>
           <p>Filtered Medications:</p>
-            {displayMedications.map( (col, colKey, index) => (
-              <p key={index}>{col.colKey}</p>
-              )
-            )}
+          {displayMedications.map( (column, columnKey) => (
+              <p key={columnKey}>{column.columnKey}</p>
+            )
+          )}
         </div>
       </div>
     );
@@ -78,13 +78,17 @@ class App extends Component {
 }
 
 App.PropTypes = {
-  getPuffValue: PropTypes.func.isRequired,
-  getTimesPerDayValue: PropTypes.func.isRequired,
-  getDoseICSValue: PropTypes.func.isRequired,
-  getMedicationSelection: PropTypes.func.isRequired,
+  appendMedicationList: PropTypes.func,
+  medicationList: PropTypes.array,
+  onChangeDoseICS: PropTypes.func,
+  onMedicationSelection: PropTypes.func,
+  onChangePuffValue: PropTypes.func,
+  onChangeTimesPerDayValue: PropTypes.func,
+  onDeleteRow: PropTypes.func,
+
 };
 
 App.defaultProps = {
-  // missing prop declarations
+  medicationList: [],
 };
 export default App;
