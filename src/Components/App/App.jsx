@@ -8,12 +8,23 @@ import './styles.css';
 
 class App extends Component {
   render() {
+    const {
+      displayResult,
+      medication,
+      onMedicationSelection,
+      onChangePuffValue,
+      onChangeTimesPerDayValue,
+      onChangeDoseICS,
+      appendMedicationList,
+      onDeleteRow
+    } = this.props;
+
     const onSubmitMedications = () => {
-      this.props.displayResult(this.props.medication.medicationList);
+      displayResult(medication.medicationList);
     };
 
     const displayMedications = _
-      .chain( this.props.medication.medicationList )
+      .chain( medication.medicationList )
       .reduce( (filteredData, medication) => {
         filteredData.push(_
           .chain(medicationData)
@@ -38,13 +49,13 @@ class App extends Component {
         </div>
         <MedicationTable
           onSubmitMedications={ this.onSubmitMedications }
-          onChangeMedication={ this.props.onMedicationSelection }
-          onChangePuffValue={ this.props.onChangePuffValue }
-          onChangeTimesPerDayValue={ this.props.onChangeTimesPerDayValue }
-          onChangeDoseICS={ this.props.onChangeDoseICS }
-          appendMedicationList={this.props.appendMedicationList}
-          medicationList={this.props.medication.medicationList}
-          onClickDeleteMedication={this.props.onDeleteRow}
+          onChangeMedication={ onMedicationSelection }
+          onChangePuffValue={ onChangePuffValue }
+          onChangeTimesPerDayValue={ onChangeTimesPerDayValue }
+          onChangeDoseICS={ onChangeDoseICS }
+          appendMedicationList={ appendMedicationList }
+          medicationList={medication.medicationList}
+          onClickDeleteMedication={onDeleteRow}
         />
         <div className="button">
           <input className="submit" type="submit" value="Submit" onClick={ onSubmitMedications } />
@@ -52,25 +63,36 @@ class App extends Component {
 
         <div className="results">
           <p>Your Medication(s): </p>
-          {this.props.medication.results.map( (row, index) => (
-            <div key={index}>
-              <p>{index}: </p>
-              <p>Puff Value: {row.puffValue}</p>
-              <p>Times Per Day: {row.timesPerDayValue}</p>
-              <p>Dose ICS: {row.doseICSValue}</p>
-              <p>Medication: </p>
-              <p>ChemicalLABA: {row.availableMedications.chemicalLABA}</p>
-              <p>ChemicalICS: {row.availableMedications.chemicalICS}</p>
-              <p>ChemicalOther: {row.availableMedications.chemicalOther}</p>
-            </div>
-          ))}
+          {
+            medication.results.map(
+              (row, index) => (
+                <div key={index}>
+                  <p>{index}: </p>
+                  <p>Puff Value: {row.puffValue}</p>
+                  <p>Times Per Day: {row.timesPerDayValue}</p>
+                  <p>Dose ICS: {row.doseICSValue}</p>
+                  <p>Medication: </p>
+                  <p>ChemicalLABA: {row.availableMedications.chemicalLABA}</p>
+                  <p>ChemicalICS: {row.availableMedications.chemicalICS}</p>
+                  <p>ChemicalOther: {row.availableMedications.chemicalOther}</p>
+                </div>
+              )
+            )
+          }
         </div>
         <div>
           <p>Filtered Medications:</p>
-          {displayMedications.map( (column, columnKey) => (
-              <p key={columnKey}>{column.columnKey}</p>
+          {
+            displayMedications.map(
+              (row, index) => {
+                return row.map(
+                  ( medication ) => (
+                    <p key={index}>id: {medication.id}</p>
+                  )
+                );
+              }
             )
-          )}
+          }
         </div>
       </div>
     );
@@ -85,7 +107,6 @@ App.PropTypes = {
   onChangePuffValue: PropTypes.func,
   onChangeTimesPerDayValue: PropTypes.func,
   onDeleteRow: PropTypes.func,
-
 };
 
 App.defaultProps = {
