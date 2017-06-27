@@ -68,7 +68,7 @@ class App extends Component {
         <div>
           <p>Filtered Medications:</p>
             {displayMedications.map( (col, colKey, index) => (
-              <p key={index}>{col.index}</p>
+              <p key={index}>{col.colKey}</p>
               )
             )}
         </div>
