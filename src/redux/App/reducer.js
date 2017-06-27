@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
   ON_SUBMIT,
   ON_DELETE_ROW,

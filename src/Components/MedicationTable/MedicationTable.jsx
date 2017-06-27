@@ -54,7 +54,6 @@ const MedicationTable = (
       });
 
   getMedicationColumns = _.uniqWith(getMedicationColumns, _.isEqual);
-  // console.log("medication chemical",getMedicationColumns);
 
   const displayRowContents = () => {
     return(
