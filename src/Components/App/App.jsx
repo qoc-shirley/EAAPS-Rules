@@ -39,7 +39,6 @@ const App = (
       return filteredData;
     }, [])
     .value();
-  console.log("displayMedications: ", displayMedications);
 
   return (
     <div className="app">
