@@ -18,9 +18,9 @@ const App = (
     onDeleteRow
   } ) => {
 
-  const onSubmitMedications = () => {
-    displayResult(medication.medicationList);
-  };
+  // const onSubmitMedications = () => {
+  //   displayResult(medication.medicationList);
+  // };
 
   const displayMedications = _
     .chain( medication.medicationList )
@@ -40,8 +40,6 @@ const App = (
     }, [])
     .value();
 
-
-
   return (
     <div className="app">
       <div className="app__header">
@@ -56,9 +54,9 @@ const App = (
         medicationList={medication.medicationList}
         onClickDeleteMedication={onDeleteRow}
       />
-      <div className="button">
+      {/*<div className="button">
         <input className="submit" type="submit" value="Submit" onClick={onSubmitMedications} />
-      </div>
+      </div>*/}
 
       {/*<div className="results">
         <p>Your Medication(s): </p>
