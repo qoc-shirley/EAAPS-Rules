@@ -1,9 +1,16 @@
 .medication-table .header {
-    background: #ccc;
+     background: #ccc;
+     margin: 20px;
+     padding: 5px;
+ }
+
+.medication-table .header ul {
+    padding: 0;
 }
 
-.medication-table .main .row{
+.medication-table .main ul .row{
     background: #e2e2e2;
+    padding: 15px;
 }
 
 .medication-table .main ul {

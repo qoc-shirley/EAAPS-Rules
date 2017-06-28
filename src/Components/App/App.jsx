@@ -78,54 +78,56 @@ const App = (
         }
       </div>*/}
       <div className="results">
-        <p>Filtered Medications:</p>
-        {
-          displayMedications.map(
-            (row, rowIndex) => {
-              return(
-                <div key={rowIndex}>
-                  <p>{rowIndex}</p>
-                  {
-                    row.map(
-                      ( medication, index ) => (
-                        <p key={index}>id: {medication.id}</p>
+        <fieldset className="patientMedications">
+          <legend>Filtered Medications:</legend>
+          {
+            displayMedications.map(
+              (row, rowIndex) => {
+                return (
+                  <div key={rowIndex}>
+                    <p>{rowIndex}</p>
+                    {
+                      row.map(
+                        (medication, index) => (
+                          <p key={index}>id: {medication.id}</p>
+                        )
                       )
-                    )
-                  }
-                </div>
+                    }
+                  </div>
                 );
-            }
-          )
-        }
+              }
+            )
+          }
+        </fieldset>
+
+        <fieldset className="rules">
+          <legend>Available Escalation Rules</legend>
+          <div className="checkbox">
+            <input type="checkbox" name="Rule1"/>
+            <label>Rule1</label>
+          </div>
+          <div className="checkbox">
+            <input type="checkbox" name="Rule2"/>
+            <label>Rule2</label>
+          </div>
+          <div className="checkbox">
+            <input type="checkbox" name="Rule6"/>
+            <label>Rule6</label>
+          </div>
+          <div className="checkbox">
+            <input type="checkbox" name="Rule8"/>
+            <label>Rule8</label>
+          </div>
+          <div className="checkbox">
+            <input type="checkbox" name="Rule10"/>
+            <label>Rule10</label>
+          </div>
+          <div className="checkbox">
+            <input type="checkbox" name="Rule11"/>
+            <label>Rule11</label>
+          </div>
+        </fieldset>
       </div>
-      
-      <fieldset className="rules">
-        <legend>Available Escalation Rules</legend>
-        <div className="checkbox-1">
-          <input type="checkbox" name="Rule1" />
-          <label>Rule1</label>
-        </div>
-        <div className="checkbox-2">
-          <input type="checkbox" name="Rule2" />
-          <label>Rule2</label>
-        </div>
-        <div className="checkbox-6">
-          <input type="checkbox" name="Rule6" />
-          <label>Rule6</label>
-        </div>
-        <div className="checkbox-8">
-          <input type="checkbox" name="Rule8" />
-          <label>Rule8</label>
-        </div>
-        <div className="checkbox-10">
-          <input type="checkbox" name="Rule10" />
-          <label>Rule10</label>
-        </div>
-        <div className="checkbox-11">
-          <input type="checkbox" name="Rule11" />
-          <label>Rule11</label>
-        </div>
-      </fieldset>
     </div>
   );
 };

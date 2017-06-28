@@ -1,11 +1,13 @@
 .row {
     background-color: #ccc;
     margin:20px;
-    padding:5px;
     display: flex;
     justify-content: space-around;
 }
 
 .row li {
     list-style-type: none;
+}
+.row ul {
+    padding: 0;
 }
