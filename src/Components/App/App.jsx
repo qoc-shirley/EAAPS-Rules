@@ -43,6 +43,7 @@ const App = (
     }, [])
     .value();
 
+  // need to display recommendations: all? or only some fields?
   const onClickRule = ( rule ) => {
     if(rule === 'rule1') {
       console.log(rules.rule1(medication.patientMedications));
