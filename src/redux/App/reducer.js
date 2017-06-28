@@ -15,6 +15,7 @@ export const initialState = {
   availableMedications: '',
   medicationList: [],
   results: [],
+  patientMedications: [],
 };
 
 const reducer = ( state = initialState, action ) => {

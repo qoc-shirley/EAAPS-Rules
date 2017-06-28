@@ -6,6 +6,7 @@ import {
   ON_DOSEICS_CHANGE,
   ON_MEDICATION_SELECTION,
   MEDICATION_TO_STACK,
+  FILTERED_MEDICATIONS,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
@@ -67,5 +68,12 @@ export const displayResult = ( medication ) => {
   return {
     type: ON_SUBMIT,
     data: medication,
+  }
+};
+
+export const getPatientMedications = ( medications ) => {
+  return {
+    type: FILTERED_MEDICATIONS,
+    data: medications,
   }
 };

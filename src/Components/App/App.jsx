@@ -98,6 +98,34 @@ const App = (
           )
         }
       </div>
+      
+      <fieldset className="rules">
+        <legend>Available Escalation Rules</legend>
+        <div className="checkbox-1">
+          <input type="checkbox" name="Rule1" />
+          <label>Rule1</label>
+        </div>
+        <div className="checkbox-2">
+          <input type="checkbox" name="Rule2" />
+          <label>Rule2</label>
+        </div>
+        <div className="checkbox-6">
+          <input type="checkbox" name="Rule6" />
+          <label>Rule6</label>
+        </div>
+        <div className="checkbox-8">
+          <input type="checkbox" name="Rule8" />
+          <label>Rule8</label>
+        </div>
+        <div className="checkbox-10">
+          <input type="checkbox" name="Rule10" />
+          <label>Rule10</label>
+        </div>
+        <div className="checkbox-11">
+          <input type="checkbox" name="Rule11" />
+          <label>Rule11</label>
+        </div>
+      </fieldset>
     </div>
   );
 };
