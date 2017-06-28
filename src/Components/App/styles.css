@@ -32,7 +32,7 @@
     margin-top: 10px;
 }
 
-.app .app__main .results .button {
-    text-align: center;
+.app .app__main .results .buttons {
     margin-bottom: 20px;
+    padding: 10px;
 }
