@@ -249,8 +249,6 @@ export const rule11 = (patientMedications, masterMedications) => {
   let filteredPatientMedications = getLabaICSAndICS(patientMedications);
   if (_.find(filteredPatientMedications, { chemicalType: "ICS" }) && _.find(filteredPatientMedications, { chemicalType: "laba,ICS" })) {
     newMedication = _.filter(masterMedications, { name: "singulair" } );
-    console.log("masterMedications: ", masterMedications);
-    console.log("newMedication: ", newMedication);
   }
   else {
     filteredPatientMedications = [];

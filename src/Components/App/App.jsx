@@ -43,7 +43,7 @@ const App = (
     }, [])
     .value();
 
-  const checkboxHandler = ( rule ) => {
+  const onClickRule = ( rule ) => {
     if(rule === 'rule1') {
       console.log(rules.rule1(medication.patientMedications));
     }
@@ -60,7 +60,7 @@ const App = (
       console.log(rules.rule10(medication.patientMedications));
     }
     else if(rule === 'rule11') {
-      console.log(rules.rule11(medication.patientMedications));
+      console.log(rules.rule11(medication.patientMedications, medicationData));
     }
   };
 
@@ -117,32 +117,32 @@ const App = (
               <input
                 type="submit"
                 value="Rule1"
-                onClick={() => checkboxHandler("rule1")}
+                onClick={() => onClickRule("rule1")}
               />
               <input
                 type="submit"
                 value="Rule2"
-                onClick={() => checkboxHandler("rule2")}
+                onClick={() => onClickRule("rule2")}
               />
               <input
                 type="submit"
                 value="Rule6"
-                onClick={() => checkboxHandler("rule6")}
+                onClick={() => onClickRule("rule6")}
               />
               <input
                 type="submit"
                 value="Rule8"
-                onClick={() => checkboxHandler("rule8")}
+                onClick={() => onClickRule("rule8")}
               />
               <input
                 type="submit"
                 value="Rule10"
-                onClick={() => checkboxHandler("rule10")}
+                onClick={() => onClickRule("rule10")}
               />
               <input
                 type="submit"
                 value="Rule11"
-                onClick={() => checkboxHandler("rule11")}
+                onClick={() => onClickRule("rule11")}
               />
             </div>
           </div>
