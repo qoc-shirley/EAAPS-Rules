@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => ( {
   onChangeMedication: (index, value) => dispatch( actions.onChangeMedication(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
   displayResult: (event) => dispatch( actions.displayResult(event) ),
+  getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),
 } );
 
 const RulesApp = connect(mapStateToProps, mapDispatchToProps)(App);
