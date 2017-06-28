@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../MedicationData/MedicationData';
-// import * as rule from '../Rules/Rules';
+import * as rules from '../Rules/Rules';
 import './styles.css';
 
 const App = (
@@ -45,24 +45,22 @@ const App = (
 
   const checkboxHandler = ( rule ) => {
     if(rule === 'rule1') {
-      console.log("rule1");
-      rule.rule1(medication.patientMedications);
-
+      console.log(rules.rule1(medication.patientMedications));
     }
     else if(rule === 'rule2') {
-      console.log("rule2");
+      console.log(rules.rule2(medication.patientMedications, medicationData));
     }
     else if(rule === 'rule6') {
-      console.log("rule6");
+      console.log(rules.rule6(medication.patientMedications));
     }
     else if(rule === 'rule8') {
-      console.log("rule8");
+      console.log(rules.rule8(medication.patientMedications));
     }
     else if(rule === "rule10") {
-      console.log("rule10");
+      console.log(rules.rule10(medication.patientMedications));
     }
     else if(rule === 'rule11') {
-      console.log('rule11');
+      console.log(rules.rule11(medication.patientMedications));
     }
   };
 
@@ -132,57 +130,41 @@ const App = (
           />
         </div>
 
-        <fieldset className="rules">
-          <legend>Available Escalation Rules</legend>
-          <div className="checkbox">
+        <div className="rules">
+          <p>Available Escalation Rules</p>
+          <div className="buttons">
             <input
-              type="checkbox"
-              name="Rule1"
+              type="submit"
+              value="Rule1"
               onClick={() => checkboxHandler("rule1")}
             />
-            <label>Rule1</label>
-          </div>
-          <div className="checkbox">
             <input
-              type="checkbox"
-              name="Rule2"
+              type="submit"
+              value="Rule2"
               onClick={() => checkboxHandler("rule2")}
             />
-            <label>Rule2</label>
-          </div>
-          <div className="checkbox">
             <input
-              type="checkbox"
-              name="Rule6"
+              type="submit"
+              value="Rule6"
               onClick={() => checkboxHandler("rule6")}
             />
-            <label>Rule6</label>
-          </div>
-          <div className="checkbox">
             <input
-              type="checkbox"
-              name="Rule8"
+              type="submit"
+              value="Rule8"
               onClick={() => checkboxHandler("rule8")}
             />
-            <label>Rule8</label>
-          </div>
-          <div className="checkbox">
             <input
-              type="checkbox"
-              name="Rule10"
+              type="submit"
+              value="Rule10"
               onClick={() => checkboxHandler("rule10")}
             />
-            <label>Rule10</label>
-          </div>
-          <div className="checkbox">
             <input
-              type="checkbox"
-              name="Rule11"
+              type="submit"
+              value="Rule11"
               onClick={() => checkboxHandler("rule11")}
             />
-            <label>Rule11</label>
           </div>
-        </fieldset>
+        </div>
       </div>
     </div>
   );

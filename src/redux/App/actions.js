@@ -77,10 +77,3 @@ export const getPatientMedications = ( medications ) => {
     data: medications,
   }
 };
-
-// export const onClickRule = ( rule ) => {
-//   return {
-//     type: FILTERED_MEDICATIONS,
-//     data: medications,
-//   }
-// };

@@ -12,7 +12,6 @@
 .app .results {
     padding: 10px;
     margin: 20px;
-    text-align: left;
 }
 
 .app .patientMedications {
@@ -20,9 +19,12 @@
     padding-left: 40px;
 }
 
-.app .rules {
+.app .results .rules .buttons{
+    margin-top: 20px;
     margin-bottom: 20px;
-    padding-left: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .app .rules .checkbox {
