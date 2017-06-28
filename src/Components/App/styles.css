@@ -5,21 +5,21 @@
 
 }
 
-.app .button .submit {
+.app .app__main .button .submit {
     margin: 10px;
 }
 
-.app .results {
+.app .app__main .results {
     padding: 10px;
     margin: 20px;
 }
 
-.app .patientMedications {
+.app .app__main .patientMedications {
     margin-bottom: 10px;
     padding-left: 40px;
 }
 
-.app .results .rules .buttons{
+.app .app__main .results .rules .buttons{
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
@@ -27,12 +27,12 @@
     justify-content: space-around;
 }
 
-.app .rules .checkbox {
+.app .app__main .rules .checkbox {
     margin-bottom: 10px;
     margin-top: 10px;
 }
 
-.app .results .button {
+.app .app__main .results .button {
     text-align: center;
     margin-bottom: 20px;
 }

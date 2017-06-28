@@ -69,100 +69,82 @@ const App = (
       <div className="app__header">
         <Header />
       </div>
-      <MedicationTable
-        onChangeMedication={onMedicationSelection}
-        onChangePuffValue={onChangePuffValue}
-        onChangeTimesPerDayValue={onChangeTimesPerDayValue}
-        onChangeDoseICS={onChangeDoseICS}
-        appendMedicationList={appendMedicationList}
-        medicationList={medication.medicationList}
-        onClickDeleteMedication={onDeleteRow}
-      />
-
-      {/*<div className="results">
-        <p>Your Medication(s): </p>
-        {
-          medication.results.map(
-            (row, index) => (
-              <div key={index}>
-                <p>{index}: </p>
-                <p>Puff Value: {row.puffValue}</p>
-                <p>Times Per Day: {row.timesPerDayValue}</p>
-                <p>Dose ICS: {row.doseICSValue}</p>
-                <p>Medication: </p>
-                <p>ChemicalLABA: {row.availableMedications.chemicalLABA}</p>
-                <p>ChemicalICS: {row.availableMedications.chemicalICS}</p>
-                <p>ChemicalOther: {row.availableMedications.chemicalOther}</p>
-              </div>
-            )
-          )
-        }
-      </div>*/}
-      <div className="results">
-        <fieldset className="patientMedications">
-          <legend>Filtered Medications:</legend>
-          {
-            displayMedications.map(
-              (row, rowIndex) => {
-                return (
-                  <div key={rowIndex}>
-                    <p>{rowIndex}:</p>
-                    {
-                      row.map(
-                        (medication, index) => (
-                          <p key={index}>id: {medication.id}</p>
+      <div className="app__main">
+        <MedicationTable
+          onChangeMedication={onMedicationSelection}
+          onChangePuffValue={onChangePuffValue}
+          onChangeTimesPerDayValue={onChangeTimesPerDayValue}
+          onChangeDoseICS={onChangeDoseICS}
+          appendMedicationList={appendMedicationList}
+          medicationList={medication.medicationList}
+          onClickDeleteMedication={onDeleteRow}
+        />
+        <div className="results">
+          <fieldset className="patientMedications">
+            <legend>Filtered Medications:</legend>
+            {
+              displayMedications.map(
+                (row, rowIndex) => {
+                  return (
+                    <div key={rowIndex}>
+                      <p>{rowIndex}:</p>
+                      {
+                        row.map(
+                          (medication, index) => (
+                            <p key={index}>id: {medication.id}</p>
+                          )
                         )
-                      )
-                    }
-                  </div>
-                );
-              }
-            )
-          }
-        </fieldset>
+                      }
+                    </div>
+                  );
+                }
+              )
+            }
+          </fieldset>
 
-        <div className="button">
-          <input
-            className="submit"
-            type="submit"
-            value="Submit Filtered Medications"
-            onClick={() => onSubmitMedications(displayMedications)}
-          />
-        </div>
+          <div className="button">
+            <input
+              className="submit"
+              type="submit"
+              value="Submit Filtered Medications"
+              onClick={() => onSubmitMedications(displayMedications)}
+            />
+          </div>
 
-        <div className="rules">
-          <p>Available Escalation Rules</p>
-          <div className="buttons">
-            <input
-              type="submit"
-              value="Rule1"
-              onClick={() => checkboxHandler("rule1")}
-            />
-            <input
-              type="submit"
-              value="Rule2"
-              onClick={() => checkboxHandler("rule2")}
-            />
-            <input
-              type="submit"
-              value="Rule6"
-              onClick={() => checkboxHandler("rule6")}
-            />
-            <input
-              type="submit"
-              value="Rule8"
-              onClick={() => checkboxHandler("rule8")}
-            />
-            <input
-              type="submit"
-              value="Rule10"
-              onClick={() => checkboxHandler("rule10")}
-            />
-            <input
-              type="submit"
-              value="Rule11"
-              onClick={() => checkboxHandler("rule11")}
-            />
+          <div className="rules">
+            <p>Available Escalation Rules</p>
+            <div className="buttons">
+              <input
+                type="submit"
+                value="Rule1"
+                onClick={() => checkboxHandler("rule1")}
+              />
+              <input
+                type="submit"
+                value="Rule2"
+                onClick={() => checkboxHandler("rule2")}
+              />
+              <input
+                type="submit"
+                value="Rule6"
+                onClick={() => checkboxHandler("rule6")}
+              />
+              <input
+                type="submit"
+                value="Rule8"
+                onClick={() => checkboxHandler("rule8")}
+              />
+              <input
+                type="submit"
+                value="Rule10"
+                onClick={() => checkboxHandler("rule10")}
+              />
+              <input
+                type="submit"
+                value="Rule11"
+                onClick={() => checkboxHandler("rule11")}
+              />
+            </div>
           </div>
         </div>
       </div>
