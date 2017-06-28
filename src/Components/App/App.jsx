@@ -45,8 +45,9 @@ const App = (
 
   const checkboxHandler = ( rule ) => {
     if(rule === 'rule1') {
-      // rule.rule1(filteredM)
       console.log("rule1");
+      rule.rule1(medication.patientMedications);
+
     }
     else if(rule === 'rule2') {
       console.log("rule2");
@@ -127,7 +128,8 @@ const App = (
             className="submit"
             type="submit"
             value="Submit Filtered Medications"
-            onClick={() => onSubmitMedications(displayMedications)} />
+            onClick={() => onSubmitMedications(displayMedications)}
+          />
         </div>
 
         <fieldset className="rules">
@@ -136,39 +138,48 @@ const App = (
             <input
               type="checkbox"
               name="Rule1"
-              onClick={() => checkboxHandler("rule1")} />
+              onClick={() => checkboxHandler("rule1")}
+            />
             <label>Rule1</label>
           </div>
           <div className="checkbox">
             <input
               type="checkbox"
               name="Rule2"
-              onClick={() => checkboxHandler("rule2")} />
+              onClick={() => checkboxHandler("rule2")}
+            />
             <label>Rule2</label>
           </div>
           <div className="checkbox">
             <input
               type="checkbox"
               name="Rule6"
-              onClick={() => checkboxHandler("rule6")} />
+              onClick={() => checkboxHandler("rule6")}
+            />
             <label>Rule6</label>
           </div>
           <div className="checkbox">
             <input
               type="checkbox"
               name="Rule8"
-              onClick={() => checkboxHandler("rule8")} />
+              onClick={() => checkboxHandler("rule8")}
+            />
             <label>Rule8</label>
           </div>
           <div className="checkbox">
-            <input type="checkbox" name="Rule10" onClick={() => checkboxHandler("rule10")} />
+            <input
+              type="checkbox"
+              name="Rule10"
+              onClick={() => checkboxHandler("rule10")}
+            />
             <label>Rule10</label>
           </div>
           <div className="checkbox">
             <input
               type="checkbox"
               name="Rule11"
-              onClick={() => checkboxHandler("rule11")} />
+              onClick={() => checkboxHandler("rule11")}
+            />
             <label>Rule11</label>
           </div>
         </fieldset>

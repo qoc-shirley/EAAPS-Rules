@@ -74,7 +74,7 @@ const reducer = (state = initialState, action) => {
       });
     case FILTERED_MEDICATIONS:
       return Object.assign({}, state, {
-        patientMedications: action.data.medications,
+        patientMedications: action.data,
       });
     case ON_DELETE_ROW:
       return Object.assign({}, state, {
