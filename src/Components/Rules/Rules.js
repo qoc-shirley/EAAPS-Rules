@@ -179,11 +179,13 @@ export const rule4 = (patientMedications, masterMedications) => {
               result.concat(_.filter(medicationElement, { name: "singulair"}));
             }
             else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" })) {
-              if(_.filter(medicationElement,
-                  {
-                    chemicalType: "laba,ICS",
-                    chemicalABA: patientMedication.chemicalLABA,
-                    chemicalICS: patientMedication.chemicalICS})) {
+              const filteredMedication = _.filter(medicationElement,
+                {
+                  chemicalType: "laba,ICS",
+                  chemicalABA: patientMedication.chemicalLABA,
+                  chemicalICS: patientMedication.chemicalICS});
+              if(_.filter(filteredMedication, { device: patientMedication })) {
+
 
               }
 
