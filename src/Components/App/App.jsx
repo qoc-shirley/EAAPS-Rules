@@ -53,6 +53,9 @@ const App = (
     else if(rule === 'rule2') {
       saveRecommendation(rule, rules.rule2(medication.patientMedications, medicationData));
     }
+    else if(rule === 'rule4') {
+      saveRecommendation(rule, rules.rule4(medication.patientMedications, medicationData));
+    }
     else if(rule === 'rule6') {
       saveRecommendation(rule, rules.rule6(medication.patientMedications));
     }
@@ -133,8 +136,13 @@ const App = (
               />
               <input
                 type="submit"
-                value="Rule6"
+                value="Rule4"
                 onClick={() => onClickRule("rule6")}
+              />
+              <input
+                type="submit"
+                value="Rule6"
+                onClick={() => onClickRule("rule4")}
               />
               <input
                 type="submit"
