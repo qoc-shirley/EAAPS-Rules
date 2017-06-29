@@ -18,6 +18,7 @@ const App = (
     appendMedicationList,
     onDeleteRow,
     getPatientMedications,
+    saveRecommendation,
   } ) => {
 
   const onSubmitMedications = (displayMedications) => {
@@ -46,22 +47,22 @@ const App = (
   // need to display recommendations: all? or only some fields?
   const onClickRule = ( rule ) => {
     if(rule === 'rule1') {
-      console.log(rules.rule1(medication.patientMedications));
+      saveRecommendation(rule, rules.rule1(medication.patientMedications));
     }
     else if(rule === 'rule2') {
-      console.log(rules.rule2(medication.patientMedications, medicationData));
+      saveRecommendation(rule, rules.rule2(medication.patientMedications, medicationData));
     }
     else if(rule === 'rule6') {
-      console.log(rules.rule6(medication.patientMedications));
+      saveRecommendation(rule, rules.rule6(medication.patientMedications));
     }
     else if(rule === 'rule8') {
-      console.log(rules.rule8(medication.patientMedications));
+      saveRecommendation(rule, rules.rule8(medication.patientMedications));
     }
     else if(rule === "rule10") {
-      console.log(rules.rule10(medication.patientMedications));
+      saveRecommendation(rule, rules.rule10(medication.patientMedications));
     }
     else if(rule === 'rule11') {
-      console.log(rules.rule11(medication.patientMedications, medicationData));
+      saveRecommendation(rule, rules.rule11(medication.patientMedications, medicationData));
     }
   };
 
@@ -163,6 +164,7 @@ App.PropTypes = {
   onChangePuffValue: PropTypes.func,
   onChangeTimesPerDayValue: PropTypes.func,
   onDeleteRow: PropTypes.func,
+  saveRecommendation: PropTypes.func,
 };
 
 App.defaultProps = {

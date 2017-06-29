@@ -7,6 +7,7 @@ import {
   ON_MEDICATION_SELECTION,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
+  RECOMMENDATION,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
@@ -75,5 +76,15 @@ export const getPatientMedications = ( medications ) => {
   return {
     type: FILTERED_MEDICATIONS,
     data: medications,
+  }
+};
+
+export const saveRecommendation = ( rule, medications ) => {
+  return {
+    type: RECOMMENDATION,
+    data: {
+      rule,
+      medications,
+    },
   }
 };

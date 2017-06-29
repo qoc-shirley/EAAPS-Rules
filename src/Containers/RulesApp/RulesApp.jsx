@@ -15,6 +15,7 @@ const mapDispatchToProps = dispatch => ( {
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
   displayResult: (event) => dispatch( actions.displayResult(event) ),
   getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),
+  saveRecommendation: (rule, medications) => dispatch( actions.saveRecommendation(rule, medications) ),
 } );
 
 const RulesApp = connect(mapStateToProps, mapDispatchToProps)(App);

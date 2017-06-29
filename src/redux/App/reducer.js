@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   ON_SUBMIT,
   ON_DELETE_ROW,
@@ -7,6 +8,7 @@ import {
   ON_MEDICATION_SELECTION,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
+  RECOMMENDATION,
 } from './constants';
 
 export const initialState = {
@@ -17,6 +19,7 @@ export const initialState = {
   medicationList: [],
   results: [],
   patientMedications: [],
+  recommendation: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -76,6 +79,10 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         patientMedications: action.data,
       });
+    case RECOMMENDATION:
+      return Object.assign({}, state, {
+        recommendation: state.recommendation.concat(action.data.rule).concat(action.data.medications),
+      });
     case ON_DELETE_ROW:
       return Object.assign({}, state, {
           medicationList: state.medicationList.filter((row, index) => {
@@ -83,7 +90,6 @@ const reducer = (state = initialState, action) => {
           })
         }
       );
-
     case ON_SUBMIT:
       return Object.assign({}, state, {
         results: action.data,
