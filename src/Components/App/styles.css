@@ -36,3 +36,22 @@
     margin-bottom: 20px;
     padding: 10px;
 }
+
+.app .app__main .results .patientMedications .recommendationObject {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: solid 1px #ccc
+}
+
+.app .app__main .results .patientMedications .recommendationArray {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: solid 1px #ccc
+}
+
+.app .app__main .results .patientMedications .recommendationObject p {
+    margin-left: 20px;
+    margin-right: 20px;
+}

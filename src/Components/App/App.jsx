@@ -160,7 +160,7 @@ const App = (
                 (recommendMedication, index) => {
                   if (_.isArray(recommendMedication)) {
                     return (
-                      <div key={index}>
+                      <div key={index} className="recommendationArray">
                         {
                           recommendMedication.map(
                             (medication, index) => {
@@ -175,30 +175,20 @@ const App = (
                   }
                   else {
                     return (
-                      <div key={index}>
-                        {
-                          recommendMedication.map(
-                            (medication, index) => {
-                              return (
-                                <div key={index}>
-                                  <p>id: {medication.id}</p>
-                                  <p>device: {medication.device}</p>
-                                  <p>function: {medication.function}</p>
-                                  <p>name: {medication.name}</p>
-                                  <p>type: {medication.type}</p>
-                                  <p>chemical type: {medication.chemicalType}</p>
-                                  <p>chemicalLABA: {medication.chemicalLABA}</p>
-                                  <p>chemicalICS: {medication.chemicalICS}</p>
-                                  <p>chemicalOther: {medication.chemicalOther}</p>
-                                  <p>dose ics: {medication.doseICS}</p>
-                                  <p>max green ics: {medication.maxGreenICS}</p>
-                                  <p>times per day: {medication.timesPerDay}</p>
-                                  <p>max puff per time: {medication.maxPuffPerTime}</p>
-                              </div>
-                              );
-                            }
-                          )
-                        }
+                      <div key={index} className="recommendationObject">
+                        <p>id: {recommendMedication.id}</p>
+                        <p> device: {recommendMedication.device}</p>
+                        <p>function: {recommendMedication.function}</p>
+                        <p>name: {recommendMedication.name}</p>
+                        <p>type: {recommendMedication.type}</p>
+                        <p>chemical type: {recommendMedication.chemicalType}</p>
+                        <p>chemicalLABA: {recommendMedication.chemicalLABA}</p>
+                        <p>chemicalICS: {recommendMedication.chemicalICS}</p>
+                        <p>chemicalOther: {recommendMedication.chemicalOther}</p>
+                        <p>dose ics: {recommendMedication.doseICS}</p>
+                        <p>max green ics: {recommendMedication.maxGreenICS}</p>
+                        <p>times per day: {recommendMedication.timesPerDay}</p>
+                        <p>max puff per time: {recommendMedication.maxPuffPerTime}</p>
                       </div>
                     )
                   }
