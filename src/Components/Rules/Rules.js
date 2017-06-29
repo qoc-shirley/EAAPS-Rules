@@ -165,6 +165,28 @@ export const rule2 = (patientMedications, masterMedications) => {
     .value();
 };
 
+export const rule4 = (patientMedications, masterMedications) => {
+  return _.chain(patientMedications)
+    .filter(
+      _.reduce((result) => {
+        _.partial((medicationElement, patientMedication) => {
+          if(patientMedication.chemicalType === "ICS" &&
+            patientMedication.name !== "symbicort" &&
+            (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high") &&
+            _.filter(patientMedications, { chemicalType: "laba" })) {
+            console.log("a");
+          }
+          else if(patientMedication.name === "symbicort" &&
+            (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high")) {
+            console.log("b");
+            result.push(_.filter(medicationElement, { name: "symbicort", din: patientMedication.din }))
+          }
+        }, masterMedications )
+      }, [])
+    )
+
+};
+
 export const rule6 = (patientMedications) => {
 
   const consultRespirologist = _
