@@ -137,12 +137,12 @@ const App = (
               <input
                 type="submit"
                 value="Rule4"
-                onClick={() => onClickRule("rule6")}
+                onClick={() => onClickRule("rule4")}
               />
               <input
                 type="submit"
                 value="Rule6"
-                onClick={() => onClickRule("rule4")}
+                onClick={() => onClickRule("rule6")}
               />
               <input
                 type="submit"

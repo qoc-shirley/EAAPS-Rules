@@ -169,22 +169,37 @@ export const rule4 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
     .filter(
       _.reduce((result) => {
+        console.log("aaa");
         _.partial((medicationElement, patientMedication) => {
           if(patientMedication.chemicalType === "ICS" &&
             patientMedication.name !== "symbicort" &&
             (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high") &&
             _.filter(patientMedications, { chemicalType: "laba" })) {
-            console.log("a");
+            if(patientMedication.chemicalType === "laba,ICS") {
+              result.concat(_.filter(medicationElement, { name: "singulair"}));
+            }
+            else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" })) {
+              if(_.filter(medicationElement,
+                  {
+                    chemicalType: "laba,ICS",
+                    chemicalABA: patientMedication.chemicalLABA,
+                    chemicalICS: patientMedication.chemicalICS})) {
+
+              }
+
+            }
           }
           else if(patientMedication.name === "symbicort" &&
             (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high")) {
             console.log("b");
             result.push(_.filter(medicationElement, { name: "symbicort", din: patientMedication.din }))
           }
-        }, masterMedications )
+        }, masterMedications );
+        return result;
       }, [])
     )
-
+    .concat()
+    .value();
 };
 
 export const rule6 = (patientMedications) => {
