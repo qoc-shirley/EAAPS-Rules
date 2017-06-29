@@ -8,6 +8,7 @@ import {
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
   RECOMMENDATION,
+  CLEAR,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
@@ -86,5 +87,11 @@ export const saveRecommendation = ( rule, medications ) => {
       rule,
       medications,
     },
+  }
+};
+
+export const onClickClear = ( ) => {
+  return {
+    type: CLEAR,
   }
 };

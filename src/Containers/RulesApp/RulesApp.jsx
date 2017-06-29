@@ -16,6 +16,7 @@ const mapDispatchToProps = dispatch => ( {
   displayResult: (event) => dispatch( actions.displayResult(event) ),
   getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),
   saveRecommendation: (rule, medications) => dispatch( actions.saveRecommendation(rule, medications) ),
+  onClickClear: () => dispatch( actions.onClickClear() ),
 } );
 
 const RulesApp = connect(mapStateToProps, mapDispatchToProps)(App);

@@ -8,3 +8,4 @@ export const ON_SUBMIT = 'ON_SUBMIT';
 export const ON_DELETE_ROW = 'ON_DELETE_ROW';
 export const FILTERED_MEDICATIONS = 'FILTERED_MEDICATIONS';
 export const RECOMMENDATION = 'RECOMMENDATION';
+export const CLEAR = 'CLEAR';

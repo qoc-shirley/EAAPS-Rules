@@ -19,6 +19,7 @@ const App = (
     onDeleteRow,
     getPatientMedications,
     saveRecommendation,
+    onClickClear,
   } ) => {
 
   const onSubmitMedications = (displayMedications) => {
@@ -64,6 +65,10 @@ const App = (
     else if(rule === 'rule11') {
       saveRecommendation(rule, rules.rule11(medication.patientMedications, medicationData));
     }
+  };
+
+  const clearRecommendations = ( ) => {
+    onClickClear();
   };
 
   return (
@@ -148,6 +153,64 @@ const App = (
               />
             </div>
           </div>
+          <fieldset className="patientMedications">
+            <legend>Recommendation(s):</legend>
+            {
+              medication.recommendation.map(
+                (recommendMedication, index) => {
+                  if (_.isArray(recommendMedication)) {
+                    return (
+                      <div key={index}>
+                        {
+                          recommendMedication.map(
+                            (medication, index) => {
+                              return (
+                                <p key={index}>{medication}</p>
+                              );
+                            }
+                          )
+                        }
+                      </div>
+                    )
+                  }
+                  else {
+                    return (
+                      <div key={index}>
+                        {
+                          recommendMedication.map(
+                            (medication, index) => {
+                              return (
+                                <div key={index}>
+                                  <p>id: {medication.id}</p>
+                                  <p>device: {medication.device}</p>
+                                  <p>function: {medication.function}</p>
+                                  <p>name: {medication.name}</p>
+                                  <p>type: {medication.type}</p>
+                                  <p>chemical type: {medication.chemicalType}</p>
+                                  <p>chemicalLABA: {medication.chemicalLABA}</p>
+                                  <p>chemicalICS: {medication.chemicalICS}</p>
+                                  <p>chemicalOther: {medication.chemicalOther}</p>
+                                  <p>dose ics: {medication.doseICS}</p>
+                                  <p>max green ics: {medication.maxGreenICS}</p>
+                                  <p>times per day: {medication.timesPerDay}</p>
+                                  <p>max puff per time: {medication.maxPuffPerTime}</p>
+                              </div>
+                              );
+                            }
+                          )
+                        }
+                      </div>
+                    )
+                  }
+                }
+              )
+            }
+            <input
+              type="submit"
+              value="Clear"
+              onClick={clearRecommendations}
+            />
+          </fieldset>
         </div>
       </div>
     </div>
