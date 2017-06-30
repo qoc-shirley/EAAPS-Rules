@@ -176,19 +176,20 @@ export const rule4 = (patientMedications, masterMedications) => {
             (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high") &&
             _.filter(patientMedications, { chemicalType: "laba" })) {
             if(patientMedication.chemicalType === "laba,ICS") {
-              result.concat(_.filter(medicationElement, { name: "singulair"}));
+              result.push(_.filter(medicationElement, { name: "singulair"}));
             }
             else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" })) {
               const filteredMedication = _.filter(medicationElement,
                 {
                   chemicalType: "laba,ICS",
                   chemicalABA: patientMedication.chemicalLABA,
-                  chemicalICS: patientMedication.chemicalICS});
-              if(_.filter(filteredMedication, { device: patientMedication })) {
-
-
+                  chemicalICS: patientMedication.chemicalICS
+                });
+              if((patientMedication.chemicalType === "laba" && _.filter(filteredMedication, { device: patientMedication.device })) ||
+                (patientMedication.chemicalType === "ICS" && _.filter(filteredMedication, { device: patientMedicaiton.device })) {
+                //recommend new medication at the same ICS dose as the original medication ICS Dose
+                result.push(_.filter(medicationElement, { name: "singulair"}));
               }
-
             }
           }
           else if(patientMedication.name === "symbicort" &&
