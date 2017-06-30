@@ -185,10 +185,18 @@ export const rule4 = (patientMedications, masterMedications) => {
                   chemicalABA: patientMedication.chemicalLABA,
                   chemicalICS: patientMedication.chemicalICS
                 });
-              if((patientMedication.chemicalType === "laba" && _.filter(filteredMedication, { device: patientMedication.device })) ||
-                (patientMedication.chemicalType === "ICS" && _.filter(filteredMedication, { device: patientMedicaiton.device })) {
-                //recommend new medication at the same ICS dose as the original medication ICS Dose
-                result.push(_.filter(medicationElement, { name: "singulair"}));
+              if(filteredMedication){
+                if((patientMedication.chemicalType === "laba" && _.filter(filteredMedication, { device: patientMedication.device })) ||
+                  (patientMedication.chemicalType === "ICS" && _.filter(filteredMedication, { device: patientMedicaiton.device })) {
+                  //ADD: recommend new medication at the same ICS dose as the original medication ICS Dose
+                  result.push(_.filter(medicationElement, { name: "singulair"}));
+                }
+                else {
+                  result.push(_.filter(medicationElement, { name: "singulair"}));
+                }
+              }
+              else {
+                result.push(_.filter(medicationElement, { name: "singulair"}));å
               }
             }
           }
