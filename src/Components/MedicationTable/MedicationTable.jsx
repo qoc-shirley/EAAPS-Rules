@@ -47,12 +47,31 @@ const MedicationTable = (
           {
             chemicalLABA: medication.chemicalLABA,
             chemicalICS: medication.chemicalICS,
-            chemicalOther: medication.chemicalOther
           }
         );
       });
 
   getMedicationColumns = _.uniqWith(getMedicationColumns, _.isEqual);
+
+  let getChemicalLABA = medicationData.map(
+    ( medication ) => {
+      return (
+        {
+          chemicalLABA: medication.chemicalLABA,
+        }
+      );
+    });
+
+  let getChemicalICS = medicationData.map(
+    ( medication ) => {
+      return (
+        {
+          chemicalICS: medication.chemicalICS,
+        }
+      );
+    });
+  getChemicalLABA = _.uniqWith(getChemicalLABA, _.isEqual);
+  getChemicalICS = _.uniqWith(getChemicalICS, _.isEqual);
 
   const displayRowContents = () => {
     return(

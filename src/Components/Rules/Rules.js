@@ -166,7 +166,6 @@ export const rule2 = (patientMedications, masterMedications) => {
 };
 
 export const rule4 = (patientMedications, masterMedications) => {
-  console.log("start");
   return _.chain(patientMedications)
     .filter(
       _.reduce((result) => {
