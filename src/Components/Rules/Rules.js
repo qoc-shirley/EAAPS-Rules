@@ -166,45 +166,53 @@ export const rule2 = (patientMedications, masterMedications) => {
 };
 
 export const rule4 = (patientMedications, masterMedications) => {
+  console.log("start");
   return _.chain(patientMedications)
     .filter(
       _.reduce((result) => {
-        console.log("aaa");
         _.partial((medicationElement, patientMedication) => {
           if(patientMedication.chemicalType === "ICS" &&
             patientMedication.name !== "symbicort" &&
             (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high") &&
             _.filter(patientMedications, { chemicalType: "laba" })) {
+            console.log("a");
             if(patientMedication.chemicalType === "laba,ICS") {
-              result.push(_.filter(medicationElement, { name: "singulair"}));
+              console.log("b");
+              result.push(_.filter(medicationElement, { name: "singulair" }));
             }
             else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" })) {
+              console.log("c");
               const filteredMedication = _.filter(medicationElement,
                 {
                   chemicalType: "laba,ICS",
                   chemicalABA: patientMedication.chemicalLABA,
                   chemicalICS: patientMedication.chemicalICS
                 });
-              if(filteredMedication){
+              if(filteredMedication) {
+                console.log("d");
                 if((patientMedication.chemicalType === "laba" && _.filter(filteredMedication, { device: patientMedication.device })) ||
-                  (patientMedication.chemicalType === "ICS" && _.filter(filteredMedication, { device: patientMedicaiton.device })) {
+                  (patientMedication.chemicalType === "ICS" && _.filter(filteredMedication, { device: patientMedication.device }))) {
+                  console.log("e");
                   //ADD: recommend new medication at the same ICS dose as the original medication ICS Dose
-                  result.push(_.filter(medicationElement, { name: "singulair"}));
+                  result.push(_.filter(medicationElement, { name: "singulair" }));
                 }
                 else {
-                  result.push(_.filter(medicationElement, { name: "singulair"}));
+                  console.log("f");
+                  result.push(_.filter(medicationElement, { name: "singulair" }));
                 }
               }
               else {
-                result.push(_.filter(medicationElement, { name: "singulair"}));
+                console.log("g");
+                result.push(_.filter(medicationElement, { name: "singulair" }));
               }
             }
           }
           else if(patientMedication.name === "symbicort" &&
             (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high")) {
-            console.log("b");
+            console.log("i");
             result.push(_.filter(medicationElement, { name: "symbicort", din: patientMedication.din }))
           }
+          return result;
         }, masterMedications );
         return result;
       }, [])
