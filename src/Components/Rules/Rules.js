@@ -196,7 +196,7 @@ export const rule4 = (patientMedications, masterMedications) => {
                 }
               }
               else {
-                result.push(_.filter(medicationElement, { name: "singulair"}));å
+                result.push(_.filter(medicationElement, { name: "singulair"}));
               }
             }
           }
