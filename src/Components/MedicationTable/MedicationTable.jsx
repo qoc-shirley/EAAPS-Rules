@@ -77,6 +77,51 @@ const MedicationTable = (
     return(
       medicationList.map( (rowFields, index) => (
         <div key={index} className="row">
+          {/*
+          <InputField
+            fieldName="device"
+            value={deviceName}
+            onChangeInputField={(event) => onChangeDeviceName(index, event.target.value)}
+          />
+          */}
+          {/*
+          <InputField
+           fieldName="medicationName"
+           value={medicationName}
+           onChangeInputField={(event) => onChangeMedicationName(index, event.target.value)}
+           />
+          */}
+          <select
+            className="chemicalLABA"
+            onChange={
+              (event) => onChangeMedication(index, _.split(event.target.value, ","))}
+            defaultValue={availableMedications}
+          >
+            <option>ChemicalLABA</option>
+            {
+              getMedicationColumns.map(
+                (chemicalGroup, index) => (
+                  <option key={index}>{chemicalGroup.chemicalLABA}</option>
+                ))}
+          </select>
+          <select
+            className="chemicalICS"
+            onChange={
+              (event) => onChangeMedication(index, _.split(event.target.value, ","))}
+            defaultValue={availableMedications}
+          >
+            <option>ChemicalICS</option>
+            {
+              getMedicationColumns.map(
+                (chemicalGroup, index) => (
+                  <option key={index}>{chemicalGroup.chemicalICS}</option>
+                ))}
+          </select>
+          <InputField
+            fieldName="doseICS"
+            value={doseICSValue}
+            onChangeInputField={(event) => onChangeDoseICS(index, event.target.value)}
+          />
           <InputField
             fieldName="puff"
             value={puffValue}
@@ -87,24 +132,6 @@ const MedicationTable = (
             value={timesPerDayValue}
             onChangeInputField={(event) => onChangeTimesPerDayValue(index, event.target.value)}
           />
-          <InputField
-            fieldName="doseICS"
-            value={doseICSValue}
-            onChangeInputField={(event) => onChangeDoseICS(index, event.target.value)}
-          />
-          <select
-            className="row__select"
-            onChange={
-              (event) => onChangeMedication(index, _.split(event.target.value, ","))}
-            defaultValue={availableMedications}
-          >
-            <option>ChemicalLABA,ChemicalICS,ChemicalOther</option>
-            {
-              getMedicationColumns.map(
-                (chemicalGroup, index) => (
-                  <option key={index}>{chemicalGroup.chemicalLABA},{chemicalGroup.chemicalICS},{chemicalGroup.chemicalOther}</option>
-            ))}
-          </select>
           <button
             className="button_deleteRow"
             onClick={() => deleteRow(index)}
