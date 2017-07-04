@@ -121,7 +121,7 @@ const App = (
           </div>
 
           <div className="rules">
-            <p>Available Escalation Rules</p>
+            <h3>Available Escalation Rules</h3>
             <div className="buttons">
               <input
                 type="submit"
@@ -161,7 +161,7 @@ const App = (
             </div>
           </div>
           <div className="recommendations">
-            <h3>Recommendation(s):</h3>
+            <h4>Recommendation(s):</h4>
             {
               medication.recommendation.map(
                 (recommendMedication, index) => {
