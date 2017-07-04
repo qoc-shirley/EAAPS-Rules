@@ -110,50 +110,55 @@ const App = (
                 }
               )
             }
-            <div className="button">
-              <input
-                className="submit"
-                type="submit"
-                value="Submit Filtered Medications"
-                onClick={() => onSubmitMedications(displayMedications)}
-              />
-            </div>
+            <input
+              className="submit"
+              type="submit"
+              value="Submit Filtered Medications"
+              onClick={() => onSubmitMedications(displayMedications)}
+            />
           </div>
 
           <div className="rules">
             <h3>Available Escalation Rules</h3>
             <div className="buttons">
               <input
+                className="rulesButtons"
                 type="submit"
                 value="Rule1"
                 onClick={() => onClickRule("rule1")}
               />
               <input
+                className="rulesButtons"
                 type="submit"
                 value="Rule2"
                 onClick={() => onClickRule("rule2")}
               />
               <input
+                className="rulesButtons"
                 type="submit"
                 value="Rule4"
                 onClick={() => onClickRule("rule4")}
               />
               <input
+                className="rulesButtons"
                 type="submit"
                 value="Rule6"
                 onClick={() => onClickRule("rule6")}
               />
               <input
+                className="rulesButtons"
                 type="submit"
                 value="Rule8"
                 onClick={() => onClickRule("rule8")}
               />
               <input
+                className="rulesButtons"
                 type="submit"
                 value="Rule10"
                 onClick={() => onClickRule("rule10")}
               />
               <input
+                className="rulesButtons"
                 type="submit"
                 value="Rule11"
                 onClick={() => onClickRule("rule11")}
