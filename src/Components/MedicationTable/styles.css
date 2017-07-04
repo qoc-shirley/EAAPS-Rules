@@ -6,9 +6,6 @@
 }
 
 .medication-table .header {
-     /*background: #ccc;
-     margin: 20px 20px 20px 20px;
-     padding: 5px;*/
     text-align: left;
     margin: 40px;
  }
@@ -29,22 +26,16 @@
     box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
 }
 
-/*.medication-table .header .row {
-    margin: 20px 20px 20px 20px;
-
-}*/
-
-.medication-table .header ul {
-    padding: 0;
-}
-
 .medication-table .main ul .row{
-    /*background: #e2e2e2;*/
     margin: 20px 20px 20px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
+}
+
+.medication-table .main ul .row select{
+    height: 30px;
 }
 
 .medication-table .main ul {

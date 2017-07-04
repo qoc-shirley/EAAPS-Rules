@@ -28,8 +28,6 @@ const MedicationTable = (
     timesPerDayValue,
   } ) => {
 
-  // const headerElements = ["Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
-
   const renderAddRow = () => {
     const initalInputValues =
       {
@@ -180,11 +178,6 @@ const MedicationTable = (
    <div className="medication-table">
      <div className="header">
        <h3>Enter Your Medications:</h3>
-       {/*<ul>
-         <Row>
-           {headerElements}
-         </Row>
-       </ul>*/}
      </div>
 
      <div className="main">
