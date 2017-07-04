@@ -90,8 +90,8 @@ const App = (
           onClickDeleteMedication={onDeleteRow}
         />
         <div className="results">
-          <fieldset className="patientMedications">
-            <legend>Filtered Medications:</legend>
+          <div className="patientMedications">
+            <h3>Filtered Medications:</h3>
             {
               displayMedications.map(
                 (row, rowIndex) => {
@@ -110,7 +110,7 @@ const App = (
                 }
               )
             }
-          </fieldset>
+          </div>
 
           <div className="button">
             <input

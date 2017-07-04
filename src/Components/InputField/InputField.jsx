@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const InputField = ( { defaultValue, onChangeInputField } ) => {
+const InputField = ( { defaultValue, onChangeInputField, placeholder } ) => {
 
   return (
     <div className="field">
@@ -11,6 +11,7 @@ const InputField = ( { defaultValue, onChangeInputField } ) => {
           type="textfield"
           value={defaultValue}
           onChange={onChangeInputField}
+          placeholder={placeholder}
         />
       </div>
     </div>
@@ -20,9 +21,11 @@ const InputField = ( { defaultValue, onChangeInputField } ) => {
 InputField.propTypes = {
   defaultValue: PropTypes.string,
   onChangeInputField: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
 };
 
 InputField.defaultProps = {
+  placeholder: '',
 };
 
 export default InputField;

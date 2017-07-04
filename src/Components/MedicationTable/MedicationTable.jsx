@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import InputField from '../InputField/InputField';
-import Row from '../Row/Row';
 import * as actions from '../../redux/App/actions';
 import medicationData from '../MedicationData/MedicationData';
 import './styles.css';
@@ -11,7 +10,6 @@ import './styles.css';
 const MedicationTable = (
   {
     appendMedicationList,
-    availableMedications,
     chemicalICS,
     chemicalLABA,
     deviceName,
@@ -30,7 +28,7 @@ const MedicationTable = (
     timesPerDayValue,
   } ) => {
 
-  const headerElements = ["Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
+  // const headerElements = ["Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
 
   const renderAddRow = () => {
     const initalInputValues =
@@ -154,16 +152,19 @@ const MedicationTable = (
           <InputField
             fieldName="doseICS"
             value={doseICSValue}
+            placeholder="Dose ICS"
             onChangeInputField={(event) => onChangeDoseICS(index, event.target.value)}
           />
           <InputField
             fieldName="puff"
             value={puffValue}
+            placeholder="# of puffs"
             onChangeInputField={(event) => onChangePuffValue(index, event.target.value)}
           />
           <InputField
             fieldName="times"
             value={timesPerDayValue}
+            placeholder="Frequency"
             onChangeInputField={(event) => onChangeTimesPerDayValue(index, event.target.value)}
           />
           <button
@@ -178,11 +179,12 @@ const MedicationTable = (
  return (
    <div className="medication-table">
      <div className="header">
-       <ul>
+       <h3>Enter Your Medications:</h3>
+       {/*<ul>
          <Row>
            {headerElements}
          </Row>
-       </ul>
+       </ul>*/}
      </div>
 
      <div className="main">

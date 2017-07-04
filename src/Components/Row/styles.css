@@ -1,13 +1,19 @@
 .row {
-    background-color: #ccc;
-    margin:20px;
+    /*background-color: #ccc;*/
+    margin: 20px 20px 20px 20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .row li {
     list-style-type: none;
 }
+
+.row select {
+    width: 12%;
+}
+
 .row ul {
     padding: 0;
 }

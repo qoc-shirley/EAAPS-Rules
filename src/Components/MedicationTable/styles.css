@@ -1,15 +1,49 @@
+.medication-table {
+    border: solid 3px #ccefff;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 50px 20px 20px 20px;
+}
+
 .medication-table .header {
-     background: #ccc;
-     margin: 20px;
-     padding: 5px;
+     /*background: #ccc;
+     margin: 20px 20px 20px 20px;
+     padding: 5px;*/
+    text-align: left;
+    margin: 40px;
  }
+
+.medication-table .button__addRow {
+    width: 20%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+}
+
+.medication-table .button__addRow:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19)
+}
+
+/*.medication-table .header .row {
+    margin: 20px 20px 20px 20px;
+
+}*/
 
 .medication-table .header ul {
     padding: 0;
 }
 
 .medication-table .main ul .row{
-    background: #e2e2e2;
+    /*background: #e2e2e2;*/
+    margin: 20px 20px 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 15px;
 }
 
