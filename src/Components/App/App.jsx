@@ -114,14 +114,13 @@ const App = (
                 (row, rowIndex) => {
                   return (
                     <div key={rowIndex}>
-                      <p>{rowIndex}:</p>
                       {
                         row.map(
                           (medication, index) => {
                             return (
                               <div key={index}>
                                 {
-                                  _.mapValues(medication,
+                                  _.map(medication,
                                     (columnData, columnKey) => {
                                       return(
                                         <p key={columnKey}>{columnKey}: {columnData}</p>
