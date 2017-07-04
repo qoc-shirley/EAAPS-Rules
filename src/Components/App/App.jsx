@@ -32,12 +32,29 @@ const App = (
     .reduce( (filteredData, medication) => {
       filteredData.push(
         _.chain(medicationData)
-          .filter( (masterMedication) => {
-            return ((medication.timesPerDayValue === masterMedication.timesPerDay) &&
-              (medication.doseICSValue === masterMedication.doseICS) &&
-              (medication.availableMedications.chemicalLABA === masterMedication.chemicalLABA) &&
-              (medication.availableMedications.chemicalICS === masterMedication.chemicalICS) &&
-              (medication.availableMedications.chemicalOther === masterMedication.chemicalOther))
+          .filter((masterMedication) => {
+            return (
+              (
+                medication.timesPerDayValue === masterMedication.timesPerDay ||
+                (medication.timesPerDayValue === "" && masterMedication.timesPerDay === ".")
+              ) &&
+              (
+                medication.doseICSValue === masterMedication.doseICS ||
+                medication.doseICSValue === "" && masterMedication.doseICS === "."
+              ) &&
+              (
+                medication.chemicalLABA === masterMedication.chemicalLABA ||
+                (medication.chemicalLABA === "chemicalLABA" || medication.chemicalLABA === "") &&
+                masterMedication.chemicalLABA === "."
+              ) &&
+              (
+                medication.chemicalICS === masterMedication.chemicalICS ||
+                (medication.chemicalICS === "chemicalICS" || medication.chemicalICS === "") &&
+                masterMedication.chemicalICS === "."
+              ) &&
+              (medication.medicationName === masterMedication.name) &&
+              (medication.deviceName === masterMedication.device)
+            )
           })
         .value()
       );
@@ -100,9 +117,11 @@ const App = (
                       <p>{rowIndex}:</p>
                       {
                         row.map(
-                          (medication, index) => (
-                            <p key={index}>id: {medication.id}</p>
-                          )
+                          (medication, index) => {
+                            return (
+                              <p key={index}>id: {medication.id}</p>
+                            );
+                          }
                         )
                       }
                     </div>
