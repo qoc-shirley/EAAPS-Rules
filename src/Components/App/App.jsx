@@ -119,7 +119,16 @@ const App = (
                         row.map(
                           (medication, index) => {
                             return (
-                              <p key={index}>id: {medication.id}</p>
+                              <div key={index}>
+                                {
+                                  _.mapValues(medication,
+                                    (columnData, columnKey) => {
+                                      return(
+                                        <p key={columnKey}>{columnKey}: {columnData}</p>
+                                      );
+                                  })
+                                }
+                              </div>
                             );
                           }
                         )
