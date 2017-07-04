@@ -5,12 +5,7 @@ import './styles.css';
 const Header = () => {
   return(
     <div className="header">
-      <div className="header__logo">
-        <img src={logo} className="header__logo" alt="logo" />
-      </div>
-      <div className="header__heading">
-        <h2>EAAPs Escalation Rules</h2>
-      </div>
+      <h1>EAAPs Escalation Rules</h1>
     </div>
   );
 };
