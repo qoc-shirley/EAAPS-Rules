@@ -33,6 +33,22 @@
     justify-content: space-around;
 }
 
+.app .app__main .results .rules .buttons .rulesButtons {
+    width: 10%;
+    height: 30px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+}
+
+.app .app__main .results .rules .buttons .rulesButtons:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
+}
+
 .app .app__main .rules .checkbox {
     margin-bottom: 10px;
     margin-top: 10px;
