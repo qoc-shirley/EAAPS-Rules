@@ -11,6 +11,7 @@ import {
   CLEAR,
   ON_CHEMICALLABA_SELECTION,
   ON_CHEMICALICS_SELECTION,
+  MEDICATION_NAME,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
@@ -20,6 +21,7 @@ export const appendMedicationList = ( medicationRow ) => {
   }
 };
 
+//OnChange Functions
 export const onChangeDeviceName = ( index, device ) => {
   return {
     type: DEVICE,
@@ -30,7 +32,16 @@ export const onChangeDeviceName = ( index, device ) => {
   }
 };
 
-//OnChange Functions
+export const onChangeMedicationName = ( index, medicationName ) => {
+  return {
+    type: MEDICATION_NAME,
+    data: {
+      index,
+      medicationName
+    },
+  }
+};
+
 export const onChangePuffValue = ( index, puffValueChange ) => {
   return {
     type: ON_PUFF_CHANGE,

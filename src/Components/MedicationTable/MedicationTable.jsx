@@ -15,12 +15,14 @@ const MedicationTable = (
     deviceName,
     doseICSValue,
     medicationList,
+    medicationName,
     onChangeDoseICS,
     onChangeChemicalLABA,
     onChangeChemicalICS,
     onChangeDeviceName,
     onChangePuffValue,
     onChangeTimesPerDayValue,
+    onChangeMedicationName,
     onClickDeleteMedication,
     puffValue,
     timesPerDayValue,
@@ -68,13 +70,11 @@ const MedicationTable = (
             value={deviceName}
             onChangeInputField={(event) => onChangeDeviceName(index, event.target.value)}
           />
-          {/*
           <InputField
            fieldName="medicationName"
            value={medicationName}
            onChangeInputField={(event) => onChangeMedicationName(index, event.target.value)}
            />
-          */}
           <select
             className="chemicalLABA"
             onChange={
@@ -155,17 +155,23 @@ MedicationTable.propTypes = {
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
   onClickDeleteMedication: PropTypes.func.isRequired,
-  //onChangeMedication: PropTypes.func.isRequired,
+  onChangeDeviceName: PropTypes.func.isRequired,
   onChangePuffValue: PropTypes.func.isRequired,
   onChangeTimesPerDayValue: PropTypes.func.isRequired,
   onChangeDoseICS: PropTypes.func.isRequired,
+  onChangeChemicalICS: PropTypes.func.isRequired,
+  onChangeChemicalLABA: PropTypes.func.isRequired,
+  onChangeMedicationName: PropTypes.func.isRequired,
   appendMedicationList: PropTypes.func.isRequired,
-  availableMedications: PropTypes.string,
-  medicationList: PropTypes.array.isRequired,
+  medicationList: PropTypes.array,
+  deviceName: PropTypes.string,
+
+
 };
 
 MedicationTable.defaultProps = {
   puffValue: '',
+  deviceName: '',
   timesPerDayValue: '',
   doseICSValue: '',
   medicationList: [],
@@ -183,6 +189,7 @@ const mapDispatchToProps = dispatch => ( {
   onChangeDeviceName: (index, value) => dispatch( actions.onChangeDeviceName(index, value) ),
   onChangeChemicalICS: (index, value) => dispatch( actions.onChangeChemicalICS(index, value) ),
   onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
+  onChangeMedicationName: (index, value) => dispatch( actions.onChangeMedicationName(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
 } );
 

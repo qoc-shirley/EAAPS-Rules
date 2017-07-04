@@ -11,6 +11,7 @@ import {
   CLEAR,
   ON_CHEMICALICS_SELECTION,
   ON_CHEMICALLABA_SELECTION,
+  MEDICATION_NAME,
 } from './constants';
 
 export const initialState = {
@@ -21,6 +22,7 @@ export const initialState = {
   chemicalICS: '',
   deviceName: '',
   medicationList: [],
+  medicationName: '',
   results: [],
   patientMedications: [],
   recommendation: [],
@@ -39,6 +41,15 @@ const reducer = (state = initialState, action) => {
           (row, index) =>
             action.data.index === index ?
               { ...row, device: action.data.device }
+              : row)
+      });
+    case MEDICATION_NAME:
+      return Object.assign({}, state, {
+        medicationName: action.data,
+        medicationList: state.medicationList.map(
+          (row, index) =>
+            action.data.index === index ?
+              { ...row, medicationName: action.data.medicationName }
               : row)
       });
 
