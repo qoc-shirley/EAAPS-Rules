@@ -91,7 +91,7 @@ const App = (
         />
         <div className="results">
           <div className="patientMedications">
-            <h3>Filtered Medications:</h3>
+            <h3>Your Medications:</h3>
             {
               displayMedications.map(
                 (row, rowIndex) => {
@@ -110,15 +110,14 @@ const App = (
                 }
               )
             }
-          </div>
-
-          <div className="button">
-            <input
-              className="submit"
-              type="submit"
-              value="Submit Filtered Medications"
-              onClick={() => onSubmitMedications(displayMedications)}
-            />
+            <div className="button">
+              <input
+                className="submit"
+                type="submit"
+                value="Submit Filtered Medications"
+                onClick={() => onSubmitMedications(displayMedications)}
+              />
+            </div>
           </div>
 
           <div className="rules">
@@ -161,8 +160,8 @@ const App = (
               />
             </div>
           </div>
-          <fieldset className="patientMedications">
-            <legend>Recommendation(s):</legend>
+          <div className="recommendations">
+            <h3>Recommendation(s):</h3>
             {
               medication.recommendation.map(
                 (recommendMedication, index) => {
@@ -208,7 +207,7 @@ const App = (
               value="Clear"
               onClick={clearRecommendations}
             />
-          </fieldset>
+          </div>
         </div>
       </div>
     </div>

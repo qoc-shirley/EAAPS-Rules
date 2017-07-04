@@ -14,11 +14,6 @@
     margin: 20px;
 }
 
-.app .app__main .patientMedications {
-    margin-bottom: 10px;
-    padding-left: 40px;
-}
-
 .app .app__main .results .rules .buttons{
     margin-top: 20px;
     margin-bottom: 20px;
@@ -37,21 +32,37 @@
     padding: 10px;
 }
 
-.app .app__main .results .patientMedications .recommendationObject {
+.app .app__main .results .patientMedications {
+    text-align: left;
+    margin-bottom: 10px;
+    padding-left: 40px;
+    border: solid 3px #ccefff;
+    border-radius: 20px;
+}
+
+.app .app__main .results .recommendations {
+    margin-bottom: 10px;
+    padding-left: 40px;
+    text-align: left;
+    border: solid 3px #ccefff;
+    border-radius: 20px;
+}
+
+.app .app__main .results .recommendations .recommendationObject {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     border: solid 1px #ccc
 }
 
-.app .app__main .results .patientMedications .recommendationArray {
+.app .app__main .results .recommendations .recommendationArray {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     border: solid 1px #ccc
 }
 
-.app .app__main .results .patientMedications .recommendationObject p {
+.app .app__main .results .recommendations .recommendationObject p {
     margin-left: 20px;
     margin-right: 20px;
 }
