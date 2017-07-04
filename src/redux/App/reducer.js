@@ -4,18 +4,21 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
-  ON_MEDICATION_SELECTION,
+  // ON_MEDICATION_SELECTION,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
   RECOMMENDATION,
   CLEAR,
+  ON_CHEMICALICS_SELECTION,
+  ON_CHEMICALLABA_SELECTION,
 } from './constants';
 
 export const initialState = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',
-  availableMedications: '',
+  chemicalLABA: '',
+  chemicalICS: '',
   medicationList: [],
   results: [],
   patientMedications: [],
@@ -36,7 +39,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              {...row, puffValue: action.data.puffValueChange}
+              { ...row, puffValue: action.data.puffValueChange }
               : row)
       });
 
@@ -46,7 +49,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              {...row, timesPerDayValue: action.data.timesValueChange}
+              { ...row, timesPerDayValue: action.data.timesValueChange }
               : row)
       });
 
@@ -56,25 +59,33 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              {...row, doseICSValue: action.data.doseICSValueChange}
+              { ...row, doseICSValue: action.data.doseICSValueChange }
               : row)
       });
 
-    case ON_MEDICATION_SELECTION:
+    case ON_CHEMICALICS_SELECTION:
       return Object.assign({}, state, {
-        availableMedications: action.data,
+        chemicalICS: action.data.chemicalICS[0],
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
               {
-                ...row, availableMedications: {
-                chemicalLABA: action.data.selectionChange[0],
-                chemicalICS: action.data.selectionChange[1],
-                chemicalOther: action.data.selectionChange[2],
-              }
+                ...row, chemicalICS: action.data.chemicalICS[0],
               }
               : row)
       });
+    case ON_CHEMICALLABA_SELECTION:
+      return Object.assign({}, state, {
+        chemicalLABA: action.data.chemicalLABA[0],
+        medicationList: state.medicationList.map(
+          (row, index) =>
+            action.data.index === index ?
+              {
+                ...row, chemicalLABA: action.data.chemicalLABA[0],
+              }
+              : row)
+      });
+
     case FILTERED_MEDICATIONS:
       return Object.assign({}, state, {
         patientMedications: action.data,

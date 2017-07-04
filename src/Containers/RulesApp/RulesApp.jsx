@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import App from '../../Components/App/App.jsx';
+import App from '../../Components/App/App';
 import * as actions from '../../redux/App/actions';
 
 const mapStateToProps = state => ({
@@ -11,7 +11,8 @@ const mapDispatchToProps = dispatch => ( {
   onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index,value) ),
   onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),
   onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),
-  onChangeMedication: (index, value) => dispatch( actions.onChangeMedication(index, value) ),
+  onChangeChemicalICS: (index, value) => dispatch( actions.onChangeChemicalICS(index, value) ),
+  onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
   displayResult: (event) => dispatch( actions.displayResult(event) ),
   getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),

@@ -15,7 +15,8 @@ const MedicationTable = (
     doseICSValue,
     medicationList,
     onChangeDoseICS,
-    onChangeMedication,
+    onChangeChemicalLABA,
+    onChangeChemicalICS,
     onChangePuffValue,
     onChangeTimesPerDayValue,
     onClickDeleteMedication,
@@ -28,8 +29,10 @@ const MedicationTable = (
   const renderAddRow = () => {
     const initalInputValues =
       {
+        chemicalICS: '',
+        chemicalLABA: '',
+        device: '',
         doseICSValue: '',
-        availableMedications: '',
         puffValue: '',
         timesPerDayValue: '',
       };
@@ -51,27 +54,8 @@ const MedicationTable = (
         );
       });
 
+  //get rid of . from the columns
   getMedicationColumns = _.uniqWith(getMedicationColumns, _.isEqual);
-
-  // let getChemicalLABA = medicationData.map(
-  //   ( medication ) => {
-  //     return (
-  //       {
-  //         chemicalLABA: medication.chemicalLABA,
-  //       }
-  //     );
-  //   });
-  //
-  // let getChemicalICS = medicationData.map(
-  //   ( medication ) => {
-  //     return (
-  //       {
-  //         chemicalICS: medication.chemicalICS,
-  //       }
-  //     );
-  //   });
-  // getChemicalLABA = _.uniqWith(getChemicalLABA, _.isEqual);
-  // getChemicalICS = _.uniqWith(getChemicalICS, _.isEqual);
 
   const displayRowContents = () => {
     return(
@@ -94,7 +78,7 @@ const MedicationTable = (
           <select
             className="chemicalLABA"
             onChange={
-              (event) => onChangeMedication(index, _.split(event.target.value, ","))}
+              (event) => onChangeChemicalLABA(index, _.split(event.target.value, ","))}
             defaultValue={availableMedications}
           >
             <option>ChemicalLABA</option>
@@ -107,7 +91,7 @@ const MedicationTable = (
           <select
             className="chemicalICS"
             onChange={
-              (event) => onChangeMedication(index, _.split(event.target.value, ","))}
+              (event) => onChangeChemicalICS(index, _.split(event.target.value, ","))}
             defaultValue={availableMedications}
           >
             <option>ChemicalICS</option>
@@ -171,7 +155,7 @@ MedicationTable.propTypes = {
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
   onClickDeleteMedication: PropTypes.func.isRequired,
-  onChangeMedication: PropTypes.func.isRequired,
+  //onChangeMedication: PropTypes.func.isRequired,
   onChangePuffValue: PropTypes.func.isRequired,
   onChangeTimesPerDayValue: PropTypes.func.isRequired,
   onChangeDoseICS: PropTypes.func.isRequired,
@@ -196,7 +180,9 @@ const mapDispatchToProps = dispatch => ( {
   onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index, value) ),
   onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),
   onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),
-  onChangeMedication: (index, value) => dispatch( actions.onChangeMedication(index, value) ),
+  // onChangeMedication: (index, value) => dispatch( actions.onChangeMedication(index, value) ),
+  onChangeChemicalICS: (index, value) => dispatch( actions.onChangeChemicalICS(index, value) ),
+  onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
 } );
 

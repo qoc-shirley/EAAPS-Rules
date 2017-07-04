@@ -4,11 +4,13 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
-  ON_MEDICATION_SELECTION,
+  // ON_MEDICATION_SELECTION,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
   RECOMMENDATION,
   CLEAR,
+  ON_CHEMICALLABA_SELECTION,
+  ON_CHEMICALICS_SELECTION,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
@@ -49,12 +51,22 @@ export const onChangeDoseICS = ( index, doseICSValueChange ) => {
   }
 };
 
-export const onChangeMedication = ( index, selectionChange ) => {
+export const onChangeChemicalICS = ( index, chemicalICS ) => {
   return {
-    type: ON_MEDICATION_SELECTION,
+    type: ON_CHEMICALICS_SELECTION,
     data: {
       index,
-      selectionChange,
+      chemicalICS,
+    },
+  }
+};
+
+export const onChangeChemicalLABA = ( index, chemicalLABA ) => {
+  return {
+    type: ON_CHEMICALLABA_SELECTION,
+    data: {
+      index,
+      chemicalLABA,
     },
   }
 };
