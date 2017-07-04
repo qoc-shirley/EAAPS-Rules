@@ -2,11 +2,9 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-
 }
 
 .app .app__main .results .patientMedications .submit {
-    margin: 20px;
     width: 20%;
     height: 50px;
     border-radius: 20px;
@@ -47,18 +45,33 @@
 
 .app .app__main .results .patientMedications {
     text-align: left;
-    margin-bottom: 100px;
-    padding-left: 40px;
+    padding: 40px 40px 20px 40px;
     border: solid 3px #ccefff;
     border-radius: 20px;
 }
 
 .app .app__main .results .recommendations {
-    margin-bottom: 10px;
-    padding-left: 40px;
     text-align: left;
+    padding: 40px 40px 20px 40px;
     border: solid 3px #ccefff;
     border-radius: 20px;
+    margin: 0;
+}
+
+.app .app__main .results .recommendations .clear {
+    width: 20%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+}
+
+.app .app__main .results .recommendations .clear:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
 }
 
 .app .app__main .results .recommendations .recommendationObject {

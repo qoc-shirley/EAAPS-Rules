@@ -208,6 +208,7 @@ const App = (
               )
             }
             <input
+              className="clear"
               type="submit"
               value="Clear"
               onClick={clearRecommendations}
