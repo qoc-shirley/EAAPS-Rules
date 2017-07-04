@@ -36,20 +36,20 @@ const reducer = (state = initialState, action) => {
       });
     case DEVICE:
       return Object.assign({}, state, {
-        device: action.data,
+        deviceName: action.data.device[0],
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              { ...row, device: action.data.device }
+              { ...row, deviceName: action.data.device[0] }
               : row)
       });
     case MEDICATION_NAME:
       return Object.assign({}, state, {
-        medicationName: action.data,
+        medicationName: action.data.medicationName[0],
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              { ...row, medicationName: action.data.medicationName }
+              { ...row, medicationName: action.data.medicationName[0] }
               : row)
       });
 
