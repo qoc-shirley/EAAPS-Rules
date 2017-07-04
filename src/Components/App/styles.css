@@ -91,14 +91,14 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    border: solid 1px #ccc
+    margin-bottom: 50px;
 }
 
 .app .app__main .results .recommendations .recommendationArray {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    border: solid 1px #ccc
+    margin-bottom: 50px;
 }
 
 .app .app__main .results .recommendations .recommendationObject p {

@@ -7,7 +7,7 @@ const calculateICSDose = (medication) => {
 
 const getLowestICSDose = (newMedications) => {
   return _.chain(newMedications)
-    .min(
+    .minBy(
       (medication) => {
         return calculateICSDose(medication)
       }
