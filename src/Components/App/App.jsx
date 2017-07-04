@@ -113,12 +113,12 @@ const App = (
               displayMedications.map(
                 (row, rowIndex) => {
                   return (
-                    <div key={rowIndex}>
+                    <div key={rowIndex} className="medicationRow">
                       {
                         row.map(
                           (medication, index) => {
                             return (
-                              <div key={index}>
+                              <div key={index} className="filteredMedication">
                                 {
                                   _.map(medication,
                                     (columnData, columnKey) => {
@@ -140,7 +140,7 @@ const App = (
             <input
               className="submit"
               type="submit"
-              value="Submit Filtered Medications"
+              value="Submit"
               onClick={() => onSubmitMedications(displayMedications)}
             />
           </div>

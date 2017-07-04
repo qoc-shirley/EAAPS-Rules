@@ -45,9 +45,22 @@
 
 .app .app__main .results .patientMedications {
     text-align: left;
+    margin-bottom: 100px;
     padding: 40px 40px 20px 40px;
     border: solid 3px #ccefff;
     border-radius: 20px;
+}
+
+.app .app__main .results .patientMedications .medicationRow .filteredMedication {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.app .app__main .results .patientMedications .medicationRow .filteredMedication p {
+    margin-right: 50px;
 }
 
 .app .app__main .results .recommendations {
@@ -89,6 +102,11 @@
 }
 
 .app .app__main .results .recommendations .recommendationObject p {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.app .app__main .results .recommendations .recommendationArray p {
     margin-left: 20px;
     margin-right: 20px;
 }
