@@ -23,7 +23,7 @@ const MedicationTable = (
     timesPerDayValue,
   } ) => {
 
-  const headerElements = ["Puff/Time", "Times/Day", "DoseICS", "Select Medication", ""];
+  const headerElements = ["Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
 
   const renderAddRow = () => {
     const initalInputValues =
@@ -53,25 +53,25 @@ const MedicationTable = (
 
   getMedicationColumns = _.uniqWith(getMedicationColumns, _.isEqual);
 
-  let getChemicalLABA = medicationData.map(
-    ( medication ) => {
-      return (
-        {
-          chemicalLABA: medication.chemicalLABA,
-        }
-      );
-    });
-
-  let getChemicalICS = medicationData.map(
-    ( medication ) => {
-      return (
-        {
-          chemicalICS: medication.chemicalICS,
-        }
-      );
-    });
-  getChemicalLABA = _.uniqWith(getChemicalLABA, _.isEqual);
-  getChemicalICS = _.uniqWith(getChemicalICS, _.isEqual);
+  // let getChemicalLABA = medicationData.map(
+  //   ( medication ) => {
+  //     return (
+  //       {
+  //         chemicalLABA: medication.chemicalLABA,
+  //       }
+  //     );
+  //   });
+  //
+  // let getChemicalICS = medicationData.map(
+  //   ( medication ) => {
+  //     return (
+  //       {
+  //         chemicalICS: medication.chemicalICS,
+  //       }
+  //     );
+  //   });
+  // getChemicalLABA = _.uniqWith(getChemicalLABA, _.isEqual);
+  // getChemicalICS = _.uniqWith(getChemicalICS, _.isEqual);
 
   const displayRowContents = () => {
     return(
