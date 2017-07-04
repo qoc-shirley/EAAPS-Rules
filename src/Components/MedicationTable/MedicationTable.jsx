@@ -12,11 +12,13 @@ const MedicationTable = (
   {
     appendMedicationList,
     availableMedications,
+    deviceName,
     doseICSValue,
     medicationList,
     onChangeDoseICS,
     onChangeChemicalLABA,
     onChangeChemicalICS,
+    onChangeDeviceName,
     onChangePuffValue,
     onChangeTimesPerDayValue,
     onClickDeleteMedication,
@@ -31,7 +33,7 @@ const MedicationTable = (
       {
         chemicalICS: '',
         chemicalLABA: '',
-        device: '',
+        deviceName: '',
         doseICSValue: '',
         puffValue: '',
         timesPerDayValue: '',
@@ -61,13 +63,11 @@ const MedicationTable = (
     return(
       medicationList.map( (rowFields, index) => (
         <div key={index} className="row">
-          {/*
           <InputField
             fieldName="device"
             value={deviceName}
             onChangeInputField={(event) => onChangeDeviceName(index, event.target.value)}
           />
-          */}
           {/*
           <InputField
            fieldName="medicationName"
@@ -180,7 +180,7 @@ const mapDispatchToProps = dispatch => ( {
   onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index, value) ),
   onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),
   onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),
-  // onChangeMedication: (index, value) => dispatch( actions.onChangeMedication(index, value) ),
+  onChangeDeviceName: (index, value) => dispatch( actions.onChangeDeviceName(index, value) ),
   onChangeChemicalICS: (index, value) => dispatch( actions.onChangeChemicalICS(index, value) ),
   onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),

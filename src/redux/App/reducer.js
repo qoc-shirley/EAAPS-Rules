@@ -4,7 +4,7 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
-  // ON_MEDICATION_SELECTION,
+  DEVICE,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
   RECOMMENDATION,
@@ -19,6 +19,7 @@ export const initialState = {
   doseICSValue: '',
   chemicalLABA: '',
   chemicalICS: '',
+  deviceName: '',
   medicationList: [],
   results: [],
   patientMedications: [],
@@ -30,6 +31,15 @@ const reducer = (state = initialState, action) => {
     case MEDICATION_TO_STACK:
       return Object.assign({}, state, {
         medicationList: state.medicationList.concat(action.data)
+      });
+    case DEVICE:
+      return Object.assign({}, state, {
+        device: action.data,
+        medicationList: state.medicationList.map(
+          (row, index) =>
+            action.data.index === index ?
+              { ...row, device: action.data.device }
+              : row)
       });
 
     // OnChange functions

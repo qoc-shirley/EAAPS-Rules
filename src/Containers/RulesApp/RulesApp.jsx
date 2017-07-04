@@ -13,6 +13,7 @@ const mapDispatchToProps = dispatch => ( {
   onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),
   onChangeChemicalICS: (index, value) => dispatch( actions.onChangeChemicalICS(index, value) ),
   onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
+  onChangeDeviceName: (index, value) => dispatch( actions.onChangeDeviceName(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
   displayResult: (event) => dispatch( actions.displayResult(event) ),
   getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),

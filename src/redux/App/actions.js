@@ -4,7 +4,7 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
-  // ON_MEDICATION_SELECTION,
+  DEVICE,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
   RECOMMENDATION,
@@ -17,6 +17,16 @@ export const appendMedicationList = ( medicationRow ) => {
   return {
     type: MEDICATION_TO_STACK,
     data: medicationRow,
+  }
+};
+
+export const onChangeDeviceName = ( index, device ) => {
+  return {
+    type: DEVICE,
+    data: {
+      index,
+      device
+    },
   }
 };
 
