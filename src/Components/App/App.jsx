@@ -160,12 +160,12 @@ const App = (
                 value="Rule2"
                 onClick={() => onClickRule("rule2")}
               />
-              <input
+              {/*<input
                 className="rulesButtons"
                 type="submit"
                 value="Rule4"
                 onClick={() => onClickRule("rule4")}
-              />
+              />*/}
               <input
                 className="rulesButtons"
                 type="submit"
