@@ -12,6 +12,8 @@ const MedicationTable = (
   {
     appendMedicationList,
     availableMedications,
+    chemicalICS,
+    chemicalLABA,
     deviceName,
     doseICSValue,
     medicationList,
@@ -47,43 +49,91 @@ const MedicationTable = (
     onClickDeleteMedication(index);
   };
 
-  let getMedicationColumns =
+  let getChemicalLABAColumn =
     medicationData.map(
       ( medication ) => {
         return (
           {
             chemicalLABA: medication.chemicalLABA,
+          }
+        );
+      });
+
+  getChemicalLABAColumn = _.uniqWith(getChemicalLABAColumn, _.isEqual);
+  getChemicalLABAColumn = _.filter(getChemicalLABAColumn, (column) => { return column.chemicalLABA !== "." } );
+
+  let getChemicalICSColumn =
+    medicationData.map(
+      ( medication ) => {
+        return (
+          {
             chemicalICS: medication.chemicalICS,
           }
         );
       });
 
-  //get rid of . from the columns
-  getMedicationColumns = _.uniqWith(getMedicationColumns, _.isEqual);
+  getChemicalICSColumn = _.uniqWith(getChemicalICSColumn, _.isEqual);
+  getChemicalICSColumn = _.filter(getChemicalICSColumn, (column) => { return column.chemicalICS !== "." } );
+
+  let getDeviceColumn = medicationData.map(
+    ( medication ) => {
+      return (
+        {
+          device: medication.device,
+        }
+      );
+    });
+  getDeviceColumn = _.uniqWith(getDeviceColumn, _.isEqual);
+
+  let getNameColumn = medicationData.map(
+    ( medication ) => {
+      return (
+        {
+          name: medication.name,
+        }
+      );
+    });
+  getNameColumn = _.uniqWith(getNameColumn, _.isEqual);
 
   const displayRowContents = () => {
     return(
       medicationList.map( (rowFields, index) => (
         <div key={index} className="row">
-          <InputField
-            fieldName="device"
-            value={deviceName}
-            onChangeInputField={(event) => onChangeDeviceName(index, event.target.value)}
-          />
-          <InputField
-           fieldName="medicationName"
-           value={medicationName}
-           onChangeInputField={(event) => onChangeMedicationName(index, event.target.value)}
-           />
+          <select
+            className="device"
+            onChange={
+              (event) => onChangeDeviceName(index, _.split(event.target.value, ","))}
+            defaultValue={deviceName}
+          >
+            <option>Device</option>
+            {
+              getDeviceColumn.map(
+                (medicationDevice, index) => (
+                  <option key={index}>{medicationDevice.device}</option>
+                ))}
+          </select>
+          <select
+            className="name"
+            onChange={
+              (event) => onChangeMedicationName(index, _.split(event.target.value, ","))}
+            defaultValue={medicationName}
+          >
+            <option>Medication Name</option>
+            {
+              getNameColumn.map(
+                (medicationName, index) => (
+                  <option key={index}>{medicationName.name}</option>
+                ))}
+          </select>
           <select
             className="chemicalLABA"
             onChange={
               (event) => onChangeChemicalLABA(index, _.split(event.target.value, ","))}
-            defaultValue={availableMedications}
+            defaultValue={chemicalLABA}
           >
             <option>ChemicalLABA</option>
             {
-              getMedicationColumns.map(
+              getChemicalLABAColumn.map(
                 (chemicalGroup, index) => (
                   <option key={index}>{chemicalGroup.chemicalLABA}</option>
                 ))}
@@ -92,11 +142,11 @@ const MedicationTable = (
             className="chemicalICS"
             onChange={
               (event) => onChangeChemicalICS(index, _.split(event.target.value, ","))}
-            defaultValue={availableMedications}
+            defaultValue={chemicalICS}
           >
             <option>ChemicalICS</option>
             {
-              getMedicationColumns.map(
+              getChemicalICSColumn.map(
                 (chemicalGroup, index) => (
                   <option key={index}>{chemicalGroup.chemicalICS}</option>
                 ))}
