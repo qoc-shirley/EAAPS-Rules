@@ -10,22 +10,25 @@ import './styles.css';
 const App = (
   {
     displayResult,
+    appendMedicationList,
+    getPatientMedications,
     medication,
     onMedicationSelection,
     onChangePuffValue,
     onChangeTimesPerDayValue,
     onChangeDoseICS,
-    appendMedicationList,
-    onDeleteRow,
-    getPatientMedications,
-    saveRecommendation,
     onClickClear,
+    onChangeRule,
+    onDeleteRow,
+    saveRecommendation,
   } ) => {
 
   const onSubmitMedications = (displayMedications) => {
     // displayResult(medication.medicationList);
     getPatientMedications(_.flatten(displayMedications));
   };
+
+  const availableRules = ["rule1", "rule2", "rule3", "rule6", "rule8", "rule10"];
 
   const displayMedications = _
     .chain( medication.medicationList )
@@ -147,6 +150,19 @@ const App = (
 
           <div className="rules">
             <h3>Available Escalation Rules</h3>
+            <select
+              className="selectRule"
+              onChange={
+                (event) => onChangeRule( _.split(event.target.value, ","))}
+              defaultValue={rules}
+            >
+              <option>Select a rule</option>
+              {
+                availableRules.map(
+                  (rule, index) => (
+                    <option key={index}>{rule}</option>
+                  ))}
+            </select>
             <div className="buttons">
               <input
                 className="rulesButtons"
