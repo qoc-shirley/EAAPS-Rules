@@ -15,6 +15,7 @@ const MedicationTable = (
     chemicalLABA,
     deviceName,
     doseICSValue,
+    getPatientMedications,
     medication,
     medicationList,
     medicationName,
@@ -47,6 +48,45 @@ const MedicationTable = (
 
   const deleteRow = (index) => {
     onClickDeleteMedication(index);
+  };
+
+  const displayMedications = _
+    .chain( medication.medicationList )
+    .reduce( (filteredData, medication) => {
+      filteredData.push(
+        _.chain(medicationData)
+          .filter((masterMedication) => {
+            return (
+              (
+                medication.timesPerDayValue === masterMedication.timesPerDay ||
+                (medication.timesPerDayValue === "" && masterMedication.timesPerDay === ".")
+              ) &&
+              (
+                medication.doseICSValue === masterMedication.doseICS ||
+                medication.doseICSValue === "" && masterMedication.doseICS === "."
+              ) &&
+              (
+                medication.chemicalLABA === masterMedication.chemicalLABA ||
+                (medication.chemicalLABA === "chemicalLABA" || medication.chemicalLABA === "") &&
+                masterMedication.chemicalLABA === "."
+              ) &&
+              (
+                medication.chemicalICS === masterMedication.chemicalICS ||
+                (medication.chemicalICS === "chemicalICS" || medication.chemicalICS === "") &&
+                masterMedication.chemicalICS === "."
+              ) &&
+              (medication.medicationName === masterMedication.name) &&
+              (medication.deviceName === masterMedication.device)
+            )
+          })
+          .value()
+      );
+      return filteredData;
+    }, [])
+    .value();
+
+  const onSubmitMedications = (displayMedications) => {
+    getPatientMedications(_.flatten(displayMedications));
   };
 
   const displayRowContents = () => {
@@ -238,6 +278,12 @@ const MedicationTable = (
      >
        Add Row
      </button>
+     <input
+       className="submit"
+       type="submit"
+       value="Submit"
+       onClick={() => onSubmitMedications(displayMedications)}
+     />
    </div>
  );
 };
@@ -283,6 +329,7 @@ const mapDispatchToProps = dispatch => ( {
   onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
   onChangeMedicationName: (index, value) => dispatch( actions.onChangeMedicationName(index, value) ),
   onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
+  getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);

@@ -21,9 +21,9 @@ const App = (
     saveRecommendation,
   } ) => {
 
-  const onSubmitMedications = (displayMedications) => {
-    getPatientMedications(_.flatten(displayMedications));
-  };
+  // const onSubmitMedications = (displayMedications) => {
+  //   getPatientMedications(_.flatten(displayMedications));
+  // };
 
   const availableRules = ['rule1', 'rule2', 'rule3', 'rule6', 'rule8', 'rule10'];
 
@@ -141,12 +141,6 @@ const App = (
                 }
               )
             }
-            <input
-              className="submit"
-              type="submit"
-              value="Submit"
-              onClick={() => onSubmitMedications(displayMedications)}
-            />
           </div>
 
           <div className="rules">
