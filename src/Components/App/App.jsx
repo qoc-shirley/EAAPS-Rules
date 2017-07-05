@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../MedicationData/MedicationData';
 // import Row from '../Row/Row';
+import DisplayPatientMedications from '../DisplayMedications/DisplayMedications';
 import * as rules from '../Rules/Rules';
 import './styles.css';
 
@@ -23,6 +24,13 @@ const App = (
   } ) => {
 
   let showPatientMedications = null;
+  if(medication.isRecommendationEmpty === false){
+    showPatientMedications = <DisplayPatientMedications />;
+  }
+  else if(medication.isRecommendationEmpty === true) {
+    console.log("delete DisplayPatientMedications");
+    showPatientMedications = null;
+  }
 
   const availableRules = ['rule1', 'rule2', 'rule3', 'rule6', 'rule8', 'rule10'];
 
@@ -109,8 +117,8 @@ const App = (
           onClickDeleteMedication={onDeleteRow}
         />
         <div className="results">
-          <div className="patientMedications">
-            {showPatientMedications}
+          {showPatientMedications}
+          {/*<div className="patientMedications">
             <h3>Your Medications:</h3>
             {
               displayMedications.map(
@@ -140,7 +148,7 @@ const App = (
                 }
               )
             }
-          </div>
+          </div>*/}
 
           <div className="rules">
             <h3>Available Escalation Rules:

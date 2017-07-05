@@ -54,18 +54,17 @@ const DisplayMedications = ({
               <div key={rowIndex} className="medicationRow">
                 {
                   row.map(
-                    (medication, index) => {
+                    (patientMedication, index) => {
                       return (
-                        <div key={index} className="filteredMedication">
-                          <p>medication {index + 1}:</p>
-                          {
-                            _.map(medication,
-                              (columnData, columnKey) => {
-                                return (
-                                  <p key={columnKey}>{columnKey}: {columnData}</p>
-                                );
-                              })
-                          }
+                        <div key={index} className="filteredMedications">
+                          <p className="medication">Medication {rowIndex + 1}</p>
+                          <p>Device: {patientMedication.device}</p>
+                          <p>Name: {patientMedication.name}</p>
+                          <p>chemicalLABA: {patientMedication.chemicalLABA}</p>
+                          <p>chemicalICS: {patientMedication.chemicalICS}</p>
+                          <p>Dose ICS:{patientMedication.doseICS}</p>
+                          <p>Max Puff: {patientMedication.maxPuffPerTime}</p>
+                          <p>Times Per Day: {patientMedication.timesPerDay}</p>
                         </div>
                       );
                     }
