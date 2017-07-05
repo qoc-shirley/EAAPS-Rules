@@ -5,6 +5,7 @@ import _ from 'lodash';
 import InputField from '../InputField/InputField';
 import * as actions from '../../redux/App/actions';
 import medicationData from '../MedicationData/MedicationData';
+import Row from '../Row/Row';
 import './styles.css';
 
 const MedicationTable = (
@@ -27,6 +28,8 @@ const MedicationTable = (
     puffValue,
     timesPerDayValue,
   } ) => {
+
+  const headerElements = ["","Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
 
   const renderAddRow = () => {
     const initalInputValues =
@@ -95,6 +98,7 @@ const MedicationTable = (
     return(
       medicationList.map( (rowFields, index) => (
         <div key={index} className="row">
+          <p>Medication {index + 1 }:</p>
           <select
             className="device"
             onChange={
@@ -178,6 +182,9 @@ const MedicationTable = (
    <div className="medication-table">
      <div className="header">
        <h3>Enter Your Medications:</h3>
+     </div>
+     <div className="medicationHeader">
+       <Row>{headerElements}</Row>
      </div>
 
      <div className="main">

@@ -1,6 +1,4 @@
 .row {
-    /*background-color: #ccc;*/
-    margin: 20px 20px 20px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,6 +6,7 @@
 
 .row li {
     list-style-type: none;
+    margin: 0 0 0 80px;
 }
 
 .row select {
