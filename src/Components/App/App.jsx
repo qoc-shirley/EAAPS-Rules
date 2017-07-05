@@ -21,9 +21,7 @@ const App = (
     saveRecommendation,
   } ) => {
 
-  // const onSubmitMedications = (displayMedications) => {
-  //   getPatientMedications(_.flatten(displayMedications));
-  // };
+  let showPatientMedications = null;
 
   const availableRules = ['rule1', 'rule2', 'rule3', 'rule6', 'rule8', 'rule10'];
 
@@ -111,6 +109,7 @@ const App = (
         />
         <div className="results">
           <div className="patientMedications">
+            {showPatientMedications}
             <h3>Your Medications:</h3>
             {
               displayMedications.map(

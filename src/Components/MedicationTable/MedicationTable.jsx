@@ -5,6 +5,7 @@ import _ from 'lodash';
 import InputField from '../InputField/InputField';
 import * as actions from '../../redux/App/actions';
 import medicationData from '../MedicationData/MedicationData';
+import DisplayPatientMedications from '../DisplayMedications/DisplayMedications';
 import Row from '../Row/Row';
 import './styles.css';
 
