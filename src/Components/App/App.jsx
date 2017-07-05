@@ -34,41 +34,6 @@ const App = (
 
   const availableRules = ['rule1', 'rule2', 'rule3', 'rule6', 'rule8', 'rule10'];
 
-  const displayMedications = _
-    .chain( medication.medicationList )
-    .reduce( (filteredData, medication) => {
-      filteredData.push(
-        _.chain(medicationData)
-          .filter((masterMedication) => {
-            return (
-              (
-                medication.timesPerDayValue === masterMedication.timesPerDay ||
-                (medication.timesPerDayValue === "" && masterMedication.timesPerDay === ".")
-              ) &&
-              (
-                medication.doseICSValue === masterMedication.doseICS ||
-                medication.doseICSValue === "" && masterMedication.doseICS === "."
-              ) &&
-              (
-                medication.chemicalLABA === masterMedication.chemicalLABA ||
-                (medication.chemicalLABA === "chemicalLABA" || medication.chemicalLABA === "") &&
-                masterMedication.chemicalLABA === "."
-              ) &&
-              (
-                medication.chemicalICS === masterMedication.chemicalICS ||
-                (medication.chemicalICS === "chemicalICS" || medication.chemicalICS === "") &&
-                masterMedication.chemicalICS === "."
-              ) &&
-              (medication.medicationName === masterMedication.name) &&
-              (medication.deviceName === masterMedication.device)
-            )
-          })
-        .value()
-      );
-      return filteredData;
-    }, [])
-    .value();
-
   // need to display recommendations: all? or only some fields?
   const onChangeRule = ( rule ) => {
     if(rule === 'rule1') {
