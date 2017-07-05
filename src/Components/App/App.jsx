@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../MedicationData/MedicationData';
+import Row from '../Row/Row';
 import * as rules from '../Rules/Rules';
 import './styles.css';
 
@@ -24,6 +25,8 @@ const App = (
   let showPatientMedications = null;
 
   const availableRules = ['rule1', 'rule2', 'rule3', 'rule6', 'rule8', 'rule10'];
+
+  const headerElements = ["", "Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency"];
 
   const displayMedications = _
     .chain( medication.medicationList )
@@ -118,18 +121,17 @@ const App = (
                     <div key={rowIndex} className="medicationRow">
                       {
                         row.map(
-                          (medication, index) => {
+                          (patientMedication, index) => {
                             return (
-                              <div key={index} className="filteredMedication">
-                                <p>medication {index + 1}:</p>
-                                {
-                                  _.map(medication,
-                                    (columnData, columnKey) => {
-                                      return(
-                                        <p key={columnKey}>{columnKey}: {columnData}</p>
-                                      );
-                                  })
-                                }
+                              <div key={index} className="filteredMedications">
+                                <p className="medication">Medication {rowIndex + 1}</p>
+                                <p>Device: {patientMedication.device}</p>
+                                <p>Name: {patientMedication.name}</p>
+                                <p>chemicalLABA: {patientMedication.chemicalLABA}</p>
+                                <p>chemicalICS: {patientMedication.chemicalICS}</p>
+                                <p>Dose ICS:{patientMedication.doseICS}</p>
+                                <p>Max Puff: {patientMedication.maxPuffPerTime}</p>
+                                <p>Times Per Day: {patientMedication.timesPerDay}</p>
                               </div>
                             );
                           }
