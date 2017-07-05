@@ -12,4 +12,3 @@ export const RECOMMENDATION = 'RECOMMENDATION';
 export const CLEAR = 'CLEAR';
 export const DEVICE = 'DEVICE';
 export const MEDICATION_NAME = 'MEDICATION_NAME';
-export const RULE = 'RULE';

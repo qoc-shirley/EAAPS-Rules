@@ -12,7 +12,6 @@ import {
   ON_CHEMICALLABA_SELECTION,
   ON_CHEMICALICS_SELECTION,
   MEDICATION_NAME,
-  RULE,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
@@ -31,14 +30,6 @@ export const onChangeDeviceName = ( index, device ) => {
       device
     },
   }
-};
-
-export const onChangeRule = ( rule ) => {
-  return {
-    type: RULE,
-    data: rule,
-  }
-
 };
 
 export const onChangeMedicationName = ( index, medicationName ) => {

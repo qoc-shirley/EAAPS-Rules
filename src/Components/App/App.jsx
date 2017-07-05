@@ -9,7 +9,6 @@ import './styles.css';
 
 const App = (
   {
-    displayResult,
     appendMedicationList,
     getPatientMedications,
     medication,
@@ -18,17 +17,15 @@ const App = (
     onChangeTimesPerDayValue,
     onChangeDoseICS,
     onClickClear,
-    onChangeRule,
     onDeleteRow,
     saveRecommendation,
   } ) => {
 
   const onSubmitMedications = (displayMedications) => {
-    // displayResult(medication.medicationList);
     getPatientMedications(_.flatten(displayMedications));
   };
 
-  const availableRules = ["rule1", "rule2", "rule3", "rule6", "rule8", "rule10"];
+  const availableRules = ['rule1', 'rule2', 'rule3', 'rule6', 'rule8', 'rule10'];
 
   const displayMedications = _
     .chain( medication.medicationList )
@@ -67,11 +64,10 @@ const App = (
 
   // need to display recommendations: all? or only some fields?
   const runRule = ( rule ) => {
-    console.log("rule: ", rule);
-    if(rule === "rule1") {
+    if(rule === 'rule1') {
       saveRecommendation(rule, rules.rule1(medication.patientMedications));
     }
-    else if(rule === "rule2") {
+    else if(rule === 'rule2') {
       saveRecommendation(rule, rules.rule2(medication.patientMedications, medicationData));
     }
     else if(rule === 'rule4') {
@@ -88,6 +84,9 @@ const App = (
     }
     else if(rule === 'rule11') {
       saveRecommendation(rule, rules.rule11(medication.patientMedications, medicationData));
+    }
+    else{
+      console.log("nope");
     }
   };
 
@@ -153,8 +152,8 @@ const App = (
             <h3>Available Escalation Rules</h3>
             <select
               className="selectRule"
-              onChange={(event) => runRule( _.split(event.target.value, ","))}
-              defaultValue={rules}
+              onChange={(event) => runRule( event.target.value )}
+
             >
               <option>Select a rule</option>
               {
@@ -163,50 +162,6 @@ const App = (
                     <option key={index}>{rule}</option>
                   ))}
             </select>
-            {/*<div className="buttons">
-              <input
-                className="rulesButtons"
-                type="submit"
-                value="Rule1"
-                onClick={() => onClickRule("rule1")}
-              />
-              <input
-                className="rulesButtons"
-                type="submit"
-                value="Rule2"
-                onClick={() => onClickRule("rule2")}
-              />*/}
-              {/*<input
-                className="rulesButtons"
-                type="submit"
-                value="Rule4"
-                onClick={() => onClickRule("rule4")}
-              />*/}
-            {/*<input
-                className="rulesButtons"
-                type="submit"
-                value="Rule6"
-                onClick={() => onClickRule("rule6")}
-              />
-              <input
-                className="rulesButtons"
-                type="submit"
-                value="Rule8"
-                onClick={() => onClickRule("rule8")}
-              />
-              <input
-                className="rulesButtons"
-                type="submit"
-                value="Rule10"
-                onClick={() => onClickRule("rule10")}
-              />
-              <input
-                className="rulesButtons"
-                type="submit"
-                value="Rule11"
-                onClick={() => onClickRule("rule11")}
-              />
-            </div>*/}
           </div>
           <div className="recommendations">
             <h4>Recommendation(s):</h4>
