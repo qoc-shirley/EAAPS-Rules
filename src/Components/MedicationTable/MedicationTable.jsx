@@ -49,170 +49,174 @@ const MedicationTable = (
     onClickDeleteMedication(index);
   };
 
-  let getDeviceColumn = medicationData.map(
-    ( medication ) => {
-      return (
-        {
-          device: medication.device,
-        }
-      );
-    });
-  getDeviceColumn = _.uniqWith(getDeviceColumn, _.isEqual);
-
-  let getNameColumn = medicationData.map(
-    ( masterMedication ) => {
-      if(masterMedication.device === medication.deviceName) {
-        return (
-          {
-            name: masterMedication.name,
-          }
-        );
-      }
-      else {
-        return (
-          {
-            none: "-no other medication names-",
-          }
-        );
-      }
-    });
-  getNameColumn = _.uniqWith(getNameColumn, _.isEqual);
-  getNameColumn = _.filter(getNameColumn, (column) => {
-    return !(column.none);
-  });
-
-  let getChemicalLABAColumn =
-    medicationData.map(
-      ( masterMedication ) => {
-        if(masterMedication.device === medication.deviceName && masterMedication.name === medication.medicationName) {
-          return (
-            {
-              chemicalLABA: masterMedication.chemicalLABA,
-            }
-          );
-        }
-        else {
-          return (
-            {
-              none: "-no chemicalLABA-",
-            }
-          );
-        }
-      });
-
-  getChemicalLABAColumn = _.uniqWith(getChemicalLABAColumn, _.isEqual);
-  getChemicalLABAColumn = _.filter(getChemicalLABAColumn, (column) => {
-    return column.chemicalLABA !== "." && !(column.none);
-  });
-
-  let getChemicalICSColumn =
-    medicationData.map(
-      ( masterMedication ) => {
-        if(masterMedication.device === medication.deviceName && masterMedication.name === medication.medicationName &&
-          masterMedication.chemicalLABA === medication.chemicalLABA) {
-          return (
-            {
-              chemicalICS: masterMedication.chemicalICS,
-            }
-          );
-        }
-        else {
-          return (
-            {
-              none: "-no chemicalICS-",
-            }
-          );
-        }
-      });
-
-  getChemicalICSColumn = _.uniqWith(getChemicalICSColumn, _.isEqual);
-  getChemicalICSColumn = _.filter(getChemicalICSColumn, (column) => {
-    return column.chemicalICS !== "." && !(column.none);
-  } );
-
   const displayRowContents = () => {
-    return(
-      medicationList.map( (rowFields, index) => (
-        <div key={index} className="row">
-          <p>Medication {index + 1 }:</p>
-          <select
-            className="device"
-            onChange={
-              (event) => onChangeDeviceName(index, _.split(event.target.value, ","))}
-            defaultValue={deviceName}
-          >
-            <option>Device</option>
-            {
-              getDeviceColumn.map(
-                (medicationDevice, index) => (
-                  <option key={index}>{medicationDevice.device}</option>
-                ))}
-          </select>
-          <select
-            className="name"
-            onChange={
-              (event) => onChangeMedicationName(index, _.split(event.target.value, ","))}
-            defaultValue={medicationName}
-          >
-            <option>Medication Name</option>
-            {
-              getNameColumn.map(
-                (medicationName, index) => (
-                  <option key={index}>{medicationName.name}</option>
-                ))}
-          </select>
-          <select
-            className="chemicalLABA"
-            onChange={
-              (event) => onChangeChemicalLABA(index, _.split(event.target.value, ","))}
-            defaultValue={chemicalLABA}
-          >
-            <option>ChemicalLABA</option>
-            {
-              getChemicalLABAColumn.map(
-                (chemicalGroup, index) => (
-                  <option key={index}>{chemicalGroup.chemicalLABA}</option>
-                ))}
-          </select>
-          <select
-            className="chemicalICS"
-            onChange={
-              (event) => onChangeChemicalICS(index, _.split(event.target.value, ","))}
-            defaultValue={chemicalICS}
-          >
-            <option>ChemicalICS</option>
-            {
-              getChemicalICSColumn.map(
-                (chemicalGroup, index) => (
-                  <option key={index}>{chemicalGroup.chemicalICS}</option>
-                ))}
-          </select>
-          <InputField
-            fieldName="doseICS"
-            value={doseICSValue}
-            placeholder="Dose ICS"
-            onChangeInputField={(event) => onChangeDoseICS(index, event.target.value)}
-          />
-          <InputField
-            fieldName="puff"
-            value={puffValue}
-            placeholder="# of puffs"
-            onChangeInputField={(event) => onChangePuffValue(index, event.target.value)}
-          />
-          <InputField
-            fieldName="times"
-            value={timesPerDayValue}
-            placeholder="Frequency"
-            onChangeInputField={(event) => onChangeTimesPerDayValue(index, event.target.value)}
-          />
-          <button
-            className="button__deleteRow"
-            onClick={() => deleteRow(index)}
-          >
-            Delete Row
-          </button>
-        </div>
-    )));
+    return (
+      medicationList.map((rowFields, index) => {
+        let getDeviceColumn = medicationData.map(
+          ( medication ) => {
+            return (
+              {
+                device: medication.device,
+              }
+            );
+          });
+        getDeviceColumn = _.uniqWith(getDeviceColumn, _.isEqual);
+
+        let getNameColumn = medicationData.map(
+          ( masterMedication ) => {
+            if(masterMedication.device === medication.medicationList[index].deviceName) {
+              return (
+                {
+                  name: masterMedication.name,
+                }
+              );
+            }
+            else {
+              return (
+                {
+                  none: "-no other medication names-",
+                }
+              );
+            }
+          });
+        getNameColumn = _.uniqWith(getNameColumn, _.isEqual);
+        getNameColumn = _.filter(getNameColumn, (column) => {
+          return !(column.none);
+        });
+
+        let getChemicalLABAColumn =
+          medicationData.map(
+            ( masterMedication ) => {
+              if(masterMedication.device === medication.medicationList[index].deviceName &&
+                masterMedication.name === medication.medicationList[index].medicationName) {
+                return (
+                  {
+                    chemicalLABA: masterMedication.chemicalLABA,
+                  }
+                );
+              }
+              else {
+                return (
+                  {
+                    none: "-no chemicalLABA-",
+                  }
+                );
+              }
+            });
+
+        getChemicalLABAColumn = _.uniqWith(getChemicalLABAColumn, _.isEqual);
+        getChemicalLABAColumn = _.filter(getChemicalLABAColumn, (column) => {
+          return column.chemicalLABA !== "." && !(column.none);
+        });
+
+        let getChemicalICSColumn =
+          medicationData.map(
+            ( masterMedication ) => {
+              if(masterMedication.device === medication.medicationList[index].deviceName &&
+                masterMedication.name === medication.medicationList[index].medicationName &&
+                masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA) {
+                return (
+                  {
+                    chemicalICS: masterMedication.chemicalICS,
+                  }
+                );
+              }
+              else {
+                return (
+                  {
+                    none: "-no chemicalICS-",
+                  }
+                );
+              }
+            });
+
+        getChemicalICSColumn = _.uniqWith(getChemicalICSColumn, _.isEqual);
+        getChemicalICSColumn = _.filter(getChemicalICSColumn, (column) => {
+          return column.chemicalICS !== "." && !(column.none);
+        } );
+
+        return (
+          <div key={index} className="row">
+            <p>Medication {index + 1 }:</p>
+            <select
+              className="device"
+              onChange={
+                (event) => onChangeDeviceName(index, _.split(event.target.value, ","))}
+              defaultValue={deviceName}
+            >
+              <option>Device</option>
+              {
+                getDeviceColumn.map(
+                  (medicationDevice, index) => (
+                    <option key={index}>{medicationDevice.device}</option>
+                  ))}
+            </select>
+            <select
+              className="name"
+              onChange={
+                (event) => onChangeMedicationName(index, _.split(event.target.value, ","))}
+              defaultValue={medicationName}
+            >
+              <option>Medication Name</option>
+              {
+                getNameColumn.map(
+                  (medicationName, index) => (
+                    <option key={index}>{medicationName.name}</option>
+                  ))}
+            </select>
+            <select
+              className="chemicalLABA"
+              onChange={
+                (event) => onChangeChemicalLABA(index, _.split(event.target.value, ","))}
+              defaultValue={chemicalLABA}
+            >
+              <option>ChemicalLABA</option>
+              {
+                getChemicalLABAColumn.map(
+                  (chemicalGroup, index) => (
+                    <option key={index}>{chemicalGroup.chemicalLABA}</option>
+                  ))}
+            </select>
+            <select
+              className="chemicalICS"
+              onChange={
+                (event) => onChangeChemicalICS(index, _.split(event.target.value, ","))}
+              defaultValue={chemicalICS}
+            >
+              <option>ChemicalICS</option>
+              {
+                getChemicalICSColumn.map(
+                  (chemicalGroup, index) => (
+                    <option key={index}>{chemicalGroup.chemicalICS}</option>
+                  ))}
+            </select>
+            <InputField
+              fieldName="doseICS"
+              value={doseICSValue}
+              placeholder="Dose ICS"
+              onChangeInputField={(event) => onChangeDoseICS(index, event.target.value)}
+            />
+            <InputField
+              fieldName="puff"
+              value={puffValue}
+              placeholder="# of puffs"
+              onChangeInputField={(event) => onChangePuffValue(index, event.target.value)}
+            />
+            <InputField
+              fieldName="times"
+              value={timesPerDayValue}
+              placeholder="Frequency"
+              onChangeInputField={(event) => onChangeTimesPerDayValue(index, event.target.value)}
+            />
+            <button
+              className="button__deleteRow"
+              onClick={() => deleteRow(index)}
+            >
+              Delete Row
+            </button>
+          </div>
+        )
+      }));
   };
  return (
    <div className="medication-table">

@@ -66,11 +66,12 @@ const App = (
     .value();
 
   // need to display recommendations: all? or only some fields?
-  const onClickRule = ( rule ) => {
-    if(rule === 'rule1') {
+  const runRule = ( rule ) => {
+    console.log("rule: ", rule);
+    if(rule === "rule1") {
       saveRecommendation(rule, rules.rule1(medication.patientMedications));
     }
-    else if(rule === 'rule2') {
+    else if(rule === "rule2") {
       saveRecommendation(rule, rules.rule2(medication.patientMedications, medicationData));
     }
     else if(rule === 'rule4') {
@@ -152,8 +153,7 @@ const App = (
             <h3>Available Escalation Rules</h3>
             <select
               className="selectRule"
-              onChange={
-                (event) => onChangeRule( _.split(event.target.value, ","))}
+              onChange={(event) => runRule( _.split(event.target.value, ","))}
               defaultValue={rules}
             >
               <option>Select a rule</option>
@@ -163,7 +163,7 @@ const App = (
                     <option key={index}>{rule}</option>
                   ))}
             </select>
-            <div className="buttons">
+            {/*<div className="buttons">
               <input
                 className="rulesButtons"
                 type="submit"
@@ -175,14 +175,14 @@ const App = (
                 type="submit"
                 value="Rule2"
                 onClick={() => onClickRule("rule2")}
-              />
+              />*/}
               {/*<input
                 className="rulesButtons"
                 type="submit"
                 value="Rule4"
                 onClick={() => onClickRule("rule4")}
               />*/}
-              <input
+            {/*<input
                 className="rulesButtons"
                 type="submit"
                 value="Rule6"
@@ -206,7 +206,7 @@ const App = (
                 value="Rule11"
                 onClick={() => onClickRule("rule11")}
               />
-            </div>
+            </div>*/}
           </div>
           <div className="recommendations">
             <h4>Recommendation(s):</h4>
