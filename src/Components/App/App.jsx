@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../MedicationData/MedicationData';
-import Row from '../Row/Row';
+// import Row from '../Row/Row';
 import * as rules from '../Rules/Rules';
 import './styles.css';
 
 const App = (
   {
     appendMedicationList,
-    getPatientMedications,
+    // getPatientMedications,
     medication,
     onMedicationSelection,
     onChangePuffValue,
@@ -25,8 +25,6 @@ const App = (
   let showPatientMedications = null;
 
   const availableRules = ['rule1', 'rule2', 'rule3', 'rule6', 'rule8', 'rule10'];
-
-  const headerElements = ["", "Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency"];
 
   const displayMedications = _
     .chain( medication.medicationList )

@@ -27,6 +27,7 @@ export const initialState = {
   results: [],
   patientMedications: [],
   recommendation: [],
+  isRecommendationEmpty: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -109,6 +110,12 @@ const reducer = (state = initialState, action) => {
       });
 
     case FILTERED_MEDICATIONS:
+     if(action.data !== []){
+       return Object.assign({}, state, {
+         patientMedications: action.data,
+         isRecommendationEmpty: false,
+       })
+     }
       return Object.assign({}, state, {
         patientMedications: action.data,
       });
