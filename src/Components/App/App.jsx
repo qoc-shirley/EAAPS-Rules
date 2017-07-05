@@ -63,7 +63,7 @@ const App = (
     .value();
 
   // need to display recommendations: all? or only some fields?
-  const runRule = ( rule ) => {
+  const onChangeRule = ( rule ) => {
     if(rule === 'rule1') {
       saveRecommendation(rule, rules.rule1(medication.patientMedications));
     }
@@ -152,8 +152,7 @@ const App = (
             <h3>Available Escalation Rules</h3>
             <select
               className="selectRule"
-              onChange={(event) => runRule( event.target.value )}
-
+              onChange={(event) => onChangeRule( event.target.value )}
             >
               <option>Select a rule</option>
               {
