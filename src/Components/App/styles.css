@@ -126,3 +126,10 @@
     margin-left: 20px;
     margin-right: 20px;
 }
+
+.app .app__main .results .rules .selectRule {
+    width: 30%;
+    height: 50px;
+    font-size: 15px;
+    margin-left: 50px;
+}

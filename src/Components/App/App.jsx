@@ -122,6 +122,7 @@ const App = (
                           (medication, index) => {
                             return (
                               <div key={index} className="filteredMedication">
+                                <p>medication {index + 1}:</p>
                                 {
                                   _.map(medication,
                                     (columnData, columnKey) => {
@@ -149,7 +150,7 @@ const App = (
           </div>
 
           <div className="rules">
-            <h3>Available Escalation Rules</h3>
+            <h3>Available Escalation Rules:
             <select
               className="selectRule"
               onChange={(event) => onChangeRule( event.target.value )}
@@ -161,6 +162,7 @@ const App = (
                     <option key={index}>{rule}</option>
                   ))}
             </select>
+            </h3>
           </div>
           <div className="recommendations">
             <h4>Recommendation(s):</h4>
@@ -170,6 +172,7 @@ const App = (
                   if (_.isArray(recommendMedication)) {
                     return (
                       <div key={index} className="recommendationArray">
+                        <p>medication {index + 1}:</p>
                         {
                           recommendMedication.map(
                             (medication, index) => {
@@ -185,6 +188,7 @@ const App = (
                   else {
                     return (
                       <div key={index} className="recommendationObject">
+                        <p>medication {index + 1}:</p>
                         <p>id: {recommendMedication.id}</p>
                         <p> device: {recommendMedication.device}</p>
                         <p>function: {recommendMedication.function}</p>
