@@ -15,6 +15,7 @@ const MedicationTable = (
     chemicalLABA,
     deviceName,
     doseICSValue,
+    medication,
     medicationList,
     medicationName,
     onChangeDoseICS,
@@ -48,32 +49,6 @@ const MedicationTable = (
     onClickDeleteMedication(index);
   };
 
-  let getChemicalLABAColumn =
-    medicationData.map(
-      ( medication ) => {
-        return (
-          {
-            chemicalLABA: medication.chemicalLABA,
-          }
-        );
-      });
-
-  getChemicalLABAColumn = _.uniqWith(getChemicalLABAColumn, _.isEqual);
-  getChemicalLABAColumn = _.filter(getChemicalLABAColumn, (column) => { return column.chemicalLABA !== "." } );
-
-  let getChemicalICSColumn =
-    medicationData.map(
-      ( medication ) => {
-        return (
-          {
-            chemicalICS: medication.chemicalICS,
-          }
-        );
-      });
-
-  getChemicalICSColumn = _.uniqWith(getChemicalICSColumn, _.isEqual);
-  getChemicalICSColumn = _.filter(getChemicalICSColumn, (column) => { return column.chemicalICS !== "." } );
-
   let getDeviceColumn = medicationData.map(
     ( medication ) => {
       return (
@@ -85,14 +60,75 @@ const MedicationTable = (
   getDeviceColumn = _.uniqWith(getDeviceColumn, _.isEqual);
 
   let getNameColumn = medicationData.map(
-    ( medication ) => {
-      return (
-        {
-          name: medication.name,
-        }
-      );
+    ( masterMedication ) => {
+      if(masterMedication.device === medication.deviceName) {
+        return (
+          {
+            name: masterMedication.name,
+          }
+        );
+      }
+      else {
+        return (
+          {
+            none: "-no other medication names-",
+          }
+        );
+      }
     });
   getNameColumn = _.uniqWith(getNameColumn, _.isEqual);
+  getNameColumn = _.filter(getNameColumn, (column) => {
+    return !(column.none);
+  });
+
+  let getChemicalLABAColumn =
+    medicationData.map(
+      ( masterMedication ) => {
+        if(masterMedication.device === medication.deviceName && masterMedication.name === medication.medicationName) {
+          return (
+            {
+              chemicalLABA: masterMedication.chemicalLABA,
+            }
+          );
+        }
+        else {
+          return (
+            {
+              none: "-no chemicalLABA-",
+            }
+          );
+        }
+      });
+
+  getChemicalLABAColumn = _.uniqWith(getChemicalLABAColumn, _.isEqual);
+  getChemicalLABAColumn = _.filter(getChemicalLABAColumn, (column) => {
+    return column.chemicalLABA !== "." && !(column.none);
+  });
+
+  let getChemicalICSColumn =
+    medicationData.map(
+      ( masterMedication ) => {
+        if(masterMedication.device === medication.deviceName && masterMedication.name === medication.medicationName &&
+          masterMedication.chemicalLABA === medication.chemicalLABA) {
+          return (
+            {
+              chemicalICS: masterMedication.chemicalICS,
+            }
+          );
+        }
+        else {
+          return (
+            {
+              none: "-no chemicalICS-",
+            }
+          );
+        }
+      });
+
+  getChemicalICSColumn = _.uniqWith(getChemicalICSColumn, _.isEqual);
+  getChemicalICSColumn = _.filter(getChemicalICSColumn, (column) => {
+    return column.chemicalICS !== "." && !(column.none);
+  } );
 
   const displayRowContents = () => {
     return(
