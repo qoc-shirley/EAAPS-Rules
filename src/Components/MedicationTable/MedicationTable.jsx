@@ -29,7 +29,7 @@ const MedicationTable = (
     timesPerDayValue,
   } ) => {
 
-  const headerElements = ["","Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
+  const headerElements = ["", "Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
 
   const renderAddRow = () => {
     const initalInputValues =
@@ -170,7 +170,7 @@ const MedicationTable = (
             onChangeInputField={(event) => onChangeTimesPerDayValue(index, event.target.value)}
           />
           <button
-            className="button_deleteRow"
+            className="button__deleteRow"
             onClick={() => deleteRow(index)}
           >
             Delete Row
