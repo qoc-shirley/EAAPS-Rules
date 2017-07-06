@@ -131,7 +131,7 @@ const reducer = (state = initialState, action) => {
     case ON_DELETE_ROW:
       let list = state.medicationList.filter((row, index) => {
         return index !== action.data});
-      if(list === []) {
+      if(action.data === 0) {
         return Object.assign({}, state, {
           isRecommendationEmpty: true,
           medicationList: list
