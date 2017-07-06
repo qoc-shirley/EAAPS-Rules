@@ -40,6 +40,7 @@ const App = (
             <select
               className="selectRule"
               onChange={(event) => onChangeRule(event.target.value)}
+              defaultValue={"Select a rule"}
             >
               <option>Select a rule</option>
               {
@@ -65,10 +66,24 @@ const App = (
           {
             medication.recommendation.map(
               (recommendMedication, index) => {
-                if (_.isArray(recommendMedication)) {
+                if (_.isArray(recommendMedication) && _.size(recommendMedication) > 10) {
                   return (
                     <div key={index} className="recommendationArray">
-                      <p>medication {index + 1}:</p>
+                      <p><b>Recommendation {index + 1}</b></p>
+                      <p>Device: {recommendMedication[5]}</p>
+                      <p>Name: {recommendMedication[7]}</p>
+                      <p>ChemicalLABA: {recommendMedication[10]}</p>
+                      <p>ChemicalICS: {recommendMedication[11]}</p>
+                      <p>Dose ICS: {recommendMedication[14]}</p>
+                      <p>Times Per Day: {recommendMedication[22]}</p>
+                      <p>Max Puff Per Time: {recommendMedication[23]}</p>
+                    </div>
+                  )
+                }
+                else if(_.isArray(recommendMedication)) {
+                  return (
+                    <div key={index} className="recommendationArray">
+                      <p><b>Recommendation {index + 1}</b></p>
                       {
                         recommendMedication.map(
                           (medication, index) => {
@@ -84,20 +99,14 @@ const App = (
                 else {
                   return (
                     <div key={index} className="recommendationObject">
-                      <p>medication {index + 1}:</p>
-                      <p>id: {recommendMedication.id}</p>
-                      <p> device: {recommendMedication.device}</p>
-                      <p>function: {recommendMedication.function}</p>
-                      <p>name: {recommendMedication.name}</p>
-                      <p>type: {recommendMedication.type}</p>
-                      <p>chemical type: {recommendMedication.chemicalType}</p>
-                      <p>chemicalLABA: {recommendMedication.chemicalLABA}</p>
-                      <p>chemicalICS: {recommendMedication.chemicalICS}</p>
-                      <p>chemicalOther: {recommendMedication.chemicalOther}</p>
-                      <p>dose ics: {recommendMedication.doseICS}</p>
-                      <p>max green ics: {recommendMedication.maxGreenICS}</p>
-                      <p>times per day: {recommendMedication.timesPerDay}</p>
-                      <p>max puff per time: {recommendMedication.maxPuffPerTime}</p>
+                      <p><b>Recommendation {index + 1}</b></p>
+                      <p>Device: {recommendMedication.device}</p>
+                      <p>Name: {recommendMedication.name}</p>
+                      <p>ChemicalLABA: {recommendMedication.chemicalLABA}</p>
+                      <p>ChemicalICS: {recommendMedication.chemicalICS}</p>
+                      <p>Dose ICS: {recommendMedication.doseICS}</p>
+                      <p>Times Per Day: {recommendMedication.timesPerDay}</p>
+                      <p>Max Puff Per Time: {recommendMedication.maxPuffPerTime}</p>
                     </div>
                   )
                 }

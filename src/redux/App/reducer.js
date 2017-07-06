@@ -133,6 +133,7 @@ const reducer = (state = initialState, action) => {
       });
     case CLEAR:
       return Object.assign({}, state, {
+          isRuleSelectEmpty: true,
           recommendation: [],
         }
       );
@@ -142,11 +143,14 @@ const reducer = (state = initialState, action) => {
       if(action.data === 0) {
         return Object.assign({}, state, {
           isRecommendationEmpty: true,
-          medicationList: list
+          medicationList: list,
+          isRuleSelectEmpty: true,
         })
       }
       return Object.assign({}, state, {
           medicationList: list,
+          isRecommendationEmpty: true,
+          isRuleSelectEmpty: true,
         }
       );
     case ON_SUBMIT:
