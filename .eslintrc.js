@@ -3,8 +3,11 @@ module.exports = {
         "browser": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
-    "parserOptions": {
+  "extends": [
+    "eslint:recommended",
+    "airbnb"
+  ],
+  "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
             "jsx": true

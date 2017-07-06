@@ -1,8 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './Components/App/App.jsx';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
+import {
+  applyMiddleware,
+  combineReducers,
+  createStore,
+} from 'redux';
+import { Provider } from 'react-redux';
+import RulesApp from './Containers/RulesApp/RulesApp';
 import registerServiceWorker from './registerServiceWorker';
+import reducer from './redux/App/reducer';
 import './index.css';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const store = createStore(
+  combineReducers({
+    medication: reducer,
+  }),
+  applyMiddleware(
+    thunk,
+    logger
+  )
+);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <RulesApp />
+  </Provider>,
+  document.getElementById('root')
+);
 registerServiceWorker();

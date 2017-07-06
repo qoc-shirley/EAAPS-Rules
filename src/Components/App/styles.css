@@ -1,0 +1,135 @@
+.app {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.app .app__main .results .patientMedications .submit {
+    width: 10%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+}
+
+.app .app__main .results .patientMedications .submit:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
+}
+
+.app .app__main .results {
+    padding: 10px;
+    margin: 20px;
+}
+
+.app .app__main .results .rules .buttons{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.app .app__main .results .rules .buttons .rulesButtons {
+    width: 10%;
+    height: 30px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+}
+
+.app .app__main .results .rules .buttons .rulesButtons:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
+}
+
+.app .app__main .rules .checkbox {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.app .app__main .results .buttons {
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.app .app__main .results .patientMedications {
+    text-align: left;
+    margin-bottom: 100px;
+    padding: 40px 40px 20px 40px;
+    border: solid 3px #ccefff;
+    border-radius: 20px;
+}
+
+.app .app__main .results .patientMedications .medicationRow .filteredMedications {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-right:100px;
+}
+
+.app .app__main .results .patientMedications .medicationRow .filteredMedications .medication{
+    font-weight: bold;
+}
+
+
+.app .app__main .results .recommendations {
+    text-align: left;
+    padding: 40px 40px 20px 40px;
+    border: solid 3px #ccefff;
+    border-radius: 20px;
+    margin: 0;
+}
+
+.app .app__main .results .recommendations .clear {
+    width: 10%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+}
+
+.app .app__main .results .recommendations .clear:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
+}
+
+.app .app__main .results .recommendations .recommendationObject {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.app .app__main .results .recommendations .recommendationArray {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.app .app__main .results .recommendations .recommendationObject p {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.app .app__main .results .recommendations .recommendationArray p {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.app .app__main .results .rules .selectRule {
+    width: 30%;
+    height: 50px;
+    font-size: 15px;
+    margin-left: 50px;
+}

@@ -1,0 +1,16 @@
+.row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.row li {
+    list-style-type: none;
+}
+
+.row select {
+    width: 12%;
+}
+
+.row ul {
+    padding: 0;
+}
