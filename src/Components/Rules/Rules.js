@@ -190,8 +190,7 @@ export const rule4 = (patientMedications, masterMedications) => {
                 });
               if(filteredMedication) {
                 console.log("d");
-                if((patientMedication.chemicalType === "laba" && _.filter(filteredMedication, { device: patientMedication.device })) ||
-                  (patientMedication.chemicalType === "ICS" && _.filter(filteredMedication, { device: patientMedication.device }))) {
+                if(_.filter(filteredMedication, { device: patientMedication.device })) {
                   console.log("e");
                   //ADD: recommend new medication at the same ICS dose as the original medication ICS Dose
                   result.push(_.filter(medicationElement, { name: "singulair" }));
