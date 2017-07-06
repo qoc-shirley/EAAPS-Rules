@@ -5,13 +5,30 @@
   "dependencies": {
     "@types/react": "^15.0.27",
     "@types/react-dom": "^15.5.0",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "redux": "^3.6.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "enzyme": "^2.8.2",
     "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-react": "^7.0.1",
-    "react-scripts": "1.0.7"
+    "extract-text-webpack-plugin": "^2.1.2",
+    "jest": "^20.0.4",
+    "node-sass": "^4.5.3",
+    "react": "^15.6.1",
+    "react-addons-create-fragment": "^15.6.0",
+    "react-key-index": "^0.1.2",
+    "react-scripts": "1.0.7",
+    "sass-loader": "^6.0.6",
+    "sinon": "^2.3.5",
+    "webpack": "^2.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
