@@ -119,11 +119,13 @@ const reducer = (state = initialState, action) => {
      else if(action.data !== []) {
        return Object.assign({}, state, {
          isRecommendationEmpty: false,
+         patientMedications: action.data,
        })
      }
       return Object.assign({}, state, {
         patientMedications: action.data,
       });
+
     case RECOMMENDATION:
       return Object.assign({}, state, {
         isRuleSelectEmpty: false,
