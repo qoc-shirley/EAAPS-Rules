@@ -13,7 +13,6 @@ import {
   ON_CHEMICALLABA_SELECTION,
   MEDICATION_NAME,
 } from './constants';
-import _ from 'lodash';
 
 export const initialState = {
   puffValue: '',
@@ -28,6 +27,7 @@ export const initialState = {
   patientMedications: [],
   recommendation: [],
   isRecommendationEmpty: true,
+  isRuleSelectEmpty: true,
 };
 
 const reducer = (state = initialState, action) => {
