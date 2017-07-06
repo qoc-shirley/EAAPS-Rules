@@ -141,7 +141,8 @@ export const rule2 = (patientMedications, masterMedications) => {
                 }, [])
                 .value();
 
-              result.push(addToRecommendations(newMedications));
+              const lowestICSDose = getLowestICSDose(newMedications);
+              result.push(addToRecommendations(lowestICSDose));
             }
           }
           else {
@@ -171,7 +172,7 @@ export const rule4 = (patientMedications, masterMedications) => {
       _.reduce((result) => {
         _.partial((medicationElement, patientMedication) => {
           if(patientMedication.chemicalType === "ICS" &&
-            patientMedication.name !== "symbicort" &&
+             patientMedication.name !== "symbicort" &&
             (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high") &&
             _.filter(patientMedications, { chemicalType: "laba" })) {
             console.log("a");
