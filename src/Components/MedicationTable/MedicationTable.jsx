@@ -155,7 +155,12 @@ const MedicationTable = (
             ( masterMedication ) => {
               if(masterMedication.device === medication.medicationList[index].deviceName &&
                 masterMedication.name === medication.medicationList[index].medicationName &&
-                masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA) {
+                (
+                  masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA) ||
+                  masterMedication.chemicalLABA === "." &&
+                    (
+                      medication.medicationList[index].chemicalLABA === "" ||
+                      medication.medicationList[index].chemicalLABA === "ChemicalLABA")) {
                 return (
                   {
                     chemicalICS: masterMedication.chemicalICS,
