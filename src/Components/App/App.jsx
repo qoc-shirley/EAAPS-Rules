@@ -24,11 +24,11 @@ const App = (
   } ) => {
 
   let showPatientMedications = null;
+  console.log(medication.isRecommendationEmpty);
   if(medication.isRecommendationEmpty === false){
     showPatientMedications = <DisplayPatientMedications />;
   }
   else if(medication.isRecommendationEmpty === true) {
-    console.log("delete DisplayPatientMedications");
     showPatientMedications = null;
   }
 

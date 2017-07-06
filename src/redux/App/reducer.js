@@ -110,9 +110,14 @@ const reducer = (state = initialState, action) => {
       });
 
     case FILTERED_MEDICATIONS:
-     if(action.data !== []){
+     if(action.data.length === 0){
        return Object.assign({}, state, {
          patientMedications: action.data,
+         isRecommendationEmpty: true,
+       })
+     }
+     else if(action.data !== []) {
+       return Object.assign({}, state, {
          isRecommendationEmpty: false,
        })
      }
