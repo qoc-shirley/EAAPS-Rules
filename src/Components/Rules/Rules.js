@@ -167,9 +167,10 @@ export const rule2 = (patientMedications, masterMedications) => {
 };
 
 export const rule4 = (patientMedications, masterMedications) => {
+  let result = [];
   return _.chain(patientMedications)
     .filter(
-      _.reduce((result) => {
+     // _.reduce((result) => {
         _.partial((medicationElement, patientMedication) => {
           if(patientMedication.chemicalType === "ICS" &&
              patientMedication.name !== "symbicort" &&
@@ -193,6 +194,9 @@ export const rule4 = (patientMedications, masterMedications) => {
                 if(_.filter(filteredMedication, { device: patientMedication.device })) {
                   console.log("e");
                   //ADD: recommend new medication at the same ICS dose as the original medication ICS Dose
+                  //within _.filter(filteredMedication, { device: patientMedication.device }) match to see if you can
+                  //have same Dose ICS(formula) as original and same device if not then recommend the medication with the highest
+                  //Dose ICS(column)
                   result.push(_.filter(medicationElement, { name: "singulair" }));
                 }
                 else {
@@ -212,11 +216,11 @@ export const rule4 = (patientMedications, masterMedications) => {
             result.push(_.filter(medicationElement, { name: "symbicort", din: patientMedication.din }))
           }
           return result;
-        }, masterMedications );
-        return result;
-      }, [])
+        }, masterMedications )
+        //return result;
+      //}, [])
     )
-    .concat()
+    .concat(result)
     .value();
 };
 
@@ -251,6 +255,23 @@ export const rule6 = (patientMedications) => {
     return consultRespirologist.concat("consult a respirologist");
   }
   return [];
+};
+
+export const rule7 = (patientMedications) => {
+  let result = [];
+  for (i = 0; i < _.size(patientMedications); i++) {
+    if (patientMedications[i].name === "symbicort" &&
+      patientMedications[i].function === "controller,reliever" &&
+      categorizeICSDose(patientMedications[i]) === "low") {
+      result.push(adjustICSDose(patientMedications[i], "lowestMedium"));
+    }
+  }
+  // among the medication that is SMART try and recommend the medication with the same ICS Dose as the original after
+  // adjusted if not possible then return then choose the medication with the higher ICS DOSE
+  if (match(result, "doseICS") === []) {
+    return minimize(result, "doseICS");
+  }
+  return match(result, "doseICS");
 };
 
 export const rule8 = (patientMedications, masterMedications) => {
