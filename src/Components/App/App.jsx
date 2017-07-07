@@ -70,13 +70,13 @@ const App = (
                   return (
                     <div key={index} className="recommendationArray">
                       <p><b>Recommendation {index + 1}</b></p>
-                      <p>Device: {recommendMedication[5]}</p>
-                      <p>Name: {recommendMedication[7]}</p>
-                      <p>ChemicalLABA: {recommendMedication[10]}</p>
-                      <p>ChemicalICS: {recommendMedication[11]}</p>
-                      <p>Dose ICS: {recommendMedication[14]}</p>
-                      <p>Times Per Day: {recommendMedication[22]}</p>
-                      <p>Max Puff Per Time: {recommendMedication[23]}</p>
+                      <p className="data">Device: {recommendMedication[5]}</p>
+                      <p className="data">Name: {recommendMedication[7]}</p>
+                      <p className="data">ChemicalLABA: {recommendMedication[10]}</p>
+                      <p className="data">ChemicalICS: {recommendMedication[11]}</p>
+                      <p className="data">Dose ICS: {recommendMedication[14]}</p>
+                      <p className="data">Times Per Day: {recommendMedication[22]}</p>
+                      <p className="data">Max Puff Per Time: {recommendMedication[23]}</p>
                     </div>
                   )
                 }
@@ -88,7 +88,11 @@ const App = (
                         recommendMedication.map(
                           (medication, index) => {
                             return (
-                              <p key={index}>{medication}</p>
+                              <p key={index}
+                                 className="data"
+                              >
+                                {medication}
+                              </p>
                             );
                           }
                         )
@@ -100,13 +104,13 @@ const App = (
                   return (
                     <div key={index} className="recommendationObject">
                       <p><b>Recommendation {index + 1}</b></p>
-                      <p>Device: {recommendMedication.device}</p>
-                      <p>Name: {recommendMedication.name}</p>
-                      <p>ChemicalLABA: {recommendMedication.chemicalLABA}</p>
-                      <p>ChemicalICS: {recommendMedication.chemicalICS}</p>
-                      <p>Dose ICS: {recommendMedication.doseICS}</p>
-                      <p>Times Per Day: {recommendMedication.timesPerDay}</p>
-                      <p>Max Puff Per Time: {recommendMedication.maxPuffPerTime}</p>
+                      <p className="data">Device: {recommendMedication.device}</p>
+                      <p className="data">Name: {recommendMedication.name}</p>
+                      <p className="data">ChemicalLABA: {recommendMedication.chemicalLABA}</p>
+                      <p className="data">ChemicalICS: {recommendMedication.chemicalICS}</p>
+                      <p className="data">Dose ICS: {recommendMedication.doseICS}</p>
+                      <p className="data">Times Per Day: {recommendMedication.timesPerDay}</p>
+                      <p className="data">Max Puff Per Time: {recommendMedication.maxPuffPerTime}</p>
                     </div>
                   )
                 }
