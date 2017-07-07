@@ -69,7 +69,7 @@ const App = (
                 if (_.isArray(recommendMedication) && _.size(recommendMedication) > 10) {
                   return (
                     <div key={index} className="recommendationArray">
-                      <p><b>Recommendation {index + 1}</b></p>
+                      <p><b>{index + 1}</b></p>
                       <p className="data">Device: {recommendMedication[5]}</p>
                       <p className="data">Name: {recommendMedication[7]}</p>
                       <p className="data">ChemicalLABA: {recommendMedication[10]}</p>
@@ -83,7 +83,7 @@ const App = (
                 else if(_.isArray(recommendMedication)) {
                   return (
                     <div key={index} className="recommendationArray">
-                      <p><b>Recommendation {index + 1}</b></p>
+                      <p><b>{index + 1}</b></p>
                       {
                         recommendMedication.map(
                           (medication, index) => {
@@ -103,7 +103,7 @@ const App = (
                 else {
                   return (
                     <div key={index} className="recommendationObject">
-                      <p><b>Recommendation {index + 1}</b></p>
+                      <p><b>{index + 1}</b></p>
                       <p className="data">Device: {recommendMedication.device}</p>
                       <p className="data">Name: {recommendMedication.name}</p>
                       <p className="data">ChemicalLABA: {recommendMedication.chemicalLABA}</p>
