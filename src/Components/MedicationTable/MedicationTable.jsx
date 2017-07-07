@@ -18,7 +18,6 @@ const MedicationTable = (
     doseICSValue,
     getPatientMedications,
     medication,
-    medicationList,
     medicationName,
     onChangeDoseICS,
     onChangeChemicalLABA,
@@ -92,7 +91,7 @@ const MedicationTable = (
 
   const displayRowContents = () => {
     return (
-      medicationList.map((rowFields, index) => {
+      medication.medicationList.map((rowFields, index) => {
         let getDeviceColumn = medicationData.map(
           ( medication ) => {
             return (

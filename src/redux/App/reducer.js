@@ -13,7 +13,7 @@ import {
   ON_CHEMICALLABA_SELECTION,
   MEDICATION_NAME,
 } from './constants';
-
+import _ from 'lodash';
 export const initialState = {
   puffValue: '',
   timesPerDayValue: '',
@@ -138,17 +138,19 @@ const reducer = (state = initialState, action) => {
         }
       );
     case ON_DELETE_ROW:
-      let list = state.medicationList.filter((row, index) => {
-        return index !== action.data});
+      console.log(_.filter(state.medicationList, (row, index) => {
+        return index !== action.data}));
       if(action.data === 0) {
         return Object.assign({}, state, {
           isRecommendationEmpty: true,
-          medicationList: list,
+          medicationList: _.filter(state.medicationList, (row, index) => {
+            return index !== action.data}),
           isRuleSelectEmpty: true,
         })
       }
       return Object.assign({}, state, {
-          medicationList: list,
+          medicationList: _.filter(state.medicationList, (row, index) => {
+            return index !== action.data}),
           isRecommendationEmpty: true,
           isRuleSelectEmpty: true,
         }
