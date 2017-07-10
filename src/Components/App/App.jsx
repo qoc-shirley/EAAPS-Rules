@@ -132,7 +132,7 @@ const App = (
     }
   };
 
-  const availableRules = ['rule1', 'rule2', 'rule4', 'rule8', "rule11"];
+  const availableRules = ['rule1', 'rule2', 'rule4', 'rule7', 'rule8', "rule11"];
 
   const onChangeRule = ( rule ) => {
     if(rule === 'rule1') {
