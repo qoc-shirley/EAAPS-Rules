@@ -132,7 +132,6 @@ const App = (
 
   const availableRules = ['rule1', 'rule2', 'rule4', 'rule8', "rule11"];
 
-  // need to display recommendations: all? or only some fields?
   const onChangeRule = ( rule ) => {
     if(rule === 'rule1') {
       saveRecommendation(rule, rules.rule1(medication.patientMedications));
