@@ -80,9 +80,6 @@ const adjustICSDose = (medication, level) => {
         medication.maxPuffPerTime = counter;
         lowMediumICSDose = true;
       }
-      else {
-        return [];
-      }
       counter++;
     }
     return medication;
@@ -292,30 +289,19 @@ export const rule6 = (patientMedications) => {
 };
 
 export const rule7 = (patientMedications) => {
-  /*let result = [];
-   for (let i = 0; i < _.size(patientMedications); i++) {
-   if (patientMedications[i].name === "symbicort" &&
-   patientMedications[i].function === "controller,reliever" &&
-   categorizeICSDose(patientMedications[i]) === "low") {
-   if(adjustICSDose(patientMedications[i], "lowestMedium") === []) {
-   result.push(
-   _.max(
-   _.filter(patientMedications, (medication) => {
-   return medication.name === "symbicort" &&
-   medication.function === "controller,reliever" &&
-   categorizeICSDose(medication) === "low"
-   }),
-   'doseICS'))
-   }
-   result.push(adjustICSDose(patientMedications[i], "lowestMedium"));
-   }
-   }*/
   return _.chain(patientMedications)
-    .reduce( (result, patientMedication) => {
+    .reduce((result, patientMedication) => {
       if (patientMedication.name === "symbicort" &&
         patientMedication.function === "controller,reliever" &&
         categorizeICSDose(patientMedication) === "low") {
+        console.log("ya");
         if (adjustICSDose(patientMedication, "lowestMedium") === []) {
+          console.log("yaya");
+          console.log("filter 1:", _.filter(patientMedication, (medication) => {
+            return medication.name === "symbicort" &&
+              medication.function === "controller,reliever" &&
+              categorizeICSDose(medication) === "low"
+          }));
           result.push(
             _.max(
               _.filter(patientMedication, (medication) => {
@@ -323,10 +309,16 @@ export const rule7 = (patientMedications) => {
                   medication.function === "controller,reliever" &&
                   categorizeICSDose(medication) === "low"
               }),
-              'doseICS'))
+              'doseICS'));
         }
-        result.push(adjustICSDose(patientMedication, "lowestMedium"));
+        else {
+          console.log("yayaya");
+          console.log("adjustICSDose: ", adjustICSDose(patientMedication, "lowestMedium"));
+          result.push(adjustICSDose(patientMedication, "lowestMedium"));
+        }
       }
+      console.log("return");
+      console.log(result);
       return result;
     }, [])
     .value();
