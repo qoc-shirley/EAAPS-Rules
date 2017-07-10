@@ -219,7 +219,8 @@ export const rule4 = (patientMedications, masterMedications) => {
                 chemicalABA: patientMedication.chemicalLABA,
                 chemicalICS: patientMedication.chemicalICS
               });
-            if (filteredMedication) {
+            console.log("filteredMedication: ",filteredMedication);
+            if (!_.isEmpty(filteredMedication)) {
               console.log("filteredMedications");
               if (!_.isEmpty(_.filter(filteredMedication, {device: patientMedication.device}))) {
                 console.log("device");
