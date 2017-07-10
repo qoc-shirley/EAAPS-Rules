@@ -239,7 +239,6 @@ export const rule4 = (patientMedications, masterMedications) => {
           }
           else if(patientMedication.name === "symbicort" &&
             (categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high")) {
-            console.log("i");
             result.push(_.filter(medicationElement, { name: "symbicort", din: patientMedication.din }))
           }
           return result;
