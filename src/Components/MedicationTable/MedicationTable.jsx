@@ -86,6 +86,8 @@ const MedicationTable = (
     .value();
 
   const onSubmitMedications = (displayMedications) => {
+    displayMedications[0][0].puffPerTime = medication.puffValue.puffValueChange;
+    console.log("addPuffPerTime: ", displayMedications );
     getPatientMedications(_.flatten(displayMedications));
   };
 

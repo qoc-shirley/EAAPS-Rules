@@ -213,7 +213,7 @@ export const rule4 = (patientMedications, masterMedications) => {
                   if(_.isEmpty(_.filter(filteredMedication, (medication) => {
                     return medication.device === patientMedication.device &&
                       calculateICSDose(medication) === calculateICSDose(patientMedication);
-                  })){
+                  }))){
                     result.push(_.max( _.filter(filteredMedication, { device: patientMedication.device }), 'doseICS'));
                   }
                   else {
