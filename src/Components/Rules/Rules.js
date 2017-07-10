@@ -201,11 +201,11 @@ export const rule4 = (patientMedications, masterMedications) => {
           if(patientMedication.chemicalType === "ICS" &&
              patientMedication.name !== "symbicort" &&
             (categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high") &&
-            _.filter(patientMedications, { chemicalType: "laba" })) {
-            if(patientMedication.chemicalType === "laba,ICS") {
+            (_.filter(patientMedications, { chemicalType: "laba" }) !== [] )) {
+            if(_.filter(patientMedications, { chemicalType: "laba, ICS" }) !== []) {
               result.push(_.filter(medicationElement, { name: "singulair" }));
             }
-            else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" })) {
+            else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" }) !== []) {
               const filteredMedication = _.filter(medicationElement,
                 {
                   chemicalType: "laba,ICS",
@@ -213,7 +213,7 @@ export const rule4 = (patientMedications, masterMedications) => {
                   chemicalICS: patientMedication.chemicalICS
                 });
               if(filteredMedication) {
-                if(_.filter(filteredMedication, { device: patientMedication.device })) {
+                if(_.filter(filteredMedication, { device: patientMedication.device }) !== []) {
                   if(_.isEmpty(_.filter(filteredMedication, (medication) => {
                     return medication.device === patientMedication.device &&
                       calculateICSDose(medication) === calculateICSDosePatient(patientMedication);
