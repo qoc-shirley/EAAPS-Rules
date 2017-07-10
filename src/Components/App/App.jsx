@@ -131,7 +131,7 @@ const App = (
     }
   };
 
-  const availableRules = ['rule1', 'rule2', 'rule8', "rule11"];
+  const availableRules = ['rule1', 'rule2', 'rule4', 'rule8', "rule11"];
 
   // need to display recommendations: all? or only some fields?
   const onChangeRule = ( rule ) => {

@@ -193,6 +193,7 @@ export const rule2 = (patientMedications, masterMedications) => {
 };
 
 export const rule4 = (patientMedications, masterMedications) => {
+  console.log("rule4", patientMedications);
   let result = [];
   return _.chain(patientMedications)
     .filter(
@@ -202,10 +203,13 @@ export const rule4 = (patientMedications, masterMedications) => {
              patientMedication.name !== "symbicort" &&
             (categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high") &&
             (_.filter(patientMedications, { chemicalType: "laba" }) !== [] )) {
+            console.log("first");
             if(_.filter(patientMedications, { chemicalType: "laba, ICS" }) !== []) {
+              console.log("a");
               result.push(_.filter(medicationElement, { name: "singulair" }));
             }
             else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" }) !== []) {
+              console.log("b");
               const filteredMedication = _.filter(medicationElement,
                 {
                   chemicalType: "laba,ICS",
@@ -213,14 +217,18 @@ export const rule4 = (patientMedications, masterMedications) => {
                   chemicalICS: patientMedication.chemicalICS
                 });
               if(filteredMedication) {
+                console.log("b,a");
                 if(_.filter(filteredMedication, { device: patientMedication.device }) !== []) {
+                  console.log("b,a,a");
                   if(_.isEmpty(_.filter(filteredMedication, (medication) => {
+                      console.log("b,a,a,a");
                     return medication.device === patientMedication.device &&
                       calculateICSDose(medication) === calculateICSDosePatient(patientMedication);
                   }))){
                     result.push(_.max( _.filter(filteredMedication, { device: patientMedication.device }), 'doseICS'));
                   }
                   else {
+                    console.log("b,a,a,b");
                     result.push(_.filter(filteredMedication, (medication) => {
                       return medication.device === patientMedication.device &&
                         calculateICSDose(medication) === calculateICSDosePatient(patientMedication);
@@ -229,10 +237,12 @@ export const rule4 = (patientMedications, masterMedications) => {
                   result.push(_.filter(medicationElement, { name: "singulair" }));
                 }
                 else {
+                  console.log("b,a,b");
                   result.push(_.filter(medicationElement, { name: "singulair" }));
                 }
               }
               else {
+                console.log("b,b");
                 result.push(_.filter(medicationElement, { name: "singulair" }));
               }
             }
@@ -241,7 +251,8 @@ export const rule4 = (patientMedications, masterMedications) => {
             (categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high")) {
             result.push(_.filter(medicationElement, { name: "symbicort", din: patientMedication.din }))
           }
-          return result;
+          console.log("last");
+          //return result;
         }, masterMedications )
         //return result;
       //}, [])
