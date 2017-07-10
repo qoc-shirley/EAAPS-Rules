@@ -303,7 +303,6 @@ export const rule7 = (patientMedications) => {
       result.push(adjustICSDose(patientMedications[i], "lowestMedium"));
     }
   }
-  // add puffPerTime to patientMedications so it can be used to calculate and adjust the ICS DOSE(formula)
 };
 
 export const rule8 = (patientMedications, masterMedications) => {
