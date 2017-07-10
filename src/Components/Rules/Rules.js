@@ -285,31 +285,51 @@ export const rule6 = (patientMedications) => {
     })
     .value();
 
-  if(!_.isEmpty(consultRespirologist)) {
+  if (!_.isEmpty(consultRespirologist)) {
     return consultRespirologist.concat("consult a respirologist");
   }
   return [];
 };
 
 export const rule7 = (patientMedications) => {
-  let result = [];
-  for (let i = 0; i < _.size(patientMedications); i++) {
-    if (patientMedications[i].name === "symbicort" &&
-      patientMedications[i].function === "controller,reliever" &&
-      categorizeICSDose(patientMedications[i]) === "low") {
-      if(adjustICSDose(patientMedications[i], "lowestMedium") === []) {
-        result.push(
-          _.max(
-            _.filter(patientMedications, (medication) => {
-              return medication.name === "symbicort" &&
-                medication.function === "controller,reliever" &&
-                categorizeICSDose(medication) === "low"
-            }),
-            'doseICS'))
+  /*let result = [];
+   for (let i = 0; i < _.size(patientMedications); i++) {
+   if (patientMedications[i].name === "symbicort" &&
+   patientMedications[i].function === "controller,reliever" &&
+   categorizeICSDose(patientMedications[i]) === "low") {
+   if(adjustICSDose(patientMedications[i], "lowestMedium") === []) {
+   result.push(
+   _.max(
+   _.filter(patientMedications, (medication) => {
+   return medication.name === "symbicort" &&
+   medication.function === "controller,reliever" &&
+   categorizeICSDose(medication) === "low"
+   }),
+   'doseICS'))
+   }
+   result.push(adjustICSDose(patientMedications[i], "lowestMedium"));
+   }
+   }*/
+  return _.chain(patientMedications)
+    .reduce( (result, patientMedication) => {
+      if (patientMedication.name === "symbicort" &&
+        patientMedication.function === "controller,reliever" &&
+        categorizeICSDose(patientMedication) === "low") {
+        if (adjustICSDose(patientMedication, "lowestMedium") === []) {
+          result.push(
+            _.max(
+              _.filter(patientMedication, (medication) => {
+                return medication.name === "symbicort" &&
+                  medication.function === "controller,reliever" &&
+                  categorizeICSDose(medication) === "low"
+              }),
+              'doseICS'))
+        }
+        result.push(adjustICSDose(patientMedication, "lowestMedium"));
       }
-      result.push(adjustICSDose(patientMedications[i], "lowestMedium"));
-    }
-  }
+      return result;
+    }, [])
+    .value();
 };
 
 export const rule8 = (patientMedications, masterMedications) => {

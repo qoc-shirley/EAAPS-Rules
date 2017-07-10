@@ -142,7 +142,6 @@ const App = (
       saveRecommendation(rule, rules.rule2(medication.patientMedications, medicationData));
     }
     else if(rule === 'rule4') {
-      console.log("rule4");
       saveRecommendation(rule, _.flatten(rules.rule4(medication.patientMedications, medicationData)));
     }
     else if(rule === 'rule6') {
