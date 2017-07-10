@@ -76,8 +76,12 @@ const adjustICSDose = (medication, level) => {
         medication.maxPuffPerTime = counter;
         lowMediumICSDose = true;
       }
+      else {
+        return [];
+      }
       counter++;
     }
+    return medication;
   }
 };
 
@@ -282,15 +286,20 @@ export const rule7 = (patientMedications) => {
     if (patientMedications[i].name === "symbicort" &&
       patientMedications[i].function === "controller,reliever" &&
       categorizeICSDose(patientMedications[i]) === "low") {
+      if(adjustICSDose(patientMedications[i], "lowestMedium") === []) {
+        result.push(
+          _.max(
+            _.filter(patientMedications, (medication) => {
+              return medication.name === "symbicort" &&
+                medication.function === "controller,reliever" &&
+                categorizeICSDose(medication) === "low"
+            }),
+            'doseICS'))
+      }
       result.push(adjustICSDose(patientMedications[i], "lowestMedium"));
     }
   }
-  // among the medication that is SMART try and recommend the medication with the same ICS Dose as the original after
-  // adjusted if not possible then return then choose the medication with the higher ICS DOSE
-  if (match(result, "doseICS") === []) {
-    return minimize(result, "doseICS");
-  }
-  return match(result, "doseICS");
+  // add puffPerTime to patientMedications so it can be used to calculate and adjust the ICS DOSE(formula)
 };
 
 export const rule8 = (patientMedications, masterMedications) => {
