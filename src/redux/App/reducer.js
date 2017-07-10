@@ -58,7 +58,7 @@ const reducer = (state = initialState, action) => {
     // OnChange functions
     case ON_PUFF_CHANGE:
       return Object.assign({}, state, {
-        puffValue: action.data,
+        puffValue: action.data.puffValueChange,
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?

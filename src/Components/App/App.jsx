@@ -24,7 +24,6 @@ const App = (
   } ) => {
 
   let showPatientMedications = null;
-  console.log(medication.isRecommendationEmpty);
   if(medication.isRecommendationEmpty === false){
     showPatientMedications = <DisplayPatientMedications />;
   }
@@ -142,7 +141,8 @@ const App = (
       saveRecommendation(rule, rules.rule2(medication.patientMedications, medicationData));
     }
     else if(rule === 'rule4') {
-      saveRecommendation(rule, rules.rule4(medication.patientMedications, medicationData));
+      console.log("rule4");
+      saveRecommendation(rule, _.flatten(rules.rule4(medication.patientMedications, medicationData)));
     }
     else if(rule === 'rule6') {
       saveRecommendation(rule, rules.rule6(medication.patientMedications));

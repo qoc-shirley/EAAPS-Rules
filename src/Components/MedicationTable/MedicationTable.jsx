@@ -86,8 +86,14 @@ const MedicationTable = (
     .value();
 
   const onSubmitMedications = (displayMedications) => {
-    displayMedications[0][0].puffPerTime = medication.puffValue.puffValueChange;
-    console.log("addPuffPerTime: ", displayMedications );
+    displayMedications.map((filteredMedication, index) => {
+      return filteredMedication.map((addPuffToMedication) => {
+        return addPuffToMedication.puffPerTime = medication.medicationList[index].puffValue;
+        }
+      );
+    });
+    // displayMedications[0][0].puffPerTime = medication.puffValue.puffValueChange;
+    console.log("addPuffPerTime: ", _.flatten(displayMedications) );
     getPatientMedications(_.flatten(displayMedications));
   };
 

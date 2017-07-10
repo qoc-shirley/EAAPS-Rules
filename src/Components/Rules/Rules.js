@@ -199,6 +199,10 @@ export const rule4 = (patientMedications, masterMedications) => {
     .filter(
      // _.reduce((result) => {
         _.partial((medicationElement, patientMedication) => {
+          console.log(patientMedication.chemicalType === "ICS");
+          console.log(patientMedication.name !== "symbicort");
+          console.log(categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high");
+          console.log(_.filter(patientMedications, { chemicalType: "laba" }) !== [] );
           if(patientMedication.chemicalType === "ICS" &&
              patientMedication.name !== "symbicort" &&
             (categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high") &&
