@@ -82,6 +82,10 @@ const adjustICSDose = (medication, level) => {
       }
       counter++;
     }
+    if(lowMediumICSDose === false && counter > max) {
+      console.log("cannot be adjusted with original doseICS");
+      return [];
+    }
     return medication;
   }
 };
