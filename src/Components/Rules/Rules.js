@@ -73,9 +73,9 @@ const adjustICSDose = (medication, level) => {
   let lowMediumICSDose = false;
   let highestICSDose = false;
   let counter = 1;
-  
+  let testAdjustment;
+
   if (level === "lowestMedium") {
-    let testAdjustment;
     while (lowMediumICSDose === false && (counter < max)) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
       if ((testAdjustment > medication.lowCeilICS) && (testAdjustment < medication.highFloorICS)) {
@@ -86,8 +86,6 @@ const adjustICSDose = (medication, level) => {
     }
   }
   else if (level === "highest") {
-    let counter = 1;
-    let testAdjustment;
     while (highestICSDose === false && (counter < max)) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
       if (testAdjustment >= medication.maxGreenICS) {
@@ -98,6 +96,10 @@ const adjustICSDose = (medication, level) => {
     }
   }
   if (lowMediumICSDose === false && counter > max) {
+    console.log("cannot be adjusted with original doseICS");
+    return [];
+  }
+  else if(highestICSDose === false && counter > max) {
     console.log("cannot be adjusted with original doseICS");
     return [];
   }
