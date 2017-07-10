@@ -58,6 +58,7 @@ const DisplayMedications = ({
                       return (
                         <div key={index} className="filteredMedications">
                           <p className="medication">Medication {rowIndex + 1}</p>
+                          <p>ID: {patientMedication.id}</p>
                           <p>Device: {patientMedication.device}</p>
                           <p>Name: {patientMedication.name}</p>
                           <p>chemicalLABA: {patientMedication.chemicalLABA}</p>
