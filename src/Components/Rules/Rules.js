@@ -69,10 +69,12 @@ const getLabaICSAndICS = (patientMedications) => {
 
 // calculateMaximumPuffsPerTime rename calculateMaximumPuffsPerTime(medication.maxPuffPerTime, medication.level)
 const adjustICSDose = (medication, level) => {
+  const max = medication.maxPuffPerTime;
+  let lowMediumICSDose = false;
+  let highestICSDose = false;
+  let counter = 1;
+  
   if (level === "lowestMedium") {
-    const max = medication.maxPuffPerTime;
-    let lowMediumICSDose = false;
-    let counter = 1;
     let testAdjustment;
     while (lowMediumICSDose === false && (counter < max)) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
@@ -82,12 +84,24 @@ const adjustICSDose = (medication, level) => {
       }
       counter++;
     }
-    if(lowMediumICSDose === false && counter > max) {
-      console.log("cannot be adjusted with original doseICS");
-      return [];
-    }
-    return medication;
   }
+  else if (level === "highest") {
+    let counter = 1;
+    let testAdjustment;
+    while (highestICSDose === false && (counter < max)) {
+      testAdjustment = medication.doseICS * medication.timesPerDay * counter;
+      if (testAdjustment >= medication.maxGreenICS) {
+        medication.maxPuffPerTime = counter;
+        highestICSDose = true;
+      }
+      counter++;
+    }
+  }
+  if (lowMediumICSDose === false && counter > max) {
+    console.log("cannot be adjusted with original doseICS");
+    return [];
+  }
+  return medication;
 };
 
 //////////////////////////////////////////////// RULES ////////////////////////////////////////////////////////////////
