@@ -351,6 +351,54 @@ export const rule8 = (patientMedications, masterMedications) => {
   return [];
 };
 
+export const rule9 = ( patientMedications ) => {
+  /*let result = [];
+  for( i = 0; i < _.size( patientMedications ); i++ ){
+    if( patientMedication[i].name === "symbicort" && patientMedication[i].controller === "controller,reliever" &&
+      ( calculateICSDose( patientMedication[i] ) < patientMedication[i].maxGreenICS ) &&
+      _.some( patientMedications, { chemicalType: "ltra" } ) ){
+      result.push( _.filter( patientMedications, { chemicalType: "ltra" } ) );
+      result.push( patientMedications[i] );
+    }
+  }
+  // attempt to match -> SAME QUESTION AS RULE 7
+  return result;*/
+
+  return _.chain(patientMedications)
+    .reduce((result, patientMedication) => {
+      if (patientMedication.name === "symbicort" &&
+        patientMedication.function === "controller,reliever" &&
+        categorizeICSDose(patientMedication) === "low") {
+        console.log("ya");
+        if (adjustICSDose(patientMedication, "lowestMedium") === []) {
+          console.log("yaya");
+          console.log("filter 1:", _.filter(patientMedications, (medication) => {
+            return medication.name === "symbicort" &&
+              medication.function === "controller,reliever" &&
+              categorizeICSDose(medication) === "low"
+          }));
+          result.push(
+            _.max(
+              _.filter(patientMedications, (medication) => {
+                return medication.name === "symbicort" &&
+                  medication.function === "controller,reliever" &&
+                  categorizeICSDose(medication) === "low"
+              }),
+              'doseICS'));
+        }
+        else {
+          console.log("yayaya");
+          console.log("adjustICSDose: ", adjustICSDose(patientMedication, "lowestMedium"));
+          result.push(adjustICSDose(patientMedication, "lowestMedium"));
+        }
+      }
+      console.log("return");
+      console.log(result);
+      return result;
+    }, [])
+    .value();
+};
+
 export const rule10 = (patientMedications, masterMedications) => {
   const consultRespirologist = _
     .chain(patientMedications)

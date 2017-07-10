@@ -132,7 +132,7 @@ const App = (
     }
   };
 
-  const availableRules = ['rule1', 'rule2', 'rule4', 'rule7', 'rule8', "rule11"];
+  const availableRules = ['rule1', 'rule2', 'rule4', 'rule7', 'rule8', 'rule9', 'rule11'];
 
   const onChangeRule = ( rule ) => {
     if(rule === 'rule1') {
@@ -152,6 +152,9 @@ const App = (
     }
     else if(rule === 'rule8') {
       saveRecommendation(rule, rules.rule8(medication.patientMedications));
+    }
+    else if(rule === 'rule9') {
+      saveRecommendation(rule, rules.rule9(medication.patientMedications));
     }
     else if(rule === "rule10") {
       saveRecommendation(rule, rules.rule10(medication.patientMedications));
