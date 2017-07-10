@@ -147,6 +147,9 @@ const App = (
     else if(rule === 'rule6') {
       saveRecommendation(rule, rules.rule6(medication.patientMedications));
     }
+    else if(rule === 'rule7') {
+      saveRecommendation(rule, rules.rule7(medication.patientMedications));
+    }
     else if(rule === 'rule8') {
       saveRecommendation(rule, rules.rule8(medication.patientMedications));
     }

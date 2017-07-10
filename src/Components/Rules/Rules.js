@@ -63,6 +63,24 @@ const getLabaICSAndICS = (patientMedications) => {
     .value();
 };
 
+// calculateMaximumPuffsPerTime rename calculateMaximumPuffsPerTime(medication.maxPuffPerTime, medication.level)
+const adjustICSDose = (medication, level) => {
+  if (level === "lowestMedium") {
+    const max = medication.maxPuffPerTime;
+    let lowMediumICSDose = false;
+    let counter = 1;
+    let testAdjustment;
+    while (lowMediumICSDose === false && (counter < max)) {
+      testAdjustment = medication.doseICS * medication.timesPerDay * counter;
+      if ((testAdjustment > medication.lowCeilICS) && (testAdjustment < medication.highFloorICS)) {
+        medication.maxPuffPerTime = counter;
+        lowMediumICSDose = true;
+      }
+      counter++;
+    }
+  }
+};
+
 //////////////////////////////////////////////// RULES ////////////////////////////////////////////////////////////////
 
 export const rule1 = (patientMedications) => {
@@ -176,13 +194,10 @@ export const rule4 = (patientMedications, masterMedications) => {
              patientMedication.name !== "symbicort" &&
             (calculateICSDose(patientMedication) === "medium" || calculateICSDose(patientMedication) === "high") &&
             _.filter(patientMedications, { chemicalType: "laba" })) {
-            console.log("a");
             if(patientMedication.chemicalType === "laba,ICS") {
-              console.log("b");
               result.push(_.filter(medicationElement, { name: "singulair" }));
             }
             else if(_.filter(patientMedications, { chemicalType: "laba", chemicalType: "ICS" })) {
-              console.log("c");
               const filteredMedication = _.filter(medicationElement,
                 {
                   chemicalType: "laba,ICS",
@@ -190,22 +205,26 @@ export const rule4 = (patientMedications, masterMedications) => {
                   chemicalICS: patientMedication.chemicalICS
                 });
               if(filteredMedication) {
-                console.log("d");
                 if(_.filter(filteredMedication, { device: patientMedication.device })) {
-                  console.log("e");
-                  //ADD: recommend new medication at the same ICS dose as the original medication ICS Dose
-                  //within _.filter(filteredMedication, { device: patientMedication.device }) match to see if you can
-                  //have same Dose ICS(formula) as original and same device if not then recommend the medication with the highest
-                  //Dose ICS(column)
+                  if(_.isEmpty(_.filter(filteredMedication, (medication) => {
+                    return medication.device === patientMedication.device &&
+                      calculateICSDose(medication) === calculateICSDose(patientMedication);
+                  })){
+                    result.push(_.max( _.filter(filteredMedication, { device: patientMedication.device }), 'doseICS'));
+                  }
+                  else {
+                    result.push(_.filter(filteredMedication, (medication) => {
+                      return medication.device === patientMedication.device &&
+                        calculateICSDose(medication) === calculateICSDose(patientMedication);
+                    }));
+                  }
                   result.push(_.filter(medicationElement, { name: "singulair" }));
                 }
                 else {
-                  console.log("f");
                   result.push(_.filter(medicationElement, { name: "singulair" }));
                 }
               }
               else {
-                console.log("g");
                 result.push(_.filter(medicationElement, { name: "singulair" }));
               }
             }
@@ -259,7 +278,7 @@ export const rule6 = (patientMedications) => {
 
 export const rule7 = (patientMedications) => {
   let result = [];
-  for (i = 0; i < _.size(patientMedications); i++) {
+  for (let i = 0; i < _.size(patientMedications); i++) {
     if (patientMedications[i].name === "symbicort" &&
       patientMedications[i].function === "controller,reliever" &&
       categorizeICSDose(patientMedications[i]) === "low") {
