@@ -363,9 +363,9 @@ export const rule9 = ( patientMedications ) => {
           result.push(
             _.max(
               _.filter(patientMedications, (medication) => {
-                return patientMedication.name === "symbicort" &&
-                  patientMedication.controller === "controller,reliever" &&
-                  (calculateICSDose( patientMedication ) < patientMedication.maxGreenICS)
+                return medication.name === "symbicort" &&
+                  medication.controller === "controller,reliever" &&
+                  (calculateICSDose( medication ) < medication.maxGreenICS)
               }),
               'doseICS'));
           result.push( patientMedications );
