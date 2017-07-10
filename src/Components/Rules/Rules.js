@@ -301,14 +301,14 @@ export const rule7 = (patientMedications) => {
         console.log("ya");
         if (adjustICSDose(patientMedication, "lowestMedium") === []) {
           console.log("yaya");
-          console.log("filter 1:", _.filter(patientMedication, (medication) => {
+          console.log("filter 1:", _.filter(patientMedications, (medication) => {
             return medication.name === "symbicort" &&
               medication.function === "controller,reliever" &&
               categorizeICSDose(medication) === "low"
           }));
           result.push(
             _.max(
-              _.filter(patientMedication, (medication) => {
+              _.filter(patientMedications, (medication) => {
                 return medication.name === "symbicort" &&
                   medication.function === "controller,reliever" &&
                   categorizeICSDose(medication) === "low"
