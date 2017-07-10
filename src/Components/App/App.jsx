@@ -69,6 +69,7 @@ const App = (
                   return (
                     <div key={index} className="recommendationArray">
                       <p><b>{index + 1}</b></p>
+                      <p className="data">ID: {recommendMedication[0]}</p>
                       <p className="data">Device: {recommendMedication[5]}</p>
                       <p className="data">Name: {recommendMedication[7]}</p>
                       <p className="data">ChemicalLABA: {recommendMedication[10]}</p>
@@ -103,6 +104,7 @@ const App = (
                   return (
                     <div key={index} className="recommendationObject">
                       <p><b>{index + 1}</b></p>
+                      <p className="data">ID: {recommendMedication.id}</p>
                       <p className="data">Device: {recommendMedication.device}</p>
                       <p className="data">Name: {recommendMedication.name}</p>
                       <p className="data">ChemicalLABA: {recommendMedication.chemicalLABA}</p>

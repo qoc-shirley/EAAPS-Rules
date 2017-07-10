@@ -206,6 +206,7 @@ export const rule4 = (patientMedications, masterMedications) => {
             result.push(patientMedication);
             result.push(_.filter(medicationElement, {name: "singulair"}));
           }
+          console.log("is there laba and ics: ", _.filter(patientMedications, {chemicalType: "laba", chemicalType: "ICS"}));
           if (!_.isEmpty(_.filter(patientMedications, {chemicalType: "laba", chemicalType: "ICS"}))) {
             console.log("exists chemicalType laba and ICS");
             const filteredMedication = _.filter(medicationElement,
@@ -222,8 +223,6 @@ export const rule4 = (patientMedications, masterMedications) => {
                     return medication.device === patientMedication.device &&
                       calculateICSDose(medication) === calculateICSDosePatient(patientMedication);
                   }))) {
-                  console.log("device and same ICS Dose");
-                  console.log("filter device: ", _.filter(filteredMedication, {device: patientMedication.device}));
                   console.log("minimize: ", _.maxBy(_.filter(filteredMedication, {device: patientMedication.device}), 'doseICS'));
                   result.push(_.max(_.filter(filteredMedication, {device: patientMedication.device}), 'doseICS'));
                 }
