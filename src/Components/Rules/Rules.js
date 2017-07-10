@@ -206,8 +206,12 @@ export const rule4 = (patientMedications, masterMedications) => {
             result.push(patientMedication);
             result.push(_.filter(medicationElement, {name: "singulair"}));
           }
-          console.log("is there laba and ics: ", _.filter(patientMedications, {chemicalType: "laba", chemicalType: "ICS"}));
-          if (!_.isEmpty(_.filter(patientMedications, {chemicalType: "laba", chemicalType: "ICS"}))) {
+          const getLABAAndICS =  _.filter(patientMedications,
+            (medication) => {
+            return medication.chemicalType === "laba" || medication.chemicalType === "ICS"
+          });
+          console.log("is there laba and ics: ", _.filter(patientMedications, (medication) => { return medication.chemicalType === "laba" || medication.chemicalType === "ICS"}));
+          if (!_.isEmpty(getLABAAndICS)) {
             console.log("exists chemicalType laba and ICS");
             const filteredMedication = _.filter(medicationElement,
               {
@@ -219,7 +223,7 @@ export const rule4 = (patientMedications, masterMedications) => {
               console.log("filteredMedications");
               if (!_.isEmpty(_.filter(filteredMedication, {device: patientMedication.device}))) {
                 console.log("device");
-                if (_.isEmpty(_.filter(filteredMedication, (medication) => {
+                if (!_.isEmpty(_.filter(filteredMedication, (medication) => {
                     return medication.device === patientMedication.device &&
                       calculateICSDose(medication) === calculateICSDosePatient(patientMedication);
                   }))) {
@@ -233,15 +237,18 @@ export const rule4 = (patientMedications, masterMedications) => {
                       calculateICSDose(medication) === calculateICSDosePatient(patientMedication);
                   }));
                 }
+                console.log("tyuito");
                 result.push(patientMedication);
                 result.push(_.filter(medicationElement, {name: "singulair"}));
               }
               else {
+                console.log("asdfasdf");
                 result.push(patientMedication);
                 result.push(_.filter(medicationElement, {name: "singulair"}));
               }
             }
             else {
+              console.log("1234");
               result.push(patientMedication);
               result.push(_.filter(medicationElement, {name: "singulair"}));
             }
@@ -249,6 +256,7 @@ export const rule4 = (patientMedications, masterMedications) => {
         }
         if (patientMedication.name === "symbicort" &&
           (categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high")) {
+          console.log("yolo");
           result.push(_.filter(medicationElement, {name: "symbicort", din: patientMedication.din}))
         }
       }, masterMedications)
