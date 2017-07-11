@@ -340,7 +340,7 @@ export const rule4 = (patientMedications, masterMedications) => {
         }
         if (patientMedication.name === "symbicort" &&
           (categorizeICSDose(patientMedication) === "medium" || categorizeICSDose(patientMedication) === "high")) {
-          result.push(_.filter(medicationElement, {name: "symbicort", din: patientMedication.din}))
+          result.push(_.filter(medicationElement, {name: "symbicort", din: patientMedication.din}));
         }
       }, masterMedications)
       //return result;
@@ -355,8 +355,16 @@ export const rule5 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
-          const newMedications = _.filter(medicationElement, {chemicalType: "laba, ICS"});
-          if (patientMedication.chemicalType === "ICS" && !_.isEmpty(newMedications)) {
+          const isLtra = _.some(medications, {chemicalType: "ltra"});
+          if (patientMedication.name !== "symbicort" &&
+            (
+              patientMedication.chemicalType === "laba,ICS" ||
+              patientMedication.chemicalType === "laba" ||
+              patientMedication.chemicalType === "ICS"
+            ) && (
+              calculateICSDosePatient(isLtra) < isLtra.maxGreenICS
+            )
+          ) {
 
             const chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
             if (!_.isEmpty(chemicalICSMedications)) {
@@ -413,8 +421,16 @@ export const rule5 = (patientMedications, masterMedications) => {
               console.log("recommend highest possible ICS DOSE in each new medication")
             }
           }
-          if (patientMedication.chemicalType === "ltra") {
-            result.push(patientMedication);
+          if (patientMedication.name === "symbicort" && _.some(patientMedication, { chemicalType: "ltra" })) {
+            result.push(
+              _.filter(
+                medicationElement,
+                {
+                  name: "symbicort",
+                  function: "controller,reliever",
+                  din: patientMedication.din
+                })
+            );
           }
           return result;
         }, masterMedications, patientMedications);
