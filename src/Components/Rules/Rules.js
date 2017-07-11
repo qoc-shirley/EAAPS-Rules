@@ -46,6 +46,24 @@ const categorizeICSDose = (medication) => {
   return doseLevel;
 };
 
+const categorizeICSDoseMaster = (medication) => {
+  let doseLevel = '';
+  if (calculateICSDose(medication) >= medication.highFloorICS) {
+    doseLevel = "high";
+  }
+  else if (calculateICSDoseP(medication) <= medication.lowCeilICS) {
+    doseLevel = "low";
+  }
+  else if ((calculateICSDose(medication) > medication.lowCeilICS) &&
+    (calculateICSDosePatient(medication) < medication.highFloorICS)) {
+    doseLevel = "medium";
+  }
+  else if (calculateICSDose(medication) > medication.maxGreenICS) {
+    doseLevel = "excessive";
+  }
+  return doseLevel;
+};
+
 const getLabaICSAndICS = (patientMedications) => {
   let result = [];
   let labaICS = false;
@@ -257,18 +275,31 @@ export const rule3 = (patientMedications, masterMedications) => {
             //recommend the lowest possible ICS DOSE in each new medication
             // but I'm only supposed to return the medication row so I will not be
             // doing this but the doctor?
-            if (categorizeICSDose(patientMedication) === "low") {
-              console.log("find new medication in low category");
-            }
-            else if(categorizeICSDose(patientMedication) === "medium") {
-              console.log("find new medication in medium category");
-
-            }
-            else if(categorizeICSDose(patientMedication) === "high") {
-              console.log("find new medication in high category");
-            }
-            else if(categorizeICSDose(patientMedication) === "excessive") {
-              console.log("recommend highest possible ICS DOSE in each new medication")
+            for (let i = 0; i < _.size(newMedication); i++) {
+              if (
+                  categorizeICSDose(patientMedication) === "low" &&
+                  categorizeICSDoseMaster(newMedication[i]) === "low"
+              ) {
+                console.log("find new medication in low category");
+              }
+              else if (
+                categorizeICSDose(patientMedication) === "medium" &&
+                categorizeICSDoseMaster(newMedication[i]) === "medium"
+              ) {
+                console.log("find new medication in medium category");
+              }
+              else if (
+                categorizeICSDose(patientMedication) === "high" &&
+                categorizeICSDoseMaster(newMedication[i]) === "high"
+              ) {
+                console.log("find new medication in high category");
+              }
+              else if (
+                categorizeICSDose(patientMedication) === "excessive" &&
+                categorizeICSDoseMaster(newMedication[i]) === "excessive"
+              ) {
+                console.log("recommend highest possible ICS DOSE in each new medication")
+              }
             }
           }
           if (patientMedication.chemicalType === "ltra") {
