@@ -365,13 +365,12 @@ export const rule5 = (patientMedications, masterMedications) => {
             ) &&
               !_.isEmpty(findLtra) &&
               calculateICSDosePatient(findLtra) < findLtra.maxGreenICS) {
-            const typeLaba = _.filter(filterOrgMeds, { chemicalType: "laba" });
-            const typeICS = _.filter(filterOrgMeds, { chemicalType: "ICS" });
+            const typeICS = _.filter(medications, { chemicalType: "ICS" });
             if (patientMedication.chemicalType === "laba,ICS") {
               result.push(patientMedication);
               result.push(findLtra);
             }
-            else if(!_.isEmpty(typeLaba) && !_.isEmpty(typeICS)) {
+            else if(patientMedication.chemicalType === "laba" && !_.isEmpty(typeICS)) {
               const filteredNewMedications = _.filter(medicationElement, { chemicalType: "laba,ICS", });
               for (let i = 0; i < _.size(filteredNewMedications); i++) {
                 if (filteredNewMedications[i]) {
