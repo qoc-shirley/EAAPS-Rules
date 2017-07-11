@@ -389,8 +389,14 @@ export const rule5 = (patientMedications, masterMedications) => {
                     ){
                       //recommend new medication at highest available ICS Dose (maxGreenICS)
                       result.push(findLtra);
+                      //choose original ICS device if not choose LABA
+                      //choose dose ICS that will minimize puffPerTime
                     }
-
+                    else {
+                      //increase original medication ICS to highest ICS DOSE (maxGreenICS)
+                      result.push(findLtra);
+                      result.push(patientMedication);
+                    }
                   }
                 }
               }
