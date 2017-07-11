@@ -65,7 +65,8 @@ const App = (
           {
             medication.recommendation.map(
               (recommendMedication, index) => {
-                if (_.isArray(recommendMedication) && _.size(recommendMedication) > 10) {
+                if (_.isArray(recommendMedication) && _.size(recommendMedication) > 29) {
+                  console.log("1");
                   return (
                     <div key={index} className="recommendationArray">
                       <p><b>{index + 1}</b></p>
@@ -80,7 +81,8 @@ const App = (
                     </div>
                   )
                 }
-                else if(_.isArray(recommendMedication)) {
+                else if(_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
+                  console.log("2");
                   return (
                     <div key={index} className="recommendationArray">
                       <p><b>{index + 1}</b></p>
@@ -98,9 +100,31 @@ const App = (
                         )
                       }
                     </div>
-                  )
+                  );
                 }
-                else {
+                else if(!_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
+                  console.log("4");
+                  return (
+                    <div key={index} className="recommendationArray">
+                      <p><b>{index + 1}</b></p>
+                      {
+                        recommendMedication.map(
+                          (medication, index) => {
+                            return (
+                              <p key={index}
+                                 className="data"
+                              >
+                                {medication}
+                              </p>
+                            );
+                          }
+                        )
+                      }
+                    </div>
+                  );
+                }
+                else if(!_.isArray(recommendMedication) && _.size(recommendMedication) > 29){
+                  console.log("3");
                   return (
                     <div key={index} className="recommendationObject">
                       <p><b>{index + 1}</b></p>

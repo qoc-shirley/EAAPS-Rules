@@ -209,9 +209,26 @@ export const rule2 = (patientMedications, masterMedications) => {
     .value();
 };
 export const rule3 = ( patientMedications, masterMedications) => {
+  console.log("rule3");
+  return _.chain(patientMedications)
+    .reduce( (result, patientMedication) => {
+    console.log("start");
+    console.log("patientMedication: ", patientMedication);
+      let rule =
+        _.partial((medicationElement, patientMedication) => {
+          console.log("partial: ", medicationElement, patientMedication);
+          console.log("result inside partial: ", result);
 
+          return result.push( "hello");
+        }, masterMedications, patientMedications);
+      rule(patientMedication);
+      console.log("end");
+      result.push("bye");
+      console.log("result: ", rule);
+      return result;
+    }, [])
+    .value();
 };
-
 export const rule4 = (patientMedications, masterMedications) => {
   let result = [];
   return _.chain(patientMedications)
