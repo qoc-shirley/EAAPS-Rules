@@ -355,74 +355,30 @@ export const rule5 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
-          const filterOrgMeds = _.filter(medications, (medication) => {
-            return medication.name !== "symbicort" &&
-              (
-                medication.chemicalType === "laba,ICS" ||
-                medication.chemicalType === "laba" ||
-                medication.chemicalType === "ICS"
-              )
-          });
+          const findLtra = _.find(medications, { chemicalType: "ltra" });
 
-          if (!_.isEmpty(filterOrgMeds) &&
-              patientMedication.chemicalType === "ltra" &&
-              calculateICSDosePatient(patientMedication) < patientMedication.maxGreenICS) {
+          if (patientMedication.name !== "symbicort" &&
+            (
+              patientMedication.chemicalType === "laba,ICS" ||
+              patientMedication.chemicalType === "laba" ||
+              patientMedication.chemicalType === "ICS"
+            ) &&
+              !_.isEmpty(findLtra) &&
+              calculateICSDosePatient(findLtra) < findLtra.maxGreenICS) {
+            const typeLaba = _.filter(filterOrgMeds, { chemicalType: "laba" });
+            const typeICS = _.filter(filterOrgMeds, { chemicalType: "ICS" });
+            if (patientMedication.chemicalType === "laba,ICS") {
+              result.push(patientMedication);
+              result.push(findLtra);
+            }
+            else if(!_.isEmpty(typeLaba) && !_.isEmpty(typeICS)) {
+              const filteredNewMedications = _.filter(medicationElement, { chemicalType: "laba,ICS", });
+              if() {
 
-            const chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
-            if (!_.isEmpty(chemicalICSMedications)) {
-              //attempt to match device
-              for (let i = 0; i < _.size(chemicalICSMedications); i++) {
-                if (chemicalICSMedications[i]) {
-                  console.log("recommend this new medication with an ICS DOSE equal to the original medication");
-                }
-                if (chemicalICSMedications[i]) {
-                  console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
-                }
-                if (chemicalICSMedications[i].maxGreenICS < calculateICSDosePatient(patientMedication)) {
-                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
-                }
               }
-              //attempt to match the patientMedication TimesPerDay
-              //minimize the required puffPerTime
             }
           }
-          else {
-            const newMedication =
-              _.filter(medicationElement, (medication) => {
-                return (
-                    medication.chemicalLABA === "salmeterol" &&
-                    medication.chemicalICS === "fluticasone" &&
-                    medication.device === "diskus"
-                  ) && (
-                    medication.chemicalLABA === "salmeterol" &&
-                    medication.chemicalICS === "fluticasone" &&
-                    medication.device === "inhaler2"
-                  ) && (
-                    medication.chemicalLABA === "formoterol" &&
-                    medication.chemicalICS === "budesonide"
-                  ) && (
-                    medication.chemicalLABA === "formoterol" &&
-                    medication.chemicalICS === "mometasone"
-                  )
-              });
-            console.log("categorize original and new medications");
-            //recommend the lowest possible ICS DOSE in each new medication
-            // but I'm only supposed to return the medication row so I will not be
-            // doing this but the doctor?
-            if (categorizeICSDose(patientMedication) === "low") {
-              console.log("find new medication in low category");
-            }
-            else if(categorizeICSDose(patientMedication) === "medium") {
-              console.log("find new medication in medium category");
 
-            }
-            else if(categorizeICSDose(patientMedication) === "high") {
-              console.log("find new medication in high category");
-            }
-            else if(categorizeICSDose(patientMedication) === "excessive") {
-              console.log("recommend highest possible ICS DOSE in each new medication")
-            }
-          }
           if (patientMedication.name === "symbicort" && _.some(patientMedication, { chemicalType: "ltra" })) {
             result.push(
               _.filter(
