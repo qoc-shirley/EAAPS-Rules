@@ -634,5 +634,17 @@ export const rule11 = (patientMedications, masterMedications) => {
 };
 
 export const rule12 = (patientMedications, masterMedications) => {
+  return _.chain(patientMedications)
+    .reduce((result, patientMedication) => {
+      let rule =
+        _.partial((medicationElement, medications, patientMedication) => {
 
+          return result;
+        }, masterMedications, patientMedications);
+
+      rule(patientMedication);
+
+      return result;
+    }, [])
+    .value();
 };
