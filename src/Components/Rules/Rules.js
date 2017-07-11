@@ -355,16 +355,18 @@ export const rule5 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
-          const isLtra = _.some(medications, {chemicalType: "ltra"});
-          if (patientMedication.name !== "symbicort" &&
-            (
-              patientMedication.chemicalType === "laba,ICS" ||
-              patientMedication.chemicalType === "laba" ||
-              patientMedication.chemicalType === "ICS"
-            ) && (
-              calculateICSDosePatient(isLtra) < isLtra.maxGreenICS
-            )
-          ) {
+          const filterOrgMeds = _.filter(medications, (medication) => {
+            return medication.name !== "symbicort" &&
+              (
+                medication.chemicalType === "laba,ICS" ||
+                medication.chemicalType === "laba" ||
+                medication.chemicalType === "ICS"
+              )
+          });
+
+          if (!_.isEmpty(filterOrgMeds) &&
+              patientMedication.chemicalType === "ltra" &&
+              calculateICSDosePatient(patientMedication) < patientMedication.maxGreenICS) {
 
             const chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
             if (!_.isEmpty(chemicalICSMedications)) {
