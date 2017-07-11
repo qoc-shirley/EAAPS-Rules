@@ -171,6 +171,9 @@ const App = (
     else if(rule === 'rule4') {
       saveRecommendation(rule, _.flatten(rules.rule4(medication.patientMedications, medicationData)));
     }
+    else if(rule === 'rule5') {
+      saveRecommendation(rule, rules.rule5(medication.patientMedications, medicationData));
+    }
     else if(rule === 'rule6') {
       saveRecommendation(rule, rules.rule6(medication.patientMedications));
     }
