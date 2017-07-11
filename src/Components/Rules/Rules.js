@@ -209,22 +209,53 @@ export const rule2 = (patientMedications, masterMedications) => {
     .value();
 };
 export const rule3 = ( patientMedications, masterMedications) => {
-  console.log("rule3");
   return _.chain(patientMedications)
     .reduce( (result, patientMedication) => {
-    console.log("start");
-    console.log("patientMedication: ", patientMedication);
       let rule =
-        _.partial((medicationElement, patientMedication) => {
-          console.log("partial: ", medicationElement, patientMedication);
-          console.log("result inside partial: ", result);
+        _.partial((medicationElement, medications, patientMedication) => {
+        const newMedications = _.filter(medicationElement, { chemicalType: "laba, ICS" });
+        if(patientMedication.chemicalType === "ICS" && !_.isEmpty(newMedications)){
+          console.log("attempt to match device");
 
-          return result.push( "hello");
+          const chemicaLICSMedications = _.filter(newMedications, { chemicalICS: patientMedication.chemicalICS });
+          if(!_.isEmpty(chemicaLICSMedications)) {
+            for(let i = 0; i < _.size(chemicaLICSMedications); i ++) {
+              if (chemicaLICSMedications[i]) {
+                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+              }
+              if (chemicaLICSMedications[i]) {
+                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+              }
+              if (chemicaLICSMedications[i].maxGreenICS < calculateICSDosePatient(patientMedication)) {
+                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+              }
+            }
+          }
+        }
+        else {
+          const newMedication =
+            _.filter(medicationElement, (medication) => {
+              return (
+                  medication.chemicalLABA === "salmeterol" &&
+                  medication.chemicalICS === "fluticasone" &&
+                  medication.device === "diskus"
+                ) && (
+                  medication.chemicalLABA === "salmeterol" &&
+                  medication.chemicalICS === "fluticasone" &&
+                  medication.device === "inhaler2"
+                ) && (
+                  medication.chemicalLABA === "formoterol" &&
+                  medication.chemicalICS === "budesonide"
+                ) && (
+                  medication.chemicalLABA === "formoterol" &&
+                  medication.chemicalICS === "mometasone"
+                )
+            })
+        }
+          console.log(medications);
+          return result.push("hello");
         }, masterMedications, patientMedications);
       rule(patientMedication);
-      console.log("end");
-      result.push("bye");
-      console.log("result: ", rule);
       return result;
     }, [])
     .value();
