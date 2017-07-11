@@ -192,6 +192,9 @@ const App = (
     else if(rule === 'rule11') {
       saveRecommendation(rule, rules.rule11(medication.patientMedications, medicationData));
     }
+    else if(rule === 'rule12') {
+      saveRecommendation(rule, rules.rule12(medication.patientMedications, medicationData));
+    }
     else{
       console.log("nope");
     }

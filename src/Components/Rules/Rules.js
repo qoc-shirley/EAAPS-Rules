@@ -598,3 +598,7 @@ export const rule11 = (patientMedications, masterMedications) => {
   }
   return _.concat(newMedication, filteredPatientMedications)
 };
+
+export const rule12 = (patientMedications, masterMedications) => {
+
+};
