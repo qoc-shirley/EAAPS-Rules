@@ -208,6 +208,9 @@ export const rule2 = (patientMedications, masterMedications) => {
     .concat(result)
     .value();
 };
+export const rule3 = ( patientMedications, masterMedications) => {
+
+};
 
 export const rule4 = (patientMedications, masterMedications) => {
   let result = [];
