@@ -215,21 +215,23 @@ export const rule3 = (patientMedications, masterMedications) => {
         _.partial((medicationElement, medications, patientMedication) => {
           const newMedications = _.filter(medicationElement, {chemicalType: "laba, ICS"});
           if (patientMedication.chemicalType === "ICS" && !_.isEmpty(newMedications)) {
-            console.log("attempt to match device");
 
             const chemicaLICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
             if (!_.isEmpty(chemicaLICSMedications)) {
+              //attempt to match device
               for (let i = 0; i < _.size(chemicaLICSMedications); i++) {
                 if (chemicaLICSMedications[i]) {
-                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                  console.log("recommend this new medication with an ICS DOSE equal to the original medication");
                 }
                 if (chemicaLICSMedications[i]) {
-                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                  console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
                 }
                 if (chemicaLICSMedications[i].maxGreenICS < calculateICSDosePatient(patientMedication)) {
                   console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
                 }
               }
+              //attempt to match the patientMedication TimesPerDay
+              //minimize the required puffPerTime
             }
           }
           else {
@@ -252,9 +254,21 @@ export const rule3 = (patientMedications, masterMedications) => {
                   )
               });
             console.log("categorize original and new medications");
-            if () {
+            //recommend the lowest possible ICS DOSE in each new medication
+            // but I'm only supposed to return the medication row so I will not be
+            // doing this but the doctor?
+            if (categorizeICSDose(patientMedication) === "low") {
+              console.log("find new medication in low category");
             }
-            if () {
+            else if(categorizeICSDose(patientMedication) === "medium") {
+              console.log("find new medication in medium category");
+
+            }
+            else if(categorizeICSDose(patientMedication) === "high") {
+              console.log("find new medication in high category");
+            }
+            else if(categorizeICSDose(patientMedication) === "excessive") {
+              console.log("recommend highest possible ICS DOSE in each new medication")
             }
           }
           if (patientMedication.chemicalType === "ltra") {
