@@ -373,8 +373,16 @@ export const rule5 = (patientMedications, masterMedications) => {
             }
             else if(!_.isEmpty(typeLaba) && !_.isEmpty(typeICS)) {
               const filteredNewMedications = _.filter(medicationElement, { chemicalType: "laba,ICS", });
-              if() {
-
+              for (let i = 0; i < _.size(filteredNewMedications); i++) {
+                if (filteredNewMedications[i]) {
+                  console.log("recommend this new medication with an ICS DOSE equal to the original medication");
+                }
+                if (filteredNewMedications[i]) {
+                  console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
+                }
+                if (filteredNewMedications[i].maxGreenICS < calculateICSDosePatient(patientMedication)) {
+                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                }
               }
             }
           }
