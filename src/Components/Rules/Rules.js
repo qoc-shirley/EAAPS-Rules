@@ -208,62 +208,63 @@ export const rule2 = (patientMedications, masterMedications) => {
     .concat(result)
     .value();
 };
-export const rule3 = ( patientMedications, masterMedications) => {
+export const rule3 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
-    .reduce( (result, patientMedication) => {
+    .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
-        const newMedications = _.filter(medicationElement, { chemicalType: "laba, ICS" });
-        if(patientMedication.chemicalType === "ICS" && !_.isEmpty(newMedications)){
-          console.log("attempt to match device");
+          const newMedications = _.filter(medicationElement, {chemicalType: "laba, ICS"});
+          if (patientMedication.chemicalType === "ICS" && !_.isEmpty(newMedications)) {
+            console.log("attempt to match device");
 
-          const chemicaLICSMedications = _.filter(newMedications, { chemicalICS: patientMedication.chemicalICS });
-          if(!_.isEmpty(chemicaLICSMedications)) {
-            for(let i = 0; i < _.size(chemicaLICSMedications); i ++) {
-              if (chemicaLICSMedications[i]) {
-                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
-              }
-              if (chemicaLICSMedications[i]) {
-                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
-              }
-              if (chemicaLICSMedications[i].maxGreenICS < calculateICSDosePatient(patientMedication)) {
-                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+            const chemicaLICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
+            if (!_.isEmpty(chemicaLICSMedications)) {
+              for (let i = 0; i < _.size(chemicaLICSMedications); i++) {
+                if (chemicaLICSMedications[i]) {
+                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                }
+                if (chemicaLICSMedications[i]) {
+                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                }
+                if (chemicaLICSMedications[i].maxGreenICS < calculateICSDosePatient(patientMedication)) {
+                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                }
               }
             }
           }
-        }
-        else {
-          const newMedication =
-            _.filter(medicationElement, (medication) => {
-              return (
-                  medication.chemicalLABA === "salmeterol" &&
-                  medication.chemicalICS === "fluticasone" &&
-                  medication.device === "diskus"
-                ) && (
-                  medication.chemicalLABA === "salmeterol" &&
-                  medication.chemicalICS === "fluticasone" &&
-                  medication.device === "inhaler2"
-                ) && (
-                  medication.chemicalLABA === "formoterol" &&
-                  medication.chemicalICS === "budesonide"
-                ) && (
-                  medication.chemicalLABA === "formoterol" &&
-                  medication.chemicalICS === "mometasone"
-                )
-            });
-          console.log("categorize original and new medications");
-          if () {
+          else {
+            const newMedication =
+              _.filter(medicationElement, (medication) => {
+                return (
+                    medication.chemicalLABA === "salmeterol" &&
+                    medication.chemicalICS === "fluticasone" &&
+                    medication.device === "diskus"
+                  ) && (
+                    medication.chemicalLABA === "salmeterol" &&
+                    medication.chemicalICS === "fluticasone" &&
+                    medication.device === "inhaler2"
+                  ) && (
+                    medication.chemicalLABA === "formoterol" &&
+                    medication.chemicalICS === "budesonide"
+                  ) && (
+                    medication.chemicalLABA === "formoterol" &&
+                    medication.chemicalICS === "mometasone"
+                  )
+              });
+            console.log("categorize original and new medications");
+            if () {
+            }
+            if () {
+            }
           }
-          if () {
-          }
-        }
           if (patientMedication.chemicalType === "ltra") {
             result.push(patientMedication);
           }
-          console.log(medications);
           return result;
         }, masterMedications, patientMedications);
+
       rule(patientMedication);
+
       return result;
     }, [])
     .value();
