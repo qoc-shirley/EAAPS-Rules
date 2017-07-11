@@ -290,17 +290,20 @@ export const rule3 = (patientMedications, masterMedications) => {
 
             if (categorizeICSDose(patientMedication) === "low") {
               console.log("find new medication in low category");
+              result.push(getLowestICSDose(low));
             }
             else if (categorizeICSDose(patientMedication) === "medium") {
               console.log("find new medication in medium category");
+              result.push(getLowestICSDose(medium));
             }
             else if (categorizeICSDose(patientMedication) === "high") {
               console.log("find new medication in high category");
+              result.push(getLowestICSDose(high));
             }
             else if (categorizeICSDose(patientMedication) === "excessive") {
               console.log("recommend highest possible ICS DOSE in each new medication");
+              result.push(high);
             }
-
           }
           if (patientMedication.chemicalType === "ltra") {
             result.push(patientMedication);
