@@ -250,10 +250,18 @@ export const rule3 = ( patientMedications, masterMedications) => {
                   medication.chemicalLABA === "formoterol" &&
                   medication.chemicalICS === "mometasone"
                 )
-            })
+            });
+          console.log("categorize original and new medications");
+          if () {
+          }
+          if () {
+          }
         }
+          if (patientMedication.chemicalType === "ltra") {
+            result.push(patientMedication);
+          }
           console.log(medications);
-          return result.push("hello");
+          return result;
         }, masterMedications, patientMedications);
       rule(patientMedication);
       return result;
