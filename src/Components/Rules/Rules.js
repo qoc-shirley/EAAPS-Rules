@@ -402,6 +402,15 @@ export const rule5 = (patientMedications, masterMedications) => {
                       //minimize required CS puffPerTime, highest doseICS
                     }
                   }
+                  else {
+                    //increase the original medication ICS to highest ICS DOSE (maxGreenICS)
+                    result.push(findLtra);
+                    result.push(patientMedication);
+                    //match ICS original device
+                    //attempt to match ICS orig dose ICS
+                    //attempt to match ICS orig timesPerDay
+                    //minimize required CS puffPerTime, highest doseICS
+                  }
                 }
               }
             }
