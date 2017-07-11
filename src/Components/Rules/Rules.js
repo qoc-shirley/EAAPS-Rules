@@ -373,14 +373,25 @@ export const rule5 = (patientMedications, masterMedications) => {
             else if(patientMedication.chemicalType === "laba" && !_.isEmpty(typeICS)) {
               const filteredNewMedications = _.filter(medicationElement, { chemicalType: "laba,ICS", });
               for (let i = 0; i < _.size(filteredNewMedications); i++) {
-                if (filteredNewMedications[i]) {
-                  console.log("recommend this new medication with an ICS DOSE equal to the original medication");
-                }
-                if (filteredNewMedications[i]) {
-                  console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
-                }
-                if (filteredNewMedications[i].maxGreenICS < calculateICSDosePatient(patientMedication)) {
-                  console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                for (let j = 0; j < _.size(typeICS); i++) {
+                  if(
+                    (
+                      filteredNewMedications.chemicalLABA === patientMedication.chemicalLABA &&
+                      filteredNewMedications.chemicalICS === patientMedication.chemicalICS
+                    ) || (
+                      filteredNewMedications.chemicalLABA === typeICS.chemicalLABA &&
+                      filteredNewMedications.chemicalICS === typeICS.chemicalICS
+                    )
+                  ) {
+                    if(
+                      filteredNewMedications.device === patientMedication.device ||
+                      filteredNewMedications.device === typeICS.device
+                    ){
+                      //recommend new medication at highest available ICS Dose (maxGreenICS)
+                      result.push(findLtra);
+                    }
+
+                  }
                 }
               }
             }
