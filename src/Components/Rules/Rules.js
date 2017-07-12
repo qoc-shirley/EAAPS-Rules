@@ -266,11 +266,13 @@ export const rule3 = (patientMedications, masterMedications) => {
             const chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
             if (!_.isEmpty(chemicalICSMedications)) {
               //attempt to match device
+              //is each condition going to be checked?
               for (let i = 0; i < _.size(chemicalICSMedications); i++) {
                 const isEqual = equalICSDose(chemicalICSMedications[i], patientMedication);
                 if (!_.isEmpty(isEqual)) {
                   result.push(isEqual);
                 }
+                //should this condition be last out of the 3?
                 if (chemicalICSMedications[i]) {
                   console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
                 }
