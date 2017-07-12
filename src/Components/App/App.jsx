@@ -33,11 +33,17 @@ const App = ({
       return (
         <div className="rules">
           <button
-            className="button__deleteRow"
+            className="button__runRules"
             onClick={() => onChangeRule()}
           >
             Run Rules
           </button>
+          <input
+            className="clear"
+            type="submit"
+            value="Clear Rules"
+            onClick={clearRecommendations}
+          />
         </div>
       );
     }
@@ -144,7 +150,7 @@ const App = ({
           <input
             className="clear"
             type="submit"
-            value="Clear"
+            value="Clear Rules"
             onClick={clearRecommendations}
           />
         </div>

@@ -87,6 +87,24 @@
     margin: 0;
 }
 
+.app .app__main .results .rules .clear {
+    width: 10%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.app .app__main .results .rules .clear:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
+}
+
 .app .app__main .results .recommendations .clear {
     width: 10%;
     height: 50px;
@@ -97,6 +115,8 @@
     outline: none;
     cursor: pointer;
     transition-duration: 0.3ms;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .app .app__main .results .recommendations .clear:hover {
@@ -127,9 +147,19 @@
     margin-right: 20px;
 }
 
-.app .app__main .results .rules .selectRule {
-    width: 30%;
+.app .app__main .results .rules .button__runRules {
+    width: 10%;
     height: 50px;
+    border-radius: 20px;
     font-size: 15px;
-    margin-left: 50px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+    margin-bottom: 20px;
+}
+
+.app .app__main .results .rules .button__runRules:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
 }
