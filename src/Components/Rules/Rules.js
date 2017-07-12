@@ -155,7 +155,8 @@ const equalICSDose = (medication, patientMedication) => {
 
 //////////////////////////////////////////////// RULES ////////////////////////////////////////////////////////////////
 
-export const rule1 = (patientMedications) => {
+//rule -1
+export const ruleMinus1 = (patientMedications) => {
   return _.chain(patientMedications)
     .filter((patientMedication) => {
       return patientMedication.chemicalType === "laac";
@@ -163,7 +164,8 @@ export const rule1 = (patientMedications) => {
     .value();
 };
 
-export const rule2 = (patientMedications, masterMedications) => {
+//rule 0
+export const rule0 = (patientMedications, masterMedications) => {
   let result = [];
   return _.chain(patientMedications)
     .filter(
@@ -255,7 +257,9 @@ export const rule2 = (patientMedications, masterMedications) => {
     .concat(result)
     .value();
 };
-export const rule3 = (patientMedications, masterMedications) => {
+
+//rule 1
+export const rule1 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
     .reduce((result, patientMedication) => {
       let rule =
@@ -351,6 +355,7 @@ export const rule3 = (patientMedications, masterMedications) => {
     }, [])
     .value();
 };
+
 
 export const rule4 = (patientMedications, masterMedications) => {
   let result = [];
@@ -671,7 +676,8 @@ export const rule11 = (patientMedications, masterMedications) => {
   return _.concat(newMedication, filteredPatientMedications)
 };
 
-export const rule12 = (patientMedications, masterMedications) => {
+//rule 3
+export const rule3 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
     .reduce((result, patientMedication) => {
       let rule =

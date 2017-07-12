@@ -158,46 +158,19 @@ const App = (
 
   const availableRules = ['rule1', 'rule2', 'rule3', 'rule4', 'rule7', 'rule8', 'rule9', 'rule11'];
 
-  const onChangeRule = ( rule ) => {
-    if(rule === 'rule1') {
-      saveRecommendation(rule, rules.rule1(medication.patientMedications));
-    }
-    else if(rule === 'rule2') {
-      saveRecommendation(rule, rules.rule2(medication.patientMedications, medicationData));
-    }
-    else if(rule === 'rule3') {
-      saveRecommendation(rule, rules.rule3(medication.patientMedications, medicationData));
-    }
-    else if(rule === 'rule4') {
-      saveRecommendation(rule, _.flatten(rules.rule4(medication.patientMedications, medicationData)));
-    }
-    else if(rule === 'rule5') {
-      saveRecommendation(rule, rules.rule5(medication.patientMedications, medicationData));
-    }
-    else if(rule === 'rule6') {
-      saveRecommendation(rule, rules.rule6(medication.patientMedications));
-    }
-    else if(rule === 'rule7') {
-      saveRecommendation(rule, rules.rule7(medication.patientMedications));
-    }
-    else if(rule === 'rule8') {
-      saveRecommendation(rule, rules.rule8(medication.patientMedications));
-    }
-    else if(rule === 'rule9') {
-      saveRecommendation(rule, rules.rule9(medication.patientMedications));
-    }
-    else if(rule === "rule10") {
-      saveRecommendation(rule, rules.rule10(medication.patientMedications));
-    }
-    else if(rule === 'rule11') {
-      saveRecommendation(rule, rules.rule11(medication.patientMedications, medicationData));
-    }
-    else if(rule === 'rule12') {
-      saveRecommendation(rule, rules.rule12(medication.patientMedications, medicationData));
-    }
-    else{
-      console.log("nope");
-    }
+  const onChangeRule = () => {
+    saveRecommendation("Rule -1", rules.ruleMinus1(medication.patientMedications));
+    saveRecommendation("Rule 0", rules.rule0(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 1", rules.rule1(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 3", rules.rule3(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 4", _.flatten(rules.rule4(medication.patientMedications, medicationData)));
+    saveRecommendation("Rule 5", rules.rule5(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 6", rules.rule6(medication.patientMedications));
+    saveRecommendation("Rule 7", rules.rule7(medication.patientMedications));
+    saveRecommendation("Rule 8", rules.rule8(medication.patientMedications));
+    saveRecommendation("Rule 9", rules.rule9(medication.patientMedications));
+    saveRecommendation("Rule 10", rules.rule10(medication.patientMedications));
+    saveRecommendation("Rule 11", rules.rule11(medication.patientMedications, medicationData));
   };
 
   const clearRecommendations = ( ) => {

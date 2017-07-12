@@ -46,7 +46,7 @@ const DisplayMedications = ({
       return filteredData;
     }, [])
     .value();
-  
+
   return (
     <div className="patientMedications">
       <h3>Your Medications:</h3>
