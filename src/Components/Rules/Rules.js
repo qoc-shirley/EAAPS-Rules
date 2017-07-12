@@ -676,19 +676,52 @@ export const rule12 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
-        if(
-            patientMedication.name === "symbicort" &&
-          (
-            patientMedication.chemicalType === "laba,ICS" ||
-            patientMedication.chemicalType === "laba" ||
-            patientMedication.chemicalType === "ICS"
-          ) && calculateICSDosePatient(patientMedication) === "low"
-        ) {
-
-        }
-        else if (patientMedication.name === "symbicort" && categorizeICSDose(patientMedication) === "low") {
-            result.push(_.filter(medicationElement, { name: "symbicort", function: "controller,reliever",din: patientMedication.din }));
-        }
+          const filterOrgMeds = _.filter(medications, (medication) => {
+            return medication.name !== "symbicort" &&
+              (
+                medication.chemicalType === "laba,ICS" ||
+                medication.chemicalType === "laba" ||
+                medication.chemicalType === "ICS"
+              ) &&
+              calculateICSDosePatient(medication) === "low"
+          });
+          const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});
+          const isLaba = _.filter(filterOrgMeds, {chemicalType: "laba"});
+          const isICS = _.filter(filterOrgMeds, {chemicalType: "ICS"});
+          if (!_.isEmpty(filterOrgMeds)) {
+            if (!_.isEmpty(isLabaICS)) {
+              //do matches and attempts
+              result.push(isLabaICS);
+            }
+            else if (!_.isEmpty(isLaba) && !_.isEmpty(isICS)) {
+              const filteredMedication = _.filter(medicationElement,
+                {
+                  chemicalType: "laba,ICS",
+                  chemicalABA: patientMedication.chemicalLABA,
+                  chemicalICS: patientMedication.chemicalICS
+                });
+              if (!_.isEmpty(filteredMedication)) {
+                if (!_.isEmpty(_.filter(filteredMedication, (medication) => {
+                    return medication.device === isLaba.device || medication.device === isICS.device
+                  }))) {
+                  result.push(_.max(_.filter(filteredMedication, {device: patientMedication.device}), 'doseICS'));
+                }
+                else {
+                }
+              }
+              else {
+              }
+            }
+            else {
+            }
+          }
+          else if (patientMedication.name === "symbicort" && categorizeICSDose(patientMedication) === "low") {
+            result.push(_.filter(medicationElement, {
+              name: "symbicort",
+              function: "controller,reliever",
+              din: patientMedication.din
+            }));
+          }
           return result;
         }, masterMedications, patientMedications);
 
