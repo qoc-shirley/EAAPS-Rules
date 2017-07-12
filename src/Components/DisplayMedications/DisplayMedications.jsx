@@ -46,39 +46,55 @@ const DisplayMedications = ({
       return filteredData;
     }, [])
     .value();
-
+  console.log(displayMedications);
+  let showPatientMedications = null;
+  if (_.isEmpty(displayMedications)) {
+    showPatientMedications = <p key="on">No Medications were found</p>;
+  }
+  else {
+    showPatientMedications = displayMedications.map(
+      (row, rowIndex) => {
+        console.log("row: ", row);
+        if (_.isEmpty(row)) {
+          return (
+            <div key={rowIndex} className="medicationRow">
+              <div className="filteredMedications">
+                <p className="medication">Medication {rowIndex + 1}</p>
+                <p>No Medications were found</p>
+              </div>
+            </div>
+          )
+        }
+        return (
+          <div key={rowIndex} className="medicationRow">
+            {
+              row.map(
+                (patientMedication, index) => {
+                  return (
+                    <div key={index} className="filteredMedications">
+                      <p className="medication">Medication {rowIndex + 1}</p>
+                      <p>ID: {patientMedication.id}</p>
+                      <p>Device: {patientMedication.device}</p>
+                      <p>Name: {patientMedication.name}</p>
+                      <p>chemicalLABA: {patientMedication.chemicalLABA}</p>
+                      <p>chemicalICS: {patientMedication.chemicalICS}</p>
+                      <p>Dose ICS:{patientMedication.doseICS}</p>
+                      <p>Max Puff: {patientMedication.maxPuffPerTime}</p>
+                      <p>Times Per Day: {patientMedication.timesPerDay}</p>
+                    </div>
+                  );
+                }
+              )
+            }
+          </div>
+        );
+      }
+    );
+  }
   return (
     <div className="patientMedications">
       <h3>Your Medications:</h3>
-      {
-        displayMedications.map(
-          (row, rowIndex) => {
-            return (
-              <div key={rowIndex} className="medicationRow">
-                {
-                  row.map(
-                    (patientMedication, index) => {
-                      return (
-                        <div key={index} className="filteredMedications">
-                          <p className="medication">Medication {rowIndex + 1}</p>
-                          <p>ID: {patientMedication.id}</p>
-                          <p>Device: {patientMedication.device}</p>
-                          <p>Name: {patientMedication.name}</p>
-                          <p>chemicalLABA: {patientMedication.chemicalLABA}</p>
-                          <p>chemicalICS: {patientMedication.chemicalICS}</p>
-                          <p>Dose ICS:{patientMedication.doseICS}</p>
-                          <p>Max Puff: {patientMedication.maxPuffPerTime}</p>
-                          <p>Times Per Day: {patientMedication.timesPerDay}</p>
-                        </div>
-                      );
-                    }
-                  )
-                }
-              </div>
-            );
-          }
-        )
-      }
+      {showPatientMedications}
     </div>
   );
 };

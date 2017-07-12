@@ -25,6 +25,7 @@ const App = (
 
   let showPatientMedications = null;
   if(medication.isRecommendationEmpty === false){
+    console.log("show PM");
     showPatientMedications = <DisplayPatientMedications />;
   }
   else if(medication.isRecommendationEmpty === true) {
@@ -147,8 +148,6 @@ const App = (
       return null;
     }
   };
-
-  const availableRules = ['rule1', 'rule2', 'rule3', 'rule4', 'rule7', 'rule8', 'rule9', 'rule11'];
 
   const onChangeRule = () => {
     saveRecommendation("Rule -1", rules.ruleMinus1(medication.patientMedications));

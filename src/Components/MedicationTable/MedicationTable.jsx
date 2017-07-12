@@ -88,15 +88,19 @@ const MedicationTable = (
     .value();
 
   const onSubmitMedications = (displayMedications) => {
-    displayMedications.map((filteredMedication, index) => {
-      return filteredMedication.map((addPuffToMedication) => {
-        return addPuffToMedication.puffPerTime = medication.medicationList[index].puffValue;
-        }
-      );
-    });
-    // displayMedications[0][0].puffPerTime = medication.puffValue.puffValueChange;
-    console.log("addPuffPerTime: ", _.flatten(displayMedications) );
-    getPatientMedications(_.flatten(displayMedications));
+    if(_.isEmpty(medication.patientMedications)) {
+      getPatientMedications(["No medications were found"]);
+    }
+    else {
+      displayMedications.map((filteredMedication, index) => {
+        return filteredMedication.map((addPuffToMedication) => {
+            return addPuffToMedication.puffPerTime = medication.medicationList[index].puffValue;
+          }
+        );
+      });
+      console.log("addPuffPerTime: ", _.flatten(displayMedications) );
+      getPatientMedications(_.flatten(displayMedications));
+    }
   };
 
   const displayRowContents = () => {

@@ -170,7 +170,7 @@ export const rule0 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
     .filter(
       _.partial((medicationElement, patientMedication) => {
-        if (patientMedication.chemicalType !== "ICS") {
+        if (patientMedication.chemicalType !== "ICS" && patientMedication.chemicalType !== "laba,ICS") {
 
           if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, { chemicalType: "laba,ICS" }) )) {
 
