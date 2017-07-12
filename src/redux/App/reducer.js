@@ -123,7 +123,7 @@ const reducer = (state = initialState, action) => {
     case RECOMMENDATION:
       return Object.assign({}, state, {
         isRuleSelectEmpty: false,
-        recommendation: state.recommendation.concat(action.data.medications),
+        recommendation: state.recommendation.concat(action.data),
       });
     case CLEAR:
       return Object.assign({}, state, {
