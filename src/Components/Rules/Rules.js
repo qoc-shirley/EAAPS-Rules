@@ -124,6 +124,35 @@ const adjustICSDose = (medication, level) => {
   return medication;
 };
 
+const adjustICSDoseToOriginalMedication = (medication, patientMedication) => {
+  const max = medication.maxPuffPerTime;
+  let equal = false;
+  let counter = 1;
+  let testAdjustment;
+  while (equal === false && (counter < max)) {
+    testAdjustment = medication.doseICS * medication.timesPerDay * counter;
+    if (calculateICSDose(testAdjustment) === calculateICSDosePatient(patientMedication)) {
+      medication.maxPuffPerTime = counter;
+      equal = true;
+    }
+    counter++;
+  }
+  if (equal === false && counter > max) {
+    console.log("ICS DOSE cannot be made equal");
+    return [];
+  }
+  return medication;
+};
+
+const equalICSDose = (medication, patientMedication) => {
+  if (calculateICSDosePatient(patientMedication) === calculateICSDose(medication)) {
+    return true;
+  }
+  else {
+    return adjustICSDoseToOriginalMedication(medication, patientMedication);
+  }
+};
+
 //////////////////////////////////////////////// RULES ////////////////////////////////////////////////////////////////
 
 export const rule1 = (patientMedications) => {
@@ -238,8 +267,9 @@ export const rule3 = (patientMedications, masterMedications) => {
             if (!_.isEmpty(chemicalICSMedications)) {
               //attempt to match device
               for (let i = 0; i < _.size(chemicalICSMedications); i++) {
-                if (chemicalICSMedications[i]) {
-                  console.log("recommend this new medication with an ICS DOSE equal to the original medication");
+                const isEqual = equalICSDose(chemicalICSMedications[i], patientMedication);
+                if (!_.isEmpty(isEqual)) {
+                  result.push(isEqual);
                 }
                 if (chemicalICSMedications[i]) {
                   console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
