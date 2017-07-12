@@ -59,7 +59,9 @@ const MedicationTable = (
             return (
               (
                 medication.timesPerDayValue === masterMedication.timesPerDay ||
-                (medication.timesPerDayValue === "" && masterMedication.timesPerDay === ".")
+                (medication.timesPerDayValue === "" && masterMedication.timesPerDay === ".") ||
+                (medication.timesPerDayValue === "1" && masterMedication.timesPerDay === "1 OR 2") ||
+                (medication.timesPerDayValue === "2" && masterMedication.timesPerDay === "1 OR 2")
               ) &&
               (
                 medication.doseICSValue === masterMedication.doseICS ||
