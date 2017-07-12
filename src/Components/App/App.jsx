@@ -41,7 +41,7 @@ const App = ({
           <input
             className="clear"
             type="submit"
-            value="Clear Rules"
+            value="Clear Recommendations"
             onClick={clearRecommendations}
           />
         </div>
@@ -150,7 +150,7 @@ const App = ({
           <input
             className="clear"
             type="submit"
-            value="Clear Rules"
+            value="Clear Recommendations"
             onClick={clearRecommendations}
           />
         </div>
