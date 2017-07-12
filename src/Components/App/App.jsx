@@ -69,23 +69,23 @@ const App = ({
                   );
                 }
                 else {
-                  if (_.isArray(recommendMedication.medications) && _.size(recommendMedication.medications) > 29) {
+                  if (_.isArray(recommendMedication.medications[0]) && _.size(recommendMedication.medications[0]) > 29) {
                     return (
                       <div key={index} className="recommendationArray">
                         <p><b>{recommendMedication.rule}</b></p>
                         <p><b>-</b></p>
-                        <p className="data">ID: {recommendMedication.medications[0]}</p>
-                        <p className="data">Device: {recommendMedication.medications[5]}</p>
-                        <p className="data">Name: {recommendMedication.medications[7]}</p>
-                        <p className="data">ChemicalLABA: {recommendMedication.medications[10]}</p>
-                        <p className="data">ChemicalICS: {recommendMedication.medications[11]}</p>
-                        <p className="data">Dose ICS: {recommendMedication.medications[14]}</p>
-                        <p className="data">Times Per Day: {recommendMedication.medications[22]}</p>
-                        <p className="data">Max Puff Per Time: {recommendMedication.medications[23]}</p>
+                        <p className="data">ID: {recommendMedication.medications[0][0]}</p>
+                        <p className="data">Device: {recommendMedication.medications[0][5]}</p>
+                        <p className="data">Name: {recommendMedication.medications[0][7]}</p>
+                        <p className="data">ChemicalLABA: {recommendMedication.medications[0][10]}</p>
+                        <p className="data">ChemicalICS: {recommendMedication.medications[0][11]}</p>
+                        <p className="data">Dose ICS: {recommendMedication.medications[0][14]}</p>
+                        <p className="data">Times Per Day: {recommendMedication.medications[0][22]}</p>
+                        <p className="data">Max Puff Per Time: {recommendMedication.medications[0][23]}</p>
                       </div>
                     );
                   }
-                  else if (_.isArray(recommendMedication.medications) && _.size(recommendMedication.medications) < 29) {
+                  else if (_.isArray(recommendMedication.medications[0]) && _.size(recommendMedication.medications[0]) < 29) {
                     return (
                       <div key={index} className="recommendationArray">
                         <p><b>{recommendMedication.rule}</b></p>

@@ -134,9 +134,6 @@ const reducer = (state = initialState, action) => {
         }
       );
     case ON_DELETE_ROW:
-      console.log(_.filter(state.medicationList, (row, index) => {
-        return index !== action.data
-      }));
       if (action.data === 0) {
         return Object.assign({}, state, {
           isRecommendationEmpty: true,
@@ -144,6 +141,7 @@ const reducer = (state = initialState, action) => {
             return index !== action.data
           }),
           isRuleSelectEmpty: true,
+          recommendations: [],
         })
       }
       return Object.assign({}, state, {
@@ -152,6 +150,7 @@ const reducer = (state = initialState, action) => {
           }),
           isRecommendationEmpty: true,
           isRuleSelectEmpty: true,
+          recommendations: [],
         }
       );
     case ON_SUBMIT:
