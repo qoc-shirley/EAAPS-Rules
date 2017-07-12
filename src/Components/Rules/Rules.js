@@ -553,14 +553,14 @@ export const rule7 = (patientMedications) => {
       if (patientMedication.name === "symbicort" &&
         patientMedication.function === "controller,reliever" &&
         categorizeICSDose(patientMedication) === "low") {
-        console.log("ya");
+        //console.log("ya");
         if (adjustICSDose(patientMedication, "lowestMedium") === []) {
-          console.log("yaya");
-          console.log("filter 1:", _.filter(patientMedications, (medication) => {
-            return medication.name === "symbicort" &&
-              medication.function === "controller,reliever" &&
-              categorizeICSDose(medication) === "low"
-          }));
+          // console.log("yaya");
+          // console.log("filter 1:", _.filter(patientMedications, (medication) => {
+          //   return medication.name === "symbicort" &&
+          //     medication.function === "controller,reliever" &&
+          //     categorizeICSDose(medication) === "low"
+          // }));
           result.push(
             _.max(
               _.filter(patientMedications, (medication) => {
@@ -571,13 +571,13 @@ export const rule7 = (patientMedications) => {
               'doseICS'));
         }
         else {
-          console.log("yayaya");
-          console.log("adjustICSDose: ", adjustICSDose(patientMedication, "lowestMedium"));
+          // console.log("yayaya");
+          // console.log("adjustICSDose: ", adjustICSDose(patientMedication, "lowestMedium"));
           result.push(adjustICSDose(patientMedication, "lowestMedium"));
         }
       }
-      console.log("return");
-      console.log(result);
+      // console.log("return");
+      // console.log(result);
       return result;
     }, [])
     .value();
@@ -612,9 +612,9 @@ export const rule9 = (patientMedications) => {
       if (patientMedication.name === "symbicort" && patientMedication.controller === "controller,reliever" &&
         ( calculateICSDose(patientMedication) < patientMedication.maxGreenICS ) &&
         _.some(patientMedications, {chemicalType: "ltra"})) {
-        console.log("ya");
+        // console.log("ya");
         if (adjustICSDose(patientMedication, "highest") === []) {
-          console.log("yaya");
+          // console.log("yaya");
           result.push(
             _.max(
               _.filter(patientMedications, (medication) => {
@@ -627,15 +627,15 @@ export const rule9 = (patientMedications) => {
           result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
         }
         else {
-          console.log("yayaya");
-          console.log("adjustICSDose: ", adjustICSDose(patientMedication, "highest"));
+          // console.log("yayaya");
+          // console.log("adjustICSDose: ", adjustICSDose(patientMedication, "highest"));
           result.push(patientMedications);
           result.push(adjustICSDose(patientMedication, "highest"));
           result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
         }
       }
-      console.log("return");
-      console.log(result);
+      // console.log("return");
+      // console.log(result);
       return result;
     }, [])
     .value();

@@ -22,7 +22,6 @@ const App = ({
 
   let showPatientMedications = null;
   if (medication.isRecommendationEmpty === false) {
-    console.log("show PM");
     showPatientMedications = <DisplayPatientMedications />;
   }
   else if (medication.isRecommendationEmpty === true) {
@@ -55,79 +54,89 @@ const App = ({
           {
             medication.recommendation.map(
               (recommendMedication, index) => {
-                if (_.isArray(recommendMedication) && _.size(recommendMedication) > 29) {
-                  console.log("1");
+                if (_.isEmpty(recommendMedication.medications)) {
                   return (
-                    <div key={index} className="recommendationArray">
-                      <p><b>{index + 1}</b></p>
-                      <p className="data">ID: {recommendMedication[0]}</p>
-                      <p className="data">Device: {recommendMedication[5]}</p>
-                      <p className="data">Name: {recommendMedication[7]}</p>
-                      <p className="data">ChemicalLABA: {recommendMedication[10]}</p>
-                      <p className="data">ChemicalICS: {recommendMedication[11]}</p>
-                      <p className="data">Dose ICS: {recommendMedication[14]}</p>
-                      <p className="data">Times Per Day: {recommendMedication[22]}</p>
-                      <p className="data">Max Puff Per Time: {recommendMedication[23]}</p>
-                    </div>
-                  )
-                }
-                else if (_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
-                  console.log("2");
-                  return (
-                    <div key={index} className="recommendationArray">
-                      <p><b>{index + 1}</b></p>
-                      {
-                        recommendMedication.map(
-                          (medication, index) => {
-                            return (
-                              <p key={index}
-                                 className="data"
-                              >
-                                {medication}
-                              </p>
-                            );
-                          }
-                        )
-                      }
+                    <div key={index} className="ruleRecommendation">
+                      <p><b>{recommendMedication.rule}</b></p>
+                      <p>No recommendations</p>
                     </div>
                   );
                 }
-                else if (!_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
-                  console.log("4");
-                  return (
-                    <div key={index} className="recommendationArray">
-                      <p><b>{index + 1}</b></p>
-                      {
-                        recommendMedication.map(
-                          (medication, index) => {
-                            return (
-                              <p key={index}
-                                 className="data"
-                              >
-                                {medication}
-                              </p>
-                            );
-                          }
-                        )
-                      }
-                    </div>
-                  );
-                }
-                else if (!_.isArray(recommendMedication) && _.size(recommendMedication) > 29) {
-                  console.log("3");
-                  return (
-                    <div key={index} className="recommendationObject">
-                      <p><b>{index + 1}</b></p>
-                      <p className="data">ID: {recommendMedication.id}</p>
-                      <p className="data">Device: {recommendMedication.device}</p>
-                      <p className="data">Name: {recommendMedication.name}</p>
-                      <p className="data">ChemicalLABA: {recommendMedication.chemicalLABA}</p>
-                      <p className="data">ChemicalICS: {recommendMedication.chemicalICS}</p>
-                      <p className="data">Dose ICS: {recommendMedication.doseICS}</p>
-                      <p className="data">Times Per Day: {recommendMedication.timesPerDay}</p>
-                      <p className="data">Max Puff Per Time: {recommendMedication.maxPuffPerTime}</p>
-                    </div>
-                  )
+                else {
+                  if (_.isArray(recommendMedication.medications) && _.size(recommendMedication.medications) > 29) {
+                    return (
+                      <div key={index} className="recommendationArray">
+                        <p><b>{recommendMedication.rule}</b></p>
+                        <p><b>-</b></p>
+                        <p className="data">ID: {recommendMedication.medications[0]}</p>
+                        <p className="data">Device: {recommendMedication.medications[5]}</p>
+                        <p className="data">Name: {recommendMedication.medications[7]}</p>
+                        <p className="data">ChemicalLABA: {recommendMedication.medications[10]}</p>
+                        <p className="data">ChemicalICS: {recommendMedication.medications[11]}</p>
+                        <p className="data">Dose ICS: {recommendMedication.medications[14]}</p>
+                        <p className="data">Times Per Day: {recommendMedication.medications[22]}</p>
+                        <p className="data">Max Puff Per Time: {recommendMedication.medications[23]}</p>
+                      </div>
+                    );
+                  }
+                  else if (_.isArray(recommendMedication.medications) && _.size(recommendMedication.medications) < 29) {
+                    return (
+                      <div key={index} className="recommendationArray">
+                        <p><b>{recommendMedication.rule}</b></p>
+                        <p><b>-</b></p>
+                        {
+                          recommendMedication.medications.map(
+                            (medication, index) => {
+                              return (
+                                <p key={index}
+                                   className="data"
+                                >
+                                  {medication}
+                                </p>
+                              );
+                            }
+                          )
+                        }
+                      </div>
+                    );
+                  }
+                  else if (!_.isArray(recommendMedication.medications) && _.size(recommendMedication.medications) < 29) {
+                    return (
+                      <div key={index} className="recommendationArray">
+                        <p><b>{recommendMedication.rule}</b></p>
+                        <p><b>-</b></p>
+                        {
+                          recommendMedication.medications.map(
+                            (medication, index) => {
+                              return (
+                                <p key={index}
+                                   className="data"
+                                >
+                                  {medication}
+                                </p>
+                              );
+                            }
+                          )
+                        }
+                      </div>
+                    );
+                  }
+                  else if (!_.isArray(recommendMedication.medications) && _.size(recommendMedication.medications) > 29) {
+                    return (
+                      <div key={index} className="recommendationObject">
+                        <p><b>{recommendMedication.rule}</b></p>
+                        <p><b>-</b></p>
+                        <p className="data">ID: {recommendMedication.medications.id}</p>
+                        <p className="data">Device: {recommendMedication.medications.device}</p>
+                        <p className="data">Name: {recommendMedication.medications.name}</p>
+                        <p className="data">ChemicalLABA: {recommendMedication.medications.chemicalLABA}</p>
+                        <p className="data">ChemicalICS: {recommendMedication.medications.chemicalICS}</p>
+                        <p className="data">Dose ICS: {recommendMedication.medications.doseICS}</p>
+                        <p className="data">Times Per Day: {recommendMedication.medications.timesPerDay}</p>
+                        <p className="data">Max Puff Per Time: {recommendMedication.medications.maxPuffPerTime}</p>
+                      </div>
+                    );
+                  }
                 }
               }
             )

@@ -46,7 +46,7 @@ const DisplayMedications = ({
       return filteredData;
     }, [])
     .value();
-  console.log(displayMedications);
+
   let showPatientMedications = null;
   if (_.isEmpty(displayMedications)) {
     showPatientMedications = <p key="on">No Medications were found</p>;
@@ -54,7 +54,6 @@ const DisplayMedications = ({
   else {
     showPatientMedications = displayMedications.map(
       (row, rowIndex) => {
-        console.log("row: ", row);
         if (_.isEmpty(row)) {
           return (
             <div key={rowIndex} className="medicationRow">

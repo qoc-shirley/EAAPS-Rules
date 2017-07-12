@@ -34,7 +34,9 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case MEDICATION_TO_STACK:
       return Object.assign({}, state, {
-        medicationList: state.medicationList.concat(action.data)
+        medicationList: state.medicationList.concat(action.data),
+        isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
       });
     case DEVICE:
       return Object.assign({}, state, {
