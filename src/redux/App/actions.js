@@ -14,7 +14,7 @@ import {
   MEDICATION_NAME,
 } from './constants';
 
-export const appendMedicationList = ( medicationRow ) => {
+export const appendMedicationList = (medicationRow) => {
   return {
     type: MEDICATION_TO_STACK,
     data: medicationRow,
@@ -22,7 +22,7 @@ export const appendMedicationList = ( medicationRow ) => {
 };
 
 //OnChange Functions
-export const onChangeDeviceName = ( index, device ) => {
+export const onChangeDeviceName = (index, device) => {
   return {
     type: DEVICE,
     data: {
@@ -32,7 +32,7 @@ export const onChangeDeviceName = ( index, device ) => {
   }
 };
 
-export const onChangeMedicationName = ( index, medicationName ) => {
+export const onChangeMedicationName = (index, medicationName) => {
   return {
     type: MEDICATION_NAME,
     data: {
@@ -42,7 +42,7 @@ export const onChangeMedicationName = ( index, medicationName ) => {
   }
 };
 
-export const onChangePuffValue = ( index, puffValueChange ) => {
+export const onChangePuffValue = (index, puffValueChange) => {
   return {
     type: ON_PUFF_CHANGE,
     data: {
@@ -52,7 +52,7 @@ export const onChangePuffValue = ( index, puffValueChange ) => {
   }
 };
 
-export const onChangeTimesPerDayValue = ( index, timesValueChange ) => {
+export const onChangeTimesPerDayValue = (index, timesValueChange) => {
   return {
     type: ON_TIMES_CHANGE,
     data: {
@@ -62,7 +62,7 @@ export const onChangeTimesPerDayValue = ( index, timesValueChange ) => {
   }
 };
 
-export const onChangeDoseICS = ( index, doseICSValueChange ) => {
+export const onChangeDoseICS = (index, doseICSValueChange) => {
   return {
     type: ON_DOSEICS_CHANGE,
     data: {
@@ -72,7 +72,7 @@ export const onChangeDoseICS = ( index, doseICSValueChange ) => {
   }
 };
 
-export const onChangeChemicalICS = ( index, chemicalICS ) => {
+export const onChangeChemicalICS = (index, chemicalICS) => {
   return {
     type: ON_CHEMICALICS_SELECTION,
     data: {
@@ -82,7 +82,7 @@ export const onChangeChemicalICS = ( index, chemicalICS ) => {
   }
 };
 
-export const onChangeChemicalLABA = ( index, chemicalLABA ) => {
+export const onChangeChemicalLABA = (index, chemicalLABA) => {
   return {
     type: ON_CHEMICALLABA_SELECTION,
     data: {
@@ -92,28 +92,28 @@ export const onChangeChemicalLABA = ( index, chemicalLABA ) => {
   }
 };
 
-export const onDeleteRow = ( deleteRowIndex ) => {
+export const onDeleteRow = (deleteRowIndex) => {
   return {
     type: ON_DELETE_ROW,
     data: deleteRowIndex,
   }
 };
 
-export const displayResult = ( medication ) => {
+export const displayResult = (medication) => {
   return {
     type: ON_SUBMIT,
     data: medication,
   }
 };
 
-export const getPatientMedications = ( medications ) => {
+export const getPatientMedications = (medications) => {
   return {
     type: FILTERED_MEDICATIONS,
     data: medications,
   }
 };
 
-export const saveRecommendation = ( rule, medications ) => {
+export const saveRecommendation = (rule, medications) => {
   return {
     type: RECOMMENDATION,
     data: {
@@ -123,7 +123,7 @@ export const saveRecommendation = ( rule, medications ) => {
   }
 };
 
-export const onClickClear = ( ) => {
+export const onClickClear = () => {
   return {
     type: CLEAR,
   }

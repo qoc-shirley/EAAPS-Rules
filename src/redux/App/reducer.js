@@ -42,7 +42,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              { ...row, deviceName: action.data.device[0] }
+              {...row, deviceName: action.data.device[0]}
               : row)
       });
     case MEDICATION_NAME:
@@ -51,7 +51,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              { ...row, medicationName: action.data.medicationName[0] }
+              {...row, medicationName: action.data.medicationName[0]}
               : row)
       });
 
@@ -62,7 +62,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              { ...row, puffValue: action.data.puffValueChange }
+              {...row, puffValue: action.data.puffValueChange}
               : row)
       });
 
@@ -72,7 +72,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              { ...row, timesPerDayValue: action.data.timesValueChange }
+              {...row, timesPerDayValue: action.data.timesValueChange}
               : row)
       });
 
@@ -82,7 +82,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              { ...row, doseICSValue: action.data.doseICSValueChange }
+              {...row, doseICSValue: action.data.doseICSValueChange}
               : row)
       });
 
@@ -110,12 +110,12 @@ const reducer = (state = initialState, action) => {
       });
 
     case FILTERED_MEDICATIONS:
-     if(action.data !== []) {
-       return Object.assign({}, state, {
-         isRecommendationEmpty: false,
-         patientMedications: action.data,
-       })
-     }
+      if (action.data !== []) {
+        return Object.assign({}, state, {
+          isRecommendationEmpty: false,
+          patientMedications: action.data,
+        })
+      }
       return Object.assign({}, state, {
         patientMedications: action.data,
       });
@@ -133,18 +133,21 @@ const reducer = (state = initialState, action) => {
       );
     case ON_DELETE_ROW:
       console.log(_.filter(state.medicationList, (row, index) => {
-        return index !== action.data}));
-      if(action.data === 0) {
+        return index !== action.data
+      }));
+      if (action.data === 0) {
         return Object.assign({}, state, {
           isRecommendationEmpty: true,
           medicationList: _.filter(state.medicationList, (row, index) => {
-            return index !== action.data}),
+            return index !== action.data
+          }),
           isRuleSelectEmpty: true,
         })
       }
       return Object.assign({}, state, {
           medicationList: _.filter(state.medicationList, (row, index) => {
-            return index !== action.data}),
+            return index !== action.data
+          }),
           isRecommendationEmpty: true,
           isRuleSelectEmpty: true,
         }

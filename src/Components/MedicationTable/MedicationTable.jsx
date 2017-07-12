@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import InputField from '../InputField/InputField';
@@ -9,27 +9,26 @@ import medicationData from '../MedicationData/MedicationData';
 import Row from '../Row/Row';
 import './styles.css';
 
-const MedicationTable = (
-  {
-    appendMedicationList,
-    chemicalICS,
-    chemicalLABA,
-    deviceName,
-    doseICSValue,
-    getPatientMedications,
-    medication,
-    medicationName,
-    onChangeDoseICS,
-    onChangeChemicalLABA,
-    onChangeChemicalICS,
-    onChangeDeviceName,
-    onChangePuffValue,
-    onChangeTimesPerDayValue,
-    onChangeMedicationName,
-    onClickDeleteMedication,
-    puffValue,
-    timesPerDayValue,
-  } ) => {
+const MedicationTable = ({
+                           appendMedicationList,
+                           chemicalICS,
+                           chemicalLABA,
+                           deviceName,
+                           doseICSValue,
+                           getPatientMedications,
+                           medication,
+                           medicationName,
+                           onChangeDoseICS,
+                           onChangeChemicalLABA,
+                           onChangeChemicalICS,
+                           onChangeDeviceName,
+                           onChangePuffValue,
+                           onChangeTimesPerDayValue,
+                           onChangeMedicationName,
+                           onClickDeleteMedication,
+                           puffValue,
+                           timesPerDayValue,
+                         }) => {
 
   const headerElements = ["", "Device", "Name", "ChemicalLABA", "ChemicalICS", "DoseICS", "# of Puffs", "Frequency", ""];
 
@@ -51,8 +50,8 @@ const MedicationTable = (
   };
 
   const displayMedications = _
-    .chain( medication.medicationList )
-    .reduce( (filteredData, medication) => {
+    .chain(medication.medicationList)
+    .reduce((filteredData, medication) => {
       filteredData.push(
         _.chain(medicationData)
           .filter((masterMedication) => {
@@ -88,7 +87,7 @@ const MedicationTable = (
     .value();
 
   const onSubmitMedications = (displayMedications) => {
-    if(_.isEmpty(medication.patientMedications)) {
+    if (_.isEmpty(medication.patientMedications)) {
       getPatientMedications(["No medications were found"]);
     }
     else {
@@ -98,7 +97,7 @@ const MedicationTable = (
           }
         );
       });
-      console.log("addPuffPerTime: ", _.flatten(displayMedications) );
+      console.log("addPuffPerTime: ", _.flatten(displayMedications));
       getPatientMedications(_.flatten(displayMedications));
     }
   };
@@ -107,7 +106,7 @@ const MedicationTable = (
     return (
       medication.medicationList.map((rowFields, index) => {
         let getDeviceColumn = medicationData.map(
-          ( medication ) => {
+          (medication) => {
             return (
               {
                 device: medication.device,
@@ -117,8 +116,8 @@ const MedicationTable = (
         getDeviceColumn = _.uniqWith(getDeviceColumn, _.isEqual);
 
         let getNameColumn = medicationData.map(
-          ( masterMedication ) => {
-            if(masterMedication.device === medication.medicationList[index].deviceName) {
+          (masterMedication) => {
+            if (masterMedication.device === medication.medicationList[index].deviceName) {
               return (
                 {
                   name: masterMedication.name,
@@ -140,8 +139,8 @@ const MedicationTable = (
 
         let getChemicalLABAColumn =
           medicationData.map(
-            ( masterMedication ) => {
-              if(masterMedication.device === medication.medicationList[index].deviceName &&
+            (masterMedication) => {
+              if (masterMedication.device === medication.medicationList[index].deviceName &&
                 masterMedication.name === medication.medicationList[index].medicationName) {
                 return (
                   {
@@ -165,15 +164,15 @@ const MedicationTable = (
 
         let getChemicalICSColumn =
           medicationData.map(
-            ( masterMedication ) => {
-              if(masterMedication.device === medication.medicationList[index].deviceName &&
+            (masterMedication) => {
+              if (masterMedication.device === medication.medicationList[index].deviceName &&
                 masterMedication.name === medication.medicationList[index].medicationName &&
                 (
-                  masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA) ||
-                  masterMedication.chemicalLABA === "." &&
-                    (
-                      medication.medicationList[index].chemicalLABA === "" ||
-                      medication.medicationList[index].chemicalLABA === "ChemicalLABA")) {
+                masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA) ||
+                masterMedication.chemicalLABA === "." &&
+                (
+                medication.medicationList[index].chemicalLABA === "" ||
+                medication.medicationList[index].chemicalLABA === "ChemicalLABA")) {
                 return (
                   {
                     chemicalICS: masterMedication.chemicalICS,
@@ -192,7 +191,7 @@ const MedicationTable = (
         getChemicalICSColumn = _.uniqWith(getChemicalICSColumn, _.isEqual);
         getChemicalICSColumn = _.filter(getChemicalICSColumn, (column) => {
           return column.chemicalICS !== "." && !(column.none);
-        } );
+        });
 
         return (
           <div key={index} className="row">
@@ -277,34 +276,34 @@ const MedicationTable = (
         )
       }));
   };
- return (
-   <div className="medication-table">
-     <div className="header">
-       <h3>Enter Your Medications:</h3>
-     </div>
-     <div className="medicationHeader">
-       <Row>{headerElements}</Row>
-     </div>
+  return (
+    <div className="medication-table">
+      <div className="header">
+        <h3>Enter Your Medications:</h3>
+      </div>
+      <div className="medicationHeader">
+        <Row>{headerElements}</Row>
+      </div>
 
-     <div className="main">
-       <ul>
-         {displayRowContents()}
-       </ul>
-     </div>
-     <button
-       className="button__addRow"
-       onClick={renderAddRow}
-     >
-       Add Row
-     </button>
-     <input
-       className="submit"
-       type="submit"
-       value="Submit"
-       onClick={() => onSubmitMedications(displayMedications)}
-     />
-   </div>
- );
+      <div className="main">
+        <ul>
+          {displayRowContents()}
+        </ul>
+      </div>
+      <button
+        className="button__addRow"
+        onClick={renderAddRow}
+      >
+        Add Row
+      </button>
+      <input
+        className="submit"
+        type="submit"
+        value="Submit"
+        onClick={() => onSubmitMedications(displayMedications)}
+      />
+    </div>
+  );
 };
 
 MedicationTable.propTypes = {
@@ -339,16 +338,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ( {
-  appendMedicationList: (medicationRow) => dispatch( actions.appendMedicationList(medicationRow) ),
-  onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index, value) ),
-  onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),
-  onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),
-  onChangeDeviceName: (index, value) => dispatch( actions.onChangeDeviceName(index, value) ),
-  onChangeChemicalICS: (index, value) => dispatch( actions.onChangeChemicalICS(index, value) ),
-  onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
-  onChangeMedicationName: (index, value) => dispatch( actions.onChangeMedicationName(index, value) ),
-  onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
-  getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),
+  appendMedicationList: (medicationRow) => dispatch(actions.appendMedicationList(medicationRow)),
+  onChangePuffValue: (index, value) => dispatch(actions.onChangePuffValue(index, value)),
+  onChangeTimesPerDayValue: (index, value) => dispatch(actions.onChangeTimesPerDayValue(index, value)),
+  onChangeDoseICS: (index, value) => dispatch(actions.onChangeDoseICS(index, value)),
+  onChangeDeviceName: (index, value) => dispatch(actions.onChangeDeviceName(index, value)),
+  onChangeChemicalICS: (index, value) => dispatch(actions.onChangeChemicalICS(index, value)),
+  onChangeChemicalLABA: (index, value) => dispatch(actions.onChangeChemicalLABA(index, value)),
+  onChangeMedicationName: (index, value) => dispatch(actions.onChangeMedicationName(index, value)),
+  onDeleteRow: (index) => dispatch(actions.onDeleteRow(index)),
+  getPatientMedications: (medications) => dispatch(actions.getPatientMedications(medications)),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicationTable);

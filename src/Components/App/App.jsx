@@ -4,36 +4,33 @@ import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../MedicationData/MedicationData';
-// import Row from '../Row/Row';
 import DisplayPatientMedications from '../DisplayMedications/DisplayMedications';
 import * as rules from '../Rules/Rules';
 import './styles.css';
 
-const App = (
-  {
-    appendMedicationList,
-    // getPatientMedications,
-    medication,
-    onMedicationSelection,
-    onChangePuffValue,
-    onChangeTimesPerDayValue,
-    onChangeDoseICS,
-    onClickClear,
-    onDeleteRow,
-    saveRecommendation,
-  } ) => {
+const App = ({
+               appendMedicationList,
+               medication,
+               onMedicationSelection,
+               onChangePuffValue,
+               onChangeTimesPerDayValue,
+               onChangeDoseICS,
+               onClickClear,
+               onDeleteRow,
+               saveRecommendation,
+             }) => {
 
   let showPatientMedications = null;
-  if(medication.isRecommendationEmpty === false){
+  if (medication.isRecommendationEmpty === false) {
     console.log("show PM");
     showPatientMedications = <DisplayPatientMedications />;
   }
-  else if(medication.isRecommendationEmpty === true) {
+  else if (medication.isRecommendationEmpty === true) {
     showPatientMedications = null;
   }
 
   const showAvailableRules = () => {
-    if(medication.isRecommendationEmpty === false) {
+    if (medication.isRecommendationEmpty === false) {
       return (
         <div className="rules">
           <button
@@ -45,13 +42,13 @@ const App = (
         </div>
       );
     }
-    else if(medication.isRecommendationEmpty === true) {
+    else if (medication.isRecommendationEmpty === true) {
       return null;
     }
   };
 
   const showRecommendations = () => {
-    if(medication.isRuleSelectEmpty === false) {
+    if (medication.isRuleSelectEmpty === false) {
       return (
         <div className="recommendations">
           <h4>Recommendation(s):</h4>
@@ -74,7 +71,7 @@ const App = (
                     </div>
                   )
                 }
-                else if(_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
+                else if (_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
                   console.log("2");
                   return (
                     <div key={index} className="recommendationArray">
@@ -95,7 +92,7 @@ const App = (
                     </div>
                   );
                 }
-                else if(!_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
+                else if (!_.isArray(recommendMedication) && _.size(recommendMedication) < 29) {
                   console.log("4");
                   return (
                     <div key={index} className="recommendationArray">
@@ -116,7 +113,7 @@ const App = (
                     </div>
                   );
                 }
-                else if(!_.isArray(recommendMedication) && _.size(recommendMedication) > 29){
+                else if (!_.isArray(recommendMedication) && _.size(recommendMedication) > 29) {
                   console.log("3");
                   return (
                     <div key={index} className="recommendationObject">
@@ -144,7 +141,7 @@ const App = (
         </div>
       );
     }
-    else if(medication.isRuleSelectEmpty === true) {
+    else if (medication.isRuleSelectEmpty === true) {
       return null;
     }
   };
@@ -164,7 +161,7 @@ const App = (
     saveRecommendation("Rule 11", rules.rule11(medication.patientMedications, medicationData));
   };
 
-  const clearRecommendations = ( ) => {
+  const clearRecommendations = () => {
     onClickClear();
   };
 

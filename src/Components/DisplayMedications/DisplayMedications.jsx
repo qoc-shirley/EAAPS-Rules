@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import medicationData from '../MedicationData/MedicationData';
 import _ from 'lodash';
 import * as actions from '../../redux/App/actions';
@@ -11,8 +11,8 @@ const DisplayMedications = ({
                               medication,
                             }) => {
   const displayMedications = _
-    .chain( medication.medicationList )
-    .reduce( (filteredData, medication) => {
+    .chain(medication.medicationList)
+    .reduce((filteredData, medication) => {
       filteredData.push(
         _.chain(medicationData)
           .filter((masterMedication) => {
@@ -104,16 +104,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ( {
-  appendMedicationList: (medicationRow) => dispatch( actions.appendMedicationList(medicationRow) ),
-  onChangePuffValue: (index, value) => dispatch( actions.onChangePuffValue(index, value) ),
-  onChangeTimesPerDayValue: (index, value) => dispatch( actions.onChangeTimesPerDayValue(index, value) ),
-  onChangeDoseICS: (index, value) => dispatch( actions.onChangeDoseICS(index, value) ),
-  onChangeDeviceName: (index, value) => dispatch( actions.onChangeDeviceName(index, value) ),
-  onChangeChemicalICS: (index, value) => dispatch( actions.onChangeChemicalICS(index, value) ),
-  onChangeChemicalLABA: (index, value) => dispatch( actions.onChangeChemicalLABA(index, value) ),
-  onChangeMedicationName: (index, value) => dispatch( actions.onChangeMedicationName(index, value) ),
-  onDeleteRow: (index) => dispatch( actions.onDeleteRow(index) ),
-  getPatientMedications: (medications) => dispatch( actions.getPatientMedications(medications) ),
+  appendMedicationList: (medicationRow) => dispatch(actions.appendMedicationList(medicationRow)),
+  onChangePuffValue: (index, value) => dispatch(actions.onChangePuffValue(index, value)),
+  onChangeTimesPerDayValue: (index, value) => dispatch(actions.onChangeTimesPerDayValue(index, value)),
+  onChangeDoseICS: (index, value) => dispatch(actions.onChangeDoseICS(index, value)),
+  onChangeDeviceName: (index, value) => dispatch(actions.onChangeDeviceName(index, value)),
+  onChangeChemicalICS: (index, value) => dispatch(actions.onChangeChemicalICS(index, value)),
+  onChangeChemicalLABA: (index, value) => dispatch(actions.onChangeChemicalLABA(index, value)),
+  onChangeMedicationName: (index, value) => dispatch(actions.onChangeMedicationName(index, value)),
+  onDeleteRow: (index) => dispatch(actions.onDeleteRow(index)),
+  getPatientMedications: (medications) => dispatch(actions.getPatientMedications(medications)),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayMedications);
