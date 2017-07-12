@@ -35,20 +35,12 @@ const App = (
     if(medication.isRecommendationEmpty === false) {
       return (
         <div className="rules">
-          <h3>Available Escalation Rules:
-            <select
-              className="selectRule"
-              onChange={(event) => onChangeRule(event.target.value)}
-              defaultValue={"Select a rule"}
-            >
-              <option>Select a rule</option>
-              {
-                availableRules.map(
-                  (rule, index) => (
-                    <option key={index}>{rule}</option>
-                  ))}
-            </select>
-          </h3>
+          <button
+            className="button__deleteRow"
+            onClick={() => onChangeRule()}
+          >
+            Run Rules
+          </button>
         </div>
       );
     }
