@@ -436,7 +436,11 @@ export const rule5 = (patientMedications, masterMedications) => {
             const typeICS = _.filter(medications, { chemicalType: "ICS" });
             if (patientMedication.chemicalType === "laba,ICS") {
               result.push(patientMedication);
-              result.push(findLtra);
+              result.push(findLtra); //any ltra? or all ltra in orgMeds
+              //match the orgMed[device] does this refer to matching the laba, ics device?
+              //attempt to match the orgMed[dosePerPuff]
+              //after matching orgMed[dosePerPuff] or if not possible to match orgMed[dosePerPuff],  
+              // choose the [dosePerPuff] that will minimize the required [puffsPerTime]
             }
             else if(patientMedication.chemicalType === "laba" && !_.isEmpty(typeICS)) {
               const filteredNewMedications = _.filter(medicationElement, { chemicalType: "laba,ICS", });
@@ -672,7 +676,19 @@ export const rule12 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
+        if(
+            patientMedication.name === "symbicort" &&
+          (
+            patientMedication.chemicalType === "laba,ICS" ||
+            patientMedication.chemicalType === "laba" ||
+            patientMedication.chemicalType === "ICS"
+          ) && calculateICSDosePatient(patientMedication) === "low"
+        ) {
 
+        }
+        else if (patientMedication.name === "symbicort" && categorizeICSDose(patientMedication) === "low") {
+            result.push(_.filter(medicationElement, { name: "symbicort", function: "controller,reliever",din: patientMedication.din }));
+        }
           return result;
         }, masterMedications, patientMedications);
 
