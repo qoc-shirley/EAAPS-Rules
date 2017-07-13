@@ -21,10 +21,13 @@ const rule1 = (patientMedications, masterMedications) => {
           const newMedications = _.filter(medicationElement, {chemicalType: "laba, ICS"});
           if (patientMedication.chemicalType === "ICS" && !_.isEmpty(newMedications)) {
 
-            const chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
+            let chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
             if (!_.isEmpty(chemicalICSMedications)) {
-              //attempt to match device
-              //is each condition going to be checked?
+              const typeICS = _.filter(chemicalICSMedications, {chemicalType: "ICS"});
+              const matchDevice = _.filter(typeICS, {device: patientMedication.device});
+              if(!_.isEmpty(matchDevice)) {
+                chemicalICSMedications = _.filter(typeICS, {device: patientMedication.device});
+              }
               for (let i = 0; i < _.size(chemicalICSMedications); i++) {
                 const isEqual = equalICSDose(chemicalICSMedications[i], patientMedication);
                 if (!_.isEmpty(isEqual)) {
