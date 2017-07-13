@@ -1,10 +1,15 @@
 import _ from 'lodash';
 import ruleMinus1 from './RuleMinus1';
 import rule0 from './Rule0';
+// import rule1 from './Rule1';
+// import rule3 from './Rule3';
 import rule4 from './Rule4';
+// import rule5 from 'Rule5';
+import rule6 from './Rule6';
 import rule7 from './Rule7';
 import rule8 from './Rule8';
 import rule9 from './Rule9';
+import rule10 from './Rule10';
 import rule11 from './Rule11';
 import * as calculate from './Library/CalculateICSDose';
 import * as get from './Library/GetICSDose';
@@ -25,9 +30,11 @@ export const rules = {
   ruleMinus1,
   rule0,
   rule4,
+  rule6,
   rule7,
   rule8,
   rule9,
+  rule10,
   rule11,
 };
 
@@ -291,60 +298,4 @@ export const rule5 = (patientMedications, masterMedications) => {
       return result;
     }, [])
     .value();
-};
-
-export const rule6 = (patientMedications) => {
-
-  const consultRespirologist = _
-    .chain(patientMedications)
-    .filter((patientMedication) => {
-      const filterChemicalTypeLtra = _.filter(patientMedications, {chemicalType: "ltra"});
-      const isFilteredLtraGreatermaxGreenICS = _
-        .chain(filterChemicalTypeLtra)
-        .filter((patientMedication) => {
-          if (calculate.patientICSDose(patientMedication) >= patientMedication.maxGreenICS) {
-            return true;
-          }
-          return false;
-        })
-        .isEmpty()
-        .value();
-      if (patientMedication.name !== "symbicort" &&
-        (patientMedication.chemicalType === "laba,ICS" ||
-        patientMedication.chemicalType === "ICS" ||
-        patientMedication.chemicalType === "laba" ) &&
-        filterChemicalTypeLtra && !isFilteredLtraGreatermaxGreenICS) {
-        return true;
-      }
-      return false
-    })
-    .value();
-
-  if (!_.isEmpty(consultRespirologist)) {
-    return consultRespirologist.concat("consult a respirologist");
-  }
-  return [];
-};
-
-export const rule10 = (patientMedications, masterMedications) => {
-  const consultRespirologist = _
-    .chain(patientMedications)
-    .filter(
-      _.partial((medicationElements, patientMedication) => {
-        if (patientMedication.name === "symbicort" &&
-          patientMedication.function === "controller,reliever" &&
-          ( calculate.patientICSDose(patientMedication) >= patientMedication.maxGreenICS )) {
-          if (_.find(patientMedications, {chemicalType: "ltra"})) {
-            return true;
-          }
-          return false;
-        }
-      }, masterMedications)
-    )
-    .value();
-
-  if (!_.isEmpty(consultRespirologist)) {
-    return consultRespirologist.concat("consult a respirologist");
-  }
-  return [];
 };
