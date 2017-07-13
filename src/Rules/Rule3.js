@@ -31,7 +31,7 @@ const rule3 = (patientMedications, masterMedications) => {
                   result.push(tryDoseICS);
                 }
                 const tryMinimizePuffs = match.minimizePuffsPerTime(tryTimesPerDay, patientMedication);
-                if(!_.isEmpty(tryMinimizePuffs)) {
+                if (!_.isEmpty(tryMinimizePuffs)) {
                   result.push(tryMinimizePuffs);
                 }
                 result.push(tryTimesPerDay);
@@ -56,9 +56,9 @@ const rule3 = (patientMedications, masterMedications) => {
                   return medication.device === isLaba.device
                 });
                 if (!_.isEmpty(getDeviceIcsOrLaba)) {
-                  if(!_.isEmpty(getICSDevice)){
+                  if (!_.isEmpty(getICSDevice)) {
                     const tryMinimizePuffs = match.minimizePuffsPerTime(getICSDevice, patientMedication);
-                    if(!_.isEmpty(tryMinimizePuffs)) {
+                    if (!_.isEmpty(tryMinimizePuffs)) {
                       result.push(get.lowestICSDose(tryMinimizePuffs));
                     }
                     result.push(get.lowestICSDose(getICSDevice));
