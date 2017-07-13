@@ -68,6 +68,7 @@ const rule3 = (patientMedications, masterMedications) => {
                 else {
                   //increase the original medication ICD to lowest possible dose within the medium dose category + recommend LTRA
                   //match ICS device can be put into the lowest possible dose within the medium dose category
+                  // const matchICSDevice = match.device(getDeviceIcsOrLaba,)
                   //match the ICS medication with ^ device
                   //match timesPerDay
                   //minimize required ICS puffPerTime
