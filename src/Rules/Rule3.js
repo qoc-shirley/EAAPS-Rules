@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as calculate from './Library/CalculateICSDose';
 import * as categorize from './Library/CategorizeDose';
-// import * as match from './Library/Match';
+import * as match from './Library/Match';
 
 const rule3 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
@@ -22,7 +22,19 @@ const rule3 = (patientMedications, masterMedications) => {
           const isICS = _.filter(filterOrgMeds, {chemicalType: "ICS"});
           if (!_.isEmpty(filterOrgMeds)) {
             if (!_.isEmpty(isLabaICS)) {
-              //do matches and attempts
+              const tryTimesPerDay = match.timesPerDay(isLabaICS, patientMedication);
+
+              if (!_.isEmpty(tryTimesPerDay)) {
+                const tryDoseICS = match.doseICS(tryTimesPerDay, patientMedication);
+                if (!_.isEmpty(tryDoseICS)) {
+                  result.push(tryDoseICS);
+                }
+                const tryMinimizePuffs = match.minimizePuffsPerTime(tryTimesPerDay, patientMedication);
+                if(!_.isEmpty(tryMinimizePuffs)) {
+                  result.push(tryMinimizePuffs);
+                }
+                result.push(tryTimesPerDay);
+              }
               result.push(isLabaICS);
             }
             else if (!_.isEmpty(isLaba) && !_.isEmpty(isICS)) {
