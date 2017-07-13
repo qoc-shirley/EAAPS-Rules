@@ -37,6 +37,7 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.concat(action.data),
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
+        recommendation: [],
       });
     case DEVICE:
       return Object.assign({}, state, {
@@ -47,6 +48,8 @@ const reducer = (state = initialState, action) => {
               {...row, deviceName: action.data.device[0]}
               : row),
         isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
+        recommendation: [],
       });
     case MEDICATION_NAME:
       return Object.assign({}, state, {
@@ -57,6 +60,8 @@ const reducer = (state = initialState, action) => {
               {...row, medicationName: action.data.medicationName[0]}
               : row),
         isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
+        recommendation: [],
       });
 
     // OnChange functions
@@ -69,6 +74,8 @@ const reducer = (state = initialState, action) => {
               {...row, puffValue: action.data.puffValueChange}
               : row),
         isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
+        recommendation: [],
       });
 
     case ON_TIMES_CHANGE:
@@ -80,6 +87,8 @@ const reducer = (state = initialState, action) => {
               {...row, timesPerDayValue: action.data.timesValueChange}
               : row),
         isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
+        recommendation: [],
       });
 
     case ON_DOSEICS_CHANGE:
@@ -91,6 +100,8 @@ const reducer = (state = initialState, action) => {
               {...row, doseICSValue: action.data.doseICSValueChange}
               : row),
         isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
+        recommendation: [],
       });
 
     case ON_CHEMICALICS_SELECTION:
@@ -104,6 +115,8 @@ const reducer = (state = initialState, action) => {
               }
               : row),
         isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
+        recommendation: [],
       });
     case ON_CHEMICALLABA_SELECTION:
       return Object.assign({}, state, {
@@ -116,6 +129,8 @@ const reducer = (state = initialState, action) => {
               }
               : row),
         isRecommendationEmpty: true,
+        isRuleSelectEmpty: true,
+        recommendation: [],
       });
 
     case FILTERED_MEDICATIONS:
@@ -148,7 +163,7 @@ const reducer = (state = initialState, action) => {
             return index !== action.data
           }),
           isRuleSelectEmpty: true,
-          recommendations: [],
+          recommendation: [],
         })
       }
       return Object.assign({}, state, {
@@ -157,7 +172,7 @@ const reducer = (state = initialState, action) => {
           }),
           isRecommendationEmpty: true,
           isRuleSelectEmpty: true,
-          recommendations: [],
+        recommendation: [],
         }
       );
     case ON_SUBMIT:
