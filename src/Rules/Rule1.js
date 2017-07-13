@@ -13,6 +13,10 @@ const equalICSDose = (medication, patientMedication) => {
   }
 };
 
+const matchDevice = (medications, matchMedication) => {
+  return _.filter(medications, {device: matchMedication.device});
+};
+
 const rule1 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
     .reduce((result, patientMedication) => {
@@ -23,11 +27,14 @@ const rule1 = (patientMedications, masterMedications) => {
 
             let chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
             if (!_.isEmpty(chemicalICSMedications)) {
+
               const typeICS = _.filter(chemicalICSMedications, {chemicalType: "ICS"});
-              const matchDevice = _.filter(typeICS, {device: patientMedication.device});
-              if(!_.isEmpty(matchDevice)) {
-                chemicalICSMedications = _.filter(typeICS, {device: patientMedication.device});
+              const matchOriginalICSDevice = matchDevice(typeICS, patientMedication);
+
+              if(!_.isEmpty(matchOriginalICSDevice)) {
+                chemicalICSMedications = matchOriginalICSDevice;
               }
+
               for (let i = 0; i < _.size(chemicalICSMedications); i++) {
                 const isEqual = equalICSDose(chemicalICSMedications[i], patientMedication);
                 if (!_.isEmpty(isEqual)) {
