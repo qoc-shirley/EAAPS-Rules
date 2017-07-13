@@ -3,17 +3,13 @@ import masterMedications from '../MedicationData/MedicationData';
 
 const getLabaICSAndICS = (patientMedications) => {
   let result = [];
-  let labaICS = false;
-  let ICS = false;
   return _.chain(patientMedications)
     .filter(
       _.partial((medicationElements, patientMedication) => {
         if (patientMedication.chemicalType === "ICS") {
-          ICS = true;
           result.push(patientMedication);
         }
         else if (patientMedication.chemicalType === "laba,ICS") {
-          labaICS = true;
           result.push(patientMedication);
         }
       }, masterMedications))
