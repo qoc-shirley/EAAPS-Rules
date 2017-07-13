@@ -45,7 +45,8 @@ const reducer = (state = initialState, action) => {
           (row, index) =>
             action.data.index === index ?
               {...row, deviceName: action.data.device[0]}
-              : row)
+              : row),
+        isRecommendationEmpty: true,
       });
     case MEDICATION_NAME:
       return Object.assign({}, state, {
@@ -54,7 +55,8 @@ const reducer = (state = initialState, action) => {
           (row, index) =>
             action.data.index === index ?
               {...row, medicationName: action.data.medicationName[0]}
-              : row)
+              : row),
+        isRecommendationEmpty: true,
       });
 
     // OnChange functions
@@ -65,7 +67,8 @@ const reducer = (state = initialState, action) => {
           (row, index) =>
             action.data.index === index ?
               {...row, puffValue: action.data.puffValueChange}
-              : row)
+              : row),
+        isRecommendationEmpty: true,
       });
 
     case ON_TIMES_CHANGE:
@@ -75,7 +78,8 @@ const reducer = (state = initialState, action) => {
           (row, index) =>
             action.data.index === index ?
               {...row, timesPerDayValue: action.data.timesValueChange}
-              : row)
+              : row),
+        isRecommendationEmpty: true,
       });
 
     case ON_DOSEICS_CHANGE:
@@ -85,7 +89,8 @@ const reducer = (state = initialState, action) => {
           (row, index) =>
             action.data.index === index ?
               {...row, doseICSValue: action.data.doseICSValueChange}
-              : row)
+              : row),
+        isRecommendationEmpty: true,
       });
 
     case ON_CHEMICALICS_SELECTION:
@@ -97,7 +102,8 @@ const reducer = (state = initialState, action) => {
               {
                 ...row, chemicalICS: action.data.chemicalICS[0],
               }
-              : row)
+              : row),
+        isRecommendationEmpty: true,
       });
     case ON_CHEMICALLABA_SELECTION:
       return Object.assign({}, state, {
@@ -108,7 +114,8 @@ const reducer = (state = initialState, action) => {
               {
                 ...row, chemicalLABA: action.data.chemicalLABA[0],
               }
-              : row)
+              : row),
+        isRecommendationEmpty: true,
       });
 
     case FILTERED_MEDICATIONS:
