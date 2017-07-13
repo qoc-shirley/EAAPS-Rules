@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import masterMedications from '../MedicationData/MedicationData'
+import ruleMinus1 from './RuleMinus1';
 import * as calculate from './Library/CalculateICSDose';
 import * as get from './Library/GetICSDose';
 import * as categorize from './Library/CategorizeDose';
@@ -46,13 +47,16 @@ const equalICSDose = (medication, patientMedication) => {
 
 //////////////////////////////////////////////// RULES ////////////////////////////////////////////////////////////////
 
-//rule -1
-export const ruleMinus1 = (patientMedications) => {
-  return _.chain(patientMedications)
-    .filter((patientMedication) => {
-      return patientMedication.chemicalType === "laac";
-    })
-    .value();
+// //rule -1
+// export const ruleMinus1 = (patientMedications) => {
+//   return _.chain(patientMedications)
+//     .filter((patientMedication) => {
+//       return patientMedication.chemicalType === "laac";
+//     })
+//     .value();
+// };
+export const rules = {
+  ruleMinus1
 };
 
 //rule 0
