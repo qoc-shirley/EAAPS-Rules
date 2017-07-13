@@ -19,6 +19,15 @@ const matchDevice = (medications, matchMedication) => {
 const matchTimesPerDay = (medications, matchMedication) => {
   return _.filter(medications, {timesPerDay: matchMedication.timesPerDay});
 };
+const minimizePuffsPerTime = (medications, minimizeMedicationsPuffs) => {
+  const minimize = _.filter(medications, (medication) => {
+    return medication.doseICS > minimizeMedicationsPuffs.doseICS
+  });
+  if (_.size(minimize) > 1) {
+    return _.maxBy(minimize, 'doseICS');
+  }
+  return minimize;
+};
 
 const rule1 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
@@ -41,25 +50,55 @@ const rule1 = (patientMedications, masterMedications) => {
               const equalMedications = _.filter(chemicalICSMedications, (medication) => {
                 return equalICSDose(medication, patientMedication);
               });
-
               const tryTimePerDay = matchTimesPerDay(equalMedications, patientMedication);
-              if (!_.isEmpty(tryTimePerDay)) {
-                result.push(tryTimePerDay);
+
+              if (!_.isEmpty(tryTimesPerDay)) {
+                const tryMinimizePuffs = minimizePuffsPerTime(tryTimesPerDay, patientMedication);
+                if (!_.isEmpty(tryMinimizePuffs)) {
+                  result.push(tryMinimizePuffs);
+                }
+                result.push(tryTimesPerDay);
               }
               else if (!_.isEmpty(equalMedications)) {
                 result.push(equalMedications);
               }
-              //should this condition be last out of the 3?
-              if (chemicalICSMedications[i]) {
+              else {
                 console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
-              }
-              if (chemicalICSMedications[i].maxGreenICS < calculate.patientICSDose(patientMedication)) {
-                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
-                result.push(chemicalICSMedications);
+                const nextHigherICSDose = _.filter(chemicalICSMedications, (medication) => {
+                  return calculate.ICSDose(medication) > calculate.patientICSDose(patientMedication);
+                });
+                const tryTimesPerDay = matchTimesPerDay(nextHigherICSDose, patientMedication);
+                if (!_.isEmpty(tryTimesPerDay)) {
+                  const tryMinimizePuffs = minimizePuffsPerTime(tryTimesPerDay, patientMedication);
+                  if (!_.isEmpty(tryMinimizePuffs)) {
+                    result.push(tryMinimizePuffs);
+                  }
+                  result.push(tryTimesPerDay);
+                }
+                else {
+                  const tryMinimizePuffs = minimizePuffsPerTime(nextHigherICSDose, patientMedication);
+                  if (!_.isEmpty(tryMinimizePuffs)) {
+                    result.push(tryMinimizePuffs);
+                  }
+                  result.push(nextHigherICSDose);
+                }
               }
 
-              //attempt to match the patientMedication TimesPerDay
-              //minimize the required puffPerTime
+              const maxICSDose = _.filter(chemicalICSMedications, (medication) => {
+                return medication.maxGreenICS < calculate.patientICSDose(patientMedication);
+              });
+              if (!_.isEmpty(maxICSDose)) {
+                console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
+                const tryTimesPerDay = matchTimesPerDay(maxICSDose, patientMedication);
+                if (!_.isEmpty(tryTimesPerDay)) {
+                  const tryMinimizePuffs = minimizePuffsPerTime(tryTimesPerDay, patientMedication);
+                  if (!_.isEmpty(tryMinimizePuffs)) {
+                    result.push(tryMinimizePuffs);
+                  }
+                  result.push(tryTimesPerDay);
+                }
+                result.push(chemicalICSMedications);
+              }
             }
           }
           else {
