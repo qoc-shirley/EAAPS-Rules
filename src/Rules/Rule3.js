@@ -68,21 +68,25 @@ const rule3 = (patientMedications, masterMedications) => {
                 else {
                   //increase the original medication ICD to lowest possible dose within the medium dose category + recommend LTRA
                   //match ICS device can be put into the lowest possible dose within the medium dose category
-                  // const matchICSDevice = match.device(getDeviceIcsOrLaba,)
-                  //match the ICS medication with ^ device
-                  //match timesPerDay
-                  //minimize required ICS puffPerTime
+                  const tryICSDevice = match.device(getDeviceIcsOrLaba, getICSDevice);
+                  const tryDoseICS = match.doseICS(tryICSDevice, getICSDevice);
+                  const tryTimesPerDay = match.timesPerDay(tryDoseICS, getICSDevice);
+                  const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, getICSDevice);
                 }
               }
               else {
                 //increase original medication ICS to lowest dose in medium category + recommend LABA
-                //match ICS Org device
-                //attempt to match ICS ORG dosePerPuff
-                //match timesPerDay
-                //minimize required ICS puffPerTime
+                const tryICSDevice = match.device(filteredMedication, isICS);
+                const tryDoseICS = match.doseICS(tryICSDevice, isICS);
+                const tryTimesPerDay = match.timesPerDay(tryDoseICS, isICS);
+                const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, isICS);
               }
             }
             else {
+              const tryICSDevice = match.device(isLabaICS, isLaba);
+              const tryDoseICS = match.doseICS(tryICSDevice, isLaba);
+              const tryTimesPerDay = match.timesPerDay(tryDoseICS, isLaba);
+              const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, isLaba);
             }
           }
           else if (patientMedication.name === "symbicort" && categorize.patientICSDose(patientMedication) === "low") {
