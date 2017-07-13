@@ -56,15 +56,15 @@ const App = ({
   const onChangeRule = () => {
     saveRecommendation("Rule -1", get.rules.ruleMinus1(medication.patientMedications));
     saveRecommendation("Rule 0", get.rules.rule0(medication.patientMedications, medicationData));
-    // saveRecommendation("Rule 1", rules.rule1(medication.patientMedications, medicationData));
-    // saveRecommendation("Rule 3", rules.rule3(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 1", get.rules.rule1(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 3", get.rules.rule3(medication.patientMedications, medicationData));
     saveRecommendation("Rule 4", _.flatten(get.rules.rule4(medication.patientMedications, medicationData)));
-    // saveRecommendation("Rule 5", rules.rule5(medication.patientMedications, medicationData));
-    //saveRecommendation("Rule 6", get.rules.rule6(medication.patientMedications));
+    saveRecommendation("Rule 5", get.rules.rule5(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 6", get.rules.rule6(medication.patientMedications));
     saveRecommendation("Rule 7", get.rules.rule7(medication.patientMedications));
     saveRecommendation("Rule 8", get.rules.rule8(medication.patientMedications));
     saveRecommendation("Rule 9", get.rules.rule9(medication.patientMedications));
-    //saveRecommendation("Rule 10", get.rules.rule10(medication.patientMedications));
+    saveRecommendation("Rule 10", get.rules.rule10(medication.patientMedications));
     saveRecommendation("Rule 11", get.rules.rule11(medication.patientMedications, medicationData));
   };
 
