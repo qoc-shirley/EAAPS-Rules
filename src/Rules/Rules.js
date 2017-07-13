@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import masterMedications from '../MedicationData/MedicationData'
-import * as calculate from './CalculateICSDose';
-import * as get from './GetICSDose';
-import * as categorize from './CategorizeDose';
-import * as adjust from './AdjustICSDose';
+import * as calculate from './Library/CalculateICSDose';
+import * as get from './Library/GetICSDose';
+import * as categorize from './Library/CategorizeDose';
+import * as adjust from './Library/AdjustICSDose';
 
 const addToRecommendations = (elements) => {
   return _.chain(elements)
