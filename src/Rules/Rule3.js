@@ -66,7 +66,7 @@ const rule3 = (patientMedications, masterMedications) => {
                   result.push(get.lowestICSDose(getLabaDevice));
                 }
                 else {
-                  //increase the original medication ICD to lowest possible dose within the medium dose category + recommend LTRA
+                  //increase the original medication ICS to lowest possible dose within the medium dose category + recommend LTRA
                   //match ICS device can be put into the lowest possible dose within the medium dose category
                   const tryICSDevice = match.device(getDeviceIcsOrLaba, getICSDevice);
                   const tryDoseICS = match.doseICS(tryICSDevice, getICSDevice);
