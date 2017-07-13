@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import masterMedications from '../MedicationData/MedicationData'
 import ruleMinus1 from './RuleMinus1';
 import rule0 from './Rule0';
 import rule4 from './Rule4';
@@ -11,27 +10,6 @@ import * as calculate from './Library/CalculateICSDose';
 import * as get from './Library/GetICSDose';
 import * as categorize from './Library/CategorizeDose';
 import * as adjust from './Library/AdjustICSDose';
-
-const getLabaICSAndICS = (patientMedications) => {
-  let result = [];
-  let labaICS = false;
-  let ICS = false;
-  return _.chain(patientMedications)
-    .filter(
-      _.partial((medicationElements, patientMedication) => {
-        if (patientMedication.chemicalType === "ICS") {
-          ICS = true;
-          result.push(patientMedication);
-        }
-        else if (patientMedication.chemicalType === "laba,ICS") {
-          labaICS = true;
-          result.push(patientMedication);
-        }
-      }, masterMedications))
-    .concat(result)
-    .flatten()
-    .value();
-};
 
 const equalICSDose = (medication, patientMedication) => {
   if (calculate.patientICSDose(patientMedication) === calculate.ICSDose(medication)) {
@@ -348,41 +326,6 @@ export const rule6 = (patientMedications) => {
   return [];
 };
 
-// export const rule9 = (patientMedications) => {
-//   return _.chain(patientMedications)
-//     .reduce((result, patientMedication) => {
-//       if (patientMedication.name === "symbicort" && patientMedication.controller === "controller,reliever" &&
-//         ( calculate.ICSDose(patientMedication) < patientMedication.maxGreenICS ) &&
-//         _.some(patientMedications, {chemicalType: "ltra"})) {
-//         // console.log("ya");
-//         if (adjust.ICSDose(patientMedication, "highest") === []) {
-//           // console.log("yaya");
-//           result.push(
-//             _.max(
-//               _.filter(patientMedications, (medication) => {
-//                 return medication.name === "symbicort" &&
-//                   medication.controller === "controller,reliever" &&
-//                   (calculate.ICSDose(medication) < medication.maxGreenICS)
-//               }),
-//               'doseICS'));
-//           result.push(patientMedications);
-//           result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
-//         }
-//         else {
-//           // console.log("yayaya");
-//           // console.log("adjustICSDose: ", adjustICSDose(patientMedication, "highest"));
-//           result.push(patientMedications);
-//           result.push(adjust.ICSDose(patientMedication, "highest"));
-//           result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
-//         }
-//       }
-//       // console.log("return");
-//       // console.log(result);
-//       return result;
-//     }, [])
-//     .value();
-// };
-
 export const rule10 = (patientMedications, masterMedications) => {
   const consultRespirologist = _
     .chain(patientMedications)
@@ -405,15 +348,3 @@ export const rule10 = (patientMedications, masterMedications) => {
   }
   return [];
 };
-
-// export const rule11 = (patientMedications, masterMedications) => {
-//   let newMedication = [];
-//   let filteredPatientMedications = getLabaICSAndICS(patientMedications);
-//   if (_.find(filteredPatientMedications, {chemicalType: "ICS"}) && _.find(filteredPatientMedications, {chemicalType: "laba,ICS"})) {
-//     newMedication = _.filter(masterMedications, {name: "singulair"});
-//   }
-//   else {
-//     filteredPatientMedications = [];
-//   }
-//   return _.concat(newMedication, filteredPatientMedications)
-// };

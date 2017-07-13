@@ -1,27 +1,37 @@
 import _ from 'lodash';
-import * as categorize from './Library/CategorizeDose';
+import masterMedications from '../MedicationData/MedicationData';
 
-const rule8 = (patientMedications, masterMedications) => {
-  const isSMARTMediumOrHigh = _.chain(patientMedications)
-    .filter((patientMedication) => {
-      if (patientMedication.name === "symbicort" &&
-        patientMedication.function === "controller,reliever" &&
-        (categorize.patientICSDose(patientMedication) === "medium" || categorize.patientICSDose(patientMedication) === "high")) {
-        return true;
-      }
-      return false;
-    })
+const getLabaICSAndICS = (patientMedications) => {
+  let result = [];
+  let labaICS = false;
+  let ICS = false;
+  return _.chain(patientMedications)
+    .filter(
+      _.partial((medicationElements, patientMedication) => {
+        if (patientMedication.chemicalType === "ICS") {
+          ICS = true;
+          result.push(patientMedication);
+        }
+        else if (patientMedication.chemicalType === "laba,ICS") {
+          labaICS = true;
+          result.push(patientMedication);
+        }
+      }, masterMedications))
+    .concat(result)
+    .flatten()
     .value();
-
-  if (!_.isEmpty(isSMARTMediumOrHigh)) {
-    return isSMARTMediumOrHigh
-      .concat(
-        _.chain(masterMedications)
-          .filter({name: "singulair"})
-          .value()
-      )
-  }
-  return [];
 };
 
-export default rule8;
+const rule11 = (patientMedications, masterMedications) => {
+  let newMedication = [];
+  let filteredPatientMedications = getLabaICSAndICS(patientMedications);
+  if (_.find(filteredPatientMedications, {chemicalType: "ICS"}) && _.find(filteredPatientMedications, {chemicalType: "laba,ICS"})) {
+    newMedication = _.filter(masterMedications, {name: "singulair"});
+  }
+  else {
+    filteredPatientMedications = [];
+  }
+  return _.concat(newMedication, filteredPatientMedications)
+};
+
+export default rule11;
