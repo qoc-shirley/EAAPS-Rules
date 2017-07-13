@@ -94,7 +94,7 @@ const rule1 = (patientMedications, masterMedications) => {
             }
             else if (categorize.patientICSDose(patientMedication) === "excessive") {
               console.log("recommend highest possible ICS DOSE in each new medication");
-              result.push(high);
+              result.push(get.lowestICSDose(excessive));
             }
           }
           if (patientMedication.chemicalType === "ltra") {

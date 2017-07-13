@@ -6,7 +6,6 @@ import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../../MedicationData/MedicationData';
 import DisplayPatientMedications from '../DisplayMedications/DisplayMedications';
 import * as get from '../../Rules/Rules';
-import * as rules from '../../Rules/Rules';
 import './styles.css';
 
 const App = ({
@@ -159,6 +158,9 @@ const App = ({
                               </div>
                             );
                           }
+                          return (
+                            <p>no Recommendations</p>
+                          );
                         }
                       )
                     }
