@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as calculate from './Library/CalculateICSDose';
 import * as categorize from './Library/CategorizeDose';
+import * as get from './Library/GetICSDose';
 import * as match from './Library/Match';
 
 const rule3 = (patientMedications, masterMedications) => {
@@ -45,11 +46,24 @@ const rule3 = (patientMedications, masterMedications) => {
                   chemicalICS: patientMedication.chemicalICS
                 });
               if (!_.isEmpty(filteredMedication)) {
-                if (!_.isEmpty(_.filter(filteredMedication, (medication) => {
-                    return medication.device === isLaba.device || medication.device === isICS.device
-                  }))) {
-                  //test to see which device can be put into the lowest possible dose within the medium dose category
-                  result.push();
+                const getDeviceIcsOrLaba = _.filter(filteredMedication, (medication) => {
+                  return medication.device === isLaba.device || medication.device === isICS.device
+                });
+                const getICSDevice = _.filter(filteredMedication, (medication) => {
+                  return medication.device === isICS.device
+                });
+                const getLabaDevice = _.filter(filteredMedication, (medication) => {
+                  return medication.device === isLaba.device
+                });
+                if (!_.isEmpty(getDeviceIcsOrLaba)) {
+                  if(!_.isEmpty(getICSDevice)){
+                    const tryMinimizePuffs = match.minimizePuffsPerTime(getICSDevice, patientMedication);
+                    if(!_.isEmpty(tryMinimizePuffs)) {
+                      result.push(get.lowestICSDose(tryMinimizePuffs));
+                    }
+                    result.push(get.lowestICSDose(getICSDevice));
+                  }
+                  result.push(get.lowestICSDose(getLabaDevice));
                 }
                 else {
                   //increase the original medication ICD to lowest possible dose within the medium dose category + recommend LTRA
