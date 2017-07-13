@@ -38,7 +38,7 @@ export const ICSDose = (medication, level) => {
   return medication;
 };
 
-const adjustICSDoseToOriginalMedication = (medication, patientMedication) => {
+export const ICSDoseToOriginalMedication = (medication, patientMedication) => {
   const max = medication.maxPuffPerTime;
   let equal = false;
   let counter = 1;
@@ -56,13 +56,4 @@ const adjustICSDoseToOriginalMedication = (medication, patientMedication) => {
     return [];
   }
   return medication;
-};
-
-export const equalICSDose = (medication, patientMedication) => {
-  if (calculate.patientICSDose(patientMedication) === calculate.ICSDose(medication)) {
-    return true;
-  }
-  else {
-    return adjustICSDoseToOriginalMedication(medication, patientMedication);
-  }
 };

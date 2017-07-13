@@ -35,33 +35,12 @@ const getLabaICSAndICS = (patientMedications) => {
     .value();
 };
 
-
-const adjustICSDoseToOriginalMedication = (medication, patientMedication) => {
-  const max = medication.maxPuffPerTime;
-  let equal = false;
-  let counter = 1;
-  let testAdjustment;
-  while (equal === false && (counter < max)) {
-    testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-    if (calculate.ICSDose(testAdjustment) === calculate.patientICSDose(patientMedication)) {
-      medication.maxPuffPerTime = counter;
-      equal = true;
-    }
-    counter++;
-  }
-  if (equal === false && counter > max) {
-    console.log("ICS DOSE cannot be made equal");
-    return [];
-  }
-  return medication;
-};
-
 const equalICSDose = (medication, patientMedication) => {
   if (calculate.patientICSDose(patientMedication) === calculate.ICSDose(medication)) {
     return true;
   }
   else {
-    return adjustICSDoseToOriginalMedication(medication, patientMedication);
+    return adjust.ICSDoseToOriginalMedication(medication, patientMedication);
   }
 };
 
