@@ -3,9 +3,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
-import medicationData from '../MedicationData/MedicationData';
+import medicationData from '../../MedicationData/MedicationData';
 import DisplayPatientMedications from '../DisplayMedications/DisplayMedications';
-import * as rules from '../Rules/Rules';
+import * as rules from '../../Rules/Rules';
 import './styles.css';
 
 const App = ({
