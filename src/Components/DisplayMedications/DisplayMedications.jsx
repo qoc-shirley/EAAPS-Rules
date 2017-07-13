@@ -5,7 +5,7 @@ import _ from 'lodash';
 import * as actions from '../../redux/App/actions';
 import './styles.css';
 
-const DisplayMedications = ({
+const DisplayPatientMedications = ({
                               chemicalICS,
                               chemicalLABA,
                               medication,
@@ -115,4 +115,4 @@ const mapDispatchToProps = dispatch => ( {
   getPatientMedications: (medications) => dispatch(actions.getPatientMedications(medications)),
 } );
 
-export default connect(mapStateToProps, mapDispatchToProps)(DisplayMedications);
+export default connect(mapStateToProps, mapDispatchToProps)(DisplayPatientMedications);
