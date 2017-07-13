@@ -50,7 +50,7 @@ const rule1 = (patientMedications, masterMedications) => {
               const equalMedications = _.filter(chemicalICSMedications, (medication) => {
                 return equalICSDose(medication, patientMedication);
               });
-              const tryTimePerDay = matchTimesPerDay(equalMedications, patientMedication);
+              const tryTimesPerDay = matchTimesPerDay(equalMedications, patientMedication);
 
               if (!_.isEmpty(tryTimesPerDay)) {
                 const tryMinimizePuffs = minimizePuffsPerTime(tryTimesPerDay, patientMedication);
