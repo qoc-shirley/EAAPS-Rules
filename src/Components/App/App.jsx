@@ -6,6 +6,7 @@ import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../../MedicationData/MedicationData';
 import DisplayPatientMedications from '../DisplayMedications/DisplayMedications';
 import * as get from '../../Rules/Rules';
+import * as rules from '../../Rules/Rules';
 import './styles.css';
 
 const App = ({
@@ -54,7 +55,7 @@ const App = ({
 
   const onChangeRule = () => {
     saveRecommendation("Rule -1", get.rules.ruleMinus1(medication.patientMedications));
-    saveRecommendation("Rule 0", rules.rule0(medication.patientMedications, medicationData));
+    saveRecommendation("Rule 0", get.rules.rule0(medication.patientMedications, medicationData));
     // saveRecommendation("Rule 1", rules.rule1(medication.patientMedications, medicationData));
     // saveRecommendation("Rule 3", rules.rule3(medication.patientMedications, medicationData));
     saveRecommendation("Rule 4", _.flatten(rules.rule4(medication.patientMedications, medicationData)));

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import masterMedications from '../MedicationData/MedicationData'
 import ruleMinus1 from './RuleMinus1';
+import rule0 from './Rule0';
 import * as calculate from './Library/CalculateICSDose';
 import * as get from './Library/GetICSDose';
 import * as categorize from './Library/CategorizeDose';
@@ -46,112 +47,104 @@ const equalICSDose = (medication, patientMedication) => {
 };
 
 //////////////////////////////////////////////// RULES ////////////////////////////////////////////////////////////////
+export const rules = {
+  ruleMinus1,
+  rule0,
+};
 
-// //rule -1
-// export const ruleMinus1 = (patientMedications) => {
+// //rule 0
+// export const rule0 = (patientMedications, masterMedications) => {
+//   let result = [];
 //   return _.chain(patientMedications)
-//     .filter((patientMedication) => {
-//       return patientMedication.chemicalType === "laac";
-//     })
+//     .filter(
+//       _.partial((medicationElement, patientMedication) => {
+//         if (patientMedication.chemicalType !== "ICS" && patientMedication.chemicalType !== "laba,ICS") {
+//
+//           if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}) )) {
+//
+//             const isLabaICSAndChemicalLABA = _.chain(medicationElement)
+//               .filter({
+//                 chemicalType: "laba,ICS",
+//                 chemicalLABA: patientMedication.chemicalLABA,
+//               })
+//               .isEmpty()
+//               .value();
+//
+//             if (!isLabaICSAndChemicalLABA) {
+//
+//               const isChemicalLABAAndDeviceEqual = _.chain(medicationElement)
+//                 .filter({
+//                   chemicalType: "laba,ICS",
+//                   chemicalLABA: patientMedication.chemicalLABA,
+//                   device: patientMedication.device
+//                 })
+//                 .isEmpty()
+//                 .value();
+//
+//               if (!isChemicalLABAAndDeviceEqual) {
+//
+//                 let newMedications = _.filter(medicationElement, {
+//                   chemicalType: "laba,ICS",
+//                   chemicalLABA: patientMedication.chemicalLABA,
+//                   device: patientMedication.device
+//                 });
+//
+//                 const lowestICSDose = get.lowestICSDose(newMedications);
+//                 result.push(addToRecommendations(lowestICSDose)); //concat doesn't work
+//               }
+//               else {
+//                 let newMedications = _.filter(medicationElement, {
+//                   chemicalType: "laba,ICS",
+//                   chemicalLABA: patientMedication.chemicalLABA
+//                 });
+//
+//                 const lowestICSDose = get.lowestICSDose(newMedications);
+//                 result.push(addToRecommendations(lowestICSDose));
+//               }
+//             }
+//             else {
+//               const newMedications = _.chain(medicationElement)
+//                 .reduce((recommend, medication) => {
+//                   if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
+//                     recommend.push(medication);
+//                   }
+//                   if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2") {
+//                     recommend.push(medication);
+//                   }
+//                   if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+//                     recommend.push(medication);
+//                   }
+//                   if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
+//                     recommend.push(medication);
+//                   }
+//                   return recommend;
+//                 }, [])
+//                 .value();
+//
+//               const lowestICSDose = get.lowestICSDose(newMedications);
+//               result.push(addToRecommendations(lowestICSDose));
+//             }
+//           }
+//           else {
+//             const newMedications =
+//               ["Flovent 125 ug 1 PUFF bid",
+//                 "Discus Flovent 100 ug 1 PUFF puff bid",
+//                 "Pulmicort 200 ug 1 PUFF bid",
+//                 "Asmanex 200 ug I PUFF od",
+//                 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
+//               ];
+//
+//             result.push(addToRecommendations(newMedications));
+//           }
+//         }
+//
+//         if (patientMedication.chemicalType === "ltra") {
+//           result.push(patientMedication);
+//         }
+//       }, masterMedications))
+//     .concat(result)
 //     .value();
 // };
-export const rules = {
-  ruleMinus1
-};
-
-//rule 0
-export const rule0 = (patientMedications, masterMedications) => {
-  let result = [];
-  return _.chain(patientMedications)
-    .filter(
-      _.partial((medicationElement, patientMedication) => {
-        if (patientMedication.chemicalType !== "ICS" && patientMedication.chemicalType !== "laba,ICS") {
-
-          if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}) )) {
-
-            const isLabaICSAndChemicalLABA = _.chain(medicationElement)
-              .filter({
-                chemicalType: "laba,ICS",
-                chemicalLABA: patientMedication.chemicalLABA,
-              })
-              .isEmpty()
-              .value();
-
-            if (!isLabaICSAndChemicalLABA) {
-
-              const isChemicalLABAAndDeviceEqual = _.chain(medicationElement)
-                .filter({
-                  chemicalType: "laba,ICS",
-                  chemicalLABA: patientMedication.chemicalLABA,
-                  device: patientMedication.device
-                })
-                .isEmpty()
-                .value();
-
-              if (!isChemicalLABAAndDeviceEqual) {
-
-                let newMedications = _.filter(medicationElement, {
-                  chemicalType: "laba,ICS",
-                  chemicalLABA: patientMedication.chemicalLABA,
-                  device: patientMedication.device
-                });
-
-                const lowestICSDose = get.lowestICSDose(newMedications);
-                result.push(addToRecommendations(lowestICSDose)); //concat doesn't work
-              }
-              else {
-                let newMedications = _.filter(medicationElement, {
-                  chemicalType: "laba,ICS",
-                  chemicalLABA: patientMedication.chemicalLABA
-                });
-
-                const lowestICSDose = get.lowestICSDose(newMedications);
-                result.push(addToRecommendations(lowestICSDose));
-              }
-            }
-            else {
-              const newMedications = _.chain(medicationElement)
-                .reduce((recommend, medication) => {
-                  if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
-                    recommend.push(medication);
-                  }
-                  if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2") {
-                    recommend.push(medication);
-                  }
-                  if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
-                    recommend.push(medication);
-                  }
-                  if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
-                    recommend.push(medication);
-                  }
-                  return recommend;
-                }, [])
-                .value();
-
-              const lowestICSDose = get.lowestICSDose(newMedications);
-              result.push(addToRecommendations(lowestICSDose));
-            }
-          }
-          else {
-            const newMedications =
-              ["Flovent 125 ug 1 PUFF bid",
-                "Discus Flovent 100 ug 1 PUFF puff bid",
-                "Pulmicort 200 ug 1 PUFF bid",
-                "Asmanex 200 ug I PUFF od",
-                "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
-              ];
-
-            result.push(addToRecommendations(newMedications));
-          }
-        }
-
-        if (patientMedication.chemicalType === "ltra") {
-          result.push(patientMedication);
-        }
-      }, masterMedications))
-    .concat(result)
-    .value();
-};
 
 //rule 1
 export const rule1 = (patientMedications, masterMedications) => {
