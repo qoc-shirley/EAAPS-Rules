@@ -62,11 +62,6 @@ const rule1 = (patientMedications, masterMedications) => {
                   )
               });
             console.log("categorize original and new medications");
-            //recommend the lowest possible ICS DOSE in each new medication
-            // but I'm only supposed to return the medication row so I will not be
-            // doing this but the doctor?
-            //still confused on returning the lowest possible ICS DOSE in rule 2 the lowest dose
-            //  out of a group of medications was returned
             const low = _.filter(newMedication, (medication) => {
               return categorize.ICSDose(medication) === "low";
             });
