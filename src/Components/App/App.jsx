@@ -58,7 +58,7 @@ const App = ({
     saveRecommendation("Rule 0", get.rules.rule0(medication.patientMedications, medicationData));
     // saveRecommendation("Rule 1", rules.rule1(medication.patientMedications, medicationData));
     // saveRecommendation("Rule 3", rules.rule3(medication.patientMedications, medicationData));
-    saveRecommendation("Rule 4", _.flatten(rules.rule4(medication.patientMedications, medicationData)));
+    saveRecommendation("Rule 4", _.flatten(get.rules.rule4(medication.patientMedications, medicationData)));
     // saveRecommendation("Rule 5", rules.rule5(medication.patientMedications, medicationData));
     //saveRecommendation("Rule 6", rules.rule6(medication.patientMedications));
     saveRecommendation("Rule 7", rules.rule7(medication.patientMedications));

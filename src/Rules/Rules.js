@@ -2,19 +2,11 @@ import _ from 'lodash';
 import masterMedications from '../MedicationData/MedicationData'
 import ruleMinus1 from './RuleMinus1';
 import rule0 from './Rule0';
+import rule4 from './Rule4';
 import * as calculate from './Library/CalculateICSDose';
 import * as get from './Library/GetICSDose';
 import * as categorize from './Library/CategorizeDose';
 import * as adjust from './Library/AdjustICSDose';
-
-const addToRecommendations = (elements) => {
-  return _.chain(elements)
-    .reduce((recommend, addElement) => {
-      recommend.push(addElement);
-      return recommend;
-    }, [])
-    .value();
-};
 
 const getLabaICSAndICS = (patientMedications) => {
   let result = [];
@@ -50,101 +42,8 @@ const equalICSDose = (medication, patientMedication) => {
 export const rules = {
   ruleMinus1,
   rule0,
+  rule4,
 };
-
-// //rule 0
-// export const rule0 = (patientMedications, masterMedications) => {
-//   let result = [];
-//   return _.chain(patientMedications)
-//     .filter(
-//       _.partial((medicationElement, patientMedication) => {
-//         if (patientMedication.chemicalType !== "ICS" && patientMedication.chemicalType !== "laba,ICS") {
-//
-//           if ((patientMedication.chemicalType === "laba") && (_.some(medicationElement, {chemicalType: "laba,ICS"}) )) {
-//
-//             const isLabaICSAndChemicalLABA = _.chain(medicationElement)
-//               .filter({
-//                 chemicalType: "laba,ICS",
-//                 chemicalLABA: patientMedication.chemicalLABA,
-//               })
-//               .isEmpty()
-//               .value();
-//
-//             if (!isLabaICSAndChemicalLABA) {
-//
-//               const isChemicalLABAAndDeviceEqual = _.chain(medicationElement)
-//                 .filter({
-//                   chemicalType: "laba,ICS",
-//                   chemicalLABA: patientMedication.chemicalLABA,
-//                   device: patientMedication.device
-//                 })
-//                 .isEmpty()
-//                 .value();
-//
-//               if (!isChemicalLABAAndDeviceEqual) {
-//
-//                 let newMedications = _.filter(medicationElement, {
-//                   chemicalType: "laba,ICS",
-//                   chemicalLABA: patientMedication.chemicalLABA,
-//                   device: patientMedication.device
-//                 });
-//
-//                 const lowestICSDose = get.lowestICSDose(newMedications);
-//                 result.push(addToRecommendations(lowestICSDose)); //concat doesn't work
-//               }
-//               else {
-//                 let newMedications = _.filter(medicationElement, {
-//                   chemicalType: "laba,ICS",
-//                   chemicalLABA: patientMedication.chemicalLABA
-//                 });
-//
-//                 const lowestICSDose = get.lowestICSDose(newMedications);
-//                 result.push(addToRecommendations(lowestICSDose));
-//               }
-//             }
-//             else {
-//               const newMedications = _.chain(medicationElement)
-//                 .reduce((recommend, medication) => {
-//                   if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "diskus") {
-//                     recommend.push(medication);
-//                   }
-//                   if (medication.chemicalLABA === "salmeterol" && medication.chemicalICS === "fluticasone" && medication.device === "inhaler2") {
-//                     recommend.push(medication);
-//                   }
-//                   if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
-//                     recommend.push(medication);
-//                   }
-//                   if (medication.chemicalLABA === "formoterol" && medication.chemicalICS === "budesonide") {
-//                     recommend.push(medication);
-//                   }
-//                   return recommend;
-//                 }, [])
-//                 .value();
-//
-//               const lowestICSDose = get.lowestICSDose(newMedications);
-//               result.push(addToRecommendations(lowestICSDose));
-//             }
-//           }
-//           else {
-//             const newMedications =
-//               ["Flovent 125 ug 1 PUFF bid",
-//                 "Discus Flovent 100 ug 1 PUFF puff bid",
-//                 "Pulmicort 200 ug 1 PUFF bid",
-//                 "Asmanex 200 ug I PUFF od",
-//                 "Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid"
-//               ];
-//
-//             result.push(addToRecommendations(newMedications));
-//           }
-//         }
-//
-//         if (patientMedication.chemicalType === "ltra") {
-//           result.push(patientMedication);
-//         }
-//       }, masterMedications))
-//     .concat(result)
-//     .value();
-// };
 
 //rule 1
 export const rule1 = (patientMedications, masterMedications) => {
@@ -317,71 +216,71 @@ export const rule3 = (patientMedications, masterMedications) => {
     .value();
 };
 
-export const rule4 = (patientMedications, masterMedications) => {
-  let result = [];
-  return _.chain(patientMedications)
-    .filter(
-      // _.reduce((result) => {
-      _.partial((medicationElement, patientMedication) => {
-        if (patientMedication.chemicalType === "ICS" &&
-          patientMedication.name !== "symbicort" &&
-          (categorize.patientICSDose(patientMedication) === "medium" || categorize.patientICSDose(patientMedication) === "high") &&
-          (!_.isEmpty(_.filter(patientMedications, {chemicalType: "laba"})) )) {
-          if (!_.isEmpty(_.filter(patientMedications, {chemicalType: "laba, ICS"}))) {
-            result.push(patientMedication);
-            result.push(_.filter(medicationElement, {name: "singulair"}));
-          }
-          const getLABAAndICS = _.filter(patientMedications,
-            (medication) => {
-              return medication.chemicalType === "laba" || medication.chemicalType === "ICS"
-            });
-          if (!_.isEmpty(getLABAAndICS)) {
-            const filteredMedication = _.filter(medicationElement,
-              {
-                chemicalType: "laba,ICS",
-                chemicalABA: patientMedication.chemicalLABA,
-                chemicalICS: patientMedication.chemicalICS
-              });
-            if (!_.isEmpty(filteredMedication)) {
-              if (!_.isEmpty(_.filter(filteredMedication, {device: patientMedication.device}))) {
-                console.log("device");
-                if (!_.isEmpty(_.filter(filteredMedication, (medication) => {
-                    return medication.device === patientMedication.device &&
-                      calculate.ICSDose(medication) === calculate.patientICSDose(patientMedication);
-                  }))) {
-                  result.push(_.max(_.filter(filteredMedication, {device: patientMedication.device}), 'doseICS'));
-                }
-                else {
-                  result.push(_.filter(filteredMedication, (medication) => {
-                    return medication.device === patientMedication.device &&
-                      calculate.ICSDose(medication) === calculate.patientICSDose(patientMedication);
-                  }));
-                }
-                result.push(patientMedication);
-                result.push(_.filter(medicationElement, {name: "singulair"}));
-              }
-              else {
-                result.push(patientMedication);
-                result.push(_.filter(medicationElement, {name: "singulair"}));
-              }
-            }
-            else {
-              result.push(patientMedication);
-              result.push(_.filter(medicationElement, {name: "singulair"}));
-            }
-          }
-        }
-        if (patientMedication.name === "symbicort" &&
-          (categorize.patientICSDose(patientMedication) === "medium" || categorize.patientICSDose(patientMedication) === "high")) {
-          result.push(_.filter(medicationElement, {name: "symbicort", din: patientMedication.din}));
-        }
-      }, masterMedications)
-      //return result;
-      //}, [])
-    )
-    .concat(result)
-    .value();
-};
+// export const rule4 = (patientMedications, masterMedications) => {
+//   let result = [];
+//   return _.chain(patientMedications)
+//     .filter(
+//       // _.reduce((result) => {
+//       _.partial((medicationElement, patientMedication) => {
+//         if (patientMedication.chemicalType === "ICS" &&
+//           patientMedication.name !== "symbicort" &&
+//           (categorize.patientICSDose(patientMedication) === "medium" || categorize.patientICSDose(patientMedication) === "high") &&
+//           (!_.isEmpty(_.filter(patientMedications, {chemicalType: "laba"})) )) {
+//           if (!_.isEmpty(_.filter(patientMedications, {chemicalType: "laba, ICS"}))) {
+//             result.push(patientMedication);
+//             result.push(_.filter(medicationElement, {name: "singulair"}));
+//           }
+//           const getLABAAndICS = _.filter(patientMedications,
+//             (medication) => {
+//               return medication.chemicalType === "laba" || medication.chemicalType === "ICS"
+//             });
+//           if (!_.isEmpty(getLABAAndICS)) {
+//             const filteredMedication = _.filter(medicationElement,
+//               {
+//                 chemicalType: "laba,ICS",
+//                 chemicalABA: patientMedication.chemicalLABA,
+//                 chemicalICS: patientMedication.chemicalICS
+//               });
+//             if (!_.isEmpty(filteredMedication)) {
+//               if (!_.isEmpty(_.filter(filteredMedication, {device: patientMedication.device}))) {
+//                 console.log("device");
+//                 if (!_.isEmpty(_.filter(filteredMedication, (medication) => {
+//                     return medication.device === patientMedication.device &&
+//                       calculate.ICSDose(medication) === calculate.patientICSDose(patientMedication);
+//                   }))) {
+//                   result.push(_.max(_.filter(filteredMedication, {device: patientMedication.device}), 'doseICS'));
+//                 }
+//                 else {
+//                   result.push(_.filter(filteredMedication, (medication) => {
+//                     return medication.device === patientMedication.device &&
+//                       calculate.ICSDose(medication) === calculate.patientICSDose(patientMedication);
+//                   }));
+//                 }
+//                 result.push(patientMedication);
+//                 result.push(_.filter(medicationElement, {name: "singulair"}));
+//               }
+//               else {
+//                 result.push(patientMedication);
+//                 result.push(_.filter(medicationElement, {name: "singulair"}));
+//               }
+//             }
+//             else {
+//               result.push(patientMedication);
+//               result.push(_.filter(medicationElement, {name: "singulair"}));
+//             }
+//           }
+//         }
+//         if (patientMedication.name === "symbicort" &&
+//           (categorize.patientICSDose(patientMedication) === "medium" || categorize.patientICSDose(patientMedication) === "high")) {
+//           result.push(_.filter(medicationElement, {name: "symbicort", din: patientMedication.din}));
+//         }
+//       }, masterMedications)
+//       //return result;
+//       //}, [])
+//     )
+//     .concat(result)
+//     .value();
+// };
 
 export const rule5 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
