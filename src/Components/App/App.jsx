@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../../MedicationData/MedicationData';
-import DisplayPatientMedications from '../DisplayMedications/DisplayMedications';
+import DisplayPatientMedications from '../DisplayPatientMedications/DisplayPatientMedications';
 import * as get from '../../Rules/Rules';
 import './styles.css';
 
