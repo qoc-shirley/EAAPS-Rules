@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as calculate from './Library/CalculateICSDose';
 import * as categorize from './Library/CategorizeDose';
 import * as get from './Library/GetICSDose';
+import * as adjust from './Library/AdjustICSDose';
 import * as match from './Library/Match';
 
 const rule3 = (patientMedications, masterMedications) => {
@@ -66,27 +67,62 @@ const rule3 = (patientMedications, masterMedications) => {
                   result.push(get.lowestICSDose(getLabaDevice));
                 }
                 else {
-                  //increase the original medication ICS to lowest possible dose within the medium dose category + recommend LTRA
-                  //match ICS device can be put into the lowest possible dose within the medium dose category
-                  const tryICSDevice = match.device(getDeviceIcsOrLaba, getICSDevice);
-                  const tryDoseICS = match.doseICS(tryICSDevice, getICSDevice);
-                  const tryTimesPerDay = match.timesPerDay(tryDoseICS, getICSDevice);
-                  const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, getICSDevice);
+                  const increaseOriginalMedication = adjust.ICSDose(getDeviceIcsOrLaba, "lowestMedium");
+                  if (!_.isEmpty(increaseOriginalMedication)) {
+                    const tryICSDevice = match.device(increaseOriginalMedication, getICSDevice);
+                    if (!_.isEmpty(tryICSDevice)) {
+                      const tryDoseICS = match.doseICS(tryICSDevice, getICSDevice);
+                      if (!_.isEmpty(tryDoseICS)) {
+                        const tryTimesPerDay = match.timesPerDay(tryDoseICS, getICSDevice);
+                        if (!_.isEmpty(tryTimesPerDay)) {
+                          const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, getICSDevice);
+                          if (!_.isEmpty(tryMinimize)) {
+                            result.push(tryMinimize);
+                            //what is there is no ltra in original medications?
+                            result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
+                          }
+                          result.push(tryTimesPerDay);
+                          result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
+                        }
+                        result.push(tryDoseICS);
+                        result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
+                      }
+                      result.push(tryICSDevice);
+                      result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
+                    }
+                    result.push(increaseOriginalMedication);
+                    result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
+                  }
                 }
               }
               else {
-                //increase original medication ICS to lowest dose in medium category + recommend LABA
-                const tryICSDevice = match.device(filteredMedication, isICS);
-                const tryDoseICS = match.doseICS(tryICSDevice, isICS);
-                const tryTimesPerDay = match.timesPerDay(tryDoseICS, isICS);
-                const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, isICS);
+                const increaseOriginalMedication = adjust.ICSDose(filteredMedication, "lowestMedium");
+                if (!_.isEmpty(increaseOriginalMedication)) {
+                  const tryICSDevice = match.device(increaseOriginalMedication, isICS);
+                  if (!_.isEmpty(tryICSDevice)) {
+                    const tryDoseICS = match.doseICS(tryICSDevice, isICS);
+                    if (!_.isEmpty(tryDoseICS)) {
+                      const tryTimesPerDay = match.timesPerDay(tryDoseICS, isICS);
+                      if (!_.isEmpty(tryTimesPerDay)) {
+                        const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, isICS);
+                        if (!_.isEmpty(tryMinimize)) {
+                          result.push(tryMinimize);
+                          //what is there is no laba in original medications?
+                          result.push(_.filter(patientMedications, {chemicalType: "laba"}));
+                        }
+                        result.push(tryTimesPerDay);
+                        result.push(_.filter(patientMedications, {chemicalType: "laba"}));
+                      }
+                      result.push(tryDoseICS);
+                      result.push(_.filter(patientMedications, {chemicalType: "laba"}));
+                    }
+                    result.push(tryICSDevice);
+                    result.push(_.filter(patientMedications, {chemicalType: "laba"}));
+                  }
+                  result.push(increaseOriginalMedication);
+                  result.push(_.filter(patientMedications, {chemicalType: "laba"}));
+                }
               }
-            }
-            else {
-              const tryICSDevice = match.device(isLabaICS, isLaba);
-              const tryDoseICS = match.doseICS(tryICSDevice, isLaba);
-              const tryTimesPerDay = match.timesPerDay(tryDoseICS, isLaba);
-              const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, isLaba);
             }
           }
           else if (patientMedication.name === "symbicort" && categorize.patientICSDose(patientMedication) === "low") {
