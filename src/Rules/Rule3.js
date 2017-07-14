@@ -22,7 +22,7 @@ const rule3 = (patientMedications, masterMedications) => {
           const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});
           const isLaba = _.filter(filterOrgMeds, {chemicalType: "laba"});
           const isICS = _.filter(filterOrgMeds, {chemicalType: "ICS"});
-          if (!_.isEmpty(filterOrgMeds)) {
+          if (!_.isEmpty(isLabaICS) || (!_.isEmpty(isLaba) && !_.isEmpty(isICS))) {
             if (!_.isEmpty(isLabaICS)) {
               const tryTimesPerDay = match.timesPerDay(isLabaICS, patientMedication);
 
