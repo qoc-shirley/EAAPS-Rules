@@ -4,22 +4,6 @@
   flex-direction: column;
 }
 
-.app .app__main .results .patientMedications .submit {
-    width: 10%;
-    height: 50px;
-    border-radius: 20px;
-    font-size: 15px;
-    background-color: #ccefff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    transition-duration: 0.3ms;
-}
-
-.app .app__main .results .patientMedications .submit:hover {
-    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
-}
-
 .app .app__main .results {
     padding: 10px;
     margin: 20px;
@@ -65,17 +49,6 @@
     padding: 40px 40px 20px 40px;
     border: solid 3px #ccefff;
     border-radius: 20px;
-}
-
-.app .app__main .results .patientMedications .medicationRow .filteredMedications {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    margin-right:100px;
-}
-
-.app .app__main .results .patientMedications .medicationRow .filteredMedications .medication{
-    font-weight: bold;
 }
 
 .app .app__main .results .rules .clear {

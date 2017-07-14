@@ -5,3 +5,14 @@
     border: solid 3px #ccefff;
     border-radius: 20px;
 }
+
+.patientMedications .medicationRow .filteredMedications {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-right:100px;
+}
+
+.patientMedications .medicationRow .filteredMedications .medication{
+    font-weight: bold;
+}
