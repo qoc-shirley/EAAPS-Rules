@@ -10,9 +10,9 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    margin-right:100px;
+    margin-right: 100px;
 }
 
-.patientMedications .medicationRow .filteredMedications .medication{
+.patientMedications .medicationRow .filteredMedications .medication {
     font-weight: bold;
 }

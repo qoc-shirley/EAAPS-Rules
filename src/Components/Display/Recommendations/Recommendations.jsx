@@ -133,7 +133,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ( {
-  onClickClear: () => dispatch( actions.onClickClear() ),
+  onClickClear: () => dispatch(actions.onClickClear()),
 } );
 
 export default connect(mapStateToProps, mapDispatchToProps)(showRecommendations);

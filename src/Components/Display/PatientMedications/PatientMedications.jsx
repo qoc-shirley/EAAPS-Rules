@@ -6,10 +6,10 @@ import * as actions from '../../../redux/App/actions';
 import './styles.css';
 
 const DisplayPatientMedications = ({
-                              chemicalICS,
-                              chemicalLABA,
-                              medication,
-                            }) => {
+                                     chemicalICS,
+                                     chemicalLABA,
+                                     medication,
+                                   }) => {
   const displayMedications = _
     .chain(medication.medicationList)
     .reduce((filteredData, medication) => {
