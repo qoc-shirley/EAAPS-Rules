@@ -2,8 +2,8 @@ import _ from 'lodash';
 import * as calculate from './Library/CalculateICSDose';
 // import * as categorize from './Library/CategorizeDose';
 import * as get from './Library/GetICSDose';
-// import * as adjust from './Library/AdjustICSDose';
-// import * as match from './Library/Match';
+import * as adjust from './Library/AdjustICSDose';
+import * as match from './Library/Match';
 
 const rule5 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
@@ -29,16 +29,20 @@ const rule5 = (patientMedications, masterMedications) => {
             calculate.patientICSDose(findLtra) < findLtra.maxGreenICS) {
 
             if (!_.isEmpty(isLabaICS)) {
-              const recommendHighest = get.highestICSDose(isLabaICS);
-              const tryOriginalDevice
-              result.push(patientMedication);
-              result.push(findLtra); //any ltra? or all ltra in orgMeds
-              //match the orgMed[device] does this refer to matching the laba, ics device?
-              //attempt to match the orgMed[dosePerPuff]
-              //after matching orgMed[dosePerPuff] or if not possible to match orgMed[dosePerPuff],  
-              // choose the [dosePerPuff] that will minimize the required [puffsPerTime]
+              // const tryOriginalDevice
+              // const tryMatchDoseICS = match.doseICS(isLabaICS, );
+              const recommendHighest = adjust.ICSDose(isLabaICS, "highest");
+              if (!_.isEmpty(recommendHighest)){
+                if(_.size(recommendHighest) > 2 ) {
+                  const tryMinimize = match.minimizePuffsPerTime(recommendHighest, get.lowestICSDose(recommendHighest));
+                  result.push(tryMinimize);
+                  result.push(findLtra);//any ltra? or all ltra in orgMeds
+                }
+                result.push(recommendHighest);
+                result.push(findLtra);//any ltra? or all ltra in orgMeds
+              }
             }
-            else if (patientMedication.chemicalType === "laba" && !_.isEmpty(typeICS)) {
+            else if (!_.isEmpty(isICS) && !_.isEmpty(isLaba)) {
               const filteredNewMedications = _.filter(medicationElement, {chemicalType: "laba,ICS",});
               for (let i = 0; i < _.size(filteredNewMedications); i++) {
                 for (let j = 0; j < _.size(typeICS); i++) {
