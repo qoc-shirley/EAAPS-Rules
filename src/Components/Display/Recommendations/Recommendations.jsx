@@ -31,7 +31,6 @@ const showRecommendations = ({
                   {
                     recommendMedication.medications.map(
                       (medicationElement, medicationIndex) => {
-                        console.log("is it empty: ", _.isEmpty(medicationElement));
                         if (_.isArray(medicationElement) && _.size(medicationElement) > 29) {
                           return (
                             <div key={medicationIndex} className="recommendationArray">
@@ -51,39 +50,7 @@ const showRecommendations = ({
                           return (
                             <div key={medicationIndex} className="recommendationArray">
                               <p><b>-</b></p>
-                              {
-                                medicationElement.medications.map(
-                                  (medication, index) => {
-                                    return (
-                                      <p key={index}
-                                         className="data"
-                                      >
-                                        {medication}
-                                      </p>
-                                    );
-                                  }
-                                )
-                              }
-                            </div>
-                          );
-                        }
-                        else if (!_.isArray(medicationElement) && _.size(medicationElement) < 29) {
-                          return (
-                            <div key={medicationIndex} className="recommendationArray">
-                              <p><b>-</b></p>
-                              {
-                                recommendMedication.medications.map(
-                                  (medication, index) => {
-                                    return (
-                                      <p key={index}
-                                         className="data"
-                                      >
-                                        {medication}
-                                      </p>
-                                    );
-                                  }
-                                )
-                              }
+                              <p className="data">{medicationElement}</p>
                             </div>
                           );
                         }
