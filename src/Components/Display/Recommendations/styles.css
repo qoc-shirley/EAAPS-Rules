@@ -1,7 +1,49 @@
-.patientMedications {
+.recommendations {
     text-align: left;
-    margin-bottom: 100px;
     padding: 40px 40px 20px 40px;
     border: solid 3px #ccefff;
     border-radius: 20px;
+    margin: 0;
+}
+
+.recommendations .clear {
+    width: 10%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.recommendations .clear:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
+}
+
+.recommendations .recommendationObject {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.recommendations .recommendationArray {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.recommendations .recommendationObject p {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.recommendations .recommendationArray p {
+    margin-left: 20px;
+    margin-right: 20px;
 }
