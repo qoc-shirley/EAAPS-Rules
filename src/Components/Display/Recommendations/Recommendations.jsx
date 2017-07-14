@@ -71,7 +71,7 @@ const showRecommendations = ({
                           );
                         }
                         return (
-                          <p>no Recommendations</p>
+                          <p key={medicationIndex}>no Recommendations</p>
                         );
                       }
                     )

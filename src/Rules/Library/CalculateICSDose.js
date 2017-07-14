@@ -1,7 +1,9 @@
+import _ from 'lodash';
+
 export const ICSDose = (medication) => {
-  return medication.doseICS * medication.timesPerDay;
+  return _.toInteger(medication.doseICS) * _.toInteger(medication.timesPerDay);
 };
 
 export const patientICSDose = (medication) => {
-  return medication.doseICS * medication.timesPerDay * medication.puffPerTime;
+  return _.toInteger(medication.doseICS) * _.toInteger(medication.timesPerDay) * _.toInteger(medication.puffPerTime);
 };
