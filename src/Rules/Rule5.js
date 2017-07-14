@@ -10,14 +10,20 @@ const rule5 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
+          const filterOrgMeds = _.filter(medications, (medication) => {
+            return medication.name !== "symbicort" &&
+              (
+                medication.chemicalType === "laba,ICS" ||
+                medication.chemicalType === "laba" ||
+                medication.chemicalType === "ICS"
+              ) &&
+              calculate.patientICSDose(medication) === "low"
+          });
           const findLtra = _.find(medications, {chemicalType: "ltra"});
-
-          if (patientMedication.name !== "symbicort" &&
-            (
-              patientMedication.chemicalType === "laba,ICS" ||
-              patientMedication.chemicalType === "laba" ||
-              patientMedication.chemicalType === "ICS"
-            ) &&
+          const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});
+          const isLaba = _.filter(filterOrgMeds, {chemicalType: "laba"});
+          const isICS = _.filter(filterOrgMeds, {chemicalType: "ICS"});
+          if (!_.isEmpty(isLabaICS) || (!_.isEmpty(isLaba) && !_.isEmpty(isICS)) &&
             !_.isEmpty(findLtra) &&
             calculate.patientICSDose(findLtra) < findLtra.maxGreenICS) {
             const typeICS = _.filter(medications, {chemicalType: "ICS"});
