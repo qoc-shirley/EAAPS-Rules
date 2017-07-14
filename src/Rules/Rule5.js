@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as calculate from './Library/CalculateICSDose';
 // import * as categorize from './Library/CategorizeDose';
-// import * as get from './Library/GetICSDose';
+import * as get from './Library/GetICSDose';
 // import * as adjust from './Library/AdjustICSDose';
 // import * as match from './Library/Match';
 
@@ -23,11 +23,14 @@ const rule5 = (patientMedications, masterMedications) => {
           const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});
           const isLaba = _.filter(filterOrgMeds, {chemicalType: "laba"});
           const isICS = _.filter(filterOrgMeds, {chemicalType: "ICS"});
+
           if (!_.isEmpty(isLabaICS) || (!_.isEmpty(isLaba) && !_.isEmpty(isICS)) &&
             !_.isEmpty(findLtra) &&
             calculate.patientICSDose(findLtra) < findLtra.maxGreenICS) {
-            const typeICS = _.filter(medications, {chemicalType: "ICS"});
-            if (patientMedication.chemicalType === "laba,ICS") {
+
+            if (!_.isEmpty(isLabaICS)) {
+              const recommendHighest = get.highestICSDose(isLabaICS);
+              const tryOriginalDevice
               result.push(patientMedication);
               result.push(findLtra); //any ltra? or all ltra in orgMeds
               //match the orgMed[device] does this refer to matching the laba, ics device?

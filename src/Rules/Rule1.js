@@ -125,18 +125,34 @@ const rule1 = (patientMedications, masterMedications) => {
 
             if (categorize.patientICSDose(patientMedication) === "low") {
               console.log("find new medication in low category");
+              const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(low), patientMedication);
+              if (!_.isEmpty(tryMinimizePuff)) {
+                result.push(tryMinimizePuff);
+              }
               result.push(get.lowestICSDose(low));
             }
             else if (categorize.patientICSDose(patientMedication) === "medium") {
               console.log("find new medication in medium category");
+              const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(medium), patientMedication);
+              if (!_.isEmpty(tryMinimizePuff)) {
+                result.push(tryMinimizePuff);
+              }
               result.push(get.lowestICSDose(medium));
             }
             else if (categorize.patientICSDose(patientMedication) === "high") {
               console.log("find new medication in high category");
+              const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(high), patientMedication);
+              if (!_.isEmpty(tryMinimizePuff)) {
+                result.push(tryMinimizePuff);
+              }
               result.push(get.lowestICSDose(high));
             }
             else if (categorize.patientICSDose(patientMedication) === "excessive") {
               console.log("recommend highest possible ICS DOSE in each new medication");
+              const tryMinimizePuff = match.minimizePuffsPerTime(get.highestICSDose(excessive), patientMedication);
+              if (!_.isEmpty(tryMinimizePuff)) {
+                result.push(tryMinimizePuff);
+              }
               result.push(get.highestICSDose(excessive));
             }
           }
