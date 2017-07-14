@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import medicationData from '../../MedicationData/MedicationData';
+import medicationData from '../../../MedicationData/MedicationData';
 import _ from 'lodash';
-import * as actions from '../../redux/App/actions';
+import * as actions from '../../../redux/App/actions';
 import './styles.css';
 
 const DisplayPatientMedications = ({
