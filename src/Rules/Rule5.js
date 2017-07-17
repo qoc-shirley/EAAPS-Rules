@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import * as calculate from './Library/CalculateICSDose';
-// import * as categorize from './Library/CategorizeDose';
-import * as get from './Library/GetICSDose';
-import * as adjust from './Library/AdjustICSDose';
-import * as match from './Library/Match';
+import * as calculate from './library/calculateICSDose';
+import * as categorize from './library/categorizeDose';
+import * as get from './library/getICSDose';
+import * as adjust from './library/adjustICSDose';
+import * as match from './library/match';
 
 const rule5 = (patientMedications, masterMedications) => {
   return _.chain(patientMedications)
@@ -17,7 +17,7 @@ const rule5 = (patientMedications, masterMedications) => {
                 medication.chemicalType === "laba" ||
                 medication.chemicalType === "ICS"
               ) &&
-              calculate.patientICSDose(medication) === "low"
+              categorize.patientICSDose(medication) === "low"
           });
           const findLtra = _.find(medications, {chemicalType: "ltra"});
           const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});

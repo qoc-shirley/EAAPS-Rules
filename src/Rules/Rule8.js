@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import * as categorize from './Library/CategorizeDose';
+import * as categorize from './library/categorizeDose';
 
 const rule8 = (patientMedications, masterMedications) => {
   const isSMARTMediumOrHigh = _.chain(patientMedications)

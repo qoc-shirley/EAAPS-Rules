@@ -1,12 +1,12 @@
 import React from 'react';
-import _ from 'lodash';
+// import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import MedicationTable from '../MedicationTable/MedicationTable';
-import medicationData from '../../MedicationData/MedicationData';
+import medicationData from '../../medicationData/medicationData';
 import DisplayPatientMedications from '../Display/PatientMedications/PatientMedications';
 import Recommendations from '../Display/Recommendations/Recommendations';
-import * as get from '../../Rules/Rules';
+import * as get from '../../rules/rules';
 import './styles.css';
 
 const App = ({

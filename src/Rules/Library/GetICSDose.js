@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import * as calculate from './CalculateICSDose';
+import * as calculate from './calculateICSDose';
 
 export const lowestICSDose = (newMedications) => {
   return _.chain(newMedications)

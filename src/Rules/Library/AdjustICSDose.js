@@ -1,4 +1,4 @@
-import * as calculate from './CalculateICSDose';
+import * as calculate from './calculateICSDose';
 
 export const ICSDose = (medication, level) => {
   const max = medication.maxPuffPerTime;

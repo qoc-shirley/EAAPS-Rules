@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import * as calculate from './Library/CalculateICSDose';
-import * as get from './Library/GetICSDose';
-import * as categorize from './Library/CategorizeDose';
-import * as adjust from './Library/AdjustICSDose';
-import * as match from './Library/Match';
+import * as calculate from './library/calculateICSDose';
+import * as get from './library/getICSDose';
+import * as categorize from './library/categorizeDose';
+import * as adjust from './library/adjustICSDose';
+import * as match from './library/match';
 
 const equalICSDose = (medication, patientMedication) => {
   if (calculate.patientICSDose(patientMedication) === calculate.ICSDose(medication)) {

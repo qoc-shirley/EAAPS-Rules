@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import * as calculate from './Library/CalculateICSDose';
+import * as calculate from './library/calculateICSDose';
 
 const rule10 = (patientMedications, masterMedications) => {
   const consultRespirologist = _

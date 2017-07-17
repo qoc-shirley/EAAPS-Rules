@@ -1,15 +1,15 @@
-import ruleMinus1 from './RuleMinus1';
-import rule0 from './Rule0';
-import rule1 from './Rule1';
-import rule3 from './Rule3';
-import rule4 from './Rule4';
-import rule5 from './Rule5';
-import rule6 from './Rule6';
-import rule7 from './Rule7';
-import rule8 from './Rule8';
-import rule9 from './Rule9';
-import rule10 from './Rule10';
-import rule11 from './Rule11';
+import ruleMinus1 from './ruleMinus1';
+import rule0 from './rule0';
+import rule1 from './rule1';
+import rule3 from './rule3';
+import rule4 from './rule4';
+import rule5 from './rule5';
+import rule6 from './rule6';
+import rule7 from './rule7';
+import rule8 from './rule8';
+import rule9 from './rule9';
+import rule10 from './rule10';
+import rule11 from './rule11';
 
 export const rules = {
   ruleMinus1,
