@@ -108,14 +108,14 @@ const rule1 = (patientMedications, masterMedications) => {
                       medication.chemicalLABA === "salmeterol" &&
                       medication.chemicalICS === "fluticasone" &&
                       medication.device === "diskus"
-                    ) && (
+                    ) || (
                       medication.chemicalLABA === "salmeterol" &&
                       medication.chemicalICS === "fluticasone" &&
                       medication.device === "inhaler2"
-                    ) && (
+                    ) || (
                       medication.chemicalLABA === "formoterol" &&
                       medication.chemicalICS === "budesonide"
-                    ) && (
+                    ) || (
                       medication.chemicalLABA === "formoterol" &&
                       medication.chemicalICS === "mometasone"
                     )
@@ -133,8 +133,8 @@ const rule1 = (patientMedications, masterMedications) => {
               const excessive = _.filter(newMedication, (medication) => {
                 return categorize.ICSDose(medication) === "excessive";
               });
-              console.log("patient ICS DOSE: ",categorize.patientICSDose(patientMedication), patientMedication);
-              console.log("lowestICSDose: ", get.highestICSDose(low));
+              console.log("new medications: ", newMedication);
+              console.log("Low: ", low);
 
               if (categorize.patientICSDose(patientMedication) === "low") {
                 console.log("find new medication in low category");
