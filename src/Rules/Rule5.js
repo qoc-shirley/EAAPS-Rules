@@ -121,7 +121,7 @@ const rule5 = (patientMedications, masterMedications) => {
                 result.push(_.filter(medications, {chemicalType: "laba"}));
               }
               else {
-                const tryTimesPerDay = match.timesPerDay(filteredMedication, get.lowestICSDose(isICS));
+                const tryTimesPerDay = match.timesPerDay(highestICSDose, get.lowestICSDose(isICS));
                 if (!_.isEmpty(tryTimesPerDay)) {
                   const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, get.lowestICSDose(isICS));
                   if (!_.isEmpty(tryMinimize)) {
