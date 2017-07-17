@@ -10,6 +10,7 @@ const rule3 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
+        console.log(calculate.patientICSDose(patientMedication));
           const filterOrgMeds = _.filter(medications, (medication) => {
             return medication.name !== "symbicort" &&
               (
@@ -17,22 +18,27 @@ const rule3 = (patientMedications, masterMedications) => {
                 medication.chemicalType === "laba" ||
                 medication.chemicalType === "ICS"
               ) &&
-              calculate.patientICSDose(medication) === "low"
+              categorize.patientICSDose(medication) === "low"
           });
+          console.log("filterOrgMeds: ", filterOrgMeds);
           const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});
           const isLaba = _.filter(filterOrgMeds, {chemicalType: "laba"});
           const isICS = _.filter(filterOrgMeds, {chemicalType: "ICS"});
           if (!_.isEmpty(isLabaICS) || (!_.isEmpty(isLaba) && !_.isEmpty(isICS))) {
             if (!_.isEmpty(isLabaICS)) {
+              console.log("laba,ICS");
               const tryTimesPerDay = match.timesPerDay(isLabaICS, patientMedication);
 
               if (!_.isEmpty(tryTimesPerDay)) {
+                console.log("tryTimes");
                 const tryDoseICS = match.doseICS(tryTimesPerDay, patientMedication);
                 if (!_.isEmpty(tryDoseICS)) {
+                  console.log("tryDose");
                   result.push(tryDoseICS);
                 }
                 const tryMinimizePuffs = match.minimizePuffsPerTime(tryTimesPerDay, patientMedication);
                 if (!_.isEmpty(tryMinimizePuffs)) {
+                  console.log("tryPuffs");
                   result.push(tryMinimizePuffs);
                 }
                 result.push(tryTimesPerDay);
@@ -40,6 +46,7 @@ const rule3 = (patientMedications, masterMedications) => {
               result.push(isLabaICS);
             }
             else if (!_.isEmpty(isLaba) && !_.isEmpty(isICS)) {
+              console.log("laba and ICS");
               const filteredMedication = _.filter(medicationElement,
                 {
                   chemicalType: "laba,ICS",
@@ -136,7 +143,8 @@ const rule3 = (patientMedications, masterMedications) => {
         }, masterMedications, patientMedications);
 
       rule(patientMedication);
-
+      result = _.flatten(result);
+      result = _.uniqBy(result, "id");
       return result;
     }, [])
     .value();

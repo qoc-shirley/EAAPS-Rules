@@ -51,6 +51,9 @@ const reducer = (state = initialState, action) => {
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
         recommendation: [],
+        medicationName: '',
+        chemicalLABA: '',
+        chemicalICS: '',
       });
     case MEDICATION_NAME:
       return Object.assign({}, state, {
@@ -63,6 +66,8 @@ const reducer = (state = initialState, action) => {
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
         recommendation: [],
+        chemicalLABA: '',
+        chemicalICS: '',
       });
 
     // OnChange functions
@@ -132,6 +137,7 @@ const reducer = (state = initialState, action) => {
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
         recommendation: [],
+        chemicalICS: '',
       });
 
     case FILTERED_MEDICATIONS:
