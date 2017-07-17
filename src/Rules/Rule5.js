@@ -65,7 +65,7 @@ const rule5 = (patientMedications, masterMedications) => {
                 });
                 if (!_.isEmpty(getDeviceIcsOrLaba)) {
                   if (!_.isEmpty(getICSDevice)) {
-                    const tryMinimizePuffs = match.minimizePuffsPerTime(getICSDevice, patientMedication);
+                    const tryMinimizePuffs = match.minimizePuffsPerTime(highestICSDose, get.lowestICSDose(getICSDevice));
                     if (!_.isEmpty(tryMinimizePuffs)) {
                       result.push(get.lowestICSDose(tryMinimizePuffs));
                       result.push(_.filter(medications, {chemicalType: "ltra"}));
