@@ -37,6 +37,7 @@ const MedicationTable = ({
         chemicalICS: '',
         chemicalLABA: '',
         deviceName: '',
+        medicationName: '',
         doseICSValue: '',
         puffValue: '',
         timesPerDayValue: '',
@@ -47,7 +48,7 @@ const MedicationTable = ({
   const deleteRow = (index) => {
     onClickDeleteMedication(index);
   };
-
+  console.log("medicationList: ", medication.medicationList);
   const displayMedications = _
     .chain(medication.medicationList)
     .reduce((filteredData, medication) => {
@@ -96,6 +97,7 @@ const MedicationTable = ({
     getPatientMedications(_.flatten(displayMedications));
   };
 
+  //extract to its own component
   const displayRowContents = () => {
     return (
       medication.medicationList.map((rowFields, index) => {
@@ -280,9 +282,7 @@ const MedicationTable = ({
       </div>
 
       <div className="main">
-        <ul>
-          {displayRowContents()}
-        </ul>
+        {displayRowContents()}
       </div>
       <button
         className="button__addRow"

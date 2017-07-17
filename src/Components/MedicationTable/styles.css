@@ -42,7 +42,7 @@
     box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
 }
 
-.medication-table .main ul .row{
+.medication-table .main .row{
     margin: 20px 20px 20px 20px;
     display: flex;
     justify-content: space-between;
@@ -50,12 +50,12 @@
     padding: 15px;
 }
 
-.medication-table .main ul .row select{
+.medication-table .main .row select{
     font-size: 15px;
     height: 30px;
 }
 
-.medication-table .main ul {
+.medication-table .main  {
     padding: 0;
 }
 

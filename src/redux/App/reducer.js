@@ -18,11 +18,11 @@ export const initialState = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',
-  chemicalLABA: '',
-  chemicalICS: '',
-  deviceName: '',
+  chemicalLABA: "Chemical LABA",
+  chemicalICS: "Chemical ICS",
+  deviceName: "Device",
   medicationList: [],
-  medicationName: '',
+  medicationName: "Medication Name",
   results: [],
   patientMedications: [],
   recommendation: [],
@@ -46,14 +46,15 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              {...row, deviceName: action.data.device[0]}
+              {...row,
+                deviceName: action.data.device[0],
+                medicationName: "Medication Name",
+                chemicalLABA: "Chemical LABA",
+                chemicalICS: "Chemical ICS",}
               : row),
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
         recommendation: [],
-        medicationName: '',
-        chemicalLABA: '',
-        chemicalICS: '',
       });
     case MEDICATION_NAME:
       return Object.assign({}, state, {
@@ -61,13 +62,14 @@ const reducer = (state = initialState, action) => {
         medicationList: state.medicationList.map(
           (row, index) =>
             action.data.index === index ?
-              {...row, medicationName: action.data.medicationName[0]}
+              {...row,
+                medicationName: action.data.medicationName[0],
+                chemicalLABA: "Chemical LABA",
+                chemicalICS: "Chemical ICS",}
               : row),
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
         recommendation: [],
-        chemicalLABA: '',
-        chemicalICS: '',
       });
 
     // OnChange functions
@@ -131,13 +133,14 @@ const reducer = (state = initialState, action) => {
           (row, index) =>
             action.data.index === index ?
               {
-                ...row, chemicalLABA: action.data.chemicalLABA[0],
+                ...row,
+                chemicalLABA: action.data.chemicalLABA[0],
+                chemicalICS: "Chemical ICS",
               }
               : row),
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
         recommendation: [],
-        chemicalICS: '',
       });
 
     case FILTERED_MEDICATIONS:
