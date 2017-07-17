@@ -18,11 +18,11 @@ export const initialState = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',
-  chemicalLABA: "Chemical LABA",
-  chemicalICS: "Chemical ICS",
-  deviceName: "Device",
+  chemicalLABA: '',
+  chemicalICS: '',
+  deviceName: '',
   medicationList: [],
-  medicationName: "Medication Name",
+  medicationName: '',
   results: [],
   patientMedications: [],
   recommendation: [],
@@ -48,9 +48,9 @@ const reducer = (state = initialState, action) => {
             action.data.index === index ?
               {...row,
                 deviceName: action.data.device[0],
-                medicationName: "Medication Name",
-                chemicalLABA: "Chemical LABA",
-                chemicalICS: "Chemical ICS",}
+                medicationName: '',
+                chemicalLABA: '',
+                chemicalICS: '',}
               : row),
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
@@ -64,8 +64,8 @@ const reducer = (state = initialState, action) => {
             action.data.index === index ?
               {...row,
                 medicationName: action.data.medicationName[0],
-                chemicalLABA: "Chemical LABA",
-                chemicalICS: "Chemical ICS",}
+                chemicalLABA: '',
+                chemicalICS: '',}
               : row),
         isRecommendationEmpty: true,
         isRuleSelectEmpty: true,
@@ -135,7 +135,7 @@ const reducer = (state = initialState, action) => {
               {
                 ...row,
                 chemicalLABA: action.data.chemicalLABA[0],
-                chemicalICS: "Chemical ICS",
+                chemicalICS: '',
               }
               : row),
         isRecommendationEmpty: true,

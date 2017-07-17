@@ -111,7 +111,8 @@ const MedicationTable = ({
           });
         getDeviceColumn = _.uniqWith(getDeviceColumn, _.isEqual);
 
-        let getNameColumn = medicationData.map(
+        let getNameColumn = [{name: "Medication Name"}];
+        getNameColumn = getNameColumn.concat(medicationData.map(
           (masterMedication) => {
             if (masterMedication.device === medication.medicationList[index].deviceName) {
               return (
@@ -127,7 +128,7 @@ const MedicationTable = ({
                 }
               );
             }
-          });
+          }));
         getNameColumn = _.uniqWith(getNameColumn, _.isEqual);
         getNameColumn = _.filter(getNameColumn, (column) => {
           return !(column.none);
@@ -209,9 +210,8 @@ const MedicationTable = ({
               className="name"
               onChange={
                 (event) => onChangeMedicationName(index, _.split(event.target.value, ","))}
-              defaultValue={medicationName}
+              defaultValue={"Medication Name"}
             >
-              <option>Medication Name</option>
               {
                 getNameColumn.map(
                   (medicationName, index) => (
