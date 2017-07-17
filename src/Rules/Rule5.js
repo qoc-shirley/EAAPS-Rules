@@ -50,10 +50,10 @@ const rule5 = (patientMedications, masterMedications) => {
                   chemicalABA: patientMedication.chemicalLABA,
                   chemicalICS: patientMedication.chemicalICS
                 });
-              const highestICSDose = _.filter(filteredMedication, (medication) => {
+              const highestDose = _.filter(filteredMedication, (medication) => {
                 return (adjust.ICSDose(medication, "highest") !== []);
               });
-              if (!_.isEmpty(highestICSDose)) {
+              if (!_.isEmpty(highestDose)) {
                 const getDeviceIcsOrLaba = _.filter(filteredMedication, (medication) => {
                   return medication.device === isLaba.device || medication.device === isICS.device
                 });
@@ -65,7 +65,7 @@ const rule5 = (patientMedications, masterMedications) => {
                 });
                 if (!_.isEmpty(getDeviceIcsOrLaba)) {
                   if (!_.isEmpty(getICSDevice)) {
-                    const tryMinimizePuffs = match.minimizePuffsPerTime(highestICSDose, get.lowestICSDose(getICSDevice));
+                    const tryMinimizePuffs = match.minimizePuffsPerTime(highestDose, get.lowestICSDose(getICSDevice));
                     if (!_.isEmpty(tryMinimizePuffs)) {
                       result.push(get.lowestICSDose(tryMinimizePuffs));
                       result.push(_.filter(medications, {chemicalType: "ltra"}));
@@ -111,6 +111,7 @@ const rule5 = (patientMedications, masterMedications) => {
               }
             }
             else {
+              result.push(get.highestICSDose(isICS));
               result.push(_.filter(medications, {chemicalType: "ltra"}));
               result.push(_.filter(medications, {chemicalType: "laba"}));
             }
