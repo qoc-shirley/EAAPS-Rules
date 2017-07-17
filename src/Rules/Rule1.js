@@ -133,14 +133,11 @@ const rule1 = (patientMedications, masterMedications) => {
               const excessive = _.filter(newMedication, (medication) => {
                 return categorize.ICSDose(medication) === "excessive";
               });
-              console.log("new medications: ", newMedication);
-              console.log("Low: ", low);
 
               if (categorize.patientICSDose(patientMedication) === "low") {
                 console.log("find new medication in low category");
                 const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(low), patientMedication);
                 if (!_.isEmpty(tryMinimizePuff)) {
-                  console.log("tryMinimizePuff: ",tryMinimizePuff);
                   result.push(tryMinimizePuff);
                 }
                 else {
