@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import * as calculate from './library/calculateICSDose';
 import * as categorize from './library/categorizeDose';
 import * as get from './library/getICSDose';
 import * as adjust from './library/adjustICSDose';
