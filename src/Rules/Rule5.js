@@ -78,10 +78,34 @@ const rule5 = (patientMedications, masterMedications) => {
                 }
               }
               else {
-                result.push(_.filter(medications, {chemicalType: "ltra"}));
-                result.push(_.filter(medications, {chemicalType: "laba"}));
+                const highestICSDose = _.filter(filteredMedication, (medication) => {
+                  return (adjust.ICSDose(medication, "highest") !== []);
+                });
+                if (!_.isEmpty(highestICSDose)) {
+                  const matchICSDevice = match.device(highestICSDose, get.lowestICSDose(isICS));
+                }
+                else {
+                  const tryTimesPerDay = match.timesPerDay(filteredMedication, get.lowestICSDose(isICS));
+                  if (!_.isEmpty(tryTimesPerDay)) {
+                    const tryMinimize = match.minimizePuffsPerTime(tryTimesPerDay, get.lowestICSDose(isICS));
+                    if (!_.isEmpty(tryMinimize)) {
+                      result.push(tryMinimize);
+                      result.push(_.filter(medications, {chemicalType: "ltra"}));
+                      result.push(_.filter(medications, {chemicalType: "laba"}));
+                    }
+                    else {
+                      result.push(tryTimesPerDay);
+                      result.push(_.filter(medications, {chemicalType: "ltra"}));
+                      result.push(_.filter(medications, {chemicalType: "laba"}));
+                    }
+                  }
+                  else {
+                    result.push(get.highestICSDose(highestICSDose));
+                    result.push(_.filter(medications, {chemicalType: "ltra"}));
+                    result.push(_.filter(medications, {chemicalType: "laba"}));
+                  }
+                }
               }
-
             }
             else {
               result.push(_.filter(medications, {chemicalType: "ltra"}));
