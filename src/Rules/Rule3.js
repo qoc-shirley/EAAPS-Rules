@@ -10,7 +10,9 @@ const rule3 = (patientMedications, masterMedications) => {
     .reduce((result, patientMedication) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
-        console.log(calculate.patientICSDose(patientMedication));
+        console.log(categorize.patientICSDose(patientMedication), categorize.patientICSDose(patientMedication) === "low");
+          console.log(calculate.patientICSDose(patientMedication), patientMedication.lowCeilICS);
+
           const filterOrgMeds = _.filter(medications, (medication) => {
             return medication.name !== "symbicort" &&
               (
