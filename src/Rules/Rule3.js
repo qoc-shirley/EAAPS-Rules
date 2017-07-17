@@ -68,9 +68,9 @@ const rule3 = (patientMedications, masterMedications) => {
                 const getLabaDevice = _.filter(filteredMedication, (medication) => {
                   return medication.device === isLaba.device
                 });
-                console.log("getDeviceIcsOrLaba: ",getDeviceIcsOrLaba);
-                console.log("getICSDevice: ",getICSDevice);
-                console.log("getLabaDevice: ",getLabaDevice);
+                // console.log("getDeviceIcsOrLaba: ",getDeviceIcsOrLaba);
+                // console.log("getICSDevice: ",getICSDevice);
+                // console.log("getLabaDevice: ",getLabaDevice);
                 if (!_.isEmpty(getDeviceIcsOrLaba)) {
                   console.log("match device?");
                   if (!_.isEmpty(getICSDevice)) {
