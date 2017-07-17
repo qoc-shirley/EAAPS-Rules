@@ -11,16 +11,14 @@ const rule3 = (patientMedications, masterMedications) => {
       let rule =
         _.partial((medicationElement, medications, patientMedication) => {
         console.log(categorize.patientICSDose(patientMedication), categorize.patientICSDose(patientMedication) === "low");
-          console.log(calculate.patientICSDose(patientMedication), patientMedication.lowCeilICS);
 
           const filterOrgMeds = _.filter(medications, (medication) => {
             return medication.name !== "symbicort" &&
               (
-                medication.chemicalType === "laba,ICS" ||
+                (medication.chemicalType === "laba,ICS" && categorize.patientICSDose(medication) === "low")||
                 medication.chemicalType === "laba" ||
-                medication.chemicalType === "ICS"
-              ) &&
-              categorize.patientICSDose(medication) === "low"
+                (medication.chemicalType === "ICS" && categorize.patientICSDose(medication) === "low")
+              )
           });
           console.log("filterOrgMeds: ", filterOrgMeds);
           const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});
@@ -49,15 +47,21 @@ const rule3 = (patientMedications, masterMedications) => {
             }
             else if (!_.isEmpty(isLaba) && !_.isEmpty(isICS)) {
               console.log("laba and ICS");
-              const filteredMedication = _.filter(medicationElement,
-                {
-                  chemicalType: "laba,ICS",
-                  chemicalABA: patientMedication.chemicalLABA,
-                  chemicalICS: patientMedication.chemicalICS
-                });
+              const filteredMedication = _.filter(medicationElement, (masterMedication) => {
+                return masterMedication.chemicalType === "laba,ICS" &&
+                  ( _.filter(isLaba, (medication) => {
+                    return masterMedication.chemicalLABA === medication.chemicalLABA
+                  }) && _.filter(isICS, (medication) => {
+                    return masterMedication.chemicalICS === medication.chemicalICS
+                    })
+                  )
+              });
+
               if (!_.isEmpty(filteredMedication)) {
+                console.log("filteredMedication: ", filteredMedication);
+
                 const getDeviceIcsOrLaba = _.filter(filteredMedication, (medication) => {
-                  return medication.device === isLaba.device || medication.device === isICS.device
+                  return (medication.device === isLaba.device) || (medication.device === isICS.device)
                 });
                 const getICSDevice = _.filter(filteredMedication, (medication) => {
                   return medication.device === isICS.device
@@ -65,15 +69,27 @@ const rule3 = (patientMedications, masterMedications) => {
                 const getLabaDevice = _.filter(filteredMedication, (medication) => {
                   return medication.device === isLaba.device
                 });
+                console.log("getDeviceIcsOrLaba: ",getDeviceIcsOrLaba);
+                console.log("getICSDevice: ",getICSDevice);
+                console.log("getLabaDevice: ",getLabaDevice);
                 if (!_.isEmpty(getDeviceIcsOrLaba)) {
+                  console.log("match device?");
                   if (!_.isEmpty(getICSDevice)) {
+                    console.log("match ics device");
                     const tryMinimizePuffs = match.minimizePuffsPerTime(getICSDevice, patientMedication);
                     if (!_.isEmpty(tryMinimizePuffs)) {
                       result.push(get.lowestICSDose(tryMinimizePuffs));
                     }
                     result.push(get.lowestICSDose(getICSDevice));
                   }
-                  result.push(get.lowestICSDose(getLabaDevice));
+                  else {
+                    console.log("match laba device");
+                    const tryMinimizePuffs = match.minimizePuffsPerTime(getLabaDevice, patientMedication);
+                    if (!_.isEmpty(tryMinimizePuffs)) {
+                      result.push(get.lowestICSDose(tryMinimizePuffs));
+                    }
+                    result.push(get.lowestICSDose(getLabaDevice));
+                  }
                 }
                 else {
                   const increaseOriginalMedication = adjust.ICSDose(getDeviceIcsOrLaba, "lowestMedium");

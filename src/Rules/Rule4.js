@@ -27,6 +27,7 @@ const rule4 = (patientMedications, masterMedications) => {
                 chemicalABA: patientMedication.chemicalLABA,
                 chemicalICS: patientMedication.chemicalICS
               });
+            ///same as rule 3 and 5 chemical LABA and chemicalICS clarification
             if (!_.isEmpty(filteredMedication)) {
               if (!_.isEmpty(_.filter(filteredMedication, {device: patientMedication.device}))) {
                 console.log("device");

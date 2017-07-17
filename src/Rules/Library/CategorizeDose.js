@@ -6,7 +6,6 @@ export const patientICSDose = (medication) => {
     doseLevel = "high";
   }
   else if (calculate.patientICSDose(medication) <= medication.lowCeilICS) {
-    console.log("here");
     doseLevel = "low";
   }
   else if ((calculate.patientICSDose(medication) > medication.lowCeilICS) &&

@@ -48,7 +48,7 @@ const MedicationTable = ({
   const deleteRow = (index) => {
     onClickDeleteMedication(index);
   };
-  console.log("medicationList: ", medication.medicationList);
+
   const displayMedications = _
     .chain(medication.medicationList)
     .reduce((filteredData, medication) => {
@@ -197,7 +197,7 @@ const MedicationTable = ({
               className="device"
               onChange={
                 (event) => onChangeDeviceName(index, _.split(event.target.value, ","))}
-              defaultValue={deviceName}
+              defaultValue={"Device"}
             >
               <option>Device</option>
               {
@@ -222,7 +222,7 @@ const MedicationTable = ({
               className="chemicalLABA"
               onChange={
                 (event) => onChangeChemicalLABA(index, _.split(event.target.value, ","))}
-              defaultValue={chemicalLABA}
+              defaultValue={"chemicalLABA"}
             >
               <option>ChemicalLABA</option>
               {
@@ -235,7 +235,7 @@ const MedicationTable = ({
               className="chemicalICS"
               onChange={
                 (event) => onChangeChemicalICS(index, _.split(event.target.value, ","))}
-              defaultValue={chemicalICS}
+              defaultValue={"chemicalICS"}
             >
               <option>ChemicalICS</option>
               {

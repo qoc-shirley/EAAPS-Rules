@@ -13,11 +13,10 @@ const rule5 = (patientMedications, masterMedications) => {
           const filterOrgMeds = _.filter(medications, (medication) => {
             return medication.name !== "symbicort" &&
               (
-                medication.chemicalType === "laba,ICS" ||
+                (medication.chemicalType === "laba,ICS" && categorize.patientICSDose(medication) === "low")||
                 medication.chemicalType === "laba" ||
-                medication.chemicalType === "ICS"
-              ) &&
-              categorize.patientICSDose(medication) === "low"
+                (medication.chemicalType === "ICS" && categorize.patientICSDose(medication) === "low")
+              )
           });
           const findLtra = _.find(medications, {chemicalType: "ltra"});
           const isLabaICS = _.filter(filterOrgMeds, {chemicalType: "laba,ICS"});
@@ -44,12 +43,15 @@ const rule5 = (patientMedications, masterMedications) => {
             }
             else if (!_.isEmpty(isICS) && !_.isEmpty(isLaba)) {
               console.log("laba and ICS");
-              const filteredMedication = _.filter(medicationElement,
-                {
-                  chemicalType: "laba,ICS",
-                  chemicalABA: patientMedication.chemicalLABA,
-                  chemicalICS: patientMedication.chemicalICS
-                });
+              const filteredMedication = _.filter(medicationElement, (masterMedication) => {
+                return masterMedication.chemicalType === "laba,ICS" &&
+                  ( _.filter(isLaba, (medication) => {
+                      return masterMedication.chemicalLABA === medication.chemicalLABA
+                    }) && _.filter(isICS, (medication) => {
+                      return masterMedication.chemicalICS === medication.chemicalICS
+                    })
+                  )
+              });
               const highestDose = _.filter(filteredMedication, (medication) => {
                 return (adjust.ICSDose(medication, "highest") !== []);
               });
