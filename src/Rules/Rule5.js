@@ -83,6 +83,9 @@ const rule5 = (patientMedications, masterMedications) => {
                 });
                 if (!_.isEmpty(highestICSDose)) {
                   const matchICSDevice = match.device(highestICSDose, get.lowestICSDose(isICS));
+                  result.push(matchICSDevice);
+                  result.push(_.filter(medications, {chemicalType: "ltra"}));
+                  result.push(_.filter(medications, {chemicalType: "laba"}));
                 }
                 else {
                   const tryTimesPerDay = match.timesPerDay(filteredMedication, get.lowestICSDose(isICS));
