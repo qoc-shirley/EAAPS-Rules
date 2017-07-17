@@ -25,7 +25,7 @@ const rule3 = (patientMedications, masterMedications) => {
           const isLaba = _.filter(filterOrgMeds, {chemicalType: "laba"});
           const isICS = _.filter(filterOrgMeds, {chemicalType: "ICS"});
           if (!_.isEmpty(isLabaICS) || (!_.isEmpty(isLaba) && !_.isEmpty(isICS))) {
-            if (!_.isEmpty(isLabaICS)) {
+            if (patientMedication.chemicalType === "laba,ICS") {
               console.log("laba,ICS");
               const tryTimesPerDay = match.timesPerDay(isLabaICS, patientMedication);
 
@@ -45,7 +45,7 @@ const rule3 = (patientMedications, masterMedications) => {
               }
               result.push(isLabaICS);
             }
-            else if (!_.isEmpty(isLaba) && !_.isEmpty(isICS)) {
+            else if (patientMedication.chemicalType === "laba" && !_.isEmpty(isICS)) {
               console.log("laba and ICS");
               const filteredMedication = _.filter(medicationElement, (masterMedication) => {
                 return masterMedication.chemicalType === "laba,ICS" &&
@@ -76,19 +76,23 @@ const rule3 = (patientMedications, masterMedications) => {
                   console.log("match device?");
                   if (!_.isEmpty(getICSDevice)) {
                     console.log("match ics device");
-                    const tryMinimizePuffs = match.minimizePuffsPerTime(getICSDevice, patientMedication);
+                    const tryMinimizePuffs = match.minimizePuffsPerTime(getICSDevice, get.lowestICSDose(isICS));
                     if (!_.isEmpty(tryMinimizePuffs)) {
                       result.push(get.lowestICSDose(tryMinimizePuffs));
                     }
-                    result.push(get.lowestICSDose(getICSDevice));
+                    else {
+                      result.push(get.lowestICSDose(getICSDevice));
+                    }
                   }
                   else {
                     console.log("match laba device");
-                    const tryMinimizePuffs = match.minimizePuffsPerTime(getLabaDevice, patientMedication);
+                    const tryMinimizePuffs = match.minimizePuffsPerTime(getLabaDevice, get.lowestICSDose(isLaba));
                     if (!_.isEmpty(tryMinimizePuffs)) {
                       result.push(get.lowestICSDose(tryMinimizePuffs));
                     }
-                    result.push(get.lowestICSDose(getLabaDevice));
+                    else {
+                      result.push(get.lowestICSDose(getLabaDevice));
+                    }
                   }
                 }
                 else {
