@@ -3,26 +3,27 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const Row = ( {children} ) => {
+const Row = ( { children } ) => {
   const items = _
     .chain( children )
       .map( ( element, index ) => (
-       <li key={index}>{element}</li>
-      ))
+        <li key={index}>{element}</li>
+      ) )
     .value();
- return (
-   <div className="row">
-     {items}
-   </div>
+
+  return (
+    <div className="row">
+      {items}
+    </div>
   );
 };
 
 Row.propTypes = {
-  elements: PropTypes.array,
+  children: PropTypes.array,
 };
 
 Row.defaultProps = {
-  elements: null,
+  children: null,
 };
 
 export default Row;
