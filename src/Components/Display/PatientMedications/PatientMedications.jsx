@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import medicationData from '../../../medicationData/medicationData';
 import * as actions from '../../../redux/App/actions';
 import './styles.css';
@@ -9,7 +9,7 @@ const DisplayPatientMedications = ( {
                                      chemicalICS, chemicalLABA, medication,
                                    } ) => {
   const displayMedications = _
-    .chain( medication.medicationList)
+    .chain( medication.medicationList )
     .reduce( ( filteredData, medication ) => {
       filteredData.push(
         _.chain( medicationData )
@@ -32,11 +32,11 @@ const DisplayPatientMedications = ( {
               ) &&
               (
                 medication.chemicalICS === masterMedication.chemicalICS ||
-                (medication.chemicalICS === 'chemicalICS' || medication.chemicalICS === '') &&
+                ( medication.chemicalICS === 'chemicalICS' || medication.chemicalICS === '' ) &&
                 masterMedication.chemicalICS === '.'
               ) &&
-              (medication.medicationName === masterMedication.name) &&
-              (medication.deviceName === masterMedication.device)
+              ( medication.medicationName === masterMedication.name ) &&
+              ( medication.deviceName === masterMedication.device )
             );
           } )
           .value(),
@@ -99,13 +99,13 @@ const DisplayPatientMedications = ( {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ( {
   medication: state.medication,
-});
+} );
 
 const mapDispatchToProps = dispatch => ( {
   appendMedicationList: ( medicationRow ) => dispatch( actions.appendMedicationList( medicationRow ) ),
-  onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue(index, value ) ),
+  onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue( index, value ) ),
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS(index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
