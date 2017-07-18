@@ -1,5 +1,5 @@
 const data =
-  [
+      [
   ["id", "atc", "din", "href", "colour", "device", "function", "name", "type", "chemicalType", "chemicalLABA", "chemicalICS", "chemicalOther", "doseLABA", "doseICS", "doseOther", "maxGreenLABA", "maxGreenICS", "maxYellowLABA", "maxYellowICS", "lowCeilICS", "highFloorICS", "timesPerDay", "maxPuffPerTime", "dose (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)", "maxGreen (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)", "maxYellow (IF THERE ARE TWO NUMBERS, IT IS LABA, ICS)", "trade", "chemical", "appears in questionnaire", ""],
   ["21", "R03AC13", "2230898", "m24e4c9bed24c8c20ce0b560445df2cc0", "blue", "aerolizer", "controller,reliever", "foradil", "laba", "laba", "formoterol", ".", ".", "12", ".", ".", "24", ".", "48", ".", ".", ".", "2", "2", "12", "24", "", "Foradil", "formoterol", "Y", ""],
   ["2", "R03AK06", "2240835", "m6f6c7924b86047e8195d31fc0c481569", "purple", "diskus", "controller", "advair", "combo", "laba,ICS", "salmeterol", "fluticasone", ".", "50", "100", ".", "100", "1000", "100", "2000", "250", "501", "2", "2", "50, 100", "100, 1000", "100, 2000", "Advair", "salmeterol,fluticasone", "Y", ""],
@@ -38,7 +38,7 @@ const data =
   ["32", "R03AK07", "2245385", "me1b27b1efa3342f2e29c49ddd1e34d31", "red", "turbuhaler", "controller,reliever", "symbicort", "combo", "laba,ICS", "formoterol", "budesonide", ".", "6", "100", ".", "24", "800", "48", "2400", "400", "801", "2", "4", "6, 100", "24, 800", "48, 2400", "Symbicort", "formoterol, budesonide", "Y", ""],
   ["33", "R03AK07", "2245386", "m2326e00d3b6b382cf8b556e5fdf6ae29", "red", "turbuhaler", "controller,reliever", "symbicort", "combo", "laba,ICS", "formoterol", "budesonide", ".", "6", "200", ".", "24", "800", "48", "2400", "400", "801", "2", "4", "6, 200", "24, 800", "48, 2400", "Symbicort", "formoterol, budesonide", "Y", ""],
   ["10", "R03BA07", "2243595", "mcb897f3461a9850d8a1d6e4f059ea4c2", "pink", "twisthaler", "controller", "asmanex", "ICS", "ICS", ".", "mometasone", ".", ".", "200", ".", ".", "800", ".", "800", "399", "801", "1 OR 2", "4", "200", "800", "800", "Asmanex", "mometasone", "Y", ""],
-  ["11", "R03BA07", "2243596", "me8cd8c870d0ea88706be758acbdefaaf", "pink", "twisthaler", "controller", "asmanex", "ICS", "ICS", ".", "mometasone", ".", ".", "400", ".", ".", "800", ".", "800", "399", "801", "1 OR 2", "2", "400", "800", "800", "Asmanex", "mometasone", "Y", ""]
-];
+  ["11", "R03BA07", "2243596", "me8cd8c870d0ea88706be758acbdefaaf", "pink", "twisthaler", "controller", "asmanex", "ICS", "ICS", ".", "mometasone", ".", ".", "400", ".", ".", "800", ".", "800", "399", "801", "1 OR 2", "2", "400", "800", "800", "Asmanex", "mometasone", "Y", ""],
+      ];
 
 export default data;
