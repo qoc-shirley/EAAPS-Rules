@@ -9,39 +9,40 @@ import Recommendations from '../Display/Recommendations/Recommendations';
 import * as get from '../../rules/rules';
 import './styles.css';
 
-const App = ({
-               appendMedicationList,
-               medication,
-               onMedicationSelection,
-               onChangePuffValue,
-               onChangeTimesPerDayValue,
-               onChangeDoseICS,
-               onClickClear,
-               onDeleteRow,
-               saveRecommendation,
-             }) => {
+const App = (
+{
+appendMedicationList,
+medication,
+onMedicationSelection,
+onChangePuffValue,
+onChangeTimesPerDayValue,
+onChangeDoseICS,
+onClickClear,
+onDeleteRow,
+saveRecommendation,
+}) => {
 
   let showPatientMedications = null;
-  if (medication.isRecommendationEmpty === false) {
+  if ( medication.isRecommendationEmpty === false ) {
     showPatientMedications = <DisplayPatientMedications />;
   }
-  else if (medication.isRecommendationEmpty === true) {
+  else if ( medication.isRecommendationEmpty === true ) {
     showPatientMedications = null;
   }
 
   const onChangeRule = () => {
-    saveRecommendation("Rule -1", get.rules.ruleMinus1(medication.patientMedications));
-    saveRecommendation("Rule 0", get.rules.rule0(medication.patientMedications, medicationData));
-    saveRecommendation("Rule 1", get.rules.rule1(medication.patientMedications, medicationData));
-    saveRecommendation("Rule 3", get.rules.rule3(medication.patientMedications, medicationData));
-    saveRecommendation("Rule 4", _.flatten(get.rules.rule4(medication.patientMedications, medicationData)));
-    saveRecommendation("Rule 5", get.rules.rule5(medication.patientMedications, medicationData));
-    // saveRecommendation("Rule 6", get.rules.rule6(medication.patientMedications));
-    saveRecommendation("Rule 7", get.rules.rule7(medication.patientMedications));
-    saveRecommendation("Rule 8", get.rules.rule8(medication.patientMedications));
-    saveRecommendation("Rule 9", get.rules.rule9(medication.patientMedications));
-    // saveRecommendation("Rule 10", get.rules.rule10(medication.patientMedications));
-    saveRecommendation("Rule 11", get.rules.rule11(medication.patientMedications, medicationData));
+    saveRecommendation( 'Rule -1', get.rules.ruleMinus1( medication.patientMedications ) );
+    saveRecommendation( 'Rule 0', get.rules.rule0( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 1', get.rules.rule1( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 3', get.rules.rule3( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 4', _.flatten( get.rules.rule4( medication.patientMedications, medicationData ) ) );
+    saveRecommendation( 'Rule 5', get.rules.rule5( medication.patientMedications, medicationData ) );
+    // saveRecommendation( 'Rule 6', get.rules.rule6( medication.patientMedications ) );
+    saveRecommendation( 'Rule 7', get.rules.rule7( medication.patientMedications ) );
+    saveRecommendation( 'Rule 8', get.rules.rule8( medication.patientMedications ) );
+    saveRecommendation( 'Rule 9', get.rules.rule9( medication.patientMedications ) );
+    // saveRecommendation( 'Rule 10, get.rules.rule10( medication.patientMedications ) );
+    saveRecommendation( 'Rule 11', get.rules.rule11( medication.patientMedications, medicationData ) );
   };
 
   const clearRecommendations = () => {
@@ -49,7 +50,7 @@ const App = ({
   };
 
   const showAvailableRules = () => {
-    if (medication.isRecommendationEmpty === false) {
+    if ( medication.isRecommendationEmpty === false ) {
       return (
         <div className="rules">
           <button
@@ -67,9 +68,11 @@ const App = ({
         </div>
       );
     }
-    else if (medication.isRecommendationEmpty === true) {
+    else if ( medication.isRecommendationEmpty === true ) {
       return null;
     }
+
+    return null;
   };
 
   return (
