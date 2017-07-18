@@ -9,8 +9,7 @@ import Recommendations from '../Display/Recommendations/Recommendations';
 import * as get from '../../rules/rules';
 import './styles.css';
 
-const App = (
-{
+const App = ( {
 appendMedicationList,
 medication,
 onMedicationSelection,
@@ -20,7 +19,7 @@ onChangeDoseICS,
 onClickClear,
 onDeleteRow,
 saveRecommendation,
-}) => {
+} ) => {
 
   let showPatientMedications = null;
   if ( medication.isRecommendationEmpty === false ) {
