@@ -8,22 +8,23 @@ const rule9 = (patientMedications) => {
       if (patientMedication.name === "symbicort" && patientMedication.function === "controller,reliever" &&
         ( calculate.ICSDose(patientMedication) < patientMedication.maxGreenICS ) &&
         _.some(patientMedications, {chemicalType: "ltra"})) {
-        console.log("hello");
+        // console.log("hello");
         if (_.isEmpty(adjust.ICSDose(patientMedication, "highest"))) {
-          console.log("a");
+          // console.log("a");
           result.push(patientMedication);
           result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
         }
         else {
-          console.log("b");
+          // console.log("b");
           result.push(adjust.ICSDose(patientMedication, "highest"));
           result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
         }
       }
       result = _.flatten(result);
       result = _.uniqBy(result, "id");
+
       return result;
-    }, [])
+    }, [] )
     .value();
 };
 
