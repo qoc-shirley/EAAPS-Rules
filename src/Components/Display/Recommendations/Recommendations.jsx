@@ -1,37 +1,37 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import * as actions from '../../../redux/App/actions';
 import './styles.css';
 
-const showRecommendations = ({
-                               medication,
-                               onClickClear,
-                             }) => {
+const showRecommendations = ( {
+                               medication, onClickClear,
+                              } ) => {
 
   const clearRecommendations = () => {
     onClickClear();
   };
 
-  if (medication.isRuleSelectEmpty === false) {
+  if ( medication.isRuleSelectEmpty === false ) {
     return (
       <div className="recommendations">
         <h4>Recommendation(s):</h4>
         {
           medication.recommendation.map(
-            (recommendMedication, index) => {
+            ( recommendMedication, index ) => {
               let noRecommendation = null;
-              if (_.isEmpty(recommendMedication.medications)) {
-                noRecommendation = <p>No recommendations</p>
+              if ( _.isEmpty( recommendMedication.medications ) ) {
+                noRecommendation = <p>No recommendations</p>;
               }
+
               return (
                 <div key={index}>
                   <p><b>{recommendMedication.rule}</b></p>
                   {noRecommendation}
                   {
                     recommendMedication.medications.map(
-                      (medicationElement, medicationIndex) => {
-                        if (_.isArray(medicationElement) && _.size(medicationElement) > 29) {
+                      ( medicationElement, medicationIndex ) => {
+                        if ( _.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationArray">
                               <p><b>-</b></p>
@@ -46,7 +46,7 @@ const showRecommendations = ({
                             </div>
                           );
                         }
-                        else if (_.isArray(medicationElement) && _.size(medicationElement) < 29) {
+                        else if ( _.isArray( medicationElement ) && _.size( medicationElement ) < 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationArray">
                               <p><b>-</b></p>
@@ -54,7 +54,7 @@ const showRecommendations = ({
                             </div>
                           );
                         }
-                        else if (!_.isArray(medicationElement) && _.size(medicationElement) > 29) {
+                        else if ( !_.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationObject">
                               <p><b>-</b></p>
@@ -70,18 +70,19 @@ const showRecommendations = ({
                             </div>
                           );
                         }
+
                         return (
                           <p key={medicationIndex}>no Recommendations</p>
                         );
-                      }
+                      },
                     )
                   }
                 </div>
-              )
-            }
+              );
+            },
           )
         }
-        < input
+        <input
           className="clear"
           type="submit"
           value="Clear"
@@ -90,17 +91,17 @@ const showRecommendations = ({
       </div>
     );
   }
-  else if (medication.isRuleSelectEmpty === true) {
+  else if ( medication.isRuleSelectEmpty === true ) {
     return null;
   }
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ( {
   medication: state.medication,
-});
-
-const mapDispatchToProps = dispatch => ( {
-  onClickClear: () => dispatch(actions.onClickClear()),
 } );
 
-export default connect(mapStateToProps, mapDispatchToProps)(showRecommendations);
+const mapDispatchToProps = dispatch => ( {
+  onClickClear: () => dispatch( actions.onClickClear() ),
+} );
+
+export default connect( mapStateToProps, mapDispatchToProps )( showRecommendations );
