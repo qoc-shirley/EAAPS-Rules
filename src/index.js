@@ -7,7 +7,8 @@ import {
   combineReducers,
   createStore,
 } from 'redux';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import RulesApp from './Containers/RulesApp/RulesApp';
 import registerServiceWorker from './registerServiceWorker';
 import reducer from './redux/App/reducer';
@@ -17,11 +18,12 @@ const store = createStore(
   combineReducers({
     medication: reducer,
   }),
-  applyMiddleware(
-    thunk,
-    logger
-  )
-);
+  composeWithDevTools(
+    applyMiddleware(
+      thunk,
+      logger
+    )
+  ));
 
 ReactDOM.render(
   <Provider store={store}>
