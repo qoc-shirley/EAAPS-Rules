@@ -2,9 +2,9 @@ import React from 'react';
 import './styles.css';
 
 const Header = () => {
-  return(
+  return (
     <div className="header">
-      <h1>EAAPs Escalation Rules</h1>
+      <h1>Escalation Rules</h1>
     </div>
   );
 };
