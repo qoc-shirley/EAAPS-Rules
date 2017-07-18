@@ -38,7 +38,7 @@ const rule5 = (patientMedications, masterMedications) => {
                   result.push(findLtra);//any ltra? or all ltra in orgMeds
                 }
                 result.push(recommendHighest);
-                result.push(findLtra);//any ltra? or all ltra in orgMeds
+                result.push(findLtra);
               }
             }
             else if (!_.isEmpty(isICS) && !_.isEmpty(isLaba)) {
