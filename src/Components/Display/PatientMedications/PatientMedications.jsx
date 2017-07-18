@@ -5,15 +5,13 @@ import medicationData from '../../../medicationData/medicationData';
 import * as actions from '../../../redux/App/actions';
 import './styles.css';
 
-const DisplayPatientMedications = ( {
-                                     chemicalICS, chemicalLABA, medication,
-                                   } ) => {
+const DisplayPatientMedications = ( { chemicalICS, chemicalLABA, medication } ) => {
   const displayMedications = _
     .chain( medication.medicationList )
     .reduce( ( filteredData, medication ) => {
       filteredData.push(
         _.chain( medicationData )
-          .filter( ( masterMedication ) => {
+          .filter( ( masterMedication ) => { d
             return (
               (
                 medication.timesPerDayValue === masterMedication.timesPerDay ||
