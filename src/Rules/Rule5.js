@@ -29,7 +29,7 @@ const rule5 = (patientMedications, masterMedications) => {
 
             if (!_.isEmpty(isLabaICS)) {
               // const tryOriginalDevice
-              // const tryMatchDoseICS = match.doseICS(isLabaICS, );
+              // const tryMatchDoseICS = match.doseICS(isLabaICS );
               const recommendHighest = adjust.ICSDose(isLabaICS, "highest");
               if (!_.isEmpty(recommendHighest)) {
                 if (_.size(recommendHighest) > 2) {
