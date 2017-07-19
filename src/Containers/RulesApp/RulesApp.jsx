@@ -7,7 +7,8 @@ const mapStateToProps = state => ( {
 } );
 
 const mapDispatchToProps = dispatch => ( {
-  appendMedicationList: ( medicationRow ) => dispatch( actions.appendMedicationList( medicationRow ) ),
+  addToNumberOfAddRowClicks: click => dispatch( actions.addToNumberOfAddRowClicks( click ) ),
+  appendMedicationList: medicationRow => dispatch( actions.appendMedicationList( medicationRow ) ),
   onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue( index, value ) ),
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS( index, value ) ),
@@ -15,9 +16,9 @@ const mapDispatchToProps = dispatch => ( {
   onChangeChemicalLABA: ( index, value ) => dispatch( actions.onChangeChemicalLABA( index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
   onChangeMedicationName: ( index, value ) => dispatch( actions.onChangeMedicationName( index, value ) ),
-  onDeleteRow: ( index ) => dispatch( actions.onDeleteRow( index ) ),
-  displayResult: ( event ) => dispatch( actions.displayResult( event ) ),
-  getPatientMedications: ( medications ) => dispatch( actions.getPatientMedications( medications ) ),
+  onDeleteRow: index => dispatch( actions.onDeleteRow( index ) ),
+  displayResult: event => dispatch( actions.displayResult( event ) ),
+  getPatientMedications: medications => dispatch( actions.getPatientMedications( medications ) ),
   saveRecommendation: ( rule, medications ) => dispatch( actions.saveRecommendation( rule, medications ) ),
   onClickClear: () => dispatch( actions.onClickClear() ),
 } );
