@@ -11,7 +11,7 @@ const DisplayPatientMedications = ( { chemicalICS, chemicalLABA, medication } ) 
     .reduce( ( filteredData, medication ) => {
       filteredData.push(
         _.chain( medicationData )
-          .filter( ( masterMedication ) => { d
+          .filter( ( masterMedication ) => {
             return (
               (
                 medication.timesPerDayValue === masterMedication.timesPerDay ||
