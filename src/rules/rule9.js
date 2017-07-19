@@ -2,26 +2,26 @@ import _ from 'lodash';
 import * as calculate from './library/calculateICSDose';
 import * as adjust from './library/adjustICSDose';
 
-const rule9 = (patientMedications) => {
-  return _.chain(patientMedications)
-    .reduce((result, patientMedication) => {
-      if (patientMedication.name === "symbicort" && patientMedication.function === "controller,reliever" &&
-        ( calculate.ICSDose(patientMedication) < patientMedication.maxGreenICS ) &&
-        _.some(patientMedications, {chemicalType: "ltra"})) {
+const rule9 = ( patientMedications ) => {
+  return _.chain( patientMedications )
+    .reduce( ( result, patientMedication ) => {
+      if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
+        ( calculate.ICSDose( patientMedication ) < patientMedication.maxGreenICS ) &&
+        _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
         // console.log("hello");
-        if (_.isEmpty(adjust.ICSDose(patientMedication, "highest"))) {
+        if ( _.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
           // console.log("a");
-          result.push(patientMedication);
-          result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
+          result.push( patientMedication );
+          result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
         else {
           // console.log("b");
-          result.push(adjust.ICSDose(patientMedication, "highest"));
-          result.push(_.filter(patientMedications, {chemicalType: "ltra"}));
+          result.push( adjust.ICSDose( patientMedication, 'highest' ) );
+          result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
       }
-      result = _.flatten(result);
-      result = _.uniqBy(result, "id");
+      result = _.flatten( result );
+      result = _.uniqBy( result, 'id' );
 
       return result;
     }, [] )
