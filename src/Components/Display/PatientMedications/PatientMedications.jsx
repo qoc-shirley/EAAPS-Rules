@@ -8,33 +8,34 @@ import './styles.css';
 const DisplayPatientMedications = ( { chemicalICS, chemicalLABA, medication } ) => {
   const displayMedications = _
     .chain( medication.medicationList )
-    .reduce( ( filteredData, medication ) => {
+    .reduce( ( filteredData, patientMedication ) => {
       filteredData.push(
         _.chain( medicationData )
           .filter( ( masterMedication ) => {
             return (
               (
-                medication.timesPerDayValue === masterMedication.timesPerDay ||
-                ( medication.timesPerDayValue === '' && masterMedication.timesPerDay === '.' ) ||
-                ( medication.timesPerDayValue === '1' && masterMedication.timesPerDay === '1 OR 2' ) ||
-                ( medication.timesPerDayValue === '2' && masterMedication.timesPerDay === '1 OR 2' )
+                patientMedication.timesPerDayValue === masterMedication.timesPerDay ||
+                ( patientMedication.timesPerDayValue === '' && masterMedication.timesPerDay === '.' ) ||
+                ( patientMedication.timesPerDayValue === '1' && masterMedication.timesPerDay === '1 OR 2' ) ||
+                ( patientMedication.timesPerDayValue === '2' && masterMedication.timesPerDay === '1 OR 2' )
               ) &&
               (
-                medication.doseICSValue === masterMedication.doseICS ||
-                medication.doseICSValue === '' && masterMedication.doseICS === '.'
+                ( patientMedication.doseICSValue === masterMedication.doseICS ) ||
+                ( patientMedication.doseICSValue === '' && masterMedication.doseICS === '.' )
               ) &&
               (
-                medication.chemicalLABA === masterMedication.chemicalLABA ||
-                (medication.chemicalLABA === 'chemicalLABA' || medication.chemicalLABA === '' ) &&
-                masterMedication.chemicalLABA === '.'
+                ( patientMedication.chemicalLABA === masterMedication.chemicalLABA ) ||
+                ( ( patientMedication.chemicalLABA === 'chemicalLABA' || patientMedication.chemicalLABA === '' ) &&
+                ( masterMedication.chemicalLABA === '.' ) )
               ) &&
               (
-                medication.chemicalICS === masterMedication.chemicalICS ||
-                ( medication.chemicalICS === 'chemicalICS' || medication.chemicalICS === '' ) &&
-                masterMedication.chemicalICS === '.'
+                ( patientMedication.chemicalICS === masterMedication.chemicalICS ) ||
+                ( ( patientMedication.chemicalICS === 'chemicalICS' || patientMedication.chemicalICS === '' ) &&
+                ( masterMedication.chemicalICS === '.' ) )
               ) &&
-              ( medication.medicationName === masterMedication.name ) &&
-              ( medication.deviceName === masterMedication.device )
+              ( patientMedication.medicationName === masterMedication.name ) &&
+              ( patientMedication.deviceName === masterMedication.device ) &&
+              ( patientMedication.puffValue <= masterMedication.maxPuffPerTime )
             );
           } )
           .value(),

@@ -81,7 +81,8 @@ const MedicationTable = (
                   ( masterMedication.chemicalICS === '.' ) )
               ) &&
               ( patientMedication.medicationName === masterMedication.name ) &&
-              ( patientMedication.deviceName === masterMedication.device )
+              ( patientMedication.deviceName === masterMedication.device ) &&
+              ( patientMedication.puffValue <= masterMedication.maxPuffPerTime )
             );
           } )
           .value(),
