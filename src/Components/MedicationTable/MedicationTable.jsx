@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import keyIndex from 'react-key-index';
 import _ from 'lodash';
 import InputField from '../InputField/InputField';
 import * as actions from '../../redux/App/actions';
@@ -32,8 +33,8 @@ const MedicationTable = ( {
   const headerElements =
 ['', 'Device', 'Name', 'ChemicalLABA', 'ChemicalICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
 
-  const renderAddRow = () => {
-    const initalInputValues = {
+  const renderAddRow = ( click ) => {
+    let initialInputValues = [{
       chemicalICS: '',
       chemicalLABA: '',
       deviceName: '',
@@ -41,8 +42,10 @@ const MedicationTable = ( {
       doseICSValue: '',
       puffValue: '',
       timesPerDayValue: '',
-    };
-    appendMedicationList( initalInputValues );
+    }];
+    // addToNumberOfAddRowClicks();
+    initialInputValues = keyIndex( initialInputValues, click );
+    appendMedicationList( initialInputValues );
   };
 
   const deleteRow = ( index ) => {
@@ -99,6 +102,7 @@ const MedicationTable = ( {
 
   // extract to its own component
   const displayRowContents = () => {
+
     return (
       medication.medicationList.map( ( rowFields, index ) => {
         let getDeviceColumn = medicationData.map(
@@ -174,7 +178,7 @@ const MedicationTable = ( {
         } );
 
         return (
-          <div key={index} className="row">
+          <div key={rowFields._doseICSValueId} className="row">
             <p>Medication {index + 1 }:</p>
             <select
               className="device"
@@ -266,7 +270,7 @@ const MedicationTable = ( {
       </div>
       <button
         className="button__addRow"
-        onClick={renderAddRow}
+        onClick={() => renderAddRow( 1 )}
       >
         Add Row
       </button>
