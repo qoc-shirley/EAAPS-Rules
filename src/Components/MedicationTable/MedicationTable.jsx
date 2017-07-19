@@ -286,9 +286,11 @@ const MedicationTable = ( {
 };
 
 MedicationTable.propTypes = {
+  addToNumberOfAddRowClicks: PropTypes.func.isRequired,
   puffValue: PropTypes.string,
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
+  getPatientMedications: PropTypes.func.isRequired,
   onClickDeleteMedication: PropTypes.func.isRequired,
   onChangeDeviceName: PropTypes.func.isRequired,
   onChangePuffValue: PropTypes.func.isRequired,
@@ -298,8 +300,6 @@ MedicationTable.propTypes = {
   onChangeChemicalLABA: PropTypes.func.isRequired,
   onChangeMedicationName: PropTypes.func.isRequired,
   appendMedicationList: PropTypes.func.isRequired,
-  medicationList: PropTypes.array,
-  deviceName: PropTypes.string,
 };
 
 MedicationTable.defaultProps = {
