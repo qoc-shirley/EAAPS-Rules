@@ -103,7 +103,6 @@ const MedicationTable = (
 
   // extract to its own component
   const displayRowContents = () => {
-
     return (
       medication.medicationList.map( ( rowFields, index ) => {
         let getDeviceColumn = medicationData.map(
@@ -156,13 +155,12 @@ const MedicationTable = (
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
-                masterMedication.name === medication.medicationList[index].medicationName &&
-                (
-                masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ) ||
-                masterMedication.chemicalLABA === '.' &&
-                (
-                medication.medicationList[index].chemicalLABA === '' ||
-                medication.medicationList[index].chemicalLABA === 'ChemicalLABA' ) ) {
+                  masterMedication.name === medication.medicationList[index].medicationName &&
+                ( masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
+                  masterMedication.chemicalLABA === '.' ) &&
+                ( medication.medicationList[index].chemicalLABA === '' ||
+                medication.medicationList[index].chemicalLABA === 'ChemicalLABA' )
+              ) {
                 return ( {
                   chemicalICS: masterMedication.chemicalICS,
                 } );
