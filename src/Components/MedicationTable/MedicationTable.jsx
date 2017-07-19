@@ -67,18 +67,18 @@ const MedicationTable = (
                 ( patientMedication.timesPerDayValue === '2' && masterMedication.timesPerDay === '1 OR 2' )
               ) &&
               (
-                patientMedication.doseICSValue === masterMedication.doseICS ||
-                patientMedication.doseICSValue === '' && masterMedication.doseICS === '.'
+                ( patientMedication.doseICSValue === masterMedication.doseICS ) ||
+                ( patientMedication.doseICSValue === '' && masterMedication.doseICS === '.' )
               ) &&
               (
-                patientMedication.chemicalLABA === masterMedication.chemicalLABA ||
-                ( patientMedication.chemicalLABA === 'chemicalLABA' || patientMedication.chemicalLABA === '' ) &&
-                masterMedication.chemicalLABA === '.'
+                ( patientMedication.chemicalLABA === masterMedication.chemicalLABA ) ||
+                ( ( patientMedication.chemicalLABA === 'chemicalLABA' || patientMedication.chemicalLABA === '' ) &&
+                  ( masterMedication.chemicalLABA === '.' ) )
               ) &&
               (
-                patientMedication.chemicalICS === masterMedication.chemicalICS ||
-                ( patientMedication.chemicalICS === 'chemicalICS' || patientMedication.chemicalICS === '' ) &&
-                masterMedication.chemicalICS === '.'
+                ( patientMedication.chemicalICS === masterMedication.chemicalICS ) ||
+                ( ( patientMedication.chemicalICS === 'chemicalICS' || patientMedication.chemicalICS === '' ) &&
+                  ( masterMedication.chemicalICS === '.' ) )
               ) &&
               ( patientMedication.medicationName === masterMedication.name ) &&
               ( patientMedication.deviceName === masterMedication.device )
