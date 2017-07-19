@@ -10,24 +10,25 @@ import Row from '../Row/Row';
 import './styles.css';
 
 const MedicationTable = ( {
-                           appendMedicationList,
-                           // chemicalICS,
-                           // chemicalLABA,
-                           // deviceName,
-                           doseICSValue,
-                           getPatientMedications,
-                           medication,
-                           // medicationName,
-                           onChangeDoseICS,
-                           onChangeChemicalLABA,
-                           onChangeChemicalICS,
-                           onChangeDeviceName,
-                           onChangePuffValue,
-                           onChangeTimesPerDayValue,
-                           onChangeMedicationName,
-                           onClickDeleteMedication,
-                           puffValue,
-                           timesPerDayValue,
+                            addToNumberOfAddRowClicks,
+                            appendMedicationList,
+                            // chemicalICS,
+                            // chemicalLABA,
+                            // deviceName,
+                            doseICSValue,
+                            getPatientMedications,
+                            medication,
+                            // medicationName,
+                            onChangeDoseICS,
+                            onChangeChemicalLABA,
+                            onChangeChemicalICS,
+                            onChangeDeviceName,
+                            onChangePuffValue,
+                            onChangeTimesPerDayValue,
+                            onChangeMedicationName,
+                            onClickDeleteMedication,
+                            puffValue,
+                            timesPerDayValue,
                          } ) => {
 
   const headerElements =
@@ -43,8 +44,8 @@ const MedicationTable = ( {
       puffValue: '',
       timesPerDayValue: '',
     }];
-    // addToNumberOfAddRowClicks();
-    initialInputValues = keyIndex( initialInputValues, click );
+    addToNumberOfAddRowClicks( click );
+    initialInputValues = keyIndex( initialInputValues, medication.clicks );
     appendMedicationList( initialInputValues );
   };
 
@@ -314,6 +315,7 @@ const mapStateToProps = state => ( {
 } );
 
 const mapDispatchToProps = dispatch => ( {
+  addToNumberOfAddRowClicks: click => dispatch( actions.addToNumberOfAddRowClicks( click ) ),
   appendMedicationList: medicationRow => dispatch( actions.appendMedicationList( medicationRow ) ),
   onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue( index, value ) ),
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
