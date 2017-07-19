@@ -20,7 +20,6 @@ onClickClear,
 onDeleteRow,
 saveRecommendation,
 } ) => {
-
   let showPatientMedications = null;
   if ( medication.isRecommendationEmpty === false ) {
     showPatientMedications = <DisplayPatientMedications />;
