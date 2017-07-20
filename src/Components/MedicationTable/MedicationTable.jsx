@@ -35,7 +35,7 @@ const MedicationTable = (
 ['', 'Device', 'Name', 'ChemicalLABA', 'ChemicalICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
 
   const renderAddRow = ( click ) => {
-    let initialInputValues = [{
+    const initialInputValues = [{
       chemicalICS: '',
       chemicalLABA: '',
       deviceName: '',
@@ -46,7 +46,7 @@ const MedicationTable = (
     }];
     addToNumberOfAddRowClicks( click );
     // initialInputValues = keyIndex( initialInputValues, medication.clicks );
-    const inputValues = keyIndex( headerElements, 1 );
+    const inputValues = keyIndex( initialInputValues, medication.clicks );
     appendMedicationList( inputValues );
   };
 
