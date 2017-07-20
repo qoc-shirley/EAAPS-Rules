@@ -53,6 +53,7 @@
 .medication-table .main .row select{
     font-size: 15px;
     height: 30px;
+    text-transform: capitalize;
 }
 
 .medication-table .main  {
