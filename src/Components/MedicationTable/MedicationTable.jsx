@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import keyIndex from 'react-key-index';
 import _ from 'lodash';
+import uuid from 'uuid';
 import InputField from '../InputField/InputField';
 import * as actions from '../../redux/App/actions';
 import medicationData from '../../medicationData/medicationData';
 import Row from '../Row/Row';
 import './styles.css';
+
+// const uuidV4 = require('uuid/v4');
 
 const MedicationTable = (
 {
@@ -34,6 +37,8 @@ const MedicationTable = (
   const headerElements =
 ['', 'Device', 'Name', 'ChemicalLABA', 'ChemicalICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
 
+  const randomGenerator = uuid();
+
   const renderAddRow = ( click ) => {
     const initialInputValues = [{
       chemicalICS: '',
@@ -43,11 +48,13 @@ const MedicationTable = (
       doseICSValue: '',
       puffValue: '',
       timesPerDayValue: '',
+      id: randomGenerator,
     }];
+    console.log( 'random generator: ', randomGenerator );
     addToNumberOfAddRowClicks( click );
     // initialInputValues = keyIndex( initialInputValues, medication.clicks );
-    const inputValues = keyIndex( initialInputValues, medication.clicks );
-    appendMedicationList( inputValues );
+    // const inputValues = keyIndex( initialInputValues, medication.clicks );
+    appendMedicationList( initialInputValues );
   };
 
   const deleteRow = ( index ) => {
@@ -179,7 +186,7 @@ const MedicationTable = (
         } );
 
         return (
-          <div key={rowFields._doseICSValueId} className="row">
+          <div key={rowFields.id} className="row">
             <p>Medication {index + 1 }:</p>
             <select
               className="device"
