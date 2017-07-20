@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import keyIndex from 'react-key-index';
+import keyIndex from 'react-key-index';
 import _ from 'lodash';
 import InputField from '../InputField/InputField';
 import * as actions from '../../redux/App/actions';
@@ -46,6 +46,7 @@ const MedicationTable = (
     }];
     addToNumberOfAddRowClicks( click );
     // initialInputValues = keyIndex( initialInputValues, medication.clicks );
+    initialInputValues = keyIndex( initialInputValues, 1 );
     appendMedicationList( initialInputValues );
   };
 
