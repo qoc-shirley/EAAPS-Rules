@@ -174,7 +174,6 @@ const MedicationTable = (
         getChemicalICSColumn = _.filter( getChemicalICSColumn, ( column ) => {
           return column.chemicalICS !== '.' && !( column.none );
         } );
-        console.log( 'chemicalICS: ', getChemicalICSColumn );
 
         return (
           <div key={rowFields.id} className="row">
