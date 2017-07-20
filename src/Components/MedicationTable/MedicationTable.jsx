@@ -102,12 +102,13 @@ const MedicationTable = (
   const displayRowContents = () => {
     return (
       medication.medicationList.map( ( rowFields, index ) => {
-        let getDeviceColumn = medicationData.map(
+        let getDeviceColumn = [{ device: 'Device' }];
+        getDeviceColumn = getDeviceColumn.concat( medicationData.map(
           ( medicationDevice ) => {
             return ( {
               device: medicationDevice.device,
             } );
-          } );
+          } ) );
         getDeviceColumn = _.uniqWith( getDeviceColumn, _.isEqual );
 
         let getNameColumn = [{ name: 'Medication Name' }];
@@ -128,8 +129,8 @@ const MedicationTable = (
           return !( column.none );
         } );
 
-        let getChemicalLABAColumn =
-          medicationData.map(
+        let getChemicalLABAColumn = [{ chemicalLABA: 'ChemicalLABA' }];
+        getChemicalLABAColumn = getChemicalLABAColumn.concat( medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
                 masterMedication.name === medication.medicationList[index].medicationName ) {
@@ -141,14 +142,15 @@ const MedicationTable = (
               return ( {
                 none: '-no chemicalLABA-',
               } );
-            } );
+            } ) );
 
         getChemicalLABAColumn = _.uniqWith( getChemicalLABAColumn, _.isEqual );
         getChemicalLABAColumn = _.filter( getChemicalLABAColumn, ( column ) => {
           return column.chemicalLABA !== '.' && !( column.none );
         } );
 
-        let getChemicalICSColumn =
+        let getChemicalICSColumn = [{ chemicalICS: 'ChemicalICS' }];
+        getChemicalICSColumn = getChemicalICSColumn.concat(
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
@@ -168,7 +170,7 @@ const MedicationTable = (
               return ( {
                 none: '-no chemicalICS-',
               } );
-            } );
+            } ) );
 
         getChemicalICSColumn = _.uniqWith( getChemicalICSColumn, _.isEqual );
         getChemicalICSColumn = _.filter( getChemicalICSColumn, ( column ) => {
@@ -181,9 +183,8 @@ const MedicationTable = (
             <select
               className="device"
               onChange={event => onChangeDeviceName( index, _.split( event.target.value, ',' ) )}
-              defaultValue={'Device'}
+              value={rowFields.deviceName}
             >
-              <option>Device</option>
               {
                 getDeviceColumn.map(
                   ( medicationDevice, deviceIndex ) => (
@@ -193,7 +194,7 @@ const MedicationTable = (
             <select
               className="name"
               onChange={event => onChangeMedicationName( index, _.split( event.target.value, ',' ) )}
-              defaultValue={'Medication Name'}
+              value={rowFields.medicationName}
             >
               {
                 getNameColumn.map(
@@ -204,9 +205,8 @@ const MedicationTable = (
             <select
               className="chemicalLABA"
               onChange={event => onChangeChemicalLABA( index, _.split( event.target.value, ',' ) )}
-              defaultValue={'ChemicalLABA'}
+              value={rowFields.chemicalLABA}
             >
-              <option>ChemicalLABA</option>
               {
                 getChemicalLABAColumn.map(
                   ( chemicalGroup, LABAindex ) => (
@@ -216,9 +216,8 @@ const MedicationTable = (
             <select
               className="chemicalICS"
               onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
-              defaultValue={'ChemicalICS'}
+              value={rowFields.chemicalICS}
             >
-              <option>ChemicalICS</option>
               {
                 getChemicalICSColumn.map(
                   ( chemicalGroup, ICSIndex ) => (
