@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import keyIndex from 'react-key-index';
+// import keyIndex from 'react-key-index';
 import _ from 'lodash';
 import uuid from 'uuid';
 import InputField from '../InputField/InputField';
