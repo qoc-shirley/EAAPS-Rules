@@ -13,7 +13,6 @@ import {
   ON_CHEMICALICS_SELECTION,
   ON_CHEMICALLABA_SELECTION,
   MEDICATION_NAME,
-  NUMBER_OF_CLICKS,
 } from './constants';
 export const initialState = {
   puffValue: '',
@@ -21,7 +20,6 @@ export const initialState = {
   doseICSValue: '',
   chemicalLABA: '',
   chemicalICS: '',
-  clicks: 0,
   deviceName: '',
   medicationList: [],
   medicationName: '',
@@ -41,10 +39,6 @@ const reducer = ( state = initialState, action ) => {
       isRuleSelectEmpty: true,
       recommendation: [],
       patientMedications: [],
-    } );
-  case NUMBER_OF_CLICKS:
-    return Object.assign( {}, state, {
-      clicks: ( state.clicks + action.data ),
     } );
   case DEVICE:
     return Object.assign( {}, state, {

@@ -12,20 +12,12 @@ import {
   ON_CHEMICALLABA_SELECTION,
   ON_CHEMICALICS_SELECTION,
   MEDICATION_NAME,
-  NUMBER_OF_CLICKS,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
   return {
     type: MEDICATION_TO_STACK,
     data: medicationRow,
-  };
-};
-
-export const addToNumberOfAddRowClicks = ( click ) => {
-  return {
-    type: NUMBER_OF_CLICKS,
-    data: click,
   };
 };
 

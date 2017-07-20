@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import keyIndex from 'react-key-index';
 import _ from 'lodash';
 import uuid from 'uuid';
 import InputField from '../InputField/InputField';
@@ -10,19 +9,12 @@ import medicationData from '../../medicationData/medicationData';
 import Row from '../Row/Row';
 import './styles.css';
 
-// const uuidV4 = require('uuid/v4');
-
 const MedicationTable = (
 {
-  addToNumberOfAddRowClicks,
   appendMedicationList,
-  // chemicalICS,
-  // chemicalLABA,
-  // deviceName,
   doseICSValue,
   getPatientMedications,
   medication,
-  // medicationName,
   onChangeDoseICS,
   onChangeChemicalLABA,
   onChangeChemicalICS,
@@ -39,7 +31,7 @@ const MedicationTable = (
 
   const randomGenerator = uuid();
 
-  const renderAddRow = ( click ) => {
+  const renderAddRow = () => {
     const initialInputValues = [{
       chemicalICS: '',
       chemicalLABA: '',
@@ -50,10 +42,6 @@ const MedicationTable = (
       timesPerDayValue: '',
       id: randomGenerator,
     }];
-    console.log( 'random generator: ', randomGenerator );
-    addToNumberOfAddRowClicks( click );
-    // initialInputValues = keyIndex( initialInputValues, medication.clicks );
-    // const inputValues = keyIndex( initialInputValues, medication.clicks );
     appendMedicationList( initialInputValues );
   };
 
@@ -164,12 +152,14 @@ const MedicationTable = (
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
-                  masterMedication.name === medication.medicationList[index].medicationName &&
-                ( masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
-                  masterMedication.chemicalLABA === '.' ) &&
-                ( medication.medicationList[index].chemicalLABA === '' ||
-                medication.medicationList[index].chemicalLABA === 'ChemicalLABA' )
-              ) {
+                   masterMedication.name === medication.medicationList[index].medicationName &&
+                  (
+                    masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
+                    (
+                      masterMedication.chemicalLABA === '.' &&
+                      (
+                        medication.medicationList[index].chemicalLABA === '' ||
+                        medication.medicationList[index].chemicalLABA === 'ChemicalLABA' ) ) ) ) {
                 return ( {
                   chemicalICS: masterMedication.chemicalICS,
                 } );
@@ -184,6 +174,7 @@ const MedicationTable = (
         getChemicalICSColumn = _.filter( getChemicalICSColumn, ( column ) => {
           return column.chemicalICS !== '.' && !( column.none );
         } );
+        console.log( 'chemicalICS: ', getChemicalICSColumn );
 
         return (
           <div key={rowFields.id} className="row">
@@ -214,7 +205,7 @@ const MedicationTable = (
             <select
               className="chemicalLABA"
               onChange={event => onChangeChemicalLABA( index, _.split( event.target.value, ',' ) )}
-              defaultValue={'chemicalLABA'}
+              defaultValue={'ChemicalLABA'}
             >
               <option>ChemicalLABA</option>
               {
@@ -226,7 +217,7 @@ const MedicationTable = (
             <select
               className="chemicalICS"
               onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
-              defaultValue={'chemicalICS'}
+              defaultValue={'ChemicalICS'}
             >
               <option>ChemicalICS</option>
               {
@@ -278,7 +269,7 @@ const MedicationTable = (
       </div>
       <button
         className="button__addRow"
-        onClick={() => renderAddRow( 1 )}
+        onClick={renderAddRow}
       >
         Add Row
       </button>
@@ -293,7 +284,6 @@ const MedicationTable = (
 };
 
 MedicationTable.propTypes = {
-  addToNumberOfAddRowClicks: PropTypes.func.isRequired,
   puffValue: PropTypes.string,
   timesPerDayValue: PropTypes.string,
   doseICSValue: PropTypes.string,
@@ -322,7 +312,6 @@ const mapStateToProps = state => ( {
 } );
 
 const mapDispatchToProps = dispatch => ( {
-  addToNumberOfAddRowClicks: click => dispatch( actions.addToNumberOfAddRowClicks( click ) ),
   appendMedicationList: medicationRow => dispatch( actions.appendMedicationList( medicationRow ) ),
   onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue( index, value ) ),
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),

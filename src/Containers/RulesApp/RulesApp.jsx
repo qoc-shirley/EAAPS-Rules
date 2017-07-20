@@ -7,7 +7,6 @@ const mapStateToProps = state => ( {
 } );
 
 const mapDispatchToProps = dispatch => ( {
-  addToNumberOfAddRowClicks: click => dispatch( actions.addToNumberOfAddRowClicks( click ) ),
   appendMedicationList: medicationRow => dispatch( actions.appendMedicationList( medicationRow ) ),
   onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue( index, value ) ),
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
