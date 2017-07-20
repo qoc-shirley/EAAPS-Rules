@@ -23,7 +23,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           const isICS = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
 
-          if ( !_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) ) &&
+          if ( (!_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) )) &&
             !_.isEmpty( findLtra ) &&
             calculate.patientICSDose( findLtra ) < findLtra.maxGreenICS ) {
 
