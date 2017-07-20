@@ -46,7 +46,7 @@ const MedicationTable = (
     }];
     addToNumberOfAddRowClicks( click );
     // initialInputValues = keyIndex( initialInputValues, medication.clicks );
-    const inputValues = keyIndex( initialInputValues, 1 );
+    const inputValues = keyIndex( headerElements, 1 );
     appendMedicationList( inputValues );
   };
 
