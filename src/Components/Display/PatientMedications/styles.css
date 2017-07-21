@@ -4,15 +4,34 @@
     padding: 40px 40px 20px 40px;
     border: solid 3px #ccefff;
     border-radius: 20px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.patientMedications .header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.patientMedications .header .title {
+    flex-basis: 200px;
 }
 
 .patientMedications .medicationRow .filteredMedications {
     display: flex;
+    width: 100%;
+    align-items: center;
     justify-content: space-between;
-    flex-direction: row;
-    margin-right: 100px;
 }
 
-.patientMedications .medicationRow .filteredMedications .medication {
+.patientMedications .medicationRow .filteredMedications .title {
+    flex-basis: 200px;
+}
+
+.patientMedications .medicationRow .filteredMedications #medication {
     font-weight: bold;
 }
