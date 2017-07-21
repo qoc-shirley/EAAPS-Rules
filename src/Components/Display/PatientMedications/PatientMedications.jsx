@@ -94,7 +94,7 @@ const DisplayPatientMedications = ( { medication } ) => {
 
   return (
     <div className="patientMedications">
-      <h3>Your Medications:</h3>
+      <h3>Your Medications</h3>
       <div className="header">
         <p className="title" />
         <p className="title">Id</p>
