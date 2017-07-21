@@ -19,6 +19,7 @@
 
 .patientMedications .header .title {
     flex-basis: 200px;
+    font-weight: bold;
 }
 
 .patientMedications .medicationRow {
