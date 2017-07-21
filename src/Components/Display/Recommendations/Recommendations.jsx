@@ -15,7 +15,7 @@ const showRecommendations = ( {
   if ( medication.isRuleSelectEmpty === false ) {
     return (
       <div className="recommendations">
-        <h4>Recommendation(s):</h4>
+        <h3>Recommendation(s)</h3>
         <div className="header">
           <p className="title" />
           <p className="title">Id</p>
@@ -37,7 +37,7 @@ const showRecommendations = ( {
 
               return (
                 <div key={index} className="contents">
-                  <p><b>{recommendMedication.rule}</b></p>
+                  <p id="rule">{recommendMedication.rule}</p>
                   {noRecommendation}
                   {
                     recommendMedication.medications.map(

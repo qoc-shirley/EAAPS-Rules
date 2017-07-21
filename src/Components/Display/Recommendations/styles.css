@@ -14,11 +14,16 @@
     width: 100%;
 }
 
+.recommendations .contents #rule{
+    font-weight: bold;
+}
+
 .recommendations .header {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    font-weight: bold;
 }
 
 .recommendations .header .title {
