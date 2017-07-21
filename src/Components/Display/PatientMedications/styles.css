@@ -21,6 +21,10 @@
     flex-basis: 200px;
 }
 
+.patientMedications .medicationRow {
+    width: 100%;
+}
+
 .patientMedications .medicationRow .filteredMedications {
     display: flex;
     width: 100%;
