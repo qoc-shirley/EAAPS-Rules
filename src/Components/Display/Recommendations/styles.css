@@ -4,6 +4,25 @@
     border: solid 3px #ccefff;
     border-radius: 20px;
     margin: 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.recommendations .contents {
+    width: 100%;
+}
+
+.recommendations .header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.recommendations .header .title {
+    flex-basis: 200px;
 }
 
 .recommendations .clear {
@@ -26,24 +45,24 @@
 
 .recommendations .recommendationObject {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 50px;
+}
+
+.recommendations .recommendationObject .data {
+    flex-basis: 200px;
 }
 
 .recommendations .recommendationArray {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 50px;
 }
 
-.recommendations .recommendationObject p {
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-.recommendations .recommendationArray p {
-    margin-left: 20px;
-    margin-right: 20px;
+.recommendations .recommendationArray .data {
+    flex-basis: 200px;
 }

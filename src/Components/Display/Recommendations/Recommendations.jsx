@@ -16,6 +16,17 @@ const showRecommendations = ( {
     return (
       <div className="recommendations">
         <h4>Recommendation(s):</h4>
+        <div className="header">
+          <p className="title" />
+          <p className="title">Id</p>
+          <p className="title">Device</p>
+          <p className="title">Name</p>
+          <p className="title">ChemicalLABA</p>
+          <p className="title">ChemicalICS</p>
+          <p className="title">Dose ICS</p>
+          <p className="title">Max Puff Per Time</p>
+          <p className="title">Times Per Day</p>
+        </div>
         {
           medication.recommendation.map(
             ( recommendMedication, index ) => {
@@ -25,7 +36,7 @@ const showRecommendations = ( {
               }
 
               return (
-                <div key={index}>
+                <div key={index} className="contents">
                   <p><b>{recommendMedication.rule}</b></p>
                   {noRecommendation}
                   {
@@ -34,22 +45,22 @@ const showRecommendations = ( {
                         if ( _.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationArray">
-                              <p><b>-</b></p>
-                              <p className="data">ID: {medicationElement[0]}</p>
-                              <p className="data">Device: {medicationElement[5]}</p>
-                              <p className="data">Name: {medicationElement[7]}</p>
-                              <p className="data">ChemicalLABA: {medicationElement[10]}</p>
-                              <p className="data">ChemicalICS: {medicationElement[11]}</p>
-                              <p className="data">Dose ICS: {medicationElement[14]}</p>
-                              <p className="data">Times Per Day: {medicationElement[22]}</p>
-                              <p className="data">Max Puff Per Time: {medicationElement[23]}</p>
+                              <p className="data" />
+                              <p className="data">{medicationElement[0]}</p>
+                              <p className="data">{medicationElement[5]}</p>
+                              <p className="data">{medicationElement[7]}</p>
+                              <p className="data">{medicationElement[10]}</p>
+                              <p className="data">{medicationElement[11]}</p>
+                              <p className="data">{medicationElement[14]}</p>
+                              <p className="data">{medicationElement[22]}</p>
+                              <p className="data">{medicationElement[23]}</p>
                             </div>
                           );
                         }
                         else if ( _.isArray( medicationElement ) && _.size( medicationElement ) < 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationArray">
-                              <p><b>-</b></p>
+                              <p />
                               <p className="data">{medicationElement}</p>
                             </div>
                           );
@@ -57,16 +68,15 @@ const showRecommendations = ( {
                         else if ( !_.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationObject">
-                              <p><b>-</b></p>
-                              <p className="data">ID: {medicationElement.id}</p>
-                              <p className="data">Device: {medicationElement.device}</p>
-                              <p className="data">Name: {medicationElement.name}</p>
-                              <p className="data">ChemicalLABA: {medicationElement.chemicalLABA}</p>
-                              <p className="data">ChemicalICS: {medicationElement.chemicalICS}</p>
-                              <p className="data">Dose ICS: {medicationElement.doseICS}</p>
-                              <p className="data">Times Per Day: {medicationElement.timesPerDay}</p>
-                              <p className="data">Max Puff Per
-                                Time: {medicationElement.maxPuffPerTime}</p>
+                              <p className="data" />
+                              <p className="data">{medicationElement.id}</p>
+                              <p className="data">{medicationElement.device}</p>
+                              <p className="data">{medicationElement.name}</p>
+                              <p className="data">{medicationElement.chemicalLABA}</p>
+                              <p className="data">{medicationElement.chemicalICS}</p>
+                              <p className="data">{medicationElement.doseICS}</p>
+                              <p className="data">{medicationElement.timesPerDay}</p>
+                              <p className="data">{medicationElement.maxPuffPerTime}</p>
                             </div>
                           );
                         }
