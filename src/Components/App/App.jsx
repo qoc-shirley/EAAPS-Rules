@@ -30,7 +30,7 @@ saveRecommendation,
 
   const onChangeRule = () => {
     saveRecommendation( 'Rule -1', get.rules.ruleMinus1( medication.patientMedications ) );
-    saveRecommendation( 'Rule 0', get.rules.rule0( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 0', _.flatten( get.rules.rule0( medication.patientMedications, medicationData ) ) );
     saveRecommendation( 'Rule 1', get.rules.rule1( medication.patientMedications, medicationData ) );
     saveRecommendation( 'Rule 3', get.rules.rule3( medication.patientMedications, medicationData ) );
     saveRecommendation( 'Rule 4', _.flatten( get.rules.rule4( medication.patientMedications, medicationData ) ) );

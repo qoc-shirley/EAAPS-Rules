@@ -65,6 +65,21 @@ const showRecommendations = ( {
                             </div>
                           );
                         }
+                        else if ( !_.isArray( medicationElement ) && _.size( medicationElement ) < 29 ) {
+                          return (
+                            <div key={medicationIndex} className="recommendationObject">
+                              <p className="data" />
+                              <p className="data">{medicationElement.id}</p>
+                              <p className="data">{medicationElement.device}</p>
+                              <p className="data">{medicationElement.name}</p>
+                              <p className="data">{medicationElement.chemicalLABA}</p>
+                              <p className="data">{medicationElement.chemicalICS}</p>
+                              <p className="data">{medicationElement.doseICS}</p>
+                              <p className="data">{medicationElement.timesPerDay}</p>
+                              <p className="data">{medicationElement.maxPuffPerTime}</p>
+                            </div>
+                          );
+                        }
                         else if ( !_.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationObject">
