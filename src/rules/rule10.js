@@ -20,7 +20,7 @@ const rule10 = ( patientMedications, masterMedications ) => {
     )
     .thru( ( arr ) => {
       if ( _.size( arr ) ) {
-        return [ 'Consult a respirologist' ];
+        return [['Consult a respirologist']];
       }
 
       return [];

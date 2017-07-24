@@ -57,13 +57,13 @@ const showRecommendations = ( {
                             </div>
                           );
                         }
-                        else if ( _.isArray( medicationElement ) && _.size( medicationElement ) < 29 ) {
+                        else if ( _.isArray( medicationElement ) && _.size( medicationElement ) < 5 ) {
                           return (
                             <div key={medicationIndex} className="recommendationArray">
-                              <p />
+                              <p> </p>
                               {
-                                medicationElement.map( (recommend, index) => {
-                                  return <p key={index} className="data">{recommend[index]}</p>;
+                                medicationElement.map( (recommend, rIndex) => {
+                                  return <p key={rIndex} className="data">{recommend}</p>;
                                 } )
                               }
                             </div>
