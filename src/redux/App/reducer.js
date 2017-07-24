@@ -147,7 +147,7 @@ const reducer = ( state = initialState, action ) => {
       } );
     }
 
-    return Object.assign({}, state, {
+    return Object.assign( {}, state, {
       patientMedications: action.data,
     } );
 

@@ -22,7 +22,8 @@ const getLabaICSAndICS = ( patientMedications ) => {
 const rule11 = ( patientMedications, masterMedications ) => {
   let newMedication = [];
   let filteredPatientMedications = getLabaICSAndICS( patientMedications );
-  if ( _.find( filteredPatientMedications, { chemicalType: 'ICS' } ) &&
+
+	if ( _.find( filteredPatientMedications, { chemicalType: 'ICS' } ) &&
     _.find( filteredPatientMedications, { chemicalType: 'laba,ICS' } ) ) {
     newMedication = _.filter( masterMedications, { name: 'singulair' } );
   }

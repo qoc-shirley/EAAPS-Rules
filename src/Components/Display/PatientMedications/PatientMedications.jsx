@@ -28,12 +28,12 @@ const DisplayPatientMedications = ( { medication } ) => {
               (
                 ( patientMedication.chemicalLABA === masterMedication.chemicalLABA ) ||
                 ( ( patientMedication.chemicalLABA === 'chemicalLABA' || patientMedication.chemicalLABA === '' ) &&
-                ( masterMedication.chemicalLABA === '.' ) )
+                  ( masterMedication.chemicalLABA === '.' ) )
               ) &&
               (
                 ( patientMedication.chemicalICS === masterMedication.chemicalICS ) ||
                 ( ( patientMedication.chemicalICS === 'chemicalICS' || patientMedication.chemicalICS === '' ) &&
-                ( masterMedication.chemicalICS === '.' ) )
+                  ( masterMedication.chemicalICS === '.' ) )
               ) &&
               ( patientMedication.medicationName === masterMedication.name ) &&
               ( patientMedication.deviceName === masterMedication.device ) &&
@@ -41,10 +41,10 @@ const DisplayPatientMedications = ( { medication } ) => {
             );
           } )
           .value(),
-      );
+        );
 
       return filteredData;
-    }, [] )
+      }, [] )
     .value();
 
   let showPatientMedications = null;
