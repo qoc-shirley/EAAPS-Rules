@@ -62,7 +62,7 @@ const showRecommendations = ( {
                             <div key={medicationIndex} className="recommendationArray">
                               <p> </p>
                               {
-                                medicationElement.map( (recommend, rIndex) => {
+                                medicationElement.map( ( recommend, rIndex)  => {
                                   return <p key={rIndex} className="data">{recommend}</p>;
                                 } )
                               }
