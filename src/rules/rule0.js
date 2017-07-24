@@ -93,27 +93,76 @@ const rule0 = ( patientMedications, masterMedications ) => {
             }
           }
           else {
-            const newMedications =
-                  // [
-                  //   {
-                  //     id: 'N/A',
-                  //     device: 'N/A',
-                  //     name: 'Flovent',
-                  //     chemicalLABA: 'N/A',
-                  //     chemicalICS: 'N/A',
-                  //     doseICS: '125 ug',
-                  //     puffPerTime: '1 Puff Bid',
-                  //     timesPerDay: 'N/A',
-                  //   },
+            // const newMedications =
+                  // ['Flovent 125 ug 1 PUFF bid',
+                  //   'Discus Flovent 100 ug 1 PUFF puff bid',
+                  //   'Pulmicort 200 ug 1 PUFF bid',
+                  //   'Asmanex 200 ug I PUFF od',
+                  //   'Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid',
                   // ];
-                  ['Flovent 125 ug 1 PUFF bid',
-                    'Discus Flovent 100 ug 1 PUFF puff bid',
-                    'Pulmicort 200 ug 1 PUFF bid',
-                    'Asmanex 200 ug I PUFF od',
-                    'Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid',
-                  ];
 
-            result.push( addToRecommendations( newMedications ) );
+            result.push(
+              {
+                id: '*',
+                device: '-',
+                name: 'Flovent',
+                chemicalLABA: '-',
+                chemicalICS: '-',
+                doseICS: '125 ug 1 Puff Bid',
+                puffPerTime: '-',
+                timesPerDay: '-',
+              },
+              {
+                id: 'Or *',
+                device: 'Discus',
+                name: '-',
+                chemicalLABA: '-',
+                chemicalICS: '-',
+                doseICS: '100 ug 1 PUFF puff bid',
+                puffPerTime: '-',
+                timesPerDay: '-',
+              },
+              {
+                id: '-',
+                device: '-',
+                name: 'Pulmicort',
+                chemicalLABA: '-',
+                chemicalICS: '-',
+                doseICS: '200 ug 1 PUFF bid',
+                puffPerTime: '-',
+                timesPerDay: '-',
+              },
+              {
+                id: '-',
+                device: '-',
+                name: 'Asmanex',
+                chemicalLABA: '-',
+                chemicalICS: '-',
+                doseICS: '200 ug I PUFF od',
+                puffPerTime: '-',
+                timesPerDay: '-',
+              },
+              {
+                id: '-',
+                device: '-',
+                name: 'Alvesco',
+                chemicalLABA: '-',
+                chemicalICS: '-',
+                doseICS: '200 ug I PUFF od',
+                puffPerTime: '-',
+                timesPerDay: '-',
+              },
+              {
+                id: '-',
+                device: '-',
+                name: 'QVAR',
+                chemicalLABA: '-',
+                chemicalICS: '-',
+                doseICS: '100 I PUFF ug bid',
+                puffPerTime: '-',
+                timesPerDay: '-',
+              },
+            );
           }
         }
 
