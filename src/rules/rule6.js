@@ -20,8 +20,8 @@ const rule6 = ( patientMedications ) => {
         .value();
       if ( patientMedication.name !== 'symbicort' &&
         ( patientMedication.chemicalType === 'laba,ICS' ||
-        patientMedication.chemicalType === 'ICS' ||
-        patientMedication.chemicalType === 'laba' ) &&
+          ( patientMedication.chemicalType === 'ICS' && patientMedication.chemicalType === 'laba' )
+        ) &&
         filterChemicalTypeLtra && !isFilteredLtraGreatermaxGreenICS ) {
         return true;
       }
