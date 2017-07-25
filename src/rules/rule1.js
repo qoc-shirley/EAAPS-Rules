@@ -23,7 +23,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
           if ( patientMedication.chemicalType === ' ICS' && !_.isEmpty( newMedications ) ) {
             // console.log("there is chemical ICS and laba,ics");
 
-            let chemicalICSMedications = _.filter(newMedications, { chemicalICS: patientMedication.chemicalICS } );
+            let chemicalICSMedications = _.filter( newMedications, { chemicalICS: patientMedication.chemicalICS } );
             // console.log("chemicalICSMedications: ", chemicalICSMedications);
             if ( !_.isEmpty( chemicalICSMedications ) ) {
               // console.log("exist a new medication “chemicalICS” same as the original medication’s “chemicalICS");
@@ -180,8 +180,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
             // console.log("ltra");
             result.push( patientMedication );
           }
-          result = _.flatten( result );
-          result = _.uniqBy( result, 'id' );
+          // result = _.flatten( result );
+          // result = _.uniqBy( result, 'id' );
 
           return result;
         }, masterMedications, patientMedications );
@@ -190,6 +190,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
 
       return result;
     }, [] )
+    .flatten()
+    .uniqBy( 'id' )
     .value();
 };
 export default rule1;

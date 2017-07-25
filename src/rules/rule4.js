@@ -5,7 +5,7 @@ import * as categorize from './library/categorizeDose';
 const rule4 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
       .reduce( ( result, medication ) => {
-        const rule =_.partial( ( medicationElement, patientMedication ) => {
+        const rule = _.partial( ( medicationElement, patientMedication ) => {
           if ( patientMedication.chemicalType === 'ICS' &&
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
@@ -42,7 +42,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
                       return medication.device === patientMedication.device &&
                         calculate.ICSDose( medication ) === calculate.patientICSDose( patientMedication );
                     } ) );
-                 }
+                  }
                   result.push( patientMedication );
                   result.push( _.filter( medicationElement, { name: 'singulair' } ) );
                 }
