@@ -93,13 +93,6 @@ const rule0 = ( patientMedications, masterMedications ) => {
             }
           }
           else {
-            // const newMedications =
-                  // ['Flovent 125 ug 1 PUFF bid',
-                  //   'Discus Flovent 100 ug 1 PUFF puff bid',
-                  //   'Pulmicort 200 ug 1 PUFF bid',
-                  //   'Asmanex 200 ug I PUFF od',
-                  //   'Alvesco 200 ug I PUFF od, OR QVAR 100 I PUFF ug bid',
-                  // ];
 
             result.push(
               {

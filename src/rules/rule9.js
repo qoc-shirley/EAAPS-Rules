@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as calculate from './library/calculateICSDose';
 import * as adjust from './library/adjustICSDose';
+import * as match from './library/match';
 
 const rule9 = ( patientMedications ) => {
   return _.chain( patientMedications )
@@ -8,23 +9,21 @@ const rule9 = ( patientMedications ) => {
       if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
         ( calculate.ICSDose( patientMedication ) < patientMedication.maxGreenICS ) &&
         _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
-        // console.log("hello");
-        if ( _.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
-          // console.log("a");
+        if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
           result.push( patientMedication );
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
         else {
-          // console.log("b");
-          result.push( adjust.ICSDose( patientMedication, 'highest' ) );
+          const filterMedication = _.filter( patientMedications, { chemicalType: patientMedication.chemicalType } );
+          result.push( match.minimizePuffsPerTime( filterMedication, patientMedication ) );
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
       }
-      result = _.flatten( result );
-      result = _.uniqBy( result, 'id' );
 
       return result;
     }, [] )
+    .flatten()
+    .uniqBy( 'id' )
     .value();
 };
 
