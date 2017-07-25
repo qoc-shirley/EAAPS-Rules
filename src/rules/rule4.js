@@ -7,7 +7,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
 
   return _.chain( patientMedications )
     .filter(
-      // _.reduce((result) => {
+      // _.reduce( ( result ) => {
       _.partial( ( medicationElement, patientMedication ) => {
         if ( patientMedication.chemicalType === 'ICS' &&
           patientMedication.name !== 'symbicort' &&
@@ -66,8 +66,9 @@ const rule4 = ( patientMedications, masterMedications ) => {
           result.push( _.filter( medicationElement, { name: 'symbicort', din: patientMedication.din } ) );
         }
       }, masterMedications ),
+      // rule( patientMedication );
       // return result;
-      // }, [])
+      // }, [] )
     )
     .concat( result )
     .value();

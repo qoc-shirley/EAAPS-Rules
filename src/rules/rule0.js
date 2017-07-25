@@ -54,6 +54,40 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 const lowestICSDose = get.lowestICSDose( newMedications );
                 result.push( addToRecommendations( lowestICSDose ) );
               }
+
+              // return _.chain( medicationElement )
+              //   .filter( {
+              //     chemicalType: 'laba,ICS',
+              //     chemicalLABA: patientMedication.chemicalLABA,
+              //     device: patientMedication.device,
+              //   } )
+              //   .thru( ( results ) => {
+              //     if ( !_.isEmpty( results ) ) {
+              //       return _.chain( medicationElement )
+              //         .filter( {
+              //           chemicalType: 'laba,ICS',
+              //           chemicalLABA: patientMedication.chemicalLABA,
+              //           device: patientMedication.device,
+              //         } )
+              //         .thru( get.lowestICSDose )
+              //         .thru( addToRecommendations )
+              //         .push( result )
+              //         .value();
+              //     }
+              //     else {
+              //       return _.chain( medicationElement )
+              //         .filter( medicationElement, {
+              //           chemicalType: 'laba,ICS',
+              //           chemicalLABA: patientMedication.chemicalLABA,
+              //         } )
+              //         .thru( get.lowestICSDose )
+              //         .thru( addToRecommendations )
+              //         .push( result )
+              //         .value();
+              //     }
+              //   } )
+              //   .value();
+
             }
             else {
               const newMedications = _.chain( medicationElement )
