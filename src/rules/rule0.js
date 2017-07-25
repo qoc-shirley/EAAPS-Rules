@@ -57,7 +57,6 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 .thru( addToRecommendations )
                 .push( result )
                 .value();
-
             }
             else {
               const newMedications = _.chain( medicationElement )
