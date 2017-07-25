@@ -40,7 +40,6 @@ saveRecommendation,
     saveRecommendation( 'Rule 8', get.rules.rule8( medication.patientMedications ) );
     saveRecommendation( 'Rule 9', get.rules.rule9( medication.patientMedications ) );
     saveRecommendation( 'Rule 10', get.rules.rule10( medication.patientMedications ) );
-    console.log( 'rule10: ', get.rules.rule10( medication.patientMedications ) );
     saveRecommendation( 'Rule 11', get.rules.rule11( medication.patientMedications, medicationData ) );
   };
 
