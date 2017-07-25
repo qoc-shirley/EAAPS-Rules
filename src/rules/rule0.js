@@ -13,16 +13,15 @@ const addToRecommendations = ( elements ) => {
 
 const rule0 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
-    .reduce( ( result, patientMedication ) => {
+    .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, patientMedication ) => {
         if ( patientMedication.chemicalType !== 'ICS' && patientMedication.chemicalType !== 'laba,ICS' ) {
-
           if (
             ( patientMedication.chemicalType === 'laba' )
-            && ( _.some( medicationElement, {chemicalType: 'laba,ICS'} ) )
+            && ( _.some( medicationElement, { chemicalType: 'laba,ICS' } ) )
           ) {
-            const isLabaICSAndChemicalLABA = _.chain(medicationElement)
-              .filter({
+            const isLabaICSAndChemicalLABA = _.chain( medicationElement )
+              .filter( {
                 chemicalType: 'laba,ICS',
                 chemicalLABA: patientMedication.chemicalLABA,
               } )
@@ -77,7 +76,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                   }
 
                   return recommend;
-                  }, [] )
+                }, [] )
                 .value();
 
               const lowestICSDose = get.lowestICSDose( newMedications );
@@ -151,10 +150,10 @@ const rule0 = ( patientMedications, masterMedications ) => {
         }
 
         if ( patientMedication.chemicalType === 'ltra' ) {
-          result.push(patientMedication);
+          result.push( patientMedication );
         }
       }, masterMedications );
-      rule( patientMedication );
+      rule( medication );
 
       return result;
     }, [] )
