@@ -28,65 +28,64 @@ const rule0 = ( patientMedications, masterMedications ) => {
               .isEmpty()
               .value();
             if ( !isLabaICSAndChemicalLABA ) {
-              const isChemicalLABAAndDeviceEqual = _.chain( medicationElement )
-                .filter( {
-                  chemicalType: 'laba,ICS',
-                  chemicalLABA: patientMedication.chemicalLABA,
-                  device: patientMedication.device,
-                } )
-                .isEmpty()
-                .value();
-              if ( !isChemicalLABAAndDeviceEqual ) {
-                const newMedications = _.filter( medicationElement, {
-                  chemicalType: 'laba,ICS',
-                  chemicalLABA: patientMedication.chemicalLABA,
-                  device: patientMedication.device,
-                } );
-                const lowestICSDose = get.lowestICSDose( newMedications );
-                result.push( addToRecommendations( lowestICSDose ) );
-              }
-              else {
-                const newMedications = _.filter( medicationElement, {
-                  chemicalType: 'laba,ICS',
-                  chemicalLABA: patientMedication.chemicalLABA,
-                } );
-
-                const lowestICSDose = get.lowestICSDose( newMedications );
-                result.push( addToRecommendations( lowestICSDose ) );
-              }
-
-              // return _.chain( medicationElement )
+              // const isChemicalLABAAndDeviceEqual = _.chain( medicationElement )
               //   .filter( {
               //     chemicalType: 'laba,ICS',
               //     chemicalLABA: patientMedication.chemicalLABA,
               //     device: patientMedication.device,
               //   } )
-              //   .thru( ( results ) => {
-              //     if ( !_.isEmpty( results ) ) {
-              //       return _.chain( medicationElement )
-              //         .filter( {
-              //           chemicalType: 'laba,ICS',
-              //           chemicalLABA: patientMedication.chemicalLABA,
-              //           device: patientMedication.device,
-              //         } )
-              //         .thru( get.lowestICSDose )
-              //         .thru( addToRecommendations )
-              //         .push( result )
-              //         .value();
-              //     }
-              //     else {
-              //       return _.chain( medicationElement )
-              //         .filter( medicationElement, {
-              //           chemicalType: 'laba,ICS',
-              //           chemicalLABA: patientMedication.chemicalLABA,
-              //         } )
-              //         .thru( get.lowestICSDose )
-              //         .thru( addToRecommendations )
-              //         .push( result )
-              //         .value();
-              //     }
-              //   } )
+              //   .isEmpty()
               //   .value();
+              // if ( !isChemicalLABAAndDeviceEqual ) {
+              //   console.log("a");
+              //   const newMedications = _.filter( medicationElement, {
+              //     chemicalType: 'laba,ICS',
+              //     chemicalLABA: patientMedication.chemicalLABA,
+              //     device: patientMedication.device,
+              //   } );
+              //   const lowestICSDose = get.lowestICSDose( newMedications );
+              //   result.push( addToRecommendations( lowestICSDose ) );
+              // }
+              // else {
+              //   console.log("b");
+              //   const newMedications = _.filter( medicationElement, {
+              //     chemicalType: 'laba,ICS',
+              //     chemicalLABA: patientMedication.chemicalLABA,
+              //   } );
+              //
+              //   const lowestICSDose = get.lowestICSDose( newMedications );
+              //   result.push( addToRecommendations( lowestICSDose ) );
+              // }
+
+              return _.chain( medicationElement )
+                .filter( {
+                  chemicalType: 'laba,ICS',
+                  chemicalLABA: patientMedication.chemicalLABA,
+                  device: patientMedication.device,
+                } )
+                .thru( ( results ) => {
+                  if ( !_.isEmpty( results ) ) {
+                    return _.chain( medicationElement )
+                      .filter( {
+                        chemicalType: 'laba,ICS',
+                        chemicalLABA: patientMedication.chemicalLABA,
+                        device: patientMedication.device,
+                      } )
+                      .value();
+                  }
+                  else {
+                    return _.chain( medicationElement )
+                      .filter( medicationElement, {
+                        chemicalType: 'laba,ICS',
+                        chemicalLABA: patientMedication.chemicalLABA,
+                      } )
+                      .value();
+                  }
+                } )
+                .thru( get.lowestICSDose )
+                .thru( addToRecommendations )
+                .push( result )
+                .value();
 
             }
             else {
