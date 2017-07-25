@@ -165,11 +165,13 @@ const rule5 = ( patientMedications, masterMedications ) => {
         }, masterMedications, patientMedications );
 
       rule( patientMedication );
-      result = _.flatten( result );
-      result = _.uniqBy( result, 'id' );
+      // result = _.flatten( result );
+      // result = _.uniqBy( result, 'id' );
 
       return result;
     }, [] )
+    .flatten()
+    .uniqBy( 'id' )
     .value();
 };
 
