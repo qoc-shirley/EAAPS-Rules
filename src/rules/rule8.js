@@ -16,12 +16,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
     .value();
 
   if ( !_.isEmpty( isSMARTMediumOrHigh ) ) {
-    return isSMARTMediumOrHigh
-      .concat(
-        _.chain( masterMedications )
-          .filter( { name: 'singulair' } )
-          .value(),
-      );
+    return isSMARTMediumOrHigh.concat( _.filter( masterMedications, { name: 'singulair' } ) );
   }
 
   return [];
