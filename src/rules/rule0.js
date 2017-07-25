@@ -12,28 +12,23 @@ const addToRecommendations = ( elements ) => {
 };
 
 const rule0 = ( patientMedications, masterMedications ) => {
-  const result = [];
-
   return _.chain( patientMedications )
-    .filter(
-      _.partial( ( medicationElement, patientMedication ) => {
+    .reduce( ( result, patientMedication ) => {
+      const rule = _.partial( ( medicationElement, patientMedication ) => {
         if ( patientMedication.chemicalType !== 'ICS' && patientMedication.chemicalType !== 'laba,ICS' ) {
 
           if (
             ( patientMedication.chemicalType === 'laba' )
-            && ( _.some( medicationElement, { chemicalType: 'laba,ICS' } ) )
+            && ( _.some( medicationElement, {chemicalType: 'laba,ICS'} ) )
           ) {
-
-            const isLabaICSAndChemicalLABA = _.chain( medicationElement )
-              .filter( {
+            const isLabaICSAndChemicalLABA = _.chain(medicationElement)
+              .filter({
                 chemicalType: 'laba,ICS',
                 chemicalLABA: patientMedication.chemicalLABA,
               } )
               .isEmpty()
               .value();
-
             if ( !isLabaICSAndChemicalLABA ) {
-
               const isChemicalLABAAndDeviceEqual = _.chain( medicationElement )
                 .filter( {
                   chemicalType: 'laba,ICS',
@@ -42,15 +37,12 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 } )
                 .isEmpty()
                 .value();
-
               if ( !isChemicalLABAAndDeviceEqual ) {
-
                 const newMedications = _.filter( medicationElement, {
                   chemicalType: 'laba,ICS',
                   chemicalLABA: patientMedication.chemicalLABA,
                   device: patientMedication.device,
                 } );
-
                 const lowestICSDose = get.lowestICSDose( newMedications );
                 result.push( addToRecommendations( lowestICSDose ) );
               }
@@ -80,12 +72,12 @@ const rule0 = ( patientMedications, masterMedications ) => {
                   if ( medication.chemicalLABA === 'formoterol' && medication.chemicalICS === 'budesonide' ) {
                     recommend.push( medication );
                   }
-                  if ( medication.chemicalLABA === 'formoterol' && medication.chemicalICS === 'budesonide') {
+                  if ( medication.chemicalLABA === 'formoterol' && medication.chemicalICS === 'budesonide' ) {
                     recommend.push( medication );
                   }
 
                   return recommend;
-                }, [] )
+                  }, [] )
                 .value();
 
               const lowestICSDose = get.lowestICSDose( newMedications );
@@ -93,7 +85,6 @@ const rule0 = ( patientMedications, masterMedications ) => {
             }
           }
           else {
-
             result.push(
               {
                 id: '*',
@@ -155,15 +146,19 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 puffPerTime: '-',
                 timesPerDay: '-',
               },
-            );
+              );
           }
         }
 
         if ( patientMedication.chemicalType === 'ltra' ) {
-          result.push( patientMedication );
+          result.push(patientMedication);
         }
-      }, masterMedications ) )
-    .concat( result )
+      }, masterMedications );
+      rule( patientMedication );
+
+      return result;
+    }, [] )
+
     .value();
 };
 
