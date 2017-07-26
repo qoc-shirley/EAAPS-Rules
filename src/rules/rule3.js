@@ -6,10 +6,9 @@ import * as match from './library/match';
 
 const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
-    .reduce( ( result, patientMedication ) => {
+    .reduce( ( result, originalMedication ) => {
       const rule =
         _.partial( ( medicationElement, medications, patientMedication ) => {
-
           const filterOrgMeds = _.filter( medications, ( medication ) => {
             return medication.name !== 'symbicort' &&
               (
@@ -162,7 +161,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           return result;
         }, masterMedications, patientMedications );
 
-      rule( patientMedication );
+      rule( originalMedication );
       // result = _.flatten( result );
       // result = _.uniqBy( result, 'id' );
 
