@@ -8,6 +8,7 @@ import rule5 from './rule5';
 export const rules = {
   ruleMinus1,
   rule1,
+  rule2,
   rule3,
   rule4,
   rule5,
