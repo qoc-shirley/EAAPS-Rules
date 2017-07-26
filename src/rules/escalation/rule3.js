@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import * as categorize from './library/categorizeDose';
-import * as get from './library/getICSDose';
-import * as adjust from './library/adjustICSDose';
-import * as match from './library/match';
+import * as categorize from '../library/categorizeDose';
+import * as get from '../library/getICSDose';
+import * as adjust from '../library/adjustICSDose';
+import * as match from '../library/match';
 
 const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )

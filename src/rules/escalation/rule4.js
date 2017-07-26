@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import * as calculate from './library/calculateICSDose';
-import * as categorize from './library/categorizeDose';
+import * as calculate from '../library/calculateICSDose';
+import * as categorize from '../library/categorizeDose';
 
 const rule4 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )

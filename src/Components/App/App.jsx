@@ -6,7 +6,7 @@ import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../../medicationData/medicationData';
 import DisplayPatientMedications from '../Display/PatientMedications/PatientMedications';
 import Recommendations from '../Display/Recommendations/Recommendations';
-import * as get from '../../rules/rules';
+import * as get from '../../rules/escalation/rules';
 import './styles.css';
 
 const App = ( {

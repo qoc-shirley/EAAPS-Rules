@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import * as calculate from './library/calculateICSDose';
-import * as adjust from './library/adjustICSDose';
-import * as match from './library/match';
+import * as calculate from '../library/calculateICSDose';
+import * as adjust from '../library/adjustICSDose';
+import * as match from '../library/match';
 
 const rule9 = ( patientMedications ) => {
   return _.chain( patientMedications )

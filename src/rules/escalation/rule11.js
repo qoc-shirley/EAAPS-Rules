@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import masterMedications from '../medicationData/medicationData';
+import masterMedications from '../../medicationData/medicationData';
 
 const getLabaICSAndICS = ( patientMedications ) => {
   const result = [];

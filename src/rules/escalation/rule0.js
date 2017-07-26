@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import * as get from './library/getICSDose';
+import * as get from '../library/getICSDose';
 
 const addToRecommendations = ( elements ) => {
   return _.chain( elements )
