@@ -24,6 +24,9 @@ const rule3 = ( patientMedications, masterMedications ) => {
           if ( !_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) ) ) {
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
               // console.log("laba,ICS");
+              /*
+              *
+              * */
               const tryTimesPerDay = match.timesPerDay( isLabaICS, patientMedication );
 
               if ( !_.isEmpty( tryTimesPerDay ) ) {

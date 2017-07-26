@@ -7,9 +7,11 @@ import * as match from './library/match';
 
 const rule5 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
-    .reduce( ( result, patientMedication ) => {
+    .reduce( ( result, originalMedication ) => {
       const rule =
         _.partial( ( medicationElement, medications, patientMedication ) => {
+          const originalMedicationLtra =  _.filter( medications, { chemicalType: 'ltra' } );
+          const originalMedicationLaba =  _.filter( medications, { chemicalType: 'laba' } );
           const filterOrgMeds = _.filter( medications, ( medication ) => {
             return medication.name !== 'symbicort' &&
               (
@@ -73,13 +75,13 @@ const rule5 = ( patientMedications, masterMedications ) => {
                       match.minimizePuffsPerTime( highestDose, get.lowestICSDose( getICSDevice ) );
                     if ( !_.isEmpty( tryMinimizePuffs ) ) {
                       result.push( get.lowestICSDose( tryMinimizePuffs ) );
-                      result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
+                      result.push( originalMedicationLtra );
                     }
                     result.push( get.lowestICSDose( getICSDevice ) );
-                    result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
+                    result.push( originalMedicationLtra );
                   }
                   result.push( get.lowestICSDose( getLabaDevice ) );
-                  result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
+                  result.push( originalMedicationLtra );
                 }
               }
               else {
@@ -89,8 +91,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
                 if ( !_.isEmpty( highestICSDose ) ) {
                   const matchICSDevice = match.device( highestICSDose, get.lowestICSDose( isICS ) );
                   result.push( matchICSDevice );
-                  result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                  result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                  result.push( originalMedicationLtra );
+                  result.push( originalMedicationLaba );
                 }
                 else {
                   const tryTimesPerDay = match.timesPerDay( filteredMedication, get.lowestICSDose( isICS ) );
@@ -98,19 +100,19 @@ const rule5 = ( patientMedications, masterMedications ) => {
                     const tryMinimize = match.minimizePuffsPerTime( tryTimesPerDay, get.lowestICSDose( isICS ) );
                     if ( !_.isEmpty( tryMinimize ) ) {
                       result.push( tryMinimize );
-                      result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                      result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                      result.push( originalMedicationLtra );
+                      result.push( originalMedicationLaba );
                     }
                     else {
                       result.push( tryTimesPerDay );
-                      result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                      result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                      result.push( originalMedicationLtra );
+                      result.push( originalMedicationLaba );
                     }
                   }
                   else {
                     result.push( get.highestICSDose( highestICSDose ) );
-                    result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                    result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                    result.push( originalMedicationLtra );
+                    result.push( originalMedicationLaba );
                   }
                 }
               }
@@ -122,8 +124,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
               if ( !_.isEmpty( highestICSDose ) ) {
                 const matchICSDevice = match.device( highestICSDose, get.lowestICSDose( isICS ) );
                 result.push( matchICSDevice );
-                result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                result.push( originalMedicationLtra );
+                result.push( originalMedicationLaba );
               }
               else {
                 const tryTimesPerDay = match.timesPerDay( highestICSDose, get.lowestICSDose( isICS ) );
@@ -131,25 +133,25 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   const tryMinimize = match.minimizePuffsPerTime( tryTimesPerDay, get.lowestICSDose( isICS ) );
                   if ( !_.isEmpty( tryMinimize ) ) {
                     result.push( tryMinimize );
-                    result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                    result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                    result.push( originalMedicationLtra );
+                    result.push( originalMedicationLaba );
                   }
                   else {
                     result.push( tryTimesPerDay );
-                    result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                    result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                    result.push( originalMedicationLtra );
+                    result.push( originalMedicationLaba );
                   }
                 }
                 else {
                   result.push( get.highestICSDose( highestICSDose ) );
-                  result.push( _.filter( medications, { chemicalType: 'ltra' } ) );
-                  result.push( _.filter( medications, { chemicalType: 'laba' } ) );
+                  result.push( originalMedicationLtra );
+                  result.push( originalMedicationLaba );
                 }
               }
             }
           }
 
-          if ( patientMedication.name === 'symbicort' && _.some( patientMedication, { chemicalType: 'ltra' } ) ) {
+          if ( patientMedication.name === 'symbicort' && _.some( medications, { chemicalType: 'ltra' } ) ) {
             result.push(
               _.filter(
                 medicationElement,
@@ -164,9 +166,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
           return result;
         }, masterMedications, patientMedications );
 
-      rule( patientMedication );
-      // result = _.flatten( result );
-      // result = _.uniqBy( result, 'id' );
+      rule( originalMedication );
 
       return result;
     }, [] )
