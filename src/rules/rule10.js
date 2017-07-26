@@ -26,12 +26,6 @@ const rule10 = ( patientMedications, masterMedications ) => {
       return [];
     } )
     .value();
-
-  // if ( !_.isEmpty( consultRespirologist ) ) {
-  //   return consultRespirologist.concat( 'consult a respirologist' );
-  // }
-	//
-  // return [];
 };
 
 export default rule10;
