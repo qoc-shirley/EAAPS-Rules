@@ -10,8 +10,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
     .reduce( ( result, originalMedication ) => {
       const rule =
         _.partial( ( medicationElement, medications, patientMedication ) => {
-          const originalMedicationLtra =  _.filter( medications, { chemicalType: 'ltra' } );
-          const originalMedicationLaba =  _.filter( medications, { chemicalType: 'laba' } );
+          const originalMedicationLtra = _.filter( medications, { chemicalType: 'ltra' } );
+          const originalMedicationLaba = _.filter( medications, { chemicalType: 'laba' } );
           const filterOrgMeds = _.filter( medications, ( medication ) => {
             return medication.name !== 'symbicort' &&
               (
@@ -25,10 +25,9 @@ const rule5 = ( patientMedications, masterMedications ) => {
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           const isICS = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
 
-          if ( (!_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) )) &&
+          if ( ( !_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) ) ) &&
             !_.isEmpty( findLtra ) &&
             calculate.patientICSDose( findLtra ) < findLtra.maxGreenICS ) {
-
             if ( !_.isEmpty( isLabaICS ) ) {
               // const tryOriginalDevice
               // const tryMatchDoseICS = match.doseICS(isLabaICS );
