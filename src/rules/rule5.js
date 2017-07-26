@@ -55,6 +55,16 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   } )
                   );
               } );
+
+              /*
+              * return _.chain( filteredMedication )
+              *   .filter( ( medication ) => {
+              *     return adjust.ICSDose( medication, 'highest' ) !== [];
+              *   } )
+              *   .cond([
+               *   [ _.filter(), ]
+               *   ])
+              * */
               const highestDose = _.filter( filteredMedication, ( medication ) => {
                 return ( adjust.ICSDose( medication, 'highest' ) !== [] );
               } );
