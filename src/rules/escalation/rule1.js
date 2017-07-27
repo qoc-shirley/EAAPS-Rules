@@ -20,7 +20,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
         _.partial( ( medicationElement, medications, patientMedication ) => {
           const newMedications = _.filter( medicationElement, { chemicalType: 'laba,ICS' } );
           // console.log("beginning: ", patientMedication.chemicalType === "ICS", newMedications);
-          if ( patientMedication.chemicalType === ' ICS' && !_.isEmpty( newMedications ) ) {
+          if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) ) {
             // console.log("there is chemical ICS and laba,ics");
 
             let chemicalICSMedications = _.filter( newMedications, { chemicalICS: patientMedication.chemicalICS } );
