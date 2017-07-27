@@ -18,170 +18,235 @@ const rule1 = ( patientMedications, masterMedications ) => {
     .reduce( ( result, patientMedication ) => {
       const rule =
         _.partial( ( medicationElement, medications, patientMedication ) => {
-          const newMedications = _.filter( medicationElement, { chemicalType: 'laba,ICS' } );
-          // console.log("beginning: ", patientMedication.chemicalType === "ICS", newMedications);
-          if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) ) {
-            // console.log("there is chemical ICS and laba,ics");
+          if ( patientMedication.chemicalType === 'ltra' ) {
+            result.push( patientMedication );
 
-            let chemicalICSMedications = _.filter( newMedications, { chemicalICS: patientMedication.chemicalICS } );
-            // console.log("chemicalICSMedications: ", chemicalICSMedications);
-            if ( !_.isEmpty( chemicalICSMedications ) ) {
+            return result;
+          }
+          else if ( patientMedication.chemicalType === 'ICS' ) {
+
+            const newMedications = _.filter( medicationElement, { chemicalType: 'laba,ICS' } );
+
+            if ( _.isEmpty( newMedications ) ) {
+              return result;
+            }
+
+            let chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
+
+            // _.chain( newMedications )
+            //   .filter( {chemicalICS: patientMedication.chemicalICS} )
+            //   .thru( ( medications ) => {
+            //     if (_.isEmpty( medications ) ) {
+            //
+            //     }
+            //
+            //     else {
+            //
+            //     }
+            //
+            //   } )
+            //   .value();
+
+            if (!_.isEmpty(chemicalICSMedications)) {
               // console.log("exist a new medication “chemicalICS” same as the original medication’s “chemicalICS");
               // const typeICS = _.filter(chemicalICSMedications, {chemicalType: "ICS"});
-              const matchOriginalICSDevice = match.device( chemicalICSMedications, patientMedication );
-              if ( !_.isEmpty( matchOriginalICSDevice ) ) {
+              const matchOriginalICSDevice = match.device(chemicalICSMedications, patientMedication);
+              if (!_.isEmpty(matchOriginalICSDevice)) {
                 chemicalICSMedications = matchOriginalICSDevice;
               }
 
-              const equalMedications = _.filter( chemicalICSMedications, ( medication ) => {
-                return equalICSDose( medication, patientMedication );
-              } );
-              const tryTimesPerDay = match.timesPerDay( equalMedications, patientMedication );
-              if ( !_.isEmpty( tryTimesPerDay ) ) {
-                const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
-                if ( !_.isEmpty(tryMinimizePuffs ) ) {
-                  result.push( tryMinimizePuffs );
+              const equalMedications = _.filter(chemicalICSMedications, (medication) => {
+                return equalICSDose(medication, patientMedication);
+              });
+              const tryTimesPerDay = match.timesPerDay(equalMedications, patientMedication);
+              if (!_.isEmpty(tryTimesPerDay)) {
+                const tryMinimizePuffs = match.minimizePuffsPerTime(tryTimesPerDay, patientMedication);
+                if (!_.isEmpty(tryMinimizePuffs)) {
+                  result.push(tryMinimizePuffs);
                 }
                 else {
-                  result.push( tryTimesPerDay );
+                  result.push(tryTimesPerDay);
                 }
               }
-              else if ( !_.isEmpty( equalMedications ) ) {
-                result.push( equalMedications );
+              else if (!_.isEmpty(equalMedications)) {
+                result.push(equalMedications);
               }
               else {
                 // console.log("recommend the next closest higher ICS DOSE than the original medication's dose");
-                const nextHigherICSDose = _.filter( chemicalICSMedications, ( medication ) => {
-                  return calculate.ICSDose( medication ) > calculate.patientICSDose( patientMedication );
-                } );
-                const tryTimesPerDay = match.timesPerDay( nextHigherICSDose, patientMedication );
-                if ( !_.isEmpty( tryTimesPerDay ) ) {
-                  const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
-                  if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                    result.push( tryMinimizePuffs );
+                const nextHigherICSDose = _.filter(chemicalICSMedications, (medication) => {
+                  return calculate.ICSDose(medication) > calculate.patientICSDose(patientMedication);
+                });
+                const tryTimesPerDay = match.timesPerDay(nextHigherICSDose, patientMedication);
+                if (!_.isEmpty(tryTimesPerDay)) {
+                  const tryMinimizePuffs = match.minimizePuffsPerTime(tryTimesPerDay, patientMedication);
+                  if (!_.isEmpty(tryMinimizePuffs)) {
+                    result.push(tryMinimizePuffs);
                   }
                   else {
-                    result.push( tryTimesPerDay );
+                    result.push(tryTimesPerDay);
                   }
                 }
                 else {
-                  const tryMinimizePuffs = match.minimizePuffsPerTime( nextHigherICSDose, patientMedication );
-                  if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                    result.push( tryMinimizePuffs );
+                  const tryMinimizePuffs = match.minimizePuffsPerTime(nextHigherICSDose, patientMedication);
+                  if (!_.isEmpty(tryMinimizePuffs)) {
+                    result.push(tryMinimizePuffs);
                   }
                   else {
-                    result.push( nextHigherICSDose );
+                    result.push(nextHigherICSDose);
                   }
                 }
               }
 
-              const maxICSDose = _.filter( chemicalICSMedications, ( medication ) => {
-                return medication.maxGreenICS < calculate.patientICSDose( patientMedication );
-              } );
-              if ( !_.isEmpty( maxICSDose ) ) {
+              const maxICSDose = _.filter(chemicalICSMedications, (medication) => {
+                return medication.maxGreenICS < calculate.patientICSDose(patientMedication);
+              });
+              if (!_.isEmpty(maxICSDose)) {
                 // console.log("recommend this new medication at max ICS DOSE (maxGreenICS)");
-                const tryTimesPerDay = match.timesPerDay( maxICSDose, patientMedication );
-                if ( !_.isEmpty( tryTimesPerDay ) ) {
-                  const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
-                  if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                    result.push( tryMinimizePuffs );
+                const tryTimesPerDay = match.timesPerDay(maxICSDose, patientMedication);
+                if (!_.isEmpty(tryTimesPerDay)) {
+                  const tryMinimizePuffs = match.minimizePuffsPerTime(tryTimesPerDay, patientMedication);
+                  if (!_.isEmpty(tryMinimizePuffs)) {
+                    result.push(tryMinimizePuffs);
                   }
                   else {
-                    result.push( tryTimesPerDay );
+                    result.push(tryTimesPerDay);
                   }
                 }
-                const tryMinimizePuffs = match.minimizePuffsPerTime( maxICSDose, patientMedication );
-                if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                  result.push( tryMinimizePuffs );
+                const tryMinimizePuffs = match.minimizePuffsPerTime(maxICSDose, patientMedication);
+                if (!_.isEmpty(tryMinimizePuffs)) {
+                  result.push(tryMinimizePuffs);
                 }
                 else {
-                  result.push( maxICSDose );
+                  result.push(maxICSDose);
                 }
               }
             }
             else {
-              // console.log("DOESN'T exist a new medication “chemicalICS” same original medication’s “chemicalICS");
-              const newMedication =
-                _.filter( medicationElement, ( medication ) => {
-                  return (
-                      medication.chemicalLABA === 'salmeterol' &&
-                      medication.chemicalICS === 'fluticasone' &&
-                      medication.device === 'diskus'
-                    ) || (
-                      medication.chemicalLABA === 'salmeterol' &&
-                      medication.chemicalICS === 'fluticasone' &&
-                      medication.device === 'inhaler2'
-                    ) || (
-                      medication.chemicalLABA === 'formoterol' &&
-                      medication.chemicalICS === 'budesonide'
-                    ) || (
-                      medication.chemicalLABA === 'formoterol' &&
-                      medication.chemicalICS === 'mometasone'
-                    );
-                } );
-              // console.log("categorize original and new medications");
-              const low = _.filter( newMedication, ( medication ) => {
-                return categorize.ICSDose( medication ) === 'low';
-              } );
-              const medium = _.filter( newMedication, ( medication ) => {
-                return categorize.ICSDose( medication ) === 'medium';
-              } );
-              const high = _.filter( newMedication, ( medication ) => {
-                return categorize.ICSDose( medication ) === 'high';
-              } );
-              const excessive = _.filter( newMedication, ( medication ) => {
-                return categorize.ICSDose( medication ) === 'excessive';
-              } );
+              console.log( 'test' );
+              // medicationElement = medication from spreadsheet
 
-              if ( categorize.patientICSDose( patientMedication ) === 'low' ) {
-                // console.log("find new medication in low category");
-                const tryMinimizePuff = match.minimizePuffsPerTime( get.lowestICSDose( low ), patientMedication );
-                if ( !_.isEmpty( tryMinimizePuff ) ) {
-                  result.push( tryMinimizePuff );
-                }
-                else {
-                  result.push( get.lowestICSDose( low ) );
-                }
-              }
-              else if ( categorize.patientICSDose( patientMedication ) === 'medium' ) {
-                // console.log("find new medication in medium category");
-                const tryMinimizePuff = match.minimizePuffsPerTime( get.lowestICSDose( medium ), patientMedication );
-                if ( !_.isEmpty( tryMinimizePuff ) ) {
-                  result.push( tryMinimizePuff );
-                }
-                else {
-                  result.push( get.lowestICSDose( medium ) );
-                }
-              }
-              else if ( categorize.patientICSDose( patientMedication ) === 'high' ) {
-                // console.log("find new medication in high category");
-                const tryMinimizePuff = match.minimizePuffsPerTime( get.lowestICSDose( high ), patientMedication );
-                if ( !_.isEmpty( tryMinimizePuff ) ) {
-                  result.push( tryMinimizePuff );
-                }
-                else {
-                  result.push( get.lowestICSDose( high ) );
-                }
-              }
-              else if ( categorize.patientICSDose( patientMedication ) === 'excessive' ) {
-                // console.log("recommend highest possible ICS DOSE in each new medication");
-                const tryMinimizePuff = match.minimizePuffsPerTime(
-                  get.highestICSDose( excessive ), patientMedication );
-                if ( !_.isEmpty( tryMinimizePuff ) ) {
-                  result.push( tryMinimizePuff );
-                }
-                else {
-                  result.push( get.highestICSDose( excessive ) );
-                }
-              }
+              const masterMedication = medicationElement;
+              result.push(
+              _.chain( masterMedication )
+                .filter( ( medication ) => {
+                  return (
+                    medication.chemicalLABA === 'salmeterol' &&
+                    medication.chemicalICS === 'fluticasone' &&
+                    medication.device === 'diskus'
+                  ) || (
+                    medication.chemicalLABA === 'salmeterol' &&
+                    medication.chemicalICS === 'fluticasone' &&
+                    medication.device === 'inhaler2'
+                  ) || (
+                    medication.chemicalLABA === 'formoterol' &&
+                    medication.chemicalICS === 'budesonide'
+                  ) || (
+                    medication.chemicalLABA === 'formoterol' &&
+                    medication.chemicalICS === 'mometasone'
+                  );
+                } )
+                .reduce( ( accMedicationCategory, medication ) => {
+                  const category = categorize.ICSDose( medication );
+
+                  if ( _.isNil( accMedicationCategory[category] ) ) {
+                    accMedicationCategory[category] = medication;
+                  }
+
+                  else {
+                    if ( category === 'excessive' &&
+                      calculate.ICSDose( accMedicationCategory[category] ) <= calculate.ICSDose( medication ) ) {
+                      accMedicationCategory[category] = medication;
+                    }
+                    else if ( calculate.ICSDose( accMedicationCategory[category] ) > calculate.ICSDose( medication ) ) {
+                      accMedicationCategory[category] = medication;
+                    }
+                  }
+
+                  return accMedicationCategory;
+                }, {} )
+                .thru( ( list ) => {
+                  return list[categorize.patientICSDose( patientMedication )];
+                } )
+                .value(),
+            );
+
+              // console.log("DOESN'T exist a new medication “chemicalICS” same original medication’s “chemicalICS");
+              // const newMedication =
+              //   _.filter(medicationElement, (medication) => {
+              //     return (
+              //       medication.chemicalLABA === 'salmeterol' &&
+              //       medication.chemicalICS === 'fluticasone' &&
+              //       medication.device === 'diskus'
+              //     ) || (
+              //       medication.chemicalLABA === 'salmeterol' &&
+              //       medication.chemicalICS === 'fluticasone' &&
+              //       medication.device === 'inhaler2'
+              //     ) || (
+              //       medication.chemicalLABA === 'formoterol' &&
+              //       medication.chemicalICS === 'budesonide'
+              //     ) || (
+              //       medication.chemicalLABA === 'formoterol' &&
+              //       medication.chemicalICS === 'mometasone'
+              //     );
+              //   });
+
+              // console.log("categorize original and new medications");
+              // const low = _.filter(newMedication, (medication) => {
+              //   return categorize.ICSDose(medication) === 'low';
+              // });
+              // const medium = _.filter(newMedication, (medication) => {
+              //   return categorize.ICSDose(medication) === 'medium';
+              // });
+              // const high = _.filter(newMedication, (medication) => {
+              //   return categorize.ICSDose(medication) === 'high';
+              // });
+              // const excessive = _.filter(newMedication, (medication) => {
+              //   return categorize.ICSDose(medication) === 'excessive';
+              // });
+
+              // if (categorize.patientICSDose(patientMedication) === 'low') {
+              //   // console.log("find new medication in low category");
+              //   const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(low), patientMedication);
+              //   if (!_.isEmpty(tryMinimizePuff)) {
+              //     result.push(tryMinimizePuff);
+              //   }
+              //   else {
+              //     result.push(get.lowestICSDose(low));
+              //   }
+              // }
+              // else if (categorize.patientICSDose(patientMedication) === 'medium') {
+              //   // console.log("find new medication in medium category");
+              //   const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(medium), patientMedication);
+              //   if (!_.isEmpty(tryMinimizePuff)) {
+              //     result.push(tryMinimizePuff);
+              //   }
+              //   else {
+              //     result.push(get.lowestICSDose(medium));
+              //   }
+              // }
+              // else if (categorize.patientICSDose(patientMedication) === 'high') {
+              //   // console.log("find new medication in high category");
+              //   const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(high), patientMedication);
+              //   if (!_.isEmpty(tryMinimizePuff)) {
+              //     result.push(tryMinimizePuff);
+              //   }
+              //   else {
+              //     result.push(get.lowestICSDose(high));
+              //   }
+              // }
+              // else if (categorize.patientICSDose(patientMedication) === 'excessive') {
+              //   // console.log("recommend highest possible ICS DOSE in each new medication");
+              //   const tryMinimizePuff = match.minimizePuffsPerTime(
+              //     get.highestICSDose(excessive), patientMedication);
+              //   if (!_.isEmpty(tryMinimizePuff)) {
+              //     result.push(tryMinimizePuff);
+              //   }
+              //   else {
+              //     result.push(get.highestICSDose(excessive));
+              //   }
+              // }
             }
           }
-          if ( patientMedication.chemicalType === 'ltra' ) {
-            // console.log("ltra");
-            result.push( patientMedication );
-          }
-          // result = _.flatten( result );
-          // result = _.uniqBy( result, 'id' );
 
           return result;
         }, masterMedications, patientMedications );

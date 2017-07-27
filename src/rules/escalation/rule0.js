@@ -15,12 +15,6 @@ const rule0 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, patientMedication ) => {
-        // const test =  _.cond( [
-        //   [_.matches( { chemicalType: 'laba' } ) || _.matches( { chemicalType: 'ltra' } ), _.constant( 'ok' )],
-        //   [_.stubTrue, _.constant( 'not ok' )],
-        // ] );
-        // console.log( 'test with _.cond: ', test( patientMedication ) );
-
         if ( patientMedication.chemicalType !== 'ICS' && patientMedication.chemicalType !== 'laba,ICS' ) {
           if (
             ( patientMedication.chemicalType === 'laba' )
