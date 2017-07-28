@@ -44,7 +44,12 @@ const rule1 = ( patientMedications, masterMedications ) => {
             console.log( 'test: ', test );
             // _.chain( newMedications )
             //   .filter( { chemicalICS: patientMedication.chemicalICS } )
-            //   .filter( { device: patientMedication.device } )
+            //   .reduce( ( accResult, medication ) => {
+            //    if ( medication.device === patientMedication.device ) {
+            //
+            //    }
+            //
+            // }, [] )
             //   .filter( medication => return equalICSDose( medication, patientMedication ) )
 
             if (!_.isEmpty(chemicalICSMedications)) {
