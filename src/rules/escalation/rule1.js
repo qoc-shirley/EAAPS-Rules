@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
-import * as get from '../library/getICSDose';
+// import * as get from '../library/getICSDose';
 import * as categorize from '../library/categorizeDose';
 import * as adjust from '../library/adjustICSDose';
 import * as match from '../library/match';
@@ -33,19 +33,19 @@ const rule1 = ( patientMedications, masterMedications ) => {
 
             let chemicalICSMedications = _.filter(newMedications, {chemicalICS: patientMedication.chemicalICS});
 
+            const test = _.chain( newMedications )
+              .filter( { chemicalICS: patientMedication.chemicalICS } )
+              .cond( (medication) => ( [
+                [ _.thru( medication, match.device( patientMedication ) ).isEmpty(),
+                  ( medication ) => { return medication; } ],
+                [ _.stubTrue , _.thru( medication, match.device( patientMedication ) )],
+              ] ) )
+              .value();
+            console.log( 'test: ', test );
             // _.chain( newMedications )
-            //   .filter( {chemicalICS: patientMedication.chemicalICS} )
-            //   .thru( ( medications ) => {
-            //     if (_.isEmpty( medications ) ) {
-            //
-            //     }
-            //
-            //     else {
-            //
-            //     }
-            //
-            //   } )
-            //   .value();
+            //   .filter( { chemicalICS: patientMedication.chemicalICS } )
+            //   .filter( { device: patientMedication.device } )
+            //   .filter( medication => return equalICSDose( medication, patientMedication ) )
 
             if (!_.isEmpty(chemicalICSMedications)) {
               // console.log("exist a new medication “chemicalICS” same as the original medication’s “chemicalICS");
@@ -122,9 +122,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
               }
             }
             else {
-              console.log( 'test' );
               // medicationElement = medication from spreadsheet
-
               const masterMedication = medicationElement;
               result.push(
               _.chain( masterMedication )
@@ -169,82 +167,6 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 } )
                 .value(),
             );
-
-              // console.log("DOESN'T exist a new medication “chemicalICS” same original medication’s “chemicalICS");
-              // const newMedication =
-              //   _.filter(medicationElement, (medication) => {
-              //     return (
-              //       medication.chemicalLABA === 'salmeterol' &&
-              //       medication.chemicalICS === 'fluticasone' &&
-              //       medication.device === 'diskus'
-              //     ) || (
-              //       medication.chemicalLABA === 'salmeterol' &&
-              //       medication.chemicalICS === 'fluticasone' &&
-              //       medication.device === 'inhaler2'
-              //     ) || (
-              //       medication.chemicalLABA === 'formoterol' &&
-              //       medication.chemicalICS === 'budesonide'
-              //     ) || (
-              //       medication.chemicalLABA === 'formoterol' &&
-              //       medication.chemicalICS === 'mometasone'
-              //     );
-              //   });
-
-              // console.log("categorize original and new medications");
-              // const low = _.filter(newMedication, (medication) => {
-              //   return categorize.ICSDose(medication) === 'low';
-              // });
-              // const medium = _.filter(newMedication, (medication) => {
-              //   return categorize.ICSDose(medication) === 'medium';
-              // });
-              // const high = _.filter(newMedication, (medication) => {
-              //   return categorize.ICSDose(medication) === 'high';
-              // });
-              // const excessive = _.filter(newMedication, (medication) => {
-              //   return categorize.ICSDose(medication) === 'excessive';
-              // });
-
-              // if (categorize.patientICSDose(patientMedication) === 'low') {
-              //   // console.log("find new medication in low category");
-              //   const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(low), patientMedication);
-              //   if (!_.isEmpty(tryMinimizePuff)) {
-              //     result.push(tryMinimizePuff);
-              //   }
-              //   else {
-              //     result.push(get.lowestICSDose(low));
-              //   }
-              // }
-              // else if (categorize.patientICSDose(patientMedication) === 'medium') {
-              //   // console.log("find new medication in medium category");
-              //   const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(medium), patientMedication);
-              //   if (!_.isEmpty(tryMinimizePuff)) {
-              //     result.push(tryMinimizePuff);
-              //   }
-              //   else {
-              //     result.push(get.lowestICSDose(medium));
-              //   }
-              // }
-              // else if (categorize.patientICSDose(patientMedication) === 'high') {
-              //   // console.log("find new medication in high category");
-              //   const tryMinimizePuff = match.minimizePuffsPerTime(get.lowestICSDose(high), patientMedication);
-              //   if (!_.isEmpty(tryMinimizePuff)) {
-              //     result.push(tryMinimizePuff);
-              //   }
-              //   else {
-              //     result.push(get.lowestICSDose(high));
-              //   }
-              // }
-              // else if (categorize.patientICSDose(patientMedication) === 'excessive') {
-              //   // console.log("recommend highest possible ICS DOSE in each new medication");
-              //   const tryMinimizePuff = match.minimizePuffsPerTime(
-              //     get.highestICSDose(excessive), patientMedication);
-              //   if (!_.isEmpty(tryMinimizePuff)) {
-              //     result.push(tryMinimizePuff);
-              //   }
-              //   else {
-              //     result.push(get.highestICSDose(excessive));
-              //   }
-              // }
             }
           }
 
