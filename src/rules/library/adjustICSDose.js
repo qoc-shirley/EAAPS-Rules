@@ -54,7 +54,7 @@ export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => 
   }
   if ( equal === false && counter > max ) {
     // console.log("ICS DOSE cannot be made equal");
-    return [];
+    return null;
   }
 
   return medication;
