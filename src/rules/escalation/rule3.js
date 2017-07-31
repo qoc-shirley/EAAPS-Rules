@@ -85,9 +85,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 .value();
 
               if ( !_.isEmpty( getDeviceIcsOrLaba ) && !_.isEmpty( sameChemicalLabaAndIcs ) ) {
-                // console.log("match device?");
                 if ( !_.isEmpty( getDeviceIcsOrLaba.ics ) && _.size( getDeviceIcsOrLaba.ics ) >= 2 ) {
-                  // console.log("match ics device");
                   const tryMinimizePuffs =
                     match.minimizePuffsPerTime( getDeviceIcsOrLaba.ics, get.lowestICSDose( isICS ) );
                   if ( !_.isEmpty( tryMinimizePuffs ) ) {
@@ -96,7 +94,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
                   result.push( getDeviceIcsOrLaba.ics );
                 }
                 else {
-                  // console.log("match laba device");
                   if ( _.size( getDeviceIcsOrLaba.laba ) === 1 ) {
                     result.push( getDeviceIcsOrLaba.laba );
                   }
@@ -181,7 +178,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
       return result;
     }, [] )
     .flatten()
-    .uniqBy( 'id' )
     .value();
 };
 
