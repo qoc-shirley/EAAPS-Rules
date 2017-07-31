@@ -31,30 +31,25 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 ( medication.chemicalType === 'ICS' && categorize.patientICSDose( medication ) === 'low' )
               );
           } );
-          // console.log("filterOrgMeds: ", filterOrgMeds);
           const isLabaICS = _.filter( filterOrgMeds, { chemicalType: 'laba,ICS' } );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           const isICS = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
           if ( !_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) ) ) {
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
+              const tryTimesPerDay = match.timesPerDay( isLabaICS, patientMedication );
 
-              const tryTimesPerDay = match.timesPerDay(isLabaICS, patientMedication);
-
-              if (!_.isEmpty(tryTimesPerDay)) {
-                // console.log("tryTimes");
-                const tryDoseICS = match.doseICS(tryTimesPerDay, patientMedication);
-                if (!_.isEmpty(tryDoseICS)) {
-                  // console.log("tryDose");
-                  result.push(tryDoseICS);
+              if ( !_.isEmpty( tryTimesPerDay ) ) {
+                const tryDoseICS = match.doseICS( tryTimesPerDay, patientMedication );
+                if ( !_.isEmpty( tryDoseICS ) ) {
+                  result.push( tryDoseICS );
                 }
-                const tryMinimizePuffs = match.minimizePuffsPerTime(tryTimesPerDay, patientMedication);
-                if (!_.isEmpty(tryMinimizePuffs)) {
-                  // console.log("tryPuffs");
-                  result.push(tryMinimizePuffs);
+                const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
+                if ( !_.isEmpty( tryMinimizePuffs ) ) {
+                  result.push( tryMinimizePuffs );
                 }
-                result.push(tryTimesPerDay);
+                result.push( tryTimesPerDay );
               }
-              result.push(isLabaICS);
+              result.push( isLabaICS );
             }
 
             else if ( patientMedication.chemicalType === 'laba' && !_.isEmpty( isICS ) ) {
