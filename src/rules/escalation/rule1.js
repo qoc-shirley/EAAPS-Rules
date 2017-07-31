@@ -63,6 +63,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 .value();
 
               if ( _.isEmpty( checkNewMedication ) ) {
+                console.log("empty");
                 checkNewMedication =  _.chain( chemicalICSMedications )
                   .reduce( ( accResult, medication ) => {
                     if ( !_.isNil( equalICSDose( medication, patientMedication ) ) ) {
@@ -92,16 +93,17 @@ const rule1 = ( patientMedications, masterMedications ) => {
                   } )
                   .value();
                 if ( _.isEmpty( attemptMinimize ) ) {
-                  return matchTimesPerDay;
+                  result.push( matchTimesPerDay );
                 }
 
                 return attemptMinimize;
               }
               else if ( _.size( matchTimesPerDay ) === 1 ) {
-                return matchTimesPerDay;
+                result.push( matchTimesPerDay );
               }
 
-              return minimizePuffsPerTime( chemicalICSMedications ) || chemicalICSMedications;
+              result.push( minimizePuffsPerTime( checkNewMedication, patientMedication ) ||
+                checkNewMedication );
             }
           }
           else {
@@ -160,7 +162,6 @@ const rule1 = ( patientMedications, masterMedications ) => {
       return result;
     }, [] )
     .flatten()
-    .uniqBy( 'id' )
     .value();
 };
 export default rule1;
