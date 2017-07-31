@@ -41,13 +41,30 @@ const rule1 = ( patientMedications, masterMedications ) => {
           else if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) ) {
             const chemicalICSMedications = _.chain( newMedications )
               .filter( { chemicalICS: patientMedication.chemicalICS } )
-              .isEmpty()
               .value();
 
-            if ( !chemicalICSMedications ) {
+            if ( !_.isEmpty( chemicalICSMedications ) ) {
               let checkNewMedication = _.chain( chemicalICSMedications )
+                .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
-                  if ( medication.device === patientMedication.device ) {
+                  if ( !_.isNil( equalICSDose( medication, patientMedication ) ) ) {
+                    return medication;
+                  }
+                  else if ( calculate.ICSDose( medication ) > calculate.patientICSDose( patientMedication ) ) {
+                    return medication;
+                  }
+
+                  if ( medication.maxGreenICS < calculate.patientICSDose( patientMedication ) ) {
+                    return medication;
+                  }
+
+                  return accResult;
+                }, [] )
+                .value();
+
+              if ( _.isEmpty( checkNewMedication ) ) {
+                checkNewMedication =  _.chain( chemicalICSMedications )
+                  .reduce( ( accResult, medication ) => {
                     if ( !_.isNil( equalICSDose( medication, patientMedication ) ) ) {
                       return medication;
                     }
@@ -58,14 +75,10 @@ const rule1 = ( patientMedications, masterMedications ) => {
                     if ( medication.maxGreenICS < calculate.patientICSDose( patientMedication ) ) {
                       return medication;
                     }
-                  }
 
-                  return accResult;
-                }, [] )
-                .value();
-
-              if ( _.isEmpty( checkNewMedication ) ) {
-                checkNewMedication = chemicalICSMedications;
+                    return accResult;
+                  }, [] )
+                  .value();
               }
 
               const matchTimesPerDay = _.chain( checkNewMedication )
