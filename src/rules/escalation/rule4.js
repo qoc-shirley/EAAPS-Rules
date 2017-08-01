@@ -22,7 +22,6 @@ const rule4 = ( patientMedications, masterMedications ) => {
 
               return result;
             }
-
             result.push( _
               .chain( medicationElement )
               .reduce( ( accResult, medication ) => {
@@ -51,7 +50,6 @@ const rule4 = ( patientMedications, masterMedications ) => {
                      medication.device === patientMedication.device && ( _.isNil( accResult.new ) ||
                      calculate.ICSDose( accResult.new ) <= calculate.ICSDose( medication ) )
                    ) {
-                  console.log("a");
                   accResult.new = medication;
 
                   return accResult;
@@ -62,7 +60,6 @@ const rule4 = ( patientMedications, masterMedications ) => {
                           medication.device === laba.device && ( _.isNil( accResult.new ) ||
                           calculate.ICSDose( accResult.new ) <= calculate.ICSDose( medication ) )
                         ) {
-                  console.log("b");
                   accResult.new = medication;
 
                   return accResult;
@@ -71,57 +68,10 @@ const rule4 = ( patientMedications, masterMedications ) => {
                 return accResult;
               }, [] )
               .thru( ( medication ) => {
-                console.log("medication: ", medication, medication.new);
                 return medication.new || medication;
               } )
               .value(),
             );
-
-            // if ( !_.isEmpty( _.filter( patientMedications, { chemicalType: 'laba, ICS' } ) ) ) {
-            //   result.push( patientMedication );
-            //   result.push( _.filter( medicationElement, { name: 'singulair' } ) );
-            // }
-            // const getLABAAndICS = _.filter( patientMedications,
-            //   ( medication ) => {
-            //     return medication.chemicalType === 'laba' || medication.chemicalType === 'ICS';
-            //   } );
-            // if ( !_.isEmpty( getLABAAndICS ) ) {
-            //   const filteredMedication = _.filter( medicationElement,
-            //     {
-            //       chemicalType: 'laba,ICS',
-            //       chemicalABA: patientMedication.chemicalLABA,
-            //       chemicalICS: patientMedication.chemicalICS,
-            //     } );
-            //   // same as rule 3 and 5 chemical LABA and chemicalICS clarification
-            //   if ( !_.isEmpty( filteredMedication ) ) {
-            //     if ( !_.isEmpty( _.filter( filteredMedication, { device: patientMedication.device } ) ) ) {
-            //       // console.log("device");
-            //       if ( !_.isEmpty( _.filter( filteredMedication, ( medication ) => {
-            //         return medication.device === patientMedication.device &&
-            //            calculate.ICSDose( medication ) === calculate.patientICSDose( patientMedication );
-            //       } ) ) ) {
-            //         result.push( _.max(
-            //           _.filter( filteredMedication, { device: patientMedication.device } ), 'doseICS' ) );
-            //       }
-            //       else {
-            //         result.push( _.filter( filteredMedication, ( medication ) => {
-            //           return medication.device === patientMedication.device &&
-            //             calculate.ICSDose( medication ) === calculate.patientICSDose( patientMedication );
-            //         } ) );
-            //       }
-            //       result.push( patientMedication );
-            //       result.push( _.filter( medicationElement, { name: 'singulair' } ) );
-            //     }
-            //     else {
-            //       result.push( patientMedication );
-            //       result.push( _.filter( medicationElement, { name: 'singulair' } ) );
-            //     }
-            //   }
-            //   else {
-            //     result.push( patientMedication );
-            //     result.push( _.filter( medicationElement, { name: 'singulair' } ) );
-            //   }
-            // }
           }
           if ( patientMedication.name === 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
