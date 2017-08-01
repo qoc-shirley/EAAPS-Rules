@@ -3,21 +3,6 @@ import * as categorize from '../library/categorizeDose';
 import * as get from '../library/getICSDose';
 import * as adjust from '../library/adjustICSDose';
 import * as match from '../library/match';
-
-const minimizePuffsPerTime = ( medications, minimizeMedicationsPuffs ) => {
-  const minimize = _.filter( medications, ( medication ) => {
-    return medication.doseICS > minimizeMedicationsPuffs.doseICS;
-  } );
-  if ( _.isEmpty( minimize ) ) {
-    return null;
-  }
-  else if ( _.size( minimize ) > 1 ) {
-    return _.maxBy( minimize, 'doseICS' );
-  }
-
-  return minimize;
-};
-
 const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
