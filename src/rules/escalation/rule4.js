@@ -6,22 +6,22 @@ const rule4 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
       .reduce( ( result, medication ) => {
         const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
-          if ( ( patientMedication.chemicalType === 'laba,ICS' ||  patientMedication.chemicalType === 'ICS' ) &&
+          if ( ( patientMedication.chemicalType === 'laba,ICS' || patientMedication.chemicalType === 'ICS' ) &&
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) &&
             ( !_.isEmpty( _.filter( patientMedications, { chemicalType: 'laba' } ) ) ) ) {
 
-            result.push( _.chain( originalMedications )
-              .filter( { chemicalType: 'laba,ICS' } )
-              .concat( patientMedication )
-              .concat(
-                _.chain( medicationElement )
-                .filter( { name: 'singular' } )
-                .value(),
-              )
-              .value(),
-            );
+            if ( patientMedication.chemicalType === 'laba,ICS' ) {
+              result.push( patientMedication );
+              result.push(
+                  _.chain( medicationElement )
+                    .filter( { name: 'singular' } )
+                    .value(),
+              );
+
+              return result;
+            }
 
             result.push( _
               .chain( medicationElement )
