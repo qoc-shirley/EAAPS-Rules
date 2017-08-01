@@ -14,7 +14,7 @@ export const doseICS = ( medications, matchMedication ) => {
 
 export const minimizePuffsPerTime = ( medications, minimizeMedicationsPuffs ) => {
   const minimize = _.filter( medications, ( medication ) => {
-    return medication.doseICS > minimizeMedicationsPuffs.doseICS;
+    return medication.doseICS < minimizeMedicationsPuffs.doseICS;
   } );
   if ( _.size( minimize ) > 1 ) {
     return _.maxBy( minimize, 'doseICS' );

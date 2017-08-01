@@ -34,6 +34,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           const isLabaICS = _.filter( filterOrgMeds, { chemicalType: 'laba,ICS' } );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           const isICS = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
+          console.log("ics", isICS);
           if ( !_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) ) ) {
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
               const tryTimesPerDay = match.timesPerDay( isLabaICS, patientMedication );
@@ -55,7 +56,9 @@ const rule3 = ( patientMedications, masterMedications ) => {
               return result.push( isLabaICS );
             }
 
-            else if ( patientMedication.chemicalType === 'isICS' && !_.isEmpty( isLaba ) ) {
+            else if ( patientMedication.chemicalType === 'ICS' &&
+              !_.isEmpty( isLaba ) &&
+              categorize.patientICSDose( patientMedication ) === 'low' ) {
               const sameChemicalLabaAndIcs = _.chain( medicationElement )
                 .filter( ( masterMedication ) => {
                   return masterMedication.chemicalType === 'laba,ICS' &&
@@ -114,25 +117,24 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
                   return result;
                 }
+                const matchDevice = match.device( increaseOriginalMedication, patientMedication );
+                const tryTimesPerDay = match.timesPerDay( matchDevice, patientMedication );
 
-                return _.chain( increaseOriginalMedication )
-                      .thru( match.device( patientMedication ) )
-                      .thru( match.doseICS( patientMedication ) )
-                      .thru( match.timesPerDay( patientMedication ) )
-                      .thru( minimizePuffsPerTime( patientMedication ) )
-                      .value() ||
-                _.chain( increaseOriginalMedication )
-                    .thru( match.device( patientMedication ) )
-                    .thru( match.doseICS( patientMedication ) )
-                    .thru( match.timesPerDay( patientMedication ) )
-                    .value() ||
-                _.chain( increaseOriginalMedication )
-                    .thru( match.device( patientMedication ) )
-                    .thru( match.doseICS( patientMedication ) )
-                    .value() ||
-                _.chain( increaseOriginalMedication )
-                  .thru( match.device( patientMedication ) )
-                  .value() || patientMedication;
+                if ( !_.isEmpty( tryTimesPerDay ) ) {
+                  const tryDoseICS = match.doseICS( tryTimesPerDay, patientMedication );
+                  if ( !_.isEmpty( tryDoseICS ) ) {
+                    const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
+                    if ( !_.isEmpty( tryMinimizePuffs ) ) {
+                      return result.push( tryMinimizePuffs );
+                    }
+
+                    return result.push( tryDoseICS );
+                  }
+
+                  return result.push( tryTimesPerDay );
+                }
+
+                return result.push( patientMedication );
               }
             }
             else {
@@ -143,25 +145,24 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
                 return result;
               }
+              const matchDevice = match.device( increaseOriginalMedication, patientMedication );
+              const tryTimesPerDay = match.timesPerDay( matchDevice, patientMedication );
 
-              return _.chain( increaseOriginalMedication )
-                  .thru( match.device( patientMedication ) )
-                  .thru( match.doseICS( patientMedication ) )
-                  .thru( match.timesPerDay( patientMedication ) )
-                  .thru( minimizePuffsPerTime( patientMedication ) )
-                  .value() ||
-                _.chain( increaseOriginalMedication )
-                  .thru( match.device( patientMedication ) )
-                  .thru( match.doseICS( patientMedication ) )
-                  .thru( match.timesPerDay( patientMedication ) )
-                  .value() ||
-                _.chain( increaseOriginalMedication )
-                  .thru( match.device( patientMedication ) )
-                  .thru( match.doseICS( patientMedication ) )
-                  .value() ||
-                _.chain( increaseOriginalMedication )
-                  .thru( match.device( patientMedication ) )
-                  .value() || isICS;
+              if ( !_.isEmpty( tryTimesPerDay ) ) {
+                const tryDoseICS = match.doseICS( tryTimesPerDay, patientMedication );
+                if ( !_.isEmpty( tryDoseICS ) ) {
+                  const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
+                  if ( !_.isEmpty( tryMinimizePuffs ) ) {
+                    return result.push( tryMinimizePuffs );
+                  }
+
+                  return result.push( tryDoseICS );
+                }
+
+                return result.push( tryTimesPerDay );
+              }
+
+              return result.push( patientMedication );
             }
           }
           else if ( patientMedication.name === 'symbicort' &&
