@@ -12,8 +12,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
             return medication.name !== 'symbicort' &&
               (
                 ( medication.chemicalType === 'laba,ICS' && categorize.patientICSDose( medication ) === 'low' ) ||
-                medication.chemicalType === 'laba' ||
-                ( medication.chemicalType === 'ICS' && categorize.patientICSDose( medication ) === 'low' )
+                ( medication.chemicalType === 'laba' ||
+                ( medication.chemicalType === 'ICS' && categorize.patientICSDose( medication ) === 'low' ) )
               );
           } );
           const isLabaICS = _.filter( filterOrgMeds, { chemicalType: 'laba,ICS' } );
