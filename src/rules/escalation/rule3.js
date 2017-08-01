@@ -55,7 +55,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
               return result.push( isLabaICS );
             }
 
-            else if ( patientMedication.chemicalType === 'laba' && !_.isEmpty( isICS ) ) {
+            else if ( patientMedication.chemicalType === 'isICS' && !_.isEmpty( isLaba ) ) {
               const sameChemicalLabaAndIcs = _.chain( medicationElement )
                 .filter( ( masterMedication ) => {
                   return masterMedication.chemicalType === 'laba,ICS' &&
@@ -90,7 +90,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
               if ( !_.isEmpty( getDeviceIcsOrLaba ) && !_.isEmpty( sameChemicalLabaAndIcs ) ) {
                 if ( !_.isEmpty( getDeviceIcsOrLaba.ics ) && _.size( getDeviceIcsOrLaba.ics ) >= 2 ) {
                   const tryMinimizePuffs =
-                    match.minimizePuffsPerTime( getDeviceIcsOrLaba.ics, get.lowestICSDose( isICS ) );
+                    match.minimizePuffsPerTime( getDeviceIcsOrLaba.ics, patientMedication );
                   if ( !_.isEmpty( tryMinimizePuffs ) ) {
                     return result.push( get.lowestICSDose( tryMinimizePuffs ) );
                   }
@@ -100,9 +100,10 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 if ( _.size( getDeviceIcsOrLaba.laba ) === 1 ) {
                   return result.push( getDeviceIcsOrLaba.laba );
                 }
-                const tryMinimizePuffs = match.minimizePuffsPerTime( getDeviceIcsOrLaba.laba, patientMedication );
+                const tryMinimizePuffs =
+                  match.minimizePuffsPerTime( getDeviceIcsOrLaba.laba, get.lowestICSDose( isLaba ) );
                 if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                  return result.push( get.lowestICSDose( tryMinimizePuffs ) );
+                  return result.push( get.highestICSDose( tryMinimizePuffs ) );
                 }
               }
               else {
@@ -115,23 +116,23 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 }
 
                 return _.chain( increaseOriginalMedication )
-                      .thru( match.device( get.lowestICSDose( isICS ) ) )
-                      .thru( match.doseICS( get.lowestICSDose( isICS ) ) )
-                      .thru( match.timesPerDay( get.lowestICSDose( isICS ) ) )
-                      .thru( minimizePuffsPerTime( get.lowestICSDose( isICS ) ) )
+                      .thru( match.device( patientMedication ) )
+                      .thru( match.doseICS( patientMedication ) )
+                      .thru( match.timesPerDay( patientMedication ) )
+                      .thru( minimizePuffsPerTime( patientMedication ) )
                       .value() ||
                 _.chain( increaseOriginalMedication )
-                    .thru( match.device( get.lowestICSDose( isICS ) ) )
-                    .thru( match.doseICS( get.lowestICSDose( isICS ) ) )
-                    .thru( match.timesPerDay( get.lowestICSDose( isICS ) ) )
+                    .thru( match.device( patientMedication ) )
+                    .thru( match.doseICS( patientMedication ) )
+                    .thru( match.timesPerDay( patientMedication ) )
                     .value() ||
                 _.chain( increaseOriginalMedication )
-                    .thru( match.device( get.lowestICSDose( isICS ) ) )
-                    .thru( match.doseICS( get.lowestICSDose( isICS ) ) )
+                    .thru( match.device( patientMedication ) )
+                    .thru( match.doseICS( patientMedication ) )
                     .value() ||
                 _.chain( increaseOriginalMedication )
-                  .thru( match.device( get.lowestICSDose( isICS ) ) )
-                  .value() || isICS;
+                  .thru( match.device( patientMedication ) )
+                  .value() || patientMedication;
               }
             }
             else {
@@ -144,22 +145,22 @@ const rule3 = ( patientMedications, masterMedications ) => {
               }
 
               return _.chain( increaseOriginalMedication )
-                  .thru( match.device( get.lowestICSDose( isICS ) ) )
-                  .thru( match.doseICS( get.lowestICSDose( isICS ) ) )
-                  .thru( match.timesPerDay( get.lowestICSDose( isICS ) ) )
-                  .thru( minimizePuffsPerTime( get.lowestICSDose( isICS ) ) )
+                  .thru( match.device( patientMedication ) )
+                  .thru( match.doseICS( patientMedication ) )
+                  .thru( match.timesPerDay( patientMedication ) )
+                  .thru( minimizePuffsPerTime( patientMedication ) )
                   .value() ||
                 _.chain( increaseOriginalMedication )
-                  .thru( match.device( get.lowestICSDose( isICS ) ) )
-                  .thru( match.doseICS( get.lowestICSDose( isICS ) ) )
-                  .thru( match.timesPerDay( get.lowestICSDose( isICS ) ) )
+                  .thru( match.device( patientMedication ) )
+                  .thru( match.doseICS( patientMedication ) )
+                  .thru( match.timesPerDay( patientMedication ) )
                   .value() ||
                 _.chain( increaseOriginalMedication )
-                  .thru( match.device( get.lowestICSDose( isICS ) ) )
-                  .thru( match.doseICS( get.lowestICSDose( isICS ) ) )
+                  .thru( match.device( patientMedication ) )
+                  .thru( match.doseICS( patientMedication ) )
                   .value() ||
                 _.chain( increaseOriginalMedication )
-                  .thru( match.device( get.lowestICSDose( isICS ) ) )
+                  .thru( match.device( patientMedication ) )
                   .value() || isICS;
             }
           }
