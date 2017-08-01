@@ -38,30 +38,31 @@ const rule4 = ( patientMedications, masterMedications ) => {
                   medication.chemicalICS !== patientMedication.chemicalICS &&
                   ( medication.device !== patientMedication.device &&
                     medication.device !== laba.device
-                  ) &&
-                  calculate.ICSDose( medication ) !== calculate.patientICSDose( patientMedication )
+                  )
                 ) {
                   accResult.push( patientMedication );
 
                   return accResult;
                 }
 
-                if ( medication.chemicalType !== 'laba,ICS' &&
-                     medication.chemicalLABA !== patientMedication.chemicalLABA &&
-                     medication.chemicalICS !== patientMedication.chemicalICS &&
+                if ( medication.chemicalType === 'laba,ICS' &&
+                     medication.chemicalLABA === patientMedication.chemicalLABA &&
+                     medication.chemicalICS === patientMedication.chemicalICS &&
                      medication.device === patientMedication.device && ( _.isNil( accResult.new ) ||
                      calculate.ICSDose( accResult.new ) <= calculate.ICSDose( medication ) )
                    ) {
+                  console.log("a");
                   accResult.new = medication;
 
                   return accResult;
                 }
-                else if ( medication.chemicalType !== 'laba,ICS' &&
-                          medication.chemicalLABA !== patientMedication.chemicalLABA &&
-                          medication.chemicalICS !== patientMedication.chemicalICS &&
+                else if ( medication.chemicalType === 'laba,ICS' &&
+                          medication.chemicalLABA === patientMedication.chemicalLABA &&
+                          medication.chemicalICS === patientMedication.chemicalICS &&
                           medication.device === laba.device && ( _.isNil( accResult.new ) ||
                           calculate.ICSDose( accResult.new ) <= calculate.ICSDose( medication ) )
                         ) {
+                  console.log("b");
                   accResult.new = medication;
 
                   return accResult;
@@ -70,7 +71,8 @@ const rule4 = ( patientMedications, masterMedications ) => {
                 return accResult;
               }, [] )
               .thru( ( medication ) => {
-                return medication.new[0] || medication;
+                console.log("medication: ", medication, medication.new);
+                return medication.new || medication;
               } )
               .value(),
             );
