@@ -41,15 +41,18 @@ const rule3 = ( patientMedications, masterMedications ) => {
               if ( !_.isEmpty( tryTimesPerDay ) ) {
                 const tryDoseICS = match.doseICS( tryTimesPerDay, patientMedication );
                 if ( !_.isEmpty( tryDoseICS ) ) {
-                  result.push( tryDoseICS );
+                  const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
+                  if ( !_.isEmpty( tryMinimizePuffs ) ) {
+                    return result.push( tryMinimizePuffs );
+                  }
+
+                  return result.push( tryDoseICS );
                 }
-                const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
-                if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                  result.push( tryMinimizePuffs );
-                }
-                result.push( tryTimesPerDay );
+
+                return result.push( tryTimesPerDay );
               }
-              result.push( isLabaICS );
+
+              return result.push( isLabaICS );
             }
 
             else if ( patientMedication.chemicalType === 'laba' && !_.isEmpty( isICS ) ) {
@@ -89,18 +92,17 @@ const rule3 = ( patientMedications, masterMedications ) => {
                   const tryMinimizePuffs =
                     match.minimizePuffsPerTime( getDeviceIcsOrLaba.ics, get.lowestICSDose( isICS ) );
                   if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                    result.push( get.lowestICSDose( tryMinimizePuffs ) );
+                    return result.push( get.lowestICSDose( tryMinimizePuffs ) );
                   }
-                  result.push( getDeviceIcsOrLaba.ics );
+
+                  return result.push( getDeviceIcsOrLaba.ics );
                 }
-                else {
-                  if ( _.size( getDeviceIcsOrLaba.laba ) === 1 ) {
-                    result.push( getDeviceIcsOrLaba.laba );
-                  }
-                  const tryMinimizePuffs = match.minimizePuffsPerTime( getDeviceIcsOrLaba.laba, patientMedication );
-                  if ( !_.isEmpty( tryMinimizePuffs ) ) {
-                    result.push( get.lowestICSDose( tryMinimizePuffs ) );
-                  }
+                if ( _.size( getDeviceIcsOrLaba.laba ) === 1 ) {
+                  return result.push( getDeviceIcsOrLaba.laba );
+                }
+                const tryMinimizePuffs = match.minimizePuffsPerTime( getDeviceIcsOrLaba.laba, patientMedication );
+                if ( !_.isEmpty( tryMinimizePuffs ) ) {
+                  return result.push( get.lowestICSDose( tryMinimizePuffs ) );
                 }
               }
               else {

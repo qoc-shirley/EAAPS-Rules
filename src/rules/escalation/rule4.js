@@ -46,16 +46,22 @@ const rule4 = ( patientMedications, masterMedications ) => {
                   return accResult;
                 }
 
-                if ( medication.device === patientMedication.device && ( _.isNil( accResult.new ) ||
+                if ( medication.chemicalType !== 'laba,ICS' &&
+                     medication.chemicalLABA !== patientMedication.chemicalLABA &&
+                     medication.chemicalICS !== patientMedication.chemicalICS &&
+                     medication.device === patientMedication.device && ( _.isNil( accResult.new ) ||
                      calculate.ICSDose( accResult.new ) <= calculate.ICSDose( medication ) )
                    ) {
                   accResult.new = medication;
 
                   return accResult;
                 }
-                else if ( medication.device === laba.device && ( _.isNil( accResult.new ) ||
-                    calculate.ICSDose( accResult.new ) <= calculate.ICSDose( medication ) )
-                ) {
+                else if ( medication.chemicalType !== 'laba,ICS' &&
+                          medication.chemicalLABA !== patientMedication.chemicalLABA &&
+                          medication.chemicalICS !== patientMedication.chemicalICS &&
+                          medication.device === laba.device && ( _.isNil( accResult.new ) ||
+                          calculate.ICSDose( accResult.new ) <= calculate.ICSDose( medication ) )
+                        ) {
                   accResult.new = medication;
 
                   return accResult;

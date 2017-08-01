@@ -148,7 +148,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
                   return accMedicationCategory;
                 }, {} )
                 .thru( ( list ) => {
-                  return list[categorize.patientICSDose( patientMedication )];
+                  return list[categorize.patientICSDose( patientMedication )] || [];
                 } )
                 .value(),
             );
