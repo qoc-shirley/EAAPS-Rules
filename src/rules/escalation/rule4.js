@@ -6,7 +6,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
       .reduce( ( result, medication ) => {
         const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
-          if ( patientMedication.chemicalType === 'ICS' &&
+          if ( ( patientMedication.chemicalType === 'laba,ICS' ||  patientMedication.chemicalType === 'ICS' ) &&
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) &&
