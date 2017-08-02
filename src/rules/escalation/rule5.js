@@ -18,7 +18,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
               );
           } );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
-          if ( patientMedication.chemicalType === 'laba,ICS' &&
+          if ( patientMedication.chemicalType === 'laba,ICS' && patientMedication.name !== 'symbicort' &&
                calculate.patientICSDose( patientMedication ) < patientMedication.maxGreenICS ) {
             const recommendHighest = adjust.ICSDose( patientMedication, 'highest' );
             result.push( originalMedicationLtra );
