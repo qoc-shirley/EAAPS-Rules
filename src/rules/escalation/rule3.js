@@ -47,6 +47,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'laba,ICS' &&
                       ( categorize.ICSDose( medication ) === 'medium' ) &&
+                      ( medication.timesPerDay === patientMedication.timesPerDay ||
+                        medication.timesPerDay === '1 OR 2' ) &&
                       medication.device === patientMedication.device;
                   })
                   .reduce( ( accResult, medication ) => {
@@ -63,10 +65,12 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
                     return accResult;
                   }, [] )
-                  .thru(medication => medication.low)
-                  .concat(result)
+                  .thru( medication => medication.low )
+                  .concat( result )
                   .value();
               }
+
+              return patientMedication;
             }
 
             else if ( patientMedication.chemicalType === 'ICS' &&
