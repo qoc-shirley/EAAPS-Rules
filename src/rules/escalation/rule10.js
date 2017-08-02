@@ -2,7 +2,6 @@ import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
 
 const rule10 = ( patientMedications, masterMedications ) => {
-  // const consultRespirologist =
   return _
     .chain( patientMedications )
     .filter(
