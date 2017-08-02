@@ -87,7 +87,7 @@ const reducer = ( state = initialState, action ) => {
 
   case ON_TIMES_CHANGE:
     return Object.assign( {}, state, {
-      timesPerDayValue: action.data,
+      timesPerDayValue: action.data.timesValueChange,
       medicationList: state.medicationList.map( ( row, index ) =>
         action.data.index === index ?
         { ...row, timesPerDayValue: action.data.timesValueChange }
@@ -99,7 +99,7 @@ const reducer = ( state = initialState, action ) => {
 
   case ON_DOSEICS_CHANGE:
     return Object.assign( {}, state, {
-      doseICSValue: action.data,
+      doseICSValue: action.data.doseICSValueChange,
       medicationList: state.medicationList.map( ( row, index ) =>
         action.data.index === index ?
         {

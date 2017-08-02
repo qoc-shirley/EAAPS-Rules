@@ -91,7 +91,10 @@ const MedicationTable = (
   const onSubmitMedications = ( medicationToDisplay ) => {
     medicationToDisplay.map( ( filteredMedication, index ) => {
       return filteredMedication.map( ( addPuffToMedication ) => {
-        return addPuffToMedication.puffPerTime = medication.medicationList[index].puffValue;
+        addPuffToMedication.puffPerTime = medication.medicationList[index].puffValue;
+        addPuffToMedication.timesPerDay = medication.medicationList[index].timesPerDayValue;
+
+        return addPuffToMedication;
       } );
     } );
     // console.log("addPuffPerTime: ", _.flatten(displayMedications));

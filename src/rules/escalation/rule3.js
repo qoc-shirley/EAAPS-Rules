@@ -22,7 +22,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           // const isICS = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
           const isLtra = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
-          // if ( !_.isEmpty( isLabaICS ) || ( !_.isEmpty( isLaba ) && !_.isEmpty( isICS ) ) ) {
             if ( patientMedication.chemicalType === 'laba,ICS' &&
                  categorize.patientICSDose( patientMedication ) === 'low' &&
                  patientMedication.name !== 'symbicort' ) {
@@ -80,44 +79,17 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 } )
                 .value();
 
-              if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
-                if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
+              if ( _.isEmpty( sameChemicalLabaAndIcs ) || _.isEmpty( getDeviceIcsOrLaba ) ) {
+                if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
                   result.push( isLaba );
-
-                  return _.chain( medicationElement )
-                    .filter( ( medication ) => {
-                      return medication.chemicalType === 'ICS' &&
-                        ( categorize.ICSDose( medication ) === 'medium' ) &&
-                        ( medication.timesPerDay === patientMedication.timesPerDay ||
-                          medication.timesPerDay === '1 OR 2' ) &&
-                        medication.device === patientMedication.device;
-                    } )
-                    .reduce( ( accResult, medication ) => {
-                      if ( _.isNil( accResult.low ) ) {
-                        accResult.low = medication;
-
-                        return accResult;
-                      }
-                      else if ( calculate.ICSDose( accResult.low ) >= calculate.ICSDose( medication ) ) {
-                        accResult.low = medication;
-
-                        return accResult;
-                      }
-
-                      return accResult;
-                    }, [] )
-                    .thru( medication => medication.low )
-                    .concat( result )
-                    .value();
                 }
-
-                return result.push( patientMedication );
-              }
-              if ( _.isEmpty( getDeviceIcsOrLaba ) ) {
-                if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
+                else if ( _.isEmpty( getDeviceIcsOrLaba ) ) {
                   result.push( isLtra );
+                }
 
-                  return _.chain( medicationElement )
+                if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
+
+                  return result.push( _.chain( medicationElement )
                     .filter( ( medication ) => {
                       return medication.chemicalType === 'ICS' &&
                         ( categorize.ICSDose( medication ) === 'medium' ) &&
@@ -140,13 +112,12 @@ const rule3 = ( patientMedications, masterMedications ) => {
                       return accResult;
                     }, [] )
                     .thru( medication => medication.low )
-                    .concat( result )
-                    .value();
+                    .value(),
+                  );
                 }
 
                 return result.push( patientMedication );
               }
-
               const recommend = _.filter( getDeviceIcsOrLaba, ( medication ) => {
                 return categorize.ICSDose( medication ) === 'medium';
               } );
@@ -181,7 +152,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
               return result.push( get.lowestICSDose( recommend ) );
             }
-          // }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
             result.push( _.filter( medicationElement, {
