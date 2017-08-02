@@ -82,7 +82,9 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
                       medication.name === patientMedication.name &&
-                      ( adjust.ICSDose(medication, 'highest') !== [] ) &&
+                      ( adjust.ICSDose( medication, 'highest' ) !== [] ) &&
+                      ( medication.timesPerDay === patientMedication.timesPerDay ||
+                        medication.timesPerDay === '1 OR 2' ) &&
                       ( medication.device === patientMedication.device || medication.device === laba.device );
                   })
                   .reduce( ( accResult, medication ) => {
