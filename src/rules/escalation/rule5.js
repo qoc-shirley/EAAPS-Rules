@@ -31,6 +31,13 @@ const rule5 = ( patientMedications, masterMedications ) => {
                 } )
                 .reduce( ( accResult, medication ) => {
                   if ( _.isNil( accResult.high ) ) {
+                    // return Object.assign(
+                    //   accResult,
+                    //   {
+                    //     high: medication,
+                    //   },
+                    // );
+
                     accResult.high = medication;
 
                     return accResult;
@@ -76,6 +83,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
             if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
               result.push( originalMedicationLtra );
               result.push( originalMedicationLaba );
+
+              //result.concat( [originalMedicationLtra , originalMedicationLaba ])
 
               return result.push(
                 _.chain( medicationElement )
