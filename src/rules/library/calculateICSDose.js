@@ -17,6 +17,7 @@ export const patientICSDose = ( medication ) => {
 };
 
 export const ICSDose = ( medication ) => {
+  console.log(" icsDose: ", medication.timesPerDay );
   if ( medication.puffPerTime ) {
     patientICSDose( medication );
   }

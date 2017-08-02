@@ -88,9 +88,9 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 return result.push( _.chain( medicationElement )
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
-                      ( categorize.ICSDose( medication ) === 'medium' ) &&
                       ( medication.timesPerDay === patientMedication.timesPerDay ||
                         medication.timesPerDay === '1 OR 2' ) &&
+                      ( categorize.ICSDose( medication ) === 'medium' ) &&
                       medication.device === patientMedication.device;
                   } )
                   .reduce( ( accResult, medication ) => {
