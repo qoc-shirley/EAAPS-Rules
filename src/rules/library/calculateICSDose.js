@@ -17,11 +17,11 @@ export const patientICSDose = ( medication ) => {
 };
 
 export const ICSDose = ( medication ) => {
-  if ( medication.timesPerDay === '1 OR 2' ) {
-    return _.toInteger( medication.doseICS ) * 1;
-  }
   if ( medication.puffPerTime ) {
     patientICSDose( medication );
+  }
+  if ( medication.timesPerDay === '1 OR 2' ) {
+    return _.toInteger( medication.doseICS ) * 1;
   }
 
   return _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay );
