@@ -42,19 +42,20 @@ const rule3 = ( patientMedications, masterMedications ) => {
               //
               // return result.push( isLabaICS );
 
-              return  _.chain( medicationElement )
+              if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
+                return _.chain( medicationElement )
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'laba,ICS' &&
                       ( categorize.ICSDose( medication ) === 'medium' ) &&
                       medication.device === patientMedication.device;
-                  } )
+                  })
                   .reduce( ( accResult, medication ) => {
                     if ( _.isNil( accResult.low ) ) {
                       accResult.low = medication;
 
                       return accResult;
                     }
-                    else if ( calculate.ICSDose( accResult.low ) <= medication.doseICS ) {
+                    else if ( calculate.ICSDose( accResult.low ) >= calculate.ICSDose( medication ) ) {
                       accResult.low = medication;
 
                       return accResult;
@@ -62,9 +63,10 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
                     return accResult;
                   }, [] )
-                  .thru( medication => medication.low )
-                  .concat( result )
+                  .thru(medication => medication.low)
+                  .concat(result)
                   .value();
+              }
             }
 
             else if ( patientMedication.chemicalType === 'ICS' &&

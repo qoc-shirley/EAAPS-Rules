@@ -109,7 +109,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
                     }
 
                     return accResult;
-                  } )
+                  }, [] )
                   .thru( medication => medication.high )
                   .value(),
               );
