@@ -16,6 +16,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
           .isEmpty()
           .value();
 
+        const laba = _.find( originalMedications, { chemicalType: 'laba' } );
+
         const compareLowestDose = _.chain( medicationElement )
           .filter( ( findMedication ) => {
             return (
@@ -78,10 +80,43 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
         if ( !check ) {
           if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( compareLowestDose ) ) {
-            if ( patientMedication.chemicalType === 'laba,ICS' ) {
+            if ( patientMedication.chemicalType === 'ICS' ) {
+              const sameChemicalLabaAndIcs = _.chain( medicationElement )
+                .filter( ( masterMedication ) => {
+                  return masterMedication.chemicalType === 'laba,ICS' &&
+                    masterMedication.chemicalICS === patientMedication.chemicalICS &&
+                    _.filter( isLaba, ( medication ) => {
+                      return masterMedication.chemicalLABA === medication.chemicalLABA;
+                    } );
+                } )
+                .value();
+              const fifty = _.chain( sameChemicalLabaAndIcs )
+                .filter( ( medication ) => {
+                  return calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+                    calculate.ICSDose( medication ) < calculate.patientICSDose( patientMedication );
+                } )
+                .filter( ( medication ) => {
+                  return medication.device === patientMedication.device || medication.device === laba.device;
+                } )
+                .thru( get.highestICSDose )
+                .value();
+
+              // const getDeviceIcsOrLaba = _.chain( sameChemicalLabaAndIcs )
+              //   .filter( ( medication ) => {
+              //
+              //     return medication.device === patientMedication.device ||
+              //       medication.device === laba.device;
+              //   } )
+              //   .value();
+              if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
+                // de-escalation rule 2 and continue laba medication
+              }
 
             }
-            else if ( patientMedication.chemicalType === 'ICS' ) {
+            else if ( patientMedication.chemicalType === 'laba,ICS' ) {
+              if ( onSMART ) {
+                // not on smart
+              }
             }
           }
           if ( onSMART ) {
