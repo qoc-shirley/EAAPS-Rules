@@ -1,16 +1,6 @@
 import _ from 'lodash';
 import * as get from '../library/getICSDose';
 
-const addToRecommendations = ( elements ) => {
-  return _.chain( elements )
-    .reduce( ( recommend, addElement ) => {
-      recommend.push( addElement );
-
-      return recommend;
-    }, [] )
-    .value();
-};
-
 const rule0 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, medication ) => {
@@ -27,8 +17,8 @@ const rule0 = ( patientMedications, masterMedications ) => {
               } )
               .isEmpty()
               .value();
-            if ( !isLabaICSAndChemicalLABA ) {
-              return _.chain( medicationElement )
+            if ( isLabaICSAndChemicalLABA ) {
+              return result.push(_.chain( medicationElement )
                 .filter( {
                   chemicalType: 'laba,ICS',
                   chemicalLABA: patientMedication.chemicalLABA,
@@ -54,9 +44,8 @@ const rule0 = ( patientMedications, masterMedications ) => {
                   }
                 } )
                 .thru( get.lowestICSDose )
-                .thru( addToRecommendations )
-                .push( result )
-                .value();
+                .value(),
+              );
             }
             else {
               const newMedications = _.chain( medicationElement )
@@ -83,7 +72,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 .value();
 
               const lowestICSDose = get.lowestICSDose( newMedications );
-              result.push( addToRecommendations( lowestICSDose ) );
+              result.push( lowestICSDose );
             }
           }
           else {
@@ -160,7 +149,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
 
       return result;
     }, [] )
-
+    .flatten()
     .value();
 };
 

@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
-// import * as get from '../library/getICSDose';
 import * as categorize from '../library/categorizeDose';
 import * as adjust from '../library/adjustICSDose';
-// import * as match from '../library/match';
 
 const equalICSDose = ( medication, patientMedication ) => {
   if ( calculate.patientICSDose( patientMedication ) === calculate.ICSDose( medication ) ) {
@@ -63,7 +61,6 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 .value();
 
               if ( _.isEmpty( checkNewMedication ) ) {
-                console.log("empty");
                 checkNewMedication =  _.chain( chemicalICSMedications )
                   .reduce( ( accResult, medication ) => {
                     if ( !_.isNil( equalICSDose( medication, patientMedication ) ) ) {
