@@ -1,9 +1,6 @@
 import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
-// import * as categorize from '../library/categorizeDose';
-// import * as get from '../library/getICSDose';
 import * as adjust from '../library/adjustICSDose';
-// import * as match from '../library/match';
 
 const rule5 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
@@ -21,7 +18,6 @@ const rule5 = ( patientMedications, masterMedications ) => {
               );
           } );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
-          const isICS = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                calculate.patientICSDose( patientMedication ) < patientMedication.maxGreenICS ) {
             const recommendHighest = adjust.ICSDose( patientMedication, 'highest' );
@@ -59,17 +55,14 @@ const rule5 = ( patientMedications, masterMedications ) => {
                       calculate.patientICSDose( patientMedication ) < patientMedication.maxGreenICS ) &&
                     !_.isEmpty( isLaba )
                   ) {
-            console.log("laba and ICS");
-            const laba = _.find( isLaba, { chemicalType: 'laba' } );
+            const laba = _.find(isLaba, {chemicalType: 'laba'});
             const filteredMedication = _.chain( medicationElement )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
-                  ( _.filter(isLaba, (medication) => {
-                      return masterMedication.chemicalLABA === medication.chemicalLABA;
-                    } ) && _.filter(isICS, (medication) => {
-                      return masterMedication.chemicalICS === medication.chemicalICS;
-                    } )
-                  );
+                  masterMedication.chemicalICS === patientMedication.chemicalICS &&
+                  _.filter( isLaba, ( medication ) => {
+                    return masterMedication.chemicalLABA === medication.chemicalLABA;
+                  } );
               } )
               .value();
 
@@ -78,7 +71,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
 
                 return medication.device === patientMedication.device ||
                   medication.device === laba.device;
-              } )
+              })
               .value();
             if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
               result.push( originalMedicationLtra );
@@ -89,9 +82,9 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
                       medication.name === patientMedication.name &&
-                      ( adjust.ICSDose( medication, 'highest' ) !== [] ) &&
+                      ( adjust.ICSDose(medication, 'highest') !== [] ) &&
                       ( medication.device === patientMedication.device || medication.device === laba.device );
-                  } )
+                  })
                   .reduce( ( accResult, medication ) => {
                     if ( _.isNil( accResult.high ) ) {
                       accResult.high = medication;
@@ -113,105 +106,12 @@ const rule5 = ( patientMedications, masterMedications ) => {
             result.push( _.chain( isfilteredMedicationDevice )
               .maxBy( 'doseICS' )
               .value(),
-              );
-            result.push( originalMedicationLtra );
+            );
+            result.push( originalMedicationLtra) ;
 
             return result;
-
-            // const highestDose = _.filter( filteredMedication, ( medication ) => {
-            //   return ( adjust.ICSDose( medication, 'highest' ) !== [] );
-            // } );
-            // if ( !_.isEmpty( highestDose ) ) {
-            //   const getDeviceIcsOrLaba = _.filter( filteredMedication, ( medication ) => {
-            //     return medication.device === isLaba.device || medication.device === isICS.device;
-            //   } );
-            //   const getICSDevice = _.filter( filteredMedication, ( medication ) => {
-            //     return medication.device === isICS.device;
-            //   } );
-            //   const getLabaDevice = _.filter( filteredMedication, ( medication ) => {
-            //     return medication.device === isLaba.device;
-            //   } );
-            //  if ( !_.isEmpty( getDeviceIcsOrLaba ) ) {
-            //     if ( !_.isEmpty( getICSDevice ) ) {
-            //       const tryMinimizePuffs =
-            //         match.minimizePuffsPerTime( highestDose, get.lowestICSDose( getICSDevice ) );
-            //       if ( !_.isEmpty( tryMinimizePuffs ) ) {
-            //         result.push( get.lowestICSDose( tryMinimizePuffs ) );
-            //         result.push( originalMedicationLtra );
-            //       }
-            //       result.push( get.lowestICSDose( getICSDevice ) );
-            //       result.push( originalMedicationLtra );
-            //     // }
-            //     result.push( get.lowestICSDose( getLabaDevice ) );
-            //     result.push( originalMedicationLtra );
-           //    }
-            }
-            // else {
-            //   const highestICSDose = _.filter( filteredMedication, ( medication ) => {
-            //     return ( adjust.ICSDose( medication, 'highest' ) !== [] );
-            //   } );
-            //   if ( !_.isEmpty( highestICSDose ) ) {
-            //     const matchICSDevice = match.device( highestICSDose, get.lowestICSDose( isICS ) );
-            //     result.push( matchICSDevice );
-            //     result.push( originalMedicationLtra );
-            //     result.push( originalMedicationLaba );
-            //   }
-            //   else {
-            //     const tryTimesPerDay = match.timesPerDay( filteredMedication, get.lowestICSDose( isICS ) );
-            //     if ( !_.isEmpty( tryTimesPerDay ) ) {
-            //       const tryMinimize = match.minimizePuffsPerTime( tryTimesPerDay, get.lowestICSDose( isICS ) );
-            //       if ( !_.isEmpty( tryMinimize ) ) {
-            //         result.push( tryMinimize );
-            //         result.push( originalMedicationLtra );
-            //         result.push( originalMedicationLaba );
-            //       }
-            //       else {
-            //         result.push( tryTimesPerDay );
-            //         result.push( originalMedicationLtra );
-            //         result.push( originalMedicationLaba );
-            //       }
-            //     }
-            //     else {
-            //       result.push( get.highestICSDose( highestICSDose ) );
-            //       result.push( originalMedicationLtra );
-            //       result.push( originalMedicationLaba );
-            //     }
-            //   }
-            // }
-          // else {
-          //   const highestICSDose = _.filter( isICS, ( medication ) => {
-          //     return adjust.ICSDose( medication, 'highest' ) !== [];
-          //   } );
-          //   if ( !_.isEmpty( highestICSDose ) ) {
-          //     const matchICSDevice = match.device( highestICSDose, get.lowestICSDose( isICS ) );
-          //     result.push( matchICSDevice );
-          //     result.push( originalMedicationLtra );
-          //     result.push( originalMedicationLaba );
-          //   }
-          //   else {
-          //     const tryTimesPerDay = match.timesPerDay( highestICSDose, get.lowestICSDose( isICS ) );
-          //     if ( !_.isEmpty( tryTimesPerDay ) ) {
-          //       const tryMinimize = match.minimizePuffsPerTime( tryTimesPerDay, get.lowestICSDose( isICS ) );
-          //       if ( !_.isEmpty( tryMinimize ) ) {
-          //         result.push( tryMinimize );
-          //         result.push( originalMedicationLtra );
-          //         result.push( originalMedicationLaba );
-          //       }
-          //       else {
-          //         result.push( tryTimesPerDay );
-          //         result.push( originalMedicationLtra );
-          //         result.push( originalMedicationLaba );
-          //       }
-          //     }
-          //     else {
-          //       result.push( get.highestICSDose( highestICSDose ) );
-          //       result.push( originalMedicationLtra );
-          //       result.push( originalMedicationLaba );
-          //     }
-          //   }
-          // }
-
-          if ( patientMedication.name === 'symbicort' && _.some( medications, { chemicalType: 'ltra' } ) ) {
+          }
+          else if ( patientMedication.name === 'symbicort' && _.some( medications, { chemicalType: 'ltra' } ) ) {
             result.push(
               _.filter(
                 medicationElement,
