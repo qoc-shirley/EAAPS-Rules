@@ -62,7 +62,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
                       calculate.patientICSDose( patientMedication ) < patientMedication.maxGreenICS ) &&
                     !_.isEmpty( isLaba )
                   ) {
-            const laba = _.find(isLaba, {chemicalType: 'laba'});
+            const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const filteredMedication = _.chain( medicationElement )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&

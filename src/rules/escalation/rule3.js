@@ -4,6 +4,7 @@ import * as get from '../library/getICSDose';
 import * as adjust from '../library/adjustICSDose';
 import * as match from '../library/match';
 import * as calculate from '../library/calculateICSDose';
+
 const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
@@ -58,36 +59,55 @@ const rule3 = ( patientMedications, masterMedications ) => {
             else if ( patientMedication.chemicalType === 'ICS' &&
               !_.isEmpty( isLaba ) &&
               categorize.patientICSDose( patientMedication ) === 'low' ) {
+              const laba = _.find( isLaba, { chemicalType: 'laba' } );
               const sameChemicalLabaAndIcs = _.chain( medicationElement )
                 .filter( ( masterMedication ) => {
                   return masterMedication.chemicalType === 'laba,ICS' &&
-                    ( _.chain( isLaba )
-                        .filter( ( medication ) => {
-                          return masterMedication.chemicalLABA === medication.chemicalLABA;
-                        } )
-                    ) &&
-                    ( _.chain( isICS )
-                        .filter( ( medication ) => {
-                          return masterMedication.chemicalICS === medication.chemicalICS;
-                        } )
-                    );
+                    masterMedication.chemicalICS === patientMedication.chemicalICS &&
+                    _.filter( isLaba, ( medication ) => {
+                      return masterMedication.chemicalLABA === medication.chemicalLABA;
+                    } );
                 } )
                 .value();
 
               const getDeviceIcsOrLaba = _.chain( sameChemicalLabaAndIcs )
-                .reduce( ( accResult, medication ) => {
-                  if ( medication.device === patientMedication.device ) {
-                    accResult.laba = medication;
-                  }
+                .filter( ( medication ) => {
 
-                  accResult.ics = _.chain( isICS )
-                    .filter( ( icsMedication ) => {
-                      return medication.device === icsMedication.device;
-                    } );
-
-                  return accResult;
-                }, [] )
+                  return medication.device === patientMedication.device ||
+                    medication.device === laba.device;
+                })
                 .value();
+
+              // const sameChemicalLabaAndIcs = _.chain( medicationElement )
+              //   .filter( ( masterMedication ) => {
+              //     return masterMedication.chemicalType === 'laba,ICS' &&
+              //       ( _.chain( isLaba )
+              //           .filter( ( medication ) => {
+              //             return masterMedication.chemicalLABA === medication.chemicalLABA;
+              //           } )
+              //       ) &&
+              //       ( _.chain( isICS )
+              //           .filter( ( medication ) => {
+              //             return masterMedication.chemicalICS === medication.chemicalICS;
+              //           } )
+              //       );
+              //   } )
+              //   .value();
+              //
+              // const getDeviceIcsOrLaba = _.chain( sameChemicalLabaAndIcs )
+              //   .reduce( ( accResult, medication ) => {
+              //     if ( medication.device === patientMedication.device ) {
+              //       accResult.laba = medication;
+              //     }
+              //
+              //     accResult.ics = _.chain( isICS )
+              //       .filter( ( icsMedication ) => {
+              //         return medication.device === icsMedication.device;
+              //       } );
+              //
+              //     return accResult;
+              //   }, [] )
+              //   .value();
 
               if ( !_.isEmpty( getDeviceIcsOrLaba ) && !_.isEmpty( sameChemicalLabaAndIcs ) ) {
                 if ( !_.isEmpty( getDeviceIcsOrLaba.ics ) && _.size( getDeviceIcsOrLaba.ics ) >= 2 ) {
