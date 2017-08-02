@@ -55,7 +55,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
-            console.log("ICS and laba");
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const sameChemicalLabaAndIcs = _.chain( medicationElement )
               .filter( ( masterMedication ) => {
