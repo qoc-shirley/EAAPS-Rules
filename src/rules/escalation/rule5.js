@@ -59,7 +59,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
                       calculate.patientICSDose( patientMedication ) < patientMedication.maxGreenICS ) &&
                     !_.isEmpty( isLaba )
                   ) {
-            // console.log("laba and ICS");
+            console.log("laba and ICS");
+            const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const filteredMedication = _.chain( medicationElement )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
@@ -74,9 +75,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
 
             const isfilteredMedicationDevice = _.chain( filteredMedication )
               .filter( ( medication ) => {
-                const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
-                return medication.device ===  patientMedication.device ||
+                return medication.device === patientMedication.device ||
                   medication.device === laba.device;
               } )
               .value();
@@ -88,7 +88,9 @@ const rule5 = ( patientMedications, masterMedications ) => {
                 _.chain( medicationElement )
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
-                      ( adjust.ICSDose( patientMedication, 'highest' ) !== [] )
+                      medication.name === patientMedication.name &&
+                      ( adjust.ICSDose( medication, 'highest' ) !== [] ) &&
+                      ( medication.device === patientMedication.device || medication.device === laba.device );
                   } )
                   .reduce( ( accResult, medication ) => {
                     if ( _.isNil( accResult.high ) ) {
@@ -105,7 +107,6 @@ const rule5 = ( patientMedications, masterMedications ) => {
                     return accResult;
                   } )
                   .thru( medication => medication.high )
-                  .maxBy( 'doseICS' )
                   .value(),
               );
             }
