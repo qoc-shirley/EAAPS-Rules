@@ -101,17 +101,11 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 .thru( get.highestICSDose )
                 .value();
 
-              // const getDeviceIcsOrLaba = _.chain( sameChemicalLabaAndIcs )
-              //   .filter( ( medication ) => {
-              //
-              //     return medication.device === patientMedication.device ||
-              //       medication.device === laba.device;
-              //   } )
-              //   .value();
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
               }
 
+              return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
               if ( onSMART ) {
