@@ -5,7 +5,9 @@ export const device = ( medications, matchMedication ) => {
 };
 
 export const timesPerDay = ( medications, matchMedication ) => {
-  return _.filter( medications, { timesPerDay: matchMedication.timesPerDay } );
+  return _.filter( medications, ( medication ) => {
+    return medication.timesPerDay ===  matchMedication.timesPerDay || medication.timesPerDay === '1 OR 2';
+  } );
 };
 
 export const doseICS = ( medications, matchMedication ) => {
