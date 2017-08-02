@@ -88,7 +88,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
                 _.chain( medicationElement )
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
-                      adjust.ICSDose( patientMedication, 'highest' )
+                      ( adjust.ICSDose( patientMedication, 'highest' ) !== [] )
                   } )
                   .reduce( ( accResult, medication ) => {
                     if ( _.isNil( accResult.high ) ) {
@@ -96,7 +96,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
 
                       return accResult;
                     }
-                    else if ( accResult.high.doseICS < medication.doseICS ) {
+                    else if ( accResult.high.doseICS <= medication.doseICS ) {
                       accResult.high = medication;
 
                       return accResult;
@@ -104,6 +104,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
 
                     return accResult;
                   } )
+                  .thru( medication => medication.high )
                   .maxBy( 'doseICS' )
                   .value(),
               );
