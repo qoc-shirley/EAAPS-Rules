@@ -24,24 +24,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
             if ( patientMedication.chemicalType === 'laba,ICS' &&
                  categorize.patientICSDose( patientMedication ) === 'low' &&
                  patientMedication.name !== 'symbicort' ) {
-              // const tryTimesPerDay = match.timesPerDay( isLabaICS, patientMedication );
-              //
-              // if ( !_.isEmpty( tryTimesPerDay ) ) {
-              //   const tryDoseICS = match.doseICS( tryTimesPerDay, patientMedication );
-              //   if ( !_.isEmpty( tryDoseICS ) ) {
-              //     const tryMinimizePuffs = match.minimizePuffsPerTime( tryTimesPerDay, patientMedication );
-              //     if ( !_.isEmpty( tryMinimizePuffs ) ) {
-              //       return result.push( tryMinimizePuffs );
-              //     }
-              //
-              //     return result.push( tryDoseICS );
-              //   }
-              //
-              //   return result.push( tryTimesPerDay );
-              // }
-              //
-              // return result.push( isLabaICS );
-
               if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
                 return _.chain( medicationElement )
                   .filter( ( medication ) => {
