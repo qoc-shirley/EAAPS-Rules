@@ -1,5 +1,6 @@
 import _ from 'lodash';
-// import * as get from '../library/getICSDose';
+import * as get from '../library/getICSDose';
+import * as calculate from '../library/calculateICSDose';
 
 const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
@@ -7,8 +8,10 @@ const rule3 = ( patientMedications, masterMedications ) => {
       const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
         const check = _.chain( originalMedications )
           .filter( ( labaICSMedication ) => {
-            return labaICSMedication.chemicalType === 'laba,ICS' ||
-              ( labaICSMedication.chemicalType === 'laba' && _.some( originalMedications, { chemicalType: 'ICS' } ) );
+            return ( labaICSMedication.chemicalType === 'laba,ICS' ||
+              ( labaICSMedication.chemicalType === 'laba' &&
+                _.some( originalMedications, { chemicalType: 'ICS' } ) ) ) &&
+                !_.some( originalMedications, { chemicalType: 'ICS' } );
           } )
           .isEmpty()
           .value();
@@ -65,12 +68,24 @@ const rule3 = ( patientMedications, masterMedications ) => {
               findMedication.doseICS === '100'
             );
           } )
+          .thru( get.lowestICSDose )
+          .value();
+
+        const onSMART = _.chain( originalMedications )
+          .filter( { name: 'symbicort', function: 'controller,reliever' } )
+          .isEmpty()
           .value();
 
         if ( !check ) {
-          if ( patientMedication.chemicalType === 'laba,ICS') {
+          if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( compareLowestDose ) ) {
+            if ( patientMedication.chemicalType === 'laba,ICS' ) {
+
+            }
+            else if ( patientMedication.chemicalType === 'ICS' ) {
+            }
           }
-          else if ( patientMedication.chemicalType === 'ICS' ) {
+          if ( onSMART ) {
+            // not on smart
           }
         }
       }, masterMedications, patientMedications );
