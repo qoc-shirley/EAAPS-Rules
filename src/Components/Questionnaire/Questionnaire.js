@@ -5,24 +5,11 @@ import './styles.css';
 
 const Questionnaire = ( ) => {
 /*
-“On average, patient is woken up by asthma symptoms at night 1 or more nights
-each week”
-AND/OR
-“On average, patient has asthma symptoms 1 or more days each week” OR
-“On average, patient has asthma symptoms 4 or more days each week”
-AND/OR
-“On average, patient uses a rescue puffer 4 or more times each week”
-AND/OR
-“Patient has missed work, school, and/or other activities because of asthma (in the
-past 3 months)”
-AND/OR
-“There has been a time when the patient was exercising and had to stop because of
-asthma symptoms (in the past 3 months)”
 
               checked={this.state.selectedOption === 'option2'}
               onChange={this.handleOptionChange}/>
  */
-  const options = () => {
+  const options = ( question ) => {
     return (
       <div className="options">
         <label>
@@ -70,7 +57,7 @@ asthma symptoms (in the past 3 months)”
       </div>
     );
   }
-  const yesNo = () => {
+  const yesNo = ( question ) => {
     return (
       <div className="options">
         <label>
@@ -95,37 +82,37 @@ asthma symptoms (in the past 3 months)”
     <div className="questionnaire">
       <form className= "questions" onSubmit=''>
         <h3>Asthma Control Questionnaire</h3>
-        <div className='wakeUp'>
+        <div className="wakeUp">
           <p>On average, how many times each week have you been woken up?</p>
           <div className="selectOption">
-            {options()}
+            {options('wakeUp')}
           </div>
         </div>
-        <div className='asthmaSymptoms'>
+        <div className="asthmaSymptoms">
           <p>On average, how many times each week have you had asthma symptoms?</p>
           <div className='selectOption'>
-            {options()}
+            {options('asthmaSymptoms')}
           </div>
         </div>
-        <div className='rescuePuffer'>
+        <div className="rescuePuffer">
           <p>On average, how many times each week do you need to use a rescue puffer?</p>
-          <div className='selectOption'>
-            {options()}
+          <div className="selectOption">
+            {options('rescuePuffer')}
           </div>
         </div>
-        <div className='missedEvent'>
+        <div className="missedEvent">
           <p>Have you missed, work, school, and/or other activites because of asthma (in the past 3 months)?</p>
           <div className="selectOption">
-            {yesNo()}
+            {yesNo('missedEvent')}
           </div>
         </div>
-        <div className='wakeUp'>
+        <div className="stoppedExercising">
           <p>Has there been a time when you were exercising and had to stop because of asthma symptoms (in the last 3 months)?</p>
           <div className="selectOption">
-            {yesNo()}
+            {yesNo('stoppedExercising')}
           </div>
         </div>
-        <button className='button' type='submit'>Submit</button>
+        <button className="button" type="submit">Submit</button>
       </form>
     </div>
   );
