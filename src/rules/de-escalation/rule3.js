@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
+import * as adjust from '../library/adjustICSDose';
 
 const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
@@ -111,13 +112,18 @@ const rule3 = ( patientMedications, masterMedications ) => {
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
               const exactlyFifty = _.chain( sameChemicalLabaAndIcs )
-                .filter( ( medication ) => {
-                  return calculate.ICSDose( medication ) === calculate.patientICSDose( patientMedication ) / 2;
+                .thru( ( medication ) => {
+                  return adjust.checkDoseReduction(
+                    medication,
+                    'exactlyFifty',
+                    calculate.patientICSDose( patientMedication )
+                  );
                 } )
                 .filter( ( medication ) => {
                   return medication.device === patientMedication.device
                 } )
                 .value();
+
               if ( _.isEmpty( exactlyFifty ) ) {
 
               }
