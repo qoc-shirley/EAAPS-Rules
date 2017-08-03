@@ -81,16 +81,17 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
         if ( !check ) {
           if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( compareLowestDose ) ) {
+            const sameChemicalLabaAndIcs = _.chain( medicationElement )
+              .filter( ( masterMedication ) => {
+                return masterMedication.chemicalType === 'laba,ICS' &&
+                  masterMedication.chemicalICS === patientMedication.chemicalICS &&
+                  _.filter( isLaba, ( medication ) => {
+                    return masterMedication.chemicalLABA === medication.chemicalLABA;
+                  } );
+              } )
+              .value();
+
             if ( patientMedication.chemicalType === 'ICS' ) {
-              const sameChemicalLabaAndIcs = _.chain( medicationElement )
-                .filter( ( masterMedication ) => {
-                  return masterMedication.chemicalType === 'laba,ICS' &&
-                    masterMedication.chemicalICS === patientMedication.chemicalICS &&
-                    _.filter( isLaba, ( medication ) => {
-                      return masterMedication.chemicalLABA === medication.chemicalLABA;
-                    } );
-                } )
-                .value();
               const fifty = _.chain( sameChemicalLabaAndIcs )
                 .filter( ( medication ) => {
                   return calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
@@ -109,9 +110,18 @@ const rule3 = ( patientMedications, masterMedications ) => {
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
-              if ( onSMART ) {
-                // not on smart
+              const exactlyFifty = _.chain( sameChemicalLabaAndIcs )
+                .filter( ( medication ) => {
+                  return calculate.ICSDose( medication ) === calculate.patientICSDose( patientMedication ) / 2;
+                } )
+                .filter( ( medication ) => {
+                  return medication.device === patientMedication.device
+                } )
+                .value();
+              if ( _.isEmpty( exactlyFifty ) ) {
+
               }
+              return result.push( exactlyFifty );
             }
           }
           if ( onSMART ) {
