@@ -13,6 +13,7 @@ import {
   ON_CHEMICALICS_SELECTION,
   ON_CHEMICALLABA_SELECTION,
   MEDICATION_NAME,
+  ON_QUESTIONNAIRE_OPTION,
 } from './constants';
 export const initialState = {
   puffValue: '',
@@ -28,6 +29,11 @@ export const initialState = {
   recommendation: [],
   isRecommendationEmpty: true,
   isRuleSelectEmpty: true,
+  wakeUp: '',
+  asthmaSymptoms: '',
+  rescuePuffer: '',
+  missedEvent: '',
+  stoppedExercising: '',
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -186,6 +192,39 @@ const reducer = ( state = initialState, action ) => {
   case ON_SUBMIT:
     return Object.assign( {}, state, {
       results: action.data,
+    } );
+  case ON_QUESTIONNAIRE_OPTION:
+    if ( action.data.question === 'wakeUp' ) {
+      return Object.assign( {}, state, {
+        wakeUp: action.data.option,
+      } );
+    }
+    else if ( action.data.question === 'asthmaSymptoms' ) {
+      return Object.assign( {}, state, {
+        asthmaSymptoms: action.data.option,
+      } );
+    }
+    else if ( action.data.question === 'rescuePuffer' ) {
+      return Object.assign( {}, state, {
+        rescuePuffer: action.data.option,
+      } );
+    }
+    else if ( action.data.question === 'missedEvent' ) {
+      return Object.assign( {}, state, {
+        missedEvent: action.data.option,
+      } );
+    }
+    else if ( action.data.question === 'stoppedExercising' ) {
+      return Object.assign( {}, state, {
+        stoppedExercising: action.data.option,
+      } );
+    }
+    return Object.assign( {}, state, {
+      wakeUp: '',
+      asthmaSymptoms: '',
+      rescuePuffer: '',
+      missedEvent: '',
+      stoppedExercising: '',
     } );
 
   default:
