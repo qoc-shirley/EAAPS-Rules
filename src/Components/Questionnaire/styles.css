@@ -14,3 +14,20 @@
 .questionnaire .questions .selectOption .options label {
     margin-right: 20px;
 }
+
+.questionnaire .questions .button {
+    width: 10%;
+    height: 50px;
+    border-radius: 20px;
+    font-size: 15px;
+    background-color: #ccefff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition-duration: 0.3ms;
+    margin-top: 20px;
+}
+
+.questionnaire .questions .button:hover {
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 8px 8px 0 rgba(0,0,0,0.19);
+}

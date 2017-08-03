@@ -125,7 +125,7 @@ asthma symptoms (in the past 3 months)”
             {yesNo()}
           </div>
         </div>
-        <button className='buttom' type='submit'>Submit</button>
+        <button className='button' type='submit'>Submit</button>
       </form>
     </div>
   );
