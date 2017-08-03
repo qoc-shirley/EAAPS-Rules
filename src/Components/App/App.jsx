@@ -54,8 +54,6 @@ saveRecommendation,
         missedEvent: medication.missedEvent,
         stoppedExercising: medication.stoppedExercising,
       }];
-
-   // console.log("asthmaControlAnswers: ", asthmaControlAnswers);
    getDeEscalation.rules.control( asthmaControlAnswers );
     // saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
     // saveRecommendation( 'Rule 1', getDeEscalation.rules.rule1( medication.patientMedications, medicationData ) );
