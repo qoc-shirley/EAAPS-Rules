@@ -130,8 +130,12 @@ export const onClickClear = () => {
   };
 };
 
-export const onChangeQuestionnaireSelect = () => {
+export const onChangeQuestionnaireSelect = ( question, option ) => {
   return {
     type: ON_QUESTIONNAIRE_OPTION,
+    data: {
+      question,
+      option,
+    },
   };
 };

@@ -20,6 +20,7 @@ const mapDispatchToProps = dispatch => ( {
   getPatientMedications: medications => dispatch( actions.getPatientMedications( medications ) ),
   saveRecommendation: ( rule, medications ) => dispatch( actions.saveRecommendation( rule, medications ) ),
   onClickClear: () => dispatch( actions.onClickClear() ),
+  onChangeQuestionnaireSelect: ( question, option ) => dispatch( actions.onChangeQuestionnaireSelect( question, option ) ),
 } );
 
 const RulesApp = connect( mapStateToProps, mapDispatchToProps )( App );

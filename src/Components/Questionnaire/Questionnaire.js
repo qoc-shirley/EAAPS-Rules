@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 // import _ from 'lodash';
 // import PropTypes from 'prop-types';
+import * as actions from '../../redux/App/actions';
 import './styles.css';
 
 const Questionnaire = ( ) => {
@@ -118,4 +120,13 @@ const Questionnaire = ( ) => {
   );
 };
 
-export default Questionnaire;
+const mapStateToProps = state => ( {
+  medication: state.medication,
+} );
+
+const mapDispatchToProps = dispatch => ( {
+  onChangeQuestionnaireSelect: ( question, option ) => dispatch( actions.onChangeQuestionnaireSelect( question, option ) ),
+
+} );
+
+export default connect( mapStateToProps, mapDispatchToProps )( Questionnaire );
