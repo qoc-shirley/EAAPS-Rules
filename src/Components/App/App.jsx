@@ -6,6 +6,7 @@ import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../../medicationData/medicationData';
 import DisplayPatientMedications from '../Display/PatientMedications/PatientMedications';
 import Recommendations from '../Display/Recommendations/Recommendations';
+import Questionnaire from '../Questionnaire/Questionnaire';
 import * as get from '../../rules/escalation/rules';
 import './styles.css';
 
@@ -78,6 +79,9 @@ saveRecommendation,
       <div className="app__header">
         <Header />
       </div>
+    <div>
+      <Questionnaire />
+    </div>
       <div className="app__main">
         <MedicationTable
           onChangeMedication={onMedicationSelection}
