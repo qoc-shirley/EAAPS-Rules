@@ -46,10 +46,20 @@ saveRecommendation,
   };
 
   const deescalationRules = () => {
+   const asthmaControlAnswers =
+     _.concat(
+       medication.wakeUp,
+       medication.asthmaSymptoms,
+       medication.rescuePuffer,
+       medication.missedEvent,
+       medication.stoppedExercising,
+     );
+   console.log("asthmaControlAnswers: ", asthmaControlAnswers);
+    // getDeEscalation.rules.control()
     // saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
     // saveRecommendation( 'Rule 1', getDeEscalation.rules.rule1( medication.patientMedications, medicationData ) );
     // saveRecommendation( 'Rule 2', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
-    saveRecommendation( 'Rule 3', getDeEscalation.rules.rule3( medication.patientMedications, medicationData ) );
+    // saveRecommendation( 'Rule 3', getDeEscalation.rules.rule3( medication.patientMedications, medicationData ) );
     // saveRecommendation( 'Rule 4', getDeEscalation.rules.rule4( medication.patientMedications, medicationData ) ) ;
     // saveRecommendation( 'Rule 5', getDeEscalation.rules.rule5( medication.patientMedications, medicationData ) );
   };
