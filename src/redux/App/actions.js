@@ -12,6 +12,7 @@ import {
   ON_CHEMICALLABA_SELECTION,
   ON_CHEMICALICS_SELECTION,
   MEDICATION_NAME,
+  ON_QUESTIONNAIRE_OPTION,
 } from './constants';
 
 export const appendMedicationList = ( medicationRow ) => {
@@ -126,5 +127,11 @@ export const saveRecommendation = ( rule, medications ) => {
 export const onClickClear = () => {
   return {
     type: CLEAR,
+  };
+};
+
+export const onChangeQuestionnaireSelect = () => {
+  return {
+    type: ON_QUESTIONNAIRE_OPTION,
   };
 };
