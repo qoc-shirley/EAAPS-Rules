@@ -6,11 +6,7 @@ import * as actions from '../../redux/App/actions';
 import './styles.css';
 
 const Questionnaire = ( { onChangeQuestionnaireSelect, medication }) => {
-/*
 
-              checked={this.state.selectedOption === 'option2'}
-              onChange={this.handleOptionChange}/>
- */
   return (
     <div className="questionnaire">
       <form className= "questions" onSubmit=''>
