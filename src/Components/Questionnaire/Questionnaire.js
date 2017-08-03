@@ -17,45 +17,45 @@ const Questionnaire = ( { onChangeQuestionnaireSelect, medication }) => {
             <label>
               <input
                 type="radio"
-                value="zero"
-                checked={medication.wakeUp === "zero"}
-                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', 'zero' )}
+                value="0"
+                checked={medication.wakeUp === "0"}
+                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', '0' )}
               />
               0
             </label>
             <label>
               <input
                 type="radio"
-                value="one"
-                checked={medication.wakeUp === "one"}
-                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', 'one' )}
+                value="1"
+                checked={medication.wakeUp === "1"}
+                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', '1' )}
               />
               1
             </label>
             <label>
               <input
                 type="radio"
-                value="two"
-                checked={medication.wakeUp === "two"}
-                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', 'two' )}
+                value="2"
+                checked={medication.wakeUp === "2"}
+                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', '2' )}
               />
               2
             </label>
             <label>
               <input
                 type="radio"
-                value="three"
-                checked={medication.wakeUp === "three"}
-                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', 'three' )}
+                value="3"
+                checked={medication.wakeUp === "3"}
+                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', '3' )}
               />
               3
             </label>
             <label>
               <input
                 type="radio"
-                value="four"
-                checked={medication.wakeUp === "four"}
-                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', 'four' )}
+                value="4"
+                checked={medication.wakeUp === "4"}
+                onChange={() => onChangeQuestionnaireSelect( 'wakeUp', '4' )}
               />
               4
             </label>
@@ -76,45 +76,45 @@ const Questionnaire = ( { onChangeQuestionnaireSelect, medication }) => {
             <label>
               <input
                 type="radio"
-                value="zero"
-                checked={medication.asthmaSymptoms === "zero"}
-                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', 'zero' )}
+                value="0"
+                checked={medication.asthmaSymptoms === "0"}
+                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', '0' )}
               />
               0
             </label>
             <label>
               <input
                 type="radio"
-                value="one"
-                checked={medication.asthmaSymptoms === "one"}
-                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', 'one' )}
+                value="1"
+                checked={medication.asthmaSymptoms === "1"}
+                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', '1' )}
               />
               1
             </label>
             <label>
               <input
                 type="radio"
-                value="two"
-                checked={medication.asthmaSymptoms === "two"}
-                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', 'two' )}
+                value="2"
+                checked={medication.asthmaSymptoms === "2"}
+                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', '2' )}
               />
               2
             </label>
             <label>
               <input
                 type="radio"
-                value="three"
-                checked={medication.asthmaSymptoms === "three"}
-                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', 'three' )}
+                value="3"
+                checked={medication.asthmaSymptoms === "3"}
+                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', '3' )}
               />
               3
             </label>
             <label>
               <input
                 type="radio"
-                value="four"
-                checked={medication.asthmaSymptoms === "four"}
-                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', 'four' )}
+                value="4"
+                checked={medication.asthmaSymptoms === "4"}
+                onChange={() => onChangeQuestionnaireSelect( 'asthmaSymptoms', '4' )}
               />
               4
             </label>
@@ -135,45 +135,45 @@ const Questionnaire = ( { onChangeQuestionnaireSelect, medication }) => {
             <label>
               <input
                 type="radio"
-                value="zero"
-                checked={medication.rescuePuffer === "zero"}
-                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', 'zero' )}
+                value="0"
+                checked={medication.rescuePuffer === "0"}
+                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', '0' )}
               />
               0
             </label>
             <label>
               <input
                 type="radio"
-                value="one"
-                checked={medication.rescuePuffer === "one"}
-                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', 'one' )}
+                value="1"
+                checked={medication.rescuePuffer === "1"}
+                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', '1' )}
               />
               1
             </label>
             <label>
               <input
                 type="radio"
-                value="two"
-                checked={medication.rescuePuffer === "two"}
-                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', 'two' )}
+                value="2"
+                checked={medication.rescuePuffer === "2"}
+                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', '2' )}
               />
               2
             </label>
             <label>
               <input
                 type="radio"
-                value="three"
-                checked={medication.rescuePuffer === "three"}
-                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', 'three' )}
+                value="3"
+                checked={medication.rescuePuffer === "3"}
+                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', '3' )}
               />
               3
             </label>
             <label>
               <input
                 type="radio"
-                value="four"
-                checked={medication.rescuePuffer === "four"}
-                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', 'four' )}
+                value="4"
+                checked={medication.rescuePuffer === "4"}
+                onChange={() => onChangeQuestionnaireSelect( 'rescuePuffer', '4' )}
               />
               4
             </label>
@@ -234,7 +234,6 @@ const Questionnaire = ( { onChangeQuestionnaireSelect, medication }) => {
             </label>
           </div>
         </div>
-        <button className="button" type="submit">Submit</button>
       </form>
     </div>
   );
