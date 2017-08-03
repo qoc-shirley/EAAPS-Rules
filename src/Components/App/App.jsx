@@ -7,7 +7,8 @@ import medicationData from '../../medicationData/medicationData';
 import DisplayPatientMedications from '../Display/PatientMedications/PatientMedications';
 import Recommendations from '../Display/Recommendations/Recommendations';
 import Questionnaire from '../Questionnaire/Questionnaire';
-import * as get from '../../rules/escalation/rules';
+import * as getEscalation from '../../rules/escalation/rules';
+import * as getDeEscalation from '../../rules/de-escalation/rules';
 import './styles.css';
 
 const App = ( {
@@ -30,27 +31,27 @@ saveRecommendation,
   }
 
   const escalationRules = () => {
-    saveRecommendation( 'Rule -1', get.rules.ruleMinus1( medication.patientMedications ) );
-    saveRecommendation( 'Rule 0', get.rules.rule0( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 1', get.rules.rule1( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 3', get.rules.rule3( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 4', _.flatten( get.rules.rule4( medication.patientMedications, medicationData ) ) );
-    saveRecommendation( 'Rule 5', get.rules.rule5( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 6', get.rules.rule6( medication.patientMedications ) );
-    saveRecommendation( 'Rule 7', get.rules.rule7( medication.patientMedications ) );
-    saveRecommendation( 'Rule 8', get.rules.rule8( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 9', get.rules.rule9( medication.patientMedications ) );
-    saveRecommendation( 'Rule 10', get.rules.rule10( medication.patientMedications ) );
-    saveRecommendation( 'Rule 11', get.rules.rule11( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule -1', getEscalation.rules.ruleMinus1( medication.patientMedications ) );
+    saveRecommendation( 'Rule 0', getEscalation.rules.rule0( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 1', getEscalation.rules.rule1( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 3', getEscalation.rules.rule3( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 4', _.flatten( getEscalation.rules.rule4( medication.patientMedications, medicationData ) ) );
+    saveRecommendation( 'Rule 5', getEscalation.rules.rule5( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 6', getEscalation.rules.rule6( medication.patientMedications ) );
+    saveRecommendation( 'Rule 7', getEscalation.rules.rule7( medication.patientMedications ) );
+    saveRecommendation( 'Rule 8', getEscalation.rules.rule8( medication.patientMedications, medicationData ) );
+    saveRecommendation( 'Rule 9', getEscalation.rules.rule9( medication.patientMedications ) );
+    saveRecommendation( 'Rule 10', getEscalation.rules.rule10( medication.patientMedications ) );
+    saveRecommendation( 'Rule 11', getEscalation.rules.rule11( medication.patientMedications, medicationData ) );
   };
 
   const deescalationRules = () => {
-    saveRecommendation( 'Rule -1', get.rules.ruleMinus1( medication.patientMedications ) );
-    saveRecommendation( 'Rule 1', get.rules.rule1( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 2', get.rules.ruleMinus1( medication.patientMedications ) );
-    saveRecommendation( 'Rule 3', get.rules.rule3( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 4', _.flatten( get.rules.rule4( medication.patientMedications, medicationData ) ) );
-    saveRecommendation( 'Rule 5', get.rules.rule5( medication.patientMedications, medicationData ) );
+    // saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
+    // saveRecommendation( 'Rule 1', getDeEscalation.rules.rule1( medication.patientMedications, medicationData ) );
+    // saveRecommendation( 'Rule 2', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
+    saveRecommendation( 'Rule 3', getDeEscalation.rules.rule3( medication.patientMedications, medicationData ) );
+    // saveRecommendation( 'Rule 4', getDeEscalation.rules.rule4( medication.patientMedications, medicationData ) ) ;
+    // saveRecommendation( 'Rule 5', getDeEscalation.rules.rule5( medication.patientMedications, medicationData ) );
   };
 
   const clearRecommendations = () => {

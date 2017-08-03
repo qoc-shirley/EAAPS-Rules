@@ -16,7 +16,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
           .isEmpty()
           .value();
 
-        const laba = _.find( originalMedications, { chemicalType: 'laba' } );
+        const isLaba = _.filter( check,  { chemicalType: 'laba' } )
+        const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
         const compareLowestDose = _.chain( medicationElement )
           .filter( ( findMedication ) => {
