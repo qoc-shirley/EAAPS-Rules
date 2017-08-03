@@ -24,7 +24,7 @@ asthma symptoms (in the past 3 months)”
  */
   const options = () => {
     return (
-      <div>
+      <div className="options">
         <label>
           <input
             type="radio"
@@ -72,7 +72,7 @@ asthma symptoms (in the past 3 months)”
   }
   const yesNo = () => {
     return (
-      <div>
+      <div className="options">
         <label>
           <input
             type="radio"
@@ -92,32 +92,38 @@ asthma symptoms (in the past 3 months)”
   }
 
   return (
-    <div>
-      <h3>Asthma Control Questionnaire</h3>
-      <form onSubmit=''>
+    <div className="questionnaire">
+      <form className= "questions" onSubmit=''>
+        <h3>Asthma Control Questionnaire</h3>
         <div className='wakeUp'>
           <p>On average, how many times each week have you been woken up?</p>
-          <div className='options'>
+          <div className="selectOption">
             {options()}
           </div>
         </div>
         <div className='asthmaSymptoms'>
           <p>On average, how many times each week have you had asthma symptoms?</p>
-          <div className='options'>
+          <div className='selectOption'>
             {options()}
           </div>
         </div>
         <div className='rescuePuffer'>
           <p>On average, how many times each week do you need to use a rescue puffer?</p>
-          {options()}
+          <div className='selectOption'>
+            {options()}
+          </div>
         </div>
         <div className='missedEvent'>
           <p>Have you missed, work, school, and/or other activites because of asthma (in the past 3 months)?</p>
-          {yesNo()}
+          <div className="selectOption">
+            {yesNo()}
+          </div>
         </div>
         <div className='wakeUp'>
           <p>Has there been a time when you were exercising and had to stop because of asthma symptoms (in the last 3 months)?</p>
-          {yesNo()}
+          <div className="selectOption">
+            {yesNo()}
+          </div>
         </div>
         <button className='buttom' type='submit'>Submit</button>
       </form>

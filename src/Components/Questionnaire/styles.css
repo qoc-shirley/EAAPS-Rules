@@ -1,0 +1,16 @@
+.questionnaire {
+    border: solid 3px #ccefff;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 50px 20px 20px 20px;
+    width: 100%;
+}
+
+.questionnaire .questions {
+    text-align: left;
+    margin-left: 40px;
+}
+
+.questionnaire .questions .selectOption .options label {
+    margin-right: 20px;
+}

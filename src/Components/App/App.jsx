@@ -79,10 +79,8 @@ saveRecommendation,
       <div className="app__header">
         <Header />
       </div>
-    <div>
-      <Questionnaire />
-    </div>
       <div className="app__main">
+        <Questionnaire />
         <MedicationTable
           onChangeMedication={onMedicationSelection}
           onChangePuffValue={onChangePuffValue}
