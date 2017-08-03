@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../redux/App/actions';
 import './styles.css';
 
-const Questionnaire = ( ) => {
+const Questionnaire = ( { onChangeQuestionnaireSelect }) => {
 /*
 
               checked={this.state.selectedOption === 'option2'}
@@ -17,7 +17,9 @@ const Questionnaire = ( ) => {
         <label>
           <input
             type="radio"
-            value="one"
+            value="zero"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           None
         </label>
@@ -25,6 +27,8 @@ const Questionnaire = ( ) => {
           <input
             type="radio"
             value="one"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           1
         </label>
@@ -32,6 +36,8 @@ const Questionnaire = ( ) => {
           <input
             type="radio"
             value="two"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           2
         </label>
@@ -39,6 +45,8 @@ const Questionnaire = ( ) => {
           <input
             type="radio"
             value="three"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           3
         </label>
@@ -46,6 +54,8 @@ const Questionnaire = ( ) => {
           <input
             type="radio"
             value="four"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           4
         </label>
@@ -53,6 +63,8 @@ const Questionnaire = ( ) => {
           <input
             type="radio"
             value="more"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           4+
         </label>
@@ -66,6 +78,8 @@ const Questionnaire = ( ) => {
           <input
             type="radio"
             value="no"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           No
         </label>
@@ -73,6 +87,8 @@ const Questionnaire = ( ) => {
           <input
             type="radio"
             value="yes"
+            checked={() => onChangeQuestionnaireSelect( question, this.value )}
+            onChange={() => onChangeQuestionnaireSelect( question, this.value )}
           />
           Yes
         </label>
