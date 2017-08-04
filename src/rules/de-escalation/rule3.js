@@ -3,6 +3,7 @@ import rule2 from './rule2';
 import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
 // import * as adjust from '../library/adjustICSDose';
+import totalDoseReduction from '../library/totalDoseReduction';
 
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
   return _.chain( patientMedications )
@@ -113,6 +114,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
+              return result.push( totalDoseReduction( patientMedication, sameChemicalLabaAndIcs ) );
               // const exactlyFifty = _.chain( sameChemicalLabaAndIcs )
               //   .thru( ( medication ) => {
               //     return adjust.checkDoseReduction(
@@ -192,6 +194,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             return result.push( patientMedication ); // and laba?
           }
         }
+
+        return result;
       }, masterMedications, patientMedications, questionnaireAnswers);
       rule( medication );
 
