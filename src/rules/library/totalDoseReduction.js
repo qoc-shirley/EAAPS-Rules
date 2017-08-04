@@ -3,7 +3,7 @@ import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
 import * as adjust from '../library/adjustICSDose';
 
-export const totalDoseReduction = ( patientMedication, filteredMedications ) => {
+const totalDoseReduction = ( patientMedication, filteredMedications ) => {
   const exactlyFifty = _.chain( filteredMedications )
     .thru( ( medication ) => {
       return adjust.checkDoseReduction(
