@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const control = ( data ) => {
-  const isGood = _.chain( data )
+  return _.chain( data )
     .thru( ( questionData ) => {
       if ( questionData[0].wakeUp !== '0' &&
         questionData[0].asthmaSymptoms !== '0' &&
@@ -10,12 +10,11 @@ const control = ( data ) => {
         questionData[0].stoppedExercising !== 'no' ) {
         return 'good control';
       }
+
       return 'not good control';
     } )
-    .thru( control => control )
+    .thru( patientControl => patientControl )
     .value();
-  console.log("control: ", isGood);
-  return isGood;
 };
 
 export default control;
