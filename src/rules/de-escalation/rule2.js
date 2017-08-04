@@ -1,5 +1,5 @@
 import _ from 'lodash';
-// import * as get from '../library/getICSDose';
+import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
 // import * as adjust from '../library/adjustICSDose';
 
@@ -64,10 +64,12 @@ const rule2 = ( patientMedications, masterMedications ) => {
         const noLabaLtra = _.chain( originalMedications )
           .filter( ( medication ) => {
             return medication.chemicalType === 'laba' || medication.chemicalType === 'ltra';
-          } );
+          } )
+          .isEmpty()
+          .value();
 
         if ( patientMedication === 'ICS' &&
-          _.isEmpty( noLabaLtra ) &&
+          noLabaLtra &&
           calculate.patientICSDose( patientMedication ) > calculate.ICSDose( compareLowestDose ) ) {
 
         }
