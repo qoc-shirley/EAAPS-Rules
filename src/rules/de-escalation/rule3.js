@@ -17,7 +17,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           .isEmpty()
           .value();
 
-        const isLaba = _.filter( check,  { chemicalType: 'laba' } )
+        const isLaba = _.filter( check, { chemicalType: 'laba' } );
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
         const compareLowestDose = _.chain( medicationElement )
@@ -116,11 +116,11 @@ const rule3 = ( patientMedications, masterMedications ) => {
                   return adjust.checkDoseReduction(
                     medication,
                     'exactlyFifty',
-                    calculate.patientICSDose( patientMedication )
+                    calculate.patientICSDose( patientMedication ),
                   );
                 } )
                 .filter( ( medication ) => {
-                  return medication.device === patientMedication.device
+                  return medication.device === patientMedication.device;
                 } )
                 .value();
 
@@ -131,35 +131,41 @@ const rule3 = ( patientMedications, masterMedications ) => {
                     return adjust.checkDoseReduction(
                       medication,
                       'betweenFiftyAndFullDose',
-                      calculate.patientICSDose( patientMedication )
+                      calculate.patientICSDose( patientMedication ),
                     );
                   } )
                   .thru( get.lowestICSDose )
                   .value();
-                if ( _.isEmpty( betweenFiftyAndFullDose) ) {
+                if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
                   return _.chain( sameChemicalLabaAndIcs )
                     .thru( ( medication ) => {
-                      if ( medication.timesPerDay === "1 OR 2" ) {
-                        if ( calculate.ICSDose( medication ) >= calculate.ICSDose( patientMedication )/2 &&
+                      if ( medication.timesPerDay === '1 OR 2' ) {
+                        if ( calculate.ICSDose( medication ) >= calculate.ICSDose( patientMedication ) / 2 &&
                           calculate.ICSDose( medication ) < calculate.ICSDose( patientMedication )
                         ) {
                           return medication;
                         }
-                        else if ( calculate.ICSDose( medication ) * 2 >= calculate.ICSDose( patientMedication )/2 &&
-                          calculate.ICSDose( medication ) * 2 < calculate.ICSDose( patientMedication ))
+                        else if ( calculate.ICSDose( medication ) * 2 >= calculate.ICSDose( patientMedication ) / 2 &&
+                          calculate.ICSDose( medication ) * 2 < calculate.ICSDose( patientMedication ) ) {
+                          return medication;
+                        }
+
                         return medication;
                       }
+
                       return adjust.checkDoseReduction(
                         medication,
                         'betweenFiftyAndFullDose',
-                        calculate.patientICSDose( patientMedication )
+                        calculate.patientICSDose( patientMedication ),
                       );
                     } )
                     .thru( get.lowestICSDose )
                     .value();
                 }
-                return result.push( betweenFiftyAndFullDose )
+
+                return result.push( betweenFiftyAndFullDose );
               }
+
               return result.push( exactlyFifty );
             }
           }
