@@ -149,8 +149,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
                           calculate.ICSDose( medication ) * 2 < calculate.ICSDose( patientMedication ) ) {
                           return medication;
                         }
-
-                        return medication;
                       }
 
                       return adjust.checkDoseReduction(
