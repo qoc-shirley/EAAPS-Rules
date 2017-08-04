@@ -34,28 +34,8 @@ const rule2 = ( patientMedications, masterMedications ) => {
               findMedication.device === 'inhaler1' &&
               findMedication.doseICS === '200'
             ) || (
-              findMedication.name === 'advair' &&
-              findMedication.device === 'inhaler2' &&
-              findMedication.doseICS === '250'
-            ) || (
-              findMedication.name === 'advair' &&
-              findMedication.device === 'diskus' &&
-              findMedication.doseICS === '200'
-            ) || (
-              findMedication.name === 'symbicort' &&
-              findMedication.device === 'turbuhaler' &&
-              findMedication.doseICS === '200'
-            ) || (
-              findMedication.name === 'zenhale' &&
-              findMedication.device === 'inhaler2' &&
-              findMedication.doseICS === '200'
-            ) || (
               findMedication.name === 'arnuity' &&
               findMedication.device === 'inhaler2' &&
-              findMedication.doseICS === '100'
-            ) || (
-              findMedication.name === 'breo' &&
-              findMedication.device === 'ellipta' &&
               findMedication.doseICS === '100'
             );
           } )
