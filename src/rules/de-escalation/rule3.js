@@ -3,10 +3,10 @@ import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
 import * as adjust from '../library/adjustICSDose';
 
-const rule3 = ( patientMedications, masterMedications ) => {
+const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
   return _.chain( patientMedications )
     .reduce( ( result, medication ) => {
-      const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
+      const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
         const check = _.chain( originalMedications )
           .filter( ( labaICSMedication ) => {
             return ( labaICSMedication.chemicalType === 'laba,ICS' ||
@@ -171,7 +171,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             // not on smart
           }
         }
-      }, masterMedications, patientMedications );
+      }, masterMedications, patientMedications, questionnaireAnswers);
       rule( medication );
 
       return result.push( rule );
