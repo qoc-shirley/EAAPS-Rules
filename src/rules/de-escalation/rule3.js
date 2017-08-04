@@ -169,6 +169,25 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           if ( onSMART ) {
             // not on smart
+            const patientChoice = 'discontinue';
+            // const patientChoice = 'continue';
+            if ( patientChoice === 'discontinue' ) {
+              if ( patientMedication.chemicalType === 'ICS' ) {
+                // discontinue laba medication
+                return result.push( patientMedication ); // and laba?
+              }
+              else if ( patientMedication.chemicalType === 'laba,ICS' ) {
+                // recommend medication with same chemicalICS as original Medication
+              }
+            }
+          }
+          // not on SMART
+          const questionThree = asthmaControlAnswers.rescuePuffer;
+          if ( questionThree === '0' ) {
+
+          }
+          else if ( questionThree === '1' || questionThree === '2' || questionThree === '3' ) {
+            return result.push( patientMedication ); // and laba?
           }
         }
       }, masterMedications, patientMedications, questionnaireAnswers);
