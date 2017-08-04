@@ -7,7 +7,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
-        const compareLowestDose = _.chain( medicationElement )
+        const filterMedications = _.chain( medicationElement )
           .filter( ( findMedication ) => {
             return (
               findMedication.name === 'flovent' &&
@@ -59,6 +59,8 @@ const rule2 = ( patientMedications, masterMedications ) => {
               findMedication.doseICS === '100'
             );
           } )
+          .value();
+        const compareLowestDose = _.chain( filterMedications )
           .thru( get.lowestICSDose )
           .value();
         const noLabaLtra = _.chain( originalMedications )
@@ -71,7 +73,12 @@ const rule2 = ( patientMedications, masterMedications ) => {
         if ( patientMedication === 'ICS' &&
           noLabaLtra &&
           calculate.patientICSDose( patientMedication ) > calculate.ICSDose( compareLowestDose ) ) {
-
+          const recommend = _.chain( filterMedications )
+            .filter( ( medication ) => {
+              return medication.chemicalICS === patientMedication.chemicalICS &&
+                medication.device === patientMedication.device;
+            } )
+            .value();
         }
 
         return result;
