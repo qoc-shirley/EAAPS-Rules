@@ -2,7 +2,6 @@ import _ from 'lodash';
 import rule2 from './rule2';
 import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
-// import * as adjust from '../library/adjustICSDose';
 import totalDoseReduction from '../library/totalDoseReduction';
 
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
