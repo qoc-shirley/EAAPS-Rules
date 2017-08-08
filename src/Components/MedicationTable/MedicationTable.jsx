@@ -242,7 +242,7 @@ const MedicationTable = (
             <InputField
               fieldName="times"
               value={timesPerDayValue}
-              placeholder="Frequency"
+              placeholder="Times/Day(Frequency)"
               onChangeInputField={event => onChangeTimesPerDayValue( index, event.target.value )}
             />
             <button
