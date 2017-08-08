@@ -6,9 +6,9 @@ import MedicationTable from '../MedicationTable/MedicationTable';
 import medicationData from '../../medicationData/medicationData';
 import DisplayPatientMedications from '../Display/PatientMedications/PatientMedications';
 import Recommendations from '../Display/Recommendations/Recommendations';
-import Questionnaire from '../Questionnaire/Questionnaire';
+// import Questionnaire from '../Questionnaire/Questionnaire';
 import * as getEscalation from '../../rules/escalation/rules';
-import * as getDeEscalation from '../../rules/de-escalation/rules';
+// import * as getDeEscalation from '../../rules/de-escalation/rules';
 import './styles.css';
 
 const App = ( {
@@ -105,7 +105,7 @@ saveRecommendation,
         <Header />
       </div>
       <div className="app__main">
-        <Questionnaire />
+        {/*<Questionnaire />*/}
         <MedicationTable
           onChangeMedication={onMedicationSelection}
           onChangePuffValue={onChangePuffValue}
