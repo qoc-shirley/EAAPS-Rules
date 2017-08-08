@@ -83,12 +83,7 @@ saveRecommendation,
           >
             Escalation
           </button>
-          <button
-            className="button__runRules"
-            onClick={() => deescalationRules()}
-          >
-            De-escalation
-          </button>
+         
 
           <input
             className="clear"
@@ -112,7 +107,7 @@ saveRecommendation,
         <Header />
       </div>
       <div className="app__main">
-        <Questionnaire />
+        {/*<Questionnaire />*/}
         <MedicationTable
           onChangeMedication={onMedicationSelection}
           onChangePuffValue={onChangePuffValue}
