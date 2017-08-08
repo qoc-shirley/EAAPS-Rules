@@ -58,7 +58,7 @@ saveRecommendation,
     getDeEscalation.rules.control( asthmaControlAnswers );
     // saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
     // saveRecommendation( 'Rule 1', getDeEscalation.rules.rule1( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 2', getDeEscalation.rules.rule2( medication.patientMedications ) );
+    saveRecommendation( 'Rule 2', getDeEscalation.rules.rule2( medication.patientMedications, medicationData ) );
     // saveRecommendation(
     //   'Rule 3',
     //   getDeEscalation.rules.rule3(

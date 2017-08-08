@@ -20,26 +20,27 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
   if ( _.isEmpty( exactlyFifty ) ) {
     // adjust timesPerDay/DoseICS and prioritize puffsPerTime
     const betweenFiftyAndFullDose = _.chain( filteredMedications )
-      .thru( ( medication ) => {
+      .filter( ( medication ) => {
         return adjust.checkDoseReduction(
           medication,
           'betweenFiftyAndFullDose',
           calculate.patientICSDose( patientMedication ),
-        );
+        ) !== [];
       } )
       .thru( get.lowestICSDose )
       .value();
+
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
       return _.chain( filteredMedications )
         .thru( ( medication ) => {
           if ( medication.timesPerDay === '1 OR 2' ) {
-            if ( calculate.ICSDose( medication ) >= calculate.ICSDose( patientMedication ) / 2 &&
-              calculate.ICSDose( medication ) < calculate.ICSDose( patientMedication )
+            if ( calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+              calculate.ICSDose( medication ) < calculate.patientICSDose( patientMedication )
             ) {
               return medication;
             }
-            else if ( calculate.ICSDose( medication ) * 2 >= calculate.ICSDose( patientMedication ) / 2 &&
-              calculate.ICSDose( medication ) * 2 < calculate.ICSDose( patientMedication ) ) {
+            else if ( calculate.ICSDose( medication ) * 2 >= calculate.patientICSDose( patientMedication ) / 2 &&
+              calculate.ICSDose( medication ) * 2 < calculate.patientICSDose( patientMedication ) ) {
               return medication;
             }
           }

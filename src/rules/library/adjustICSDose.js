@@ -46,23 +46,26 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
   if ( level === 'exactlyFifty' ) {
     while ( exactlyFifty === false && counter <= max ) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-      if ( calculate.ICSDose( testAdjustment ) === originalICSDose / 2 ) {
+      if ( testAdjustment === originalICSDose / 2 ) {
         exactlyFifty = true;
       }
       counter++;
     }
   }
   else if ( level === 'betweenFiftyAndFullDose' ) {
+    exactlyFifty = true;
     while ( betweenFiftyAndFullDose === false && counter <= max ) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-      if ( calculate.ICSDose( testAdjustment ) >= originalICSDose / 2 &&
-        calculate.ICSDose( testAdjustment ) < originalICSDose ) {
+      if ( testAdjustment >= originalICSDose / 2 &&
+         testAdjustment < originalICSDose ) {
+
         betweenFiftyAndFullDose = true;
       }
       counter++;
     }
   }
   if ( exactlyFifty === false ) {
+
     return [];
   }
   else if ( betweenFiftyAndFullDose === false ) {
@@ -70,6 +73,7 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
     return [];
   }
 
+  return medication;
 };
 
 export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => {
