@@ -46,28 +46,28 @@ saveRecommendation,
     saveRecommendation( 'Rule 11', getEscalation.rules.rule11( medication.patientMedications, medicationData ) );
   };
 
-  const deescalationRules = () => {
-    const asthmaControlAnswers = [
-      {
-        wakeUp: medication.wakeUp,
-        asthmaSymptoms: medication.asthmaSymptoms,
-        rescuePuffer: medication.rescuePuffer,
-        missedEvent: medication.missedEvent,
-        stoppedExercising: medication.stoppedExercising,
-      }];
-    getDeEscalation.rules.control( asthmaControlAnswers );
-    // saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
-    // saveRecommendation( 'Rule 1', getDeEscalation.rules.rule1( medication.patientMedications, medicationData ) );
-    saveRecommendation( 'Rule 2', getDeEscalation.rules.rule2( medication.patientMedications, medicationData ) );
-    // saveRecommendation(
-    //   'Rule 3',
-    //   getDeEscalation.rules.rule3(
-    //     medication.patientMedications,
-    //     medicationData, asthmaControlAnswers,
-    //   ) );
-    // saveRecommendation( 'Rule 4', getDeEscalation.rules.rule4( medication.patientMedications, medicationData ) ) ;
-    // saveRecommendation( 'Rule 5', getDeEscalation.rules.rule5( medication.patientMedications, medicationData ) );
-  };
+  // const deescalationRules = () => {
+  //   const asthmaControlAnswers = [
+  //     {
+  //       wakeUp: medication.wakeUp,
+  //       asthmaSymptoms: medication.asthmaSymptoms,
+  //       rescuePuffer: medication.rescuePuffer,
+  //       missedEvent: medication.missedEvent,
+  //       stoppedExercising: medication.stoppedExercising,
+  //     }];
+  //   getDeEscalation.rules.control( asthmaControlAnswers );
+  //   // saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
+  //   // saveRecommendation( 'Rule 1', getDeEscalation.rules.rule1( medication.patientMedications, medicationData ) );
+  //   saveRecommendation( 'Rule 2', getDeEscalation.rules.rule2( medication.patientMedications, medicationData ) );
+  //   // saveRecommendation(
+  //   //   'Rule 3',
+  //   //   getDeEscalation.rules.rule3(
+  //   //     medication.patientMedications,
+  //   //     medicationData, asthmaControlAnswers,
+  //   //   ) );
+  //   // saveRecommendation( 'Rule 4', getDeEscalation.rules.rule4( medication.patientMedications, medicationData ) ) ;
+  //   // saveRecommendation( 'Rule 5', getDeEscalation.rules.rule5( medication.patientMedications, medicationData ) );
+  // };
 
   const clearRecommendations = () => {
     onClickClear();
@@ -82,12 +82,6 @@ saveRecommendation,
             onClick={() => escalationRules()}
           >
             Escalation
-          </button>
-          <button
-            className="button__runRules"
-            onClick={() => deescalationRules()}
-          >
-            De-escalation
           </button>
           <input
             className="clear"
