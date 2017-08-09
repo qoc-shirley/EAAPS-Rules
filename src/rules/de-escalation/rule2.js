@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
+import * as adjust from '../library/adjustICSDose';
 import totalDoseReduction from '../library/totalDoseReduction';
 
 const rule2 = ( patientMedications, masterMedications ) => {
@@ -10,34 +11,46 @@ const rule2 = ( patientMedications, masterMedications ) => {
         const filterMedications = _.chain( medicationElement )
           .filter( ( findMedication ) => {
             return (
+              !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
               findMedication.name === 'flovent' &&
-              findMedication.device === 'inhaler2' &&
-              findMedication.doseICS === '100'
-            ) || (
-              findMedication.name === 'flovent' &&
-              findMedication.device === 'diskus' &&
-              findMedication.doseICS === '200'
-            ) || (
-              findMedication.name === 'pulmicort' &&
-              findMedication.device === 'turbuhaler' &&
-              findMedication.doseICS === '200'
-            ) || (
-              findMedication.name === 'qvar' &&
-              findMedication.device === 'inhaler1' &&
-              findMedication.doseICS === '100'
-            ) || (
-              findMedication.name === 'asthmanex' &&
-              findMedication.device === 'twisthaler' &&
-              findMedication.doseICS === '100'
-            ) || (
-              findMedication.name === 'alvesco' &&
-              findMedication.device === 'inhaler1' &&
-              findMedication.doseICS === '200'
-            ) || (
-              findMedication.name === 'arnuity' &&
-              findMedication.device === 'inhaler2' &&
-              findMedication.doseICS === '100'
-            );
+              findMedication.device === 'inhaler2'
+              )
+              ||
+              (
+                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 200 ) ) &&
+                  findMedication.name === 'flovent' &&
+                  findMedication.device === 'diskus'
+              )
+              ||
+              (
+                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 200 ) ) &&
+                findMedication.name === 'pulmicort' &&
+                findMedication.device === 'turbuhaler'
+              )
+              ||
+              (
+                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
+                findMedication.name === 'qvar' &&
+                findMedication.device === 'inhaler1'
+              )
+              ||
+              (
+                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
+                findMedication.name === 'asthmanex' &&
+                findMedication.device === 'twisthaler'
+              )
+              ||
+              (
+                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 200 ) ) &&
+                findMedication.name === 'alvesco' &&
+                findMedication.device === 'inhaler1'
+              )
+              ||
+              (
+                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
+                findMedication.name === 'arnuity' &&
+                findMedication.device === 'inhaler2'
+              );
           } )
           .value();
 
