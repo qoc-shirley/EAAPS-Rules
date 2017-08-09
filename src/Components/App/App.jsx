@@ -105,6 +105,16 @@ saveRecommendation,
     return null;
   };
 
+  const showRecommendation = () => {
+    if ( medication.isRuleSelectEmpty === false ) {
+      return (
+        <div className="scroll">
+          <Recommendations />
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="app">
       <div className="app__header">
@@ -125,9 +135,7 @@ saveRecommendation,
           {showPatientMedications}
           {showAvailableRules()}
         </div>
-        <div className="scroll">
-          <Recommendations />
-        </div>
+        {showRecommendation()}
       </div>
     </div>
   );
