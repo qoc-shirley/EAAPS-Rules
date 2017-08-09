@@ -89,7 +89,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           } )
           .value();
 
-        const onSMART = _.chain( originalMedications )
+        const notOnSMART = _.chain( originalMedications )
           .filter( { name: 'symbicort', function: 'controller,reliever' } )
           .isEmpty()
           .value();
@@ -132,11 +132,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               return result.push( totalDoseReduction( patientMedication, sameChemicalLabaAndIcs ) );
             }
           }
-          if ( onSMART ) {
+          if ( notOnSMART ) {
             // not on smart
-            // const patientChoice = 'discontinue';
-            // const patientChoice = 'continue';
-            // if ( patientChoice === 'discontinue' ) {
             if ( patientMedication.chemicalType === 'ICS' ) {
               // discontinue laba medication
               return result.push( patientMedication );
@@ -172,13 +169,10 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 );
               }
 
-              result.push( equalICSDose );
+              return result.push( equalICSDose );
             }
-            // }
 
-            result.push( Object.assign( {}, patientMedication, { choice: 'continue' } ) );
-
-            return result;
+            return result.push( Object.assign( {}, patientMedication, { choice: 'continue' } ) );
           }
           // not on SMART
           const questionThree = asthmaControlAnswers.rescuePuffer;
@@ -197,8 +191,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .value(),
                 );
             }
-            // const patientChoice = 'discontinue';
-            // if ( patientChoice === 'discontinue' ) {
             const equalICSDose = _.chain( medicationElement )
               .filter(
               {
@@ -229,9 +221,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             }
 
             result.push( equalICSDose );
-           //  }
-
             result.push( Object.assign( {}, patientMedication, { choice: 'continue' } ) );
+
+            return result;
           }
           else if ( questionThree === '1' || questionThree === '2' || questionThree === '3' ) {
             // and laba?
