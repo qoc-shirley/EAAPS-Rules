@@ -124,8 +124,9 @@ saveRecommendation,
         <div className="results">
           {showPatientMedications}
           {showAvailableRules()}
+        </div>
+        <div className="scroll">
           <Recommendations />
-
         </div>
       </div>
     </div>
