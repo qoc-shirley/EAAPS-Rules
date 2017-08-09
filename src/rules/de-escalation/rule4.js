@@ -18,10 +18,6 @@ const rule4 = ( patientMedications, masterMedications ) => {
 
         if ( patientMedication === 'ICS' && noLaba && !_.isEmpty( isLtra ) ) {
           // Provide a choice to discontinue the LTRA
-          // result.push( 'discontinue: ', patientMedication.id );
-
-          // result.push( 'continue: ', rule1() || rule2() );
-          // result.push( 'continue ltra: ', isLtra );
           result.concat( [
             'discontinue: ', patientMedication.id,
             'continue: ', rule1() || rule2(),
