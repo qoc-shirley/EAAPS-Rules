@@ -95,7 +95,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .value();
 
         if ( !check ) {
-          if (  _.filter( compareLowestDose,
+          if ( _.filter( compareLowestDose,
               ( medication ) => {
                 return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
               } ) !== [] ) {
@@ -143,13 +143,83 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
                 // recommend medication with same chemicalICS as original Medication
+                const equalICSDose = _.chain( medicationElement )
+                  .filter(
+                  {
+                    chemicalType: 'laba,ICS',
+                    device: patientMedication.device,
+                    chemicalICS: patientMedication.chemicalICS,
+                  } )
+                  .filter( ( medication ) => {
+                    return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [];
+                  } )
+                 .value();
+                if ( _.isEmpty( equalICSDose ) ) {
+                  return result.push( _.chain( medicationElement )
+                    .filter(
+                    {
+                      chemicalType: 'laba,ICS',
+                      device: patientMedication.device,
+                      chemicalICS: patientMedication.chemicalICS,
+                    } )
+                    .maxBy( 'doseICS' )
+                    .value(),
+                  );
+                }
+
+                return result.push( equalICSDose );
               }
             }
+
+            return result.push( patientMedication );
           }
           // not on SMART
           const questionThree = asthmaControlAnswers.rescuePuffer;
           if ( questionThree === '0' ) {
+            const reliever = _.chain( originalMedications )
+              .filter( ( medication ) => {
+                return medication.name !== 'symbicort' && medication.function === 'controller,reliever';
+              } )
+              .isEmpty()
+              .value();
+            if ( reliever ) {
+              result.push( _.chain( medicationElement )
+                  .filter( ( medication ) => {
+                    return medication.name !== 'symbicort' && medication.function === 'controller,reliever';
+                  } )
+                .value(),
+                );
+            }
+            const patientChoice = 'discontinue';
+            if ( patientChoice === 'discontinue' ) {
+              const equalICSDose = _.chain( medicationElement )
+                .filter(
+                  {
+                    chemicalType: 'laba,ICS',
+                    device: patientMedication.device,
+                    chemicalICS: patientMedication.chemicalICS,
+                  } )
+                .filter( ( medication ) => {
+                  return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [];
+                } )
+                .value();
+              if ( _.isEmpty( equalICSDose ) ) {
+                return result.push( _.chain( medicationElement )
+                  .filter(
+                  {
+                    chemicalType: 'laba,ICS',
+                    device: patientMedication.device,
+                    chemicalICS: patientMedication.chemicalICS,
+                  } )
+                  .maxBy( 'doseICS' )
+                  .value(),
+                );
+              }
 
+              return result.push( equalICSDose );
+            }
+
+            return result.push( patientMedication );
           }
           else if ( questionThree === '1' || questionThree === '2' || questionThree === '3' ) {
             return result.push( patientMedication ); // and laba?
