@@ -72,7 +72,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 200 ) ) &&
               findMedication.name === 'zenhale' &&
               findMedication.device === 'inhaler2'
-            )|| (
+            ) || (
               !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
               findMedication.name === 'breo' &&
               findMedication.device === 'ellipta'
@@ -134,44 +134,51 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           if ( onSMART ) {
             // not on smart
-            const patientChoice = 'discontinue';
+            // const patientChoice = 'discontinue';
             // const patientChoice = 'continue';
-            if ( patientChoice === 'discontinue' ) {
-              if ( patientMedication.chemicalType === 'ICS' ) {
-                // discontinue laba medication
-                return result.push( patientMedication ); // and laba?
-              }
-              else if ( patientMedication.chemicalType === 'laba,ICS' ) {
-                // recommend medication with same chemicalICS as original Medication
-                const equalICSDose = _.chain( medicationElement )
+            // if ( patientChoice === 'discontinue' ) {
+            if ( patientMedication.chemicalType === 'ICS' ) {
+              // discontinue laba medication
+              return result.push( patientMedication );
+            }
+            else if ( patientMedication.chemicalType === 'laba,ICS' ) {
+              // recommend medication with same chemicalICS as original Medication
+              const equalICSDose = _.chain( medicationElement )
+                .filter(
+                {
+                  chemicalType: 'laba,ICS',
+                  device: patientMedication.device,
+                  chemicalICS: patientMedication.chemicalICS,
+                } )
+                .filter( ( medication ) => {
+                  return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [];
+                } )
+               .value();
+              if ( _.isEmpty( equalICSDose ) ) {
+                return result.push( _.chain( medicationElement )
                   .filter(
                   {
                     chemicalType: 'laba,ICS',
                     device: patientMedication.device,
                     chemicalICS: patientMedication.chemicalICS,
                   } )
-                  .filter( ( medication ) => {
-                    return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [];
+                  .maxBy( 'doseICS' )
+                  .map( ( medication ) => {
+                    return Object.assign( {}, medication, {
+                      choice: 'discontinue',
+                    } );
                   } )
-                 .value();
-                if ( _.isEmpty( equalICSDose ) ) {
-                  return result.push( _.chain( medicationElement )
-                    .filter(
-                    {
-                      chemicalType: 'laba,ICS',
-                      device: patientMedication.device,
-                      chemicalICS: patientMedication.chemicalICS,
-                    } )
-                    .maxBy( 'doseICS' )
-                    .value(),
-                  );
-                }
-
-                return result.push( equalICSDose );
+                  .value(),
+                );
               }
-            }
 
-            return result.push( patientMedication );
+              result.push( equalICSDose );
+            }
+            // }
+
+            result.push( Object.assign( {}, patientMedication, { choice: 'continue' } ) );
+
+            return result;
           }
           // not on SMART
           const questionThree = asthmaControlAnswers.rescuePuffer;
@@ -190,44 +197,50 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .value(),
                 );
             }
-            const patientChoice = 'discontinue';
-            if ( patientChoice === 'discontinue' ) {
-              const equalICSDose = _.chain( medicationElement )
+            // const patientChoice = 'discontinue';
+            // if ( patientChoice === 'discontinue' ) {
+            const equalICSDose = _.chain( medicationElement )
+              .filter(
+              {
+                chemicalType: 'laba,ICS',
+                device: patientMedication.device,
+                chemicalICS: patientMedication.chemicalICS,
+              } )
+              .filter( ( medication ) => {
+                return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [];
+              } )
+              .value();
+            if ( _.isEmpty( equalICSDose ) ) {
+              return result.push( _.chain( medicationElement )
                 .filter(
-                  {
-                    chemicalType: 'laba,ICS',
-                    device: patientMedication.device,
-                    chemicalICS: patientMedication.chemicalICS,
-                  } )
-                .filter( ( medication ) => {
-                  return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [];
+                {
+                  chemicalType: 'laba,ICS',
+                  device: patientMedication.device,
+                  chemicalICS: patientMedication.chemicalICS,
                 } )
-                .value();
-              if ( _.isEmpty( equalICSDose ) ) {
-                return result.push( _.chain( medicationElement )
-                  .filter(
-                  {
-                    chemicalType: 'laba,ICS',
-                    device: patientMedication.device,
-                    chemicalICS: patientMedication.chemicalICS,
-                  } )
-                  .maxBy( 'doseICS' )
-                  .value(),
-                );
-              }
-
-              return result.push( equalICSDose );
+                .maxBy( 'doseICS' )
+                .map( ( medication ) => {
+                  return Object.assign( {}, medication, {
+                    choice: 'discontinue',
+                  } );
+                } )
+                .value(),
+              );
             }
 
-            return result.push( patientMedication );
+            result.push( equalICSDose );
+           //  }
+
+            result.push( Object.assign( {}, patientMedication, { choice: 'continue' } ) );
           }
           else if ( questionThree === '1' || questionThree === '2' || questionThree === '3' ) {
-            return result.push( patientMedication ); // and laba?
+            // and laba?
+            return result.push( patientMedication );
           }
         }
 
         return result;
-      }, masterMedications, patientMedications, questionnaireAnswers);
+      }, masterMedications, patientMedications, questionnaireAnswers );
       rule( medication );
 
       return result.push( rule );
