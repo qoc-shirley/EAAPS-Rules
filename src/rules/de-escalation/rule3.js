@@ -22,61 +22,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         const isLaba = _.filter( check, { chemicalType: 'laba' } );
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
-        // const compareLowestDose = _.chain( medicationElement )
-        //   .filter( ( findMedication ) => {
-        //     return (
-        //       findMedication.name === 'flovent' &&
-        //       findMedication.device === 'inhaler2' &&
-        //       findMedication.doseICS === '100'
-        //       ) || (
-        //       findMedication.name === 'flovent' &&
-        //       findMedication.device === 'diskus' &&
-        //       findMedication.doseICS === '200'
-        //       ) || (
-        //       findMedication.name === 'pulmicort' &&
-        //       findMedication.device === 'turbuhaler' &&
-        //       findMedication.doseICS === '200'
-        //       ) || (
-        //       findMedication.name === 'qvar' &&
-        //       findMedication.device === 'inhaler1' &&
-        //       findMedication.doseICS === '100'
-        //       ) || (
-        //       findMedication.name === 'asthmanex' &&
-        //       findMedication.device === 'twisthaler' &&
-        //       findMedication.doseICS === '100'
-        //       ) || (
-        //       findMedication.name === 'alvesco' &&
-        //       findMedication.device === 'inhaler1' &&
-        //       findMedication.doseICS === '200'
-        //       ) || (
-        //       findMedication.name === 'advair' &&
-        //       findMedication.device === 'inhaler2' &&
-        //       findMedication.doseICS === '250'
-        //       ) || (
-        //       findMedication.name === 'advair' &&
-        //       findMedication.device === 'diskus' &&
-        //       findMedication.doseICS === '200'
-        //       ) || (
-        //       findMedication.name === 'symbicort' &&
-        //       findMedication.device === 'turbuhaler' &&
-        //       findMedication.doseICS === '200'
-        //       ) || (
-        //       findMedication.name === 'zenhale' &&
-        //       findMedication.device === 'inhaler2' &&
-        //       findMedication.doseICS === '200'
-        //       ) || (
-        //       findMedication.name === 'arnuity' &&
-        //       findMedication.device === 'inhaler2' &&
-        //       findMedication.doseICS === '100'
-        //       ) || (
-        //       findMedication.name === 'breo' &&
-        //       findMedication.device === 'ellipta' &&
-        //       findMedication.doseICS === '100'
-        //     );
-        //   } )
-        //   .thru( get.lowestICSDose )
-        //   .value();
-
         const filterMedications = _.chain( medicationElement )
           .filter( ( findMedication ) => {
             return (
@@ -150,8 +95,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .value();
 
         if ( !check ) {
-          if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( compareLowestDose ) ) {
-            const sameChemicalLabaAndIcs = _.chain( medicationElement )
+          if (  _.filter( compareLowestDose,
+              ( medication ) => {
+                return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
+              } ) !== [] ) {
+            const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
