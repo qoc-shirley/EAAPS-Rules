@@ -6,7 +6,7 @@ export const lowestICSDose = (newMedications) => {
       .minBy(newMedications,
       (medication) => {
         return calculate.ICSDose(medication);
-      }
+      },
     )
     .value();
 };
@@ -16,7 +16,7 @@ export const highestICSDose = (newMedications) => {
     .maxBy(
       (medication) => {
         return calculate.ICSDose(medication);
-      }
+      },
     )
     .value();
 };

@@ -55,7 +55,12 @@ const rule2 = ( patientMedications, masterMedications ) => {
           .value();
 
         const compareLowestDose = _.chain( filterMedications )
-          .thru( get.lowestICSDose )
+          .filter(
+            {
+            chemicalType: patientMedication.chemicalType,
+            name: patientMedication.name,
+            device: patientMedication.device
+          } )
           .value();
         const noLabaLtra = _.chain( originalMedications )
           .filter( ( medication ) => {
@@ -67,7 +72,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
         if ( patientMedication.chemicalType === 'ICS' &&
           noLabaLtra &&
           calculate.patientICSDose( patientMedication ) > calculate.ICSDose( compareLowestDose ) ) {
-          const recommend = _.chain( medicationElement )
+          const recommend = _.chain( compareLowestDose )
             .filter( ( medication ) => {
               return medication.chemicalICS === patientMedication.chemicalICS &&
                 medication.device === patientMedication.device;
