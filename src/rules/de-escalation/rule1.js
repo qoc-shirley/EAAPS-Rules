@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
+import * as calculate from '../library/calculateICSDose';
 
 const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
   return _.chain( patientMedications )
@@ -59,11 +60,29 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             device: patientMedication.device,
           } )
           .value();
+        const noLabaLtra = _.chain( originalMedications )
+          .filter( ( medication ) => {
+            return medication.chemicalType === 'laba' || medication.chemicalType === 'ltra';
+          } )
+          .isEmpty()
+          .value();
 
-        const questionTwo = questionnaireAnswers.asthmaSymptoms;
-        if ( questionTwo === '0' ) {
+        if ( patientMedication.chemicalType === 'ICS' &&
+          noLabaLtra &&
+          _.filter( compareLowestDose,
+            ( medication ) => {
+              return calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( medication );
+            } ) !== [] ) {
+          const questionTwo = questionnaireAnswers.asthmaSymptoms;
+          if ( questionTwo === '0' ) {
+            result.push( 'discontinue medication: ', patientMedication.id );
+            result.push( 'continue medication: ', patientMedication.id );
+          }
 
+          return result.push( patientMedication );
         }
+
+        return result;
       }, masterMedications, patientMedications );
       rule( medication );
 
