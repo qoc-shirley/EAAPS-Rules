@@ -123,7 +123,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
-                return result.concat( [rule2( patientMedication ), isLaba] );
+                return _.flatten( result.push( [rule2( patientMedication ), isLaba] ) );
               }
 
               return result.push( fifty );
