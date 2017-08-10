@@ -5,7 +5,8 @@ import * as calculate from '../library/calculateICSDose';
 const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
   return _.chain( patientMedications )
     .reduce( ( result, medication ) => {
-      const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
+      const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
+
         const filterMedications = _.chain( medicationElement )
           .filter( ( findMedication ) => {
             return (
@@ -69,21 +70,23 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
         if ( patientMedication.chemicalType === 'ICS' &&
           noLabaLtra &&
-          _.filter( compareLowestDose,
+          !_.isEmpty( _.filter( compareLowestDose,
             ( medication ) => {
               return calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( medication );
-            } ) !== [] ) {
-          const questionTwo = questionnaireAnswers.asthmaSymptoms;
+            } ) ) ) {
+          const questionTwo = asthmaControlAnswers[0].asthmaSymptoms;
           if ( questionTwo === '0' ) {
-            result.push( 'discontinue medication: ', patientMedication.id );
-            result.push( 'continue medication: ', patientMedication.id );
+            result.push( 'discontinue medication: ', patientMedication );
+            result.push( 'continue medication: ', patientMedication );
+
+            return result;
           }
 
           return result.push( patientMedication );
         }
 
         return result;
-      }, masterMedications, patientMedications );
+      }, masterMedications, patientMedications, questionnaireAnswers );
       rule( medication );
 
       return result;
