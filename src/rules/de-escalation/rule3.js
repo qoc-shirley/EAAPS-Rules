@@ -160,11 +160,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     chemicalICS: patientMedication.chemicalICS,
                   } )
                   .maxBy( 'doseICS' )
-                  .map( ( medication ) => {
-                    return Object.assign( {}, medication, {
-                      choice: 'discontinue',
-                    } );
-                  } )
                   .value(),
                 );
               }
