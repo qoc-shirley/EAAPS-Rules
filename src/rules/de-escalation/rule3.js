@@ -169,10 +169,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 );
               }
 
-              return result.push( equalICSDose );
-            }
+              return _.flatten( result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] ) );
 
-            return result.push( Object.assign( {}, patientMedication, { choice: 'continue' } ) );
+            }
           }
           // not on SMART
           const questionThree = asthmaControlAnswers.rescuePuffer;
@@ -211,17 +210,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   chemicalICS: patientMedication.chemicalICS,
                 } )
                 .maxBy( 'doseICS' )
-                .map( ( medication ) => {
-                  return Object.assign( {}, medication, {
-                    choice: 'discontinue',
-                  } );
-                } )
                 .value(),
               );
             }
 
+            result.push( 'discontinue:' );
             result.push( equalICSDose );
-            result.push( Object.assign( {}, patientMedication, { choice: 'continue' } ) );
+            result.push( 'OR continue: ');
+            result.push( patientMedication );
 
             return result;
           }
