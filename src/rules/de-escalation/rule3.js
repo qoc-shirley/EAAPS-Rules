@@ -2,6 +2,7 @@ import _ from 'lodash';
 import rule2 from './rule2';
 import * as adjust from '../library/adjustICSDose';
 import * as calculate from '../library/calculateICSDose';
+import * as get from '../library/getICSDose';
 import totalDoseReduction from '../library/totalDoseReduction';
 
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
@@ -137,10 +138,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // not on smart
               if ( patientMedication.chemicalType === 'ICS' ) {
                 // discontinue laba medication
-                return result.push( patientMedication) ;
+                return result.push( patientMedication ) ;
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
                 // recommend medication with same chemicalICS as original Medication
+                console.log('laba,ICS');
                 const equalICSDose = _.chain( medicationElement )
                   .filter(
                   {
@@ -165,11 +167,17 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   );
                 }
 
-                return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
+                return result.push(
+                  [
+                    'discontinue:',
+                    get.highestICSDose( equalICSDose ),
+                    'OR continue:',
+                    patientMedication,
+                  ] );
 
               }
             }
-            // not on SMART
+            // on SMART
             const questionThree = asthmaControlAnswers[0].rescuePuffer;
             if ( questionThree === '0' ) {
               console.log("rescue puffer: 0");
@@ -214,7 +222,13 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 );
               }
 
-              return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
+              return result.push(
+                [
+                  'discontinue:',
+                  get.highestICSDose( equalICSDose ),
+                  'OR continue:',
+                  patientMedication,
+                ] );
             }
             // and laba?
 
