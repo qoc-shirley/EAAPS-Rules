@@ -61,13 +61,15 @@ saveRecommendation,
     //   'Rule 1',
     //   getDeEscalation.rules.rule1( medication.patientMedications, medicationData, asthmaControlAnswers ) );
     // saveRecommendation( 'Rule 2', getDeEscalation.rules.rule2( medication.patientMedications, medicationData ) );
+    // saveRecommendation(
+    //   'Rule 3',
+    //   getDeEscalation.rules.rule3(
+    //     medication.patientMedications,
+    //     medicationData, asthmaControlAnswers,
+    //   ) );
     saveRecommendation(
-      'Rule 3',
-      getDeEscalation.rules.rule3(
-        medication.patientMedications,
-        medicationData, asthmaControlAnswers,
-      ) );
-    // saveRecommendation( 'Rule 4', getDeEscalation.rules.rule4( medication.patientMedications, medicationData ) ) ;
+      'Rule 4',
+      getDeEscalation.rules.rule4( medication.patientMedications, medicationData, asthmaControlAnswers ) ) ;
     // saveRecommendation( 'Rule 5', getDeEscalation.rules.rule5( medication.patientMedications, medicationData ) );
   };
 
