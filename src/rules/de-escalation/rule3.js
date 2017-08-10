@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import rule2 from './rule2';
 import * as adjust from '../library/adjustICSDose';
-import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
 import totalDoseReduction from '../library/totalDoseReduction';
 
@@ -133,7 +132,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             }
           }
           console.log("smaller than lowest dose");
-          if ( patientMedication.chemicalType === 'ICS' ) {
+          if ( patientMedication.chemicalType === 'ICS' || patientMedication.chemicalType === 'laba,ICS' ) {
             if ( notOnSMART ) {
               // not on smart
               if ( patientMedication.chemicalType === 'ICS' ) {
@@ -149,9 +148,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     device: patientMedication.device,
                     chemicalICS: patientMedication.chemicalICS,
                   } )
-                  .filter((medication) => {
+                  .filter( ( medication ) => {
                     return !_.isNil( adjust.ICSDoseToOriginalMedication( medication, patientMedication ) );
-                  })
+                  } )
                   .value();
                 if ( _.isEmpty( equalICSDose ) ) {
                   return result.push( _.chain( medicationElement )
