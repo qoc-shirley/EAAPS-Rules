@@ -98,7 +98,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               ( medication ) => {
                 return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
               } ) ) ) {
-            console.log("greater than lowest dose");
+
             const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
@@ -106,7 +106,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   masterMedication.chemicalLABA === patientMedication.chemicalLABA;
               } )
               .value();
-            console.log("sameChemicalLabaAndIcs: ", sameChemicalLabaAndIcs);
             if ( patientMedication.chemicalType === 'ICS' ) {
               const fifty = _.chain( sameChemicalLabaAndIcs )
                 .filter( ( medication ) => {
@@ -116,21 +115,17 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .filter( ( medication ) => {
                   return medication.device === patientMedication.device || medication.device === laba.device;
                 } )
-                .thru( get.highestICSDose )
+                .maxBy( 'doseICS' )
                 .value();
               console.log("fifty: ", fifty);
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
-                console.log("empty sameChemicalLabaAndIcs and fifty", patientMedication);
                 // de-escalation rule 2 and continue laba medication
-                console.log('rule2: ', rule2( [patientMedication], medicationElement ));
-                console.log('isLaba: ', isLaba);
                 result.push( rule2( [patientMedication], medicationElement ) );
                 result.push( isLaba );
 
                 return result;
               }
 
-              console.log("return fifty");
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
