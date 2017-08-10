@@ -123,7 +123,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
-                return _.flatten( result.push( [rule2( patientMedication ), isLaba] ) );
+                return result.push( [rule2( patientMedication ), isLaba] );
               }
 
               return result.push( fifty );
@@ -169,7 +169,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 );
               }
 
-              return _.flatten( result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] ) );
+              return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
 
             }
           }
@@ -214,12 +214,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               );
             }
 
-            result.push( 'discontinue:' );
-            result.push( equalICSDose );
-            result.push( 'OR continue: ');
-            result.push( patientMedication );
-
-            return result;
+            return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
           }
           else if ( questionThree === '1' || questionThree === '2' || questionThree === '3' ) {
             // and laba?
@@ -231,8 +226,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
       }, masterMedications, patientMedications, questionnaireAnswers );
       rule( medication );
 
-      return result.push( rule );
+      return result;
     }, [] )
+    .flatten()
     .value();
 };
 

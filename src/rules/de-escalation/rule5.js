@@ -39,7 +39,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
       }, masterMedications, patientMedications );
       rule( medication );
 
-      return result.push( rule );
+      return result;
     }, [] )
     .value();
 };
