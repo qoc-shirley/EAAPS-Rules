@@ -42,7 +42,12 @@ const showRecommendations = ( {
                   {
                     recommendMedication.medications.map(
                       ( medicationElement, medicationIndex ) => {
-                        if ( _.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
+                        console.log('recommendation: ', medicationElement);
+                        if ( _.isString( medicationElement ) ) {
+                          console.log("string");
+                          return ( <p key={medicationIndex}>{medicationElement}</p> );
+                        }
+                        else if ( _.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                           return (
                             <div key={medicationIndex} className="recommendationArray">
                               <p className="data" />

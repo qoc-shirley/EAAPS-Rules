@@ -77,6 +77,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           const questionTwo = asthmaControlAnswers[0].asthmaSymptoms;
           if ( questionTwo === '0' ) {
             result.push( 'discontinue medication: ', patientMedication );
+            result.push( 'OR' );
             result.push( 'continue medication: ', patientMedication );
 
             return result;
