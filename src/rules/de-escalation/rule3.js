@@ -11,15 +11,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
       const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
         const check = _.chain( originalMedications )
           .filter( ( labaICSMedication ) => {
-            return ( labaICSMedication.chemicalType === 'laba,ICS' ||
+            return labaICSMedication.chemicalType === 'laba,ICS' ||
               ( labaICSMedication.chemicalType === 'laba' &&
-                _.some( originalMedications, { chemicalType: 'ICS' } ) ) ) &&
-                !_.some( originalMedications, { chemicalType: 'ICS' } );
+                _.some( originalMedications, { chemicalType: 'ICS' } ) );
           } )
           .isEmpty()
           .value();
 
-        const isLaba = _.filter( check, { chemicalType: 'laba' } );
+        const isLaba = _.filter( originalMedications, { chemicalType: 'laba' } );
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
         const filterMedications = _.chain( medicationElement )
@@ -79,7 +78,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             );
           } )
           .value();
-
+        console.log('filterMedications: ', filterMedications);
         const compareLowestDose = _.chain( filterMedications )
           .filter(
           {
@@ -88,7 +87,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             device: patientMedication.device,
           } )
           .value();
-
+        console.log("compareLowestDose: ", compareLowestDose);
         const notOnSMART = _.chain( originalMedications )
           .filter( { name: 'symbicort', function: 'controller,reliever' } )
           .isEmpty()
@@ -99,16 +98,15 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               ( medication ) => {
                 return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
               } ) ) ) {
+            console.log("greater than lowest dose");
             const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
-                  _.filter( isLaba, ( medication ) => {
-                    return masterMedication.chemicalLABA === medication.chemicalLABA;
-                  } );
+                  masterMedication.chemicalLABA === patientMedication.chemicalLABA;
               } )
               .value();
-
+            console.log("sameChemicalLabaAndIcs: ", sameChemicalLabaAndIcs);
             if ( patientMedication.chemicalType === 'ICS' ) {
               const fifty = _.chain( sameChemicalLabaAndIcs )
                 .filter( ( medication ) => {
@@ -120,26 +118,82 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 } )
                 .thru( get.highestICSDose )
                 .value();
-
+              console.log("fifty: ", fifty);
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
+                console.log("empty sameChemicalLabaAndIcs and fifty", patientMedication);
                 // de-escalation rule 2 and continue laba medication
-                return result.push( [rule2( patientMedication ), isLaba] );
+                console.log('rule2: ', rule2( [patientMedication], medicationElement ));
+                console.log('isLaba: ', isLaba);
+                result.push( rule2( [patientMedication], medicationElement ) );
+                result.push( isLaba );
+
+                return result;
               }
 
+              console.log("return fifty");
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
               return result.push( totalDoseReduction( patientMedication, sameChemicalLabaAndIcs ) );
             }
           }
-          if ( notOnSMART ) {
-            // not on smart
-            if ( patientMedication.chemicalType === 'ICS' ) {
-              // discontinue laba medication
-              return result.push( patientMedication );
+          console.log("smaller than lowest dose");
+          if ( patientMedication.chemicalType === 'ICS' ) {
+            if ( notOnSMART ) {
+              // not on smart
+              if ( patientMedication.chemicalType === 'ICS' ) {
+                // discontinue laba medication
+                return result.push( patientMedication) ;
+              }
+              else if ( patientMedication.chemicalType === 'laba,ICS' ) {
+                // recommend medication with same chemicalICS as original Medication
+                const equalICSDose = _.chain( medicationElement )
+                  .filter(
+                  {
+                    chemicalType: 'laba,ICS',
+                    device: patientMedication.device,
+                    chemicalICS: patientMedication.chemicalICS,
+                  } )
+                  .filter((medication) => {
+                    return !_.isNil( adjust.ICSDoseToOriginalMedication( medication, patientMedication ) );
+                  })
+                  .value();
+                if ( _.isEmpty( equalICSDose ) ) {
+                  return result.push( _.chain( medicationElement )
+                    .filter(
+                    {
+                      chemicalType: 'laba,ICS',
+                      device: patientMedication.device,
+                      chemicalICS: patientMedication.chemicalICS,
+                    } )
+                    .maxBy( 'doseICS' )
+                    .value(),
+                  );
+                }
+
+                return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
+
+              }
             }
-            else if ( patientMedication.chemicalType === 'laba,ICS' ) {
-              // recommend medication with same chemicalICS as original Medication
+            // not on SMART
+            const questionThree = asthmaControlAnswers[0].rescuePuffer;
+            if ( questionThree === '0' ) {
+              console.log("rescue puffer: 0");
+              const reliever = _.chain( originalMedications )
+                .filter( ( medication ) => {
+                  return medication.name !== 'symbicort' && medication.function === 'controller,reliever';
+                } )
+                .isEmpty()
+                .value();
+              console.log('reliever: ', reliever);
+              if ( reliever ) {
+                result.push( _.chain( medicationElement )
+                  .filter( ( medication ) => {
+                    return medication.name !== 'symbicort' && medication.function === 'controller,reliever';
+                  } )
+                  .value(),
+                );
+              }
               const equalICSDose = _.chain( medicationElement )
                 .filter(
                 {
@@ -150,9 +204,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .filter( ( medication ) => {
                   return !_.isNil( adjust.ICSDoseToOriginalMedication( medication, patientMedication ) );
                 } )
-               .value();
+                .value();
+              console.log('equalICSDose: ', equalICSDose);
               if ( _.isEmpty( equalICSDose ) ) {
-                return result.push( _.chain( medicationElement )
+                console.log("equalICSDose empty");
+                return result.push(_.chain( medicationElement )
                   .filter(
                   {
                     chemicalType: 'laba,ICS',
@@ -165,55 +221,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               }
 
               return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
-
             }
+            // and laba?
+
+            return result.push( patientMedication );
           }
-          // not on SMART
-          const questionThree = asthmaControlAnswers[0].rescuePuffer;
-          if ( questionThree === '0' ) {
-            const reliever = _.chain( originalMedications )
-              .filter( ( medication ) => {
-                return medication.name !== 'symbicort' && medication.function === 'controller,reliever';
-              } )
-              .isEmpty()
-              .value();
-            if ( reliever ) {
-              result.push( _.chain( medicationElement )
-                  .filter( ( medication ) => {
-                    return medication.name !== 'symbicort' && medication.function === 'controller,reliever';
-                  } )
-                .value(),
-                );
-            }
-            const equalICSDose = _.chain( medicationElement )
-              .filter(
-              {
-                chemicalType: 'laba,ICS',
-                device: patientMedication.device,
-                chemicalICS: patientMedication.chemicalICS,
-              } )
-              .filter( ( medication ) => {
-                return !_.isNil( adjust.ICSDoseToOriginalMedication( medication, patientMedication ) );
-              } )
-              .value();
-            if ( _.isEmpty( equalICSDose ) ) {
-              return result.push( _.chain( medicationElement )
-                .filter(
-                {
-                  chemicalType: 'laba,ICS',
-                  device: patientMedication.device,
-                  chemicalICS: patientMedication.chemicalICS,
-                } )
-                .maxBy( 'doseICS' )
-                .value(),
-              );
-            }
-
-            return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
-          }
-          // and laba?
-
-          return result.push( patientMedication );
         }
 
         return result;

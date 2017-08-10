@@ -67,7 +67,6 @@ const rule2 = ( patientMedications, masterMedications ) => {
           } )
           .isEmpty()
           .value();
-
         if ( patientMedication.chemicalType === 'ICS' &&
           noLabaLtra &&
           !_.isEmpty(  _.filter( compareLowestDose,
@@ -80,7 +79,6 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 medication.device === patientMedication.device;
             } )
             .value();
-
           result.push( totalDoseReduction( patientMedication, recommend ) );
         }
 
