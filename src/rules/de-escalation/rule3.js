@@ -174,7 +174,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             }
           }
           // not on SMART
-          const questionThree = asthmaControlAnswers.rescuePuffer;
+          const questionThree = asthmaControlAnswers[0].rescuePuffer;
           if ( questionThree === '0' ) {
             const reliever = _.chain( originalMedications )
               .filter( ( medication ) => {
@@ -216,10 +216,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
             return result.push( ['discontinue:', equalICSDose, 'OR continue:', patientMedication] );
           }
-          else if ( questionThree === '1' || questionThree === '2' || questionThree === '3' ) {
-            // and laba?
-            return result.push( patientMedication );
-          }
+          // and laba?
+
+          return result.push( patientMedication );
         }
 
         return result;
