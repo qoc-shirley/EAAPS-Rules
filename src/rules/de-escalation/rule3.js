@@ -95,10 +95,10 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .value();
 
         if ( !check ) {
-          if ( _.filter( compareLowestDose,
+          if ( !_.isEmpty( _.filter( compareLowestDose,
               ( medication ) => {
                 return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
-              } ) !== [] ) {
+              } ) ) ) {
             const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
