@@ -180,6 +180,115 @@ const MedicationTable = (
           return column.chemicalICS !== '.' && !( column.none );
         } );
 
+        let getDoseICSColumn = [{ doseICS: 'DoseICS' }];
+        getDoseICSColumn = getDoseICSColumn.concat(
+          medicationData.map(
+            ( masterMedication ) => {
+              if ( masterMedication.device === medication.medicationList[index].deviceName &&
+                masterMedication.name === medication.medicationList[index].medicationName &&
+                (
+                  masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
+                  (
+                    masterMedication.chemicalLABA === '.' &&
+                    (
+                      medication.medicationList[index].chemicalLABA === '' ||
+                      medication.medicationList[index].chemicalLABA === 'ChemicalLABA' ) )
+                ) &&
+                (
+                  masterMedication.chemicalICS === medication.medicationList[index].chemicalICS ||
+                  (
+                    masterMedication.chemicalICS === '.' &&
+                    (
+                      medication.medicationList[index].chemicalICS === '' ||
+                      medication.medicationList[index].chemicalICS === 'ChemicalICS'
+                    )
+                  )
+                )
+              ) {
+                return ( {
+                  doseICS: masterMedication.doseICS,
+                } );
+              }
+
+              return ( {
+                none: '-no doseICS-',
+              } );
+            } ) );
+
+        getDoseICSColumn = _.uniqWith( getDoseICSColumn, _.isEqual );
+        getDoseICSColumn = _.filter( getDoseICSColumn, ( column ) => {
+          return column.doseICS !== '.' && !( column.none );
+        } );
+
+        let getPuffColumn = [{ puffPerTime: 'PuffPerTime' }];
+        getPuffColumn = getPuffColumn.concat(
+          medicationData.map(
+            ( masterMedication ) => {
+              if ( masterMedication.device === medication.medicationList[index].deviceName &&
+                masterMedication.name === medication.medicationList[index].medicationName &&
+                ( masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
+                  ( masterMedication.chemicalLABA === '.' &&
+                    ( medication.medicationList[index].chemicalLABA === '' ||
+                      medication.medicationList[index].chemicalLABA === 'ChemicalLABA' ) ) ) &&
+                ( masterMedication.chemicalICS === medication.medicationList[index].chemicalICS ||
+                  ( masterMedication.chemicalICS === '.' &&
+                    ( medication.medicationList[index].chemicalICS === '' ||
+                      medication.medicationList[index].chemicalICS === 'ChemicalICS' ) ) ) &&
+                ( masterMedication.doseICS === medication.medicationList[index].doseICSValue ||
+                  ( masterMedication.doseICS === '.' &&
+                    ( medication.medicationList[index].doseICSValue === '' ||
+                      medication.medicationList[index].doseICSValue === 'DoseICS' ) ) )
+              ) {
+                return ( {
+                  puffPerTime: masterMedication.maxPuffPerTime,
+                } );
+              }
+
+              return ( {
+                none: '-no doseICS-',
+              } );
+            } ) );
+
+        getPuffColumn = _.uniqWith( getPuffColumn, _.isEqual );
+        getPuffColumn = _.filter( getPuffColumn, ( column ) => {
+          return column.puffPerTime !== '.' && !( column.none );
+        } );
+
+        let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
+        getTimesColumn = getTimesColumn.concat(
+          medicationData.map(
+            ( masterMedication ) => {
+              if ( masterMedication.device === medication.medicationList[index].deviceName &&
+                masterMedication.name === medication.medicationList[index].medicationName &&
+                ( masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
+                  ( masterMedication.chemicalLABA === '.' &&
+                    ( medication.medicationList[index].chemicalLABA === '' ||
+                      medication.medicationList[index].chemicalLABA === 'ChemicalLABA' ) ) ) &&
+                ( masterMedication.chemicalICS === medication.medicationList[index].chemicalICS ||
+                  ( masterMedication.chemicalICS === '.' &&
+                    ( medication.medicationList[index].chemicalICS === '' ||
+                      medication.medicationList[index].chemicalICS === 'ChemicalICS' ) ) ) &&
+                ( masterMedication.doseICS === medication.medicationList[index].doseICSValue ||
+                  ( masterMedication.doseICS === '.' &&
+                    ( medication.medicationList[index].doseICSValue === '' ||
+                      medication.medicationList[index].doseICSValue === 'DoseICS' ) ) ) &&
+                  medication.medicationList[index].puffPerTime <= masterMedication.maxPuffPerTime
+              ) {
+                return ( {
+                  timePerDay: masterMedication.timesPerDay,
+                } );
+              }
+
+              return ( {
+                none: '-no timesPerDay-',
+              } );
+            } ) );
+
+        getTimesColumn = _.uniqWith( getTimesColumn, _.isEqual );
+        getTimesColumn = _.filter( getTimesColumn, ( column ) => {
+          return column.timesPerDay !== '.' && !( column.none );
+        } );
+
         return (
           <div key={rowFields.id} className="row">
             <p>Medication {index + 1 }:</p>
@@ -227,24 +336,57 @@ const MedicationTable = (
                     <option key={ICSIndex}>{chemicalGroup.chemicalICS}</option>
                   ) ) }
             </select>
-            <InputField
-              fieldName="doseICS"
-              value={doseICSValue}
-              placeholder="Dose ICS"
-              onChangeInputField={event => onChangeDoseICS( index, event.target.value )}
-            />
-            <InputField
-              fieldName="puff"
-              value={puffValue}
-              placeholder="# of puffs"
-              onChangeInputField={event => onChangePuffValue( index, event.target.value )}
-            />
-            <InputField
-              fieldName="times"
-              value={timesPerDayValue}
-              placeholder="Times/Day(Frequency)"
-              onChangeInputField={event => onChangeTimesPerDayValue( index, event.target.value )}
-            />
+            <select
+              className="doseICS"
+              onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.doseICSValue}
+            >
+              {
+                getDoseICSColumn.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.doseICS}</option>
+                  ) ) }
+            </select>
+            <select
+              className="puffPerTime"
+              onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.puffPerTime}
+            >
+              {
+                getPuffColumn.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.puffPerTime}</option>
+                  ) ) }
+            </select>
+            <select
+              className="timesPerDay"
+              onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.timesPerDayValue}
+            >
+              {
+                getTimesColumn.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>
+                  ) ) }
+            </select>
+            {/*<InputField*/}
+              {/*fieldName="doseICS"*/}
+              {/*value={doseICSValue}*/}
+              {/*placeholder="Dose ICS"*/}
+              {/*onChangeInputField={event => onChangeDoseICS( index, event.target.value )}*/}
+            {/*/>*/}
+            {/*<InputField*/}
+              {/*fieldName="puff"*/}
+              {/*value={puffValue}*/}
+              {/*placeholder="# of puffs"*/}
+              {/*onChangeInputField={event => onChangePuffValue( index, event.target.value )}*/}
+            {/*/>*/}
+            {/*<InputField*/}
+              {/*fieldName="times"*/}
+              {/*value={timesPerDayValue}*/}
+              {/*placeholder="Times/Day(Frequency)"*/}
+              {/*onChangeInputField={event => onChangeTimesPerDayValue( index, event.target.value )}*/}
+            {/*/>*/}
             <button
               className="button__deleteRow"
               onClick={() => deleteRow( index )}
