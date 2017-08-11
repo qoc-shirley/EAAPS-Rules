@@ -114,7 +114,7 @@ saveRecommendation,
   const showRecommendation = () => {
     if ( medication.isRuleSelectEmpty === false ) {
       return (
-        <div className="scroll">
+        <div className="displayRecommendations">
           <Recommendations />
         </div>
       );
