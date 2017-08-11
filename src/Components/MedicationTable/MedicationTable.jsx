@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import uuid from 'uuid';
-import InputField from '../InputField/InputField';
+// import InputField from '../InputField/InputField';
 import * as actions from '../../redux/App/actions';
 import medicationData from '../../medicationData/medicationData';
 import Row from '../Row/Row';
@@ -12,7 +12,7 @@ import './styles.css';
 const MedicationTable = (
 {
   appendMedicationList,
-  doseICSValue,
+  // doseICSValue,
   getPatientMedications,
   medication,
   onChangeDoseICS,
@@ -23,8 +23,8 @@ const MedicationTable = (
   onChangeTimesPerDayValue,
   onChangeMedicationName,
   onClickDeleteMedication,
-  puffValue,
-  timesPerDayValue,
+  // puffValue,
+  // timesPerDayValue,
 } ) => {
   const headerElements =
 ['', 'Device', 'Name', 'ChemicalLABA', 'ChemicalICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
@@ -248,7 +248,6 @@ const MedicationTable = (
                 none: '-no doseICS-',
               } );
             } ) );
-
         getPuffColumn = _.uniqWith( getPuffColumn, _.isEqual );
         getPuffColumn = _.filter( getPuffColumn, ( column ) => {
           return column.puffPerTime !== '.' && !( column.none );
@@ -258,6 +257,7 @@ const MedicationTable = (
         getTimesColumn = getTimesColumn.concat(
           medicationData.map(
             ( masterMedication ) => {
+              console.log("timesPerDay: ", masterMedication.maxPuffPerTime,medication.medicationList[index].puffValue);
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
                 masterMedication.name === medication.medicationList[index].medicationName &&
                 ( masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
@@ -272,10 +272,10 @@ const MedicationTable = (
                   ( masterMedication.doseICS === '.' &&
                     ( medication.medicationList[index].doseICSValue === '' ||
                       medication.medicationList[index].doseICSValue === 'DoseICS' ) ) ) &&
-                  medication.medicationList[index].puffPerTime <= masterMedication.maxPuffPerTime
+                 masterMedication.maxPuffPerTime >= medication.medicationList[index].puffValue
               ) {
                 return ( {
-                  timePerDay: masterMedication.timesPerDay,
+                  timesPerDay: masterMedication.timesPerDay,
                 } );
               }
 
@@ -287,7 +287,6 @@ const MedicationTable = (
         getTimesColumn = _.filter( getTimesColumn, ( column ) => {
           return column.timesPerDay !== '.' && !( column.none );
         } );
-        console.log("getTimesColumn: ", getTimesColumn);
 
         // if ( getTimesColumn.timesPerDay !== 'TimesPerDay' || getTimesColumn.timesPerDay !== '2' ) {
         //   getTimesColumn = [{timesPerDay: 'TimesPerDay', timesPerDay: '1', timesPerDay: '2'}];
@@ -373,24 +372,6 @@ const MedicationTable = (
                     <option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>
                   ) ) }
             </select>
-            {/*<InputField*/}
-              {/*fieldName="doseICS"*/}
-              {/*value={doseICSValue}*/}
-              {/*placeholder="Dose ICS"*/}
-              {/*onChangeInputField={event => onChangeDoseICS( index, event.target.value )}*/}
-            {/*/>*/}
-            {/*<InputField*/}
-              {/*fieldName="puff"*/}
-              {/*value={puffValue}*/}
-              {/*placeholder="# of puffs"*/}
-              {/*onChangeInputField={event => onChangePuffValue( index, event.target.value )}*/}
-            {/*/>*/}
-            {/*<InputField*/}
-              {/*fieldName="times"*/}
-              {/*value={timesPerDayValue}*/}
-              {/*placeholder="Times/Day(Frequency)"*/}
-              {/*onChangeInputField={event => onChangeTimesPerDayValue( index, event.target.value )}*/}
-            {/*/>*/}
             <button
               className="button__deleteRow"
               onClick={() => deleteRow( index )}
@@ -431,9 +412,9 @@ const MedicationTable = (
 };
 
 MedicationTable.propTypes = {
-  puffValue: PropTypes.string,
-  timesPerDayValue: PropTypes.string,
-  doseICSValue: PropTypes.string,
+  // puffValue: PropTypes.string,
+  // timesPerDayValue: PropTypes.string,
+  // doseICSValue: PropTypes.string,
   getPatientMedications: PropTypes.func.isRequired,
   onClickDeleteMedication: PropTypes.func.isRequired,
   onChangeDeviceName: PropTypes.func.isRequired,
