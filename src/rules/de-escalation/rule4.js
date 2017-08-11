@@ -16,13 +16,15 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .filter( { chemicalType: 'ltra' } )
           .value();
 
-        if ( patientMedication === 'ICS' && noLaba && !_.isEmpty( isLtra ) ) {
+        if ( patientMedication.chemicalType === 'ICS' && noLaba && !_.isEmpty( isLtra ) ) {
           // Provide a choice to discontinue the LTRA
-          result.result( [
+          console.log('rules continue ICS: ',
+            rule2( [patientMedication], medicationElement ));
+          result.push( [
             'discontinue ltra and continue ICS: ', patientMedication,
             'continue ICS: ', rule1( [patientMedication], medicationElement, asthmaControlAnswers ) ||
             rule2( [patientMedication], medicationElement ),
-            'continue ltra: ', isLtra,
+            'continue ltra: ', isLtra[0],
           ] );
         }
 

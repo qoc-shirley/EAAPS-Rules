@@ -70,7 +70,9 @@ saveRecommendation,
     saveRecommendation(
       'Rule 4',
       getDeEscalation.rules.rule4( medication.patientMedications, medicationData, asthmaControlAnswers ) );
-    // saveRecommendation( 'Rule 5', getDeEscalation.rules.rule5( medication.patientMedications, medicationData ) );
+    saveRecommendation(
+      'Rule 5',
+      getDeEscalation.rules.rule5( medication.patientMedications, medicationData, asthmaControlAnswers ) );
   };
 
   const clearRecommendations = () => {
