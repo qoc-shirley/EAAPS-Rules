@@ -283,11 +283,15 @@ const MedicationTable = (
                 none: '-no timesPerDay-',
               } );
             } ) );
-
         getTimesColumn = _.uniqWith( getTimesColumn, _.isEqual );
         getTimesColumn = _.filter( getTimesColumn, ( column ) => {
           return column.timesPerDay !== '.' && !( column.none );
         } );
+        console.log("getTimesColumn: ", getTimesColumn);
+
+        // if ( getTimesColumn.timesPerDay !== 'TimesPerDay' || getTimesColumn.timesPerDay !== '2' ) {
+        //   getTimesColumn = [{timesPerDay: 'TimesPerDay', timesPerDay: '1', timesPerDay: '2'}];
+        // }
 
         return (
           <div key={rowFields.id} className="row">
@@ -338,7 +342,7 @@ const MedicationTable = (
             </select>
             <select
               className="doseICS"
-              onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
+              onChange={event => onChangeDoseICS( index, _.split( event.target.value, ',' ) )}
               value={rowFields.doseICSValue}
             >
               {
@@ -349,8 +353,8 @@ const MedicationTable = (
             </select>
             <select
               className="puffPerTime"
-              onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
-              value={rowFields.puffPerTime}
+              onChange={event => onChangePuffValue( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.puffValue}
             >
               {
                 getPuffColumn.map(
@@ -360,7 +364,7 @@ const MedicationTable = (
             </select>
             <select
               className="timesPerDay"
-              onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
+              onChange={event => onChangeTimesPerDayValue( index, _.split( event.target.value, ',' ) )}
               value={rowFields.timesPerDayValue}
             >
               {

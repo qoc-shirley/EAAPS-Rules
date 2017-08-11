@@ -49,6 +49,12 @@ const reducer = ( state = initialState, action ) => {
   case DEVICE:
     return Object.assign( {}, state, {
       deviceName: action.data.device[0],
+      medicationName: '',
+      chemicalLABA: '',
+      chemicalICS: '',
+      doseICSValue: '',
+      puffValue: '',
+      timesPerDayValue: '',
       medicationList: state.medicationList.map( ( row, index ) =>
           action.data.index === index ?
           { ...row,
@@ -56,6 +62,9 @@ const reducer = ( state = initialState, action ) => {
             medicationName: '',
             chemicalLABA: '',
             chemicalICS: '',
+            doseICSValue: '',
+            puffValue: '',
+            timesPerDayValue: '',
           }
           : row ),
       isRecommendationEmpty: true,
@@ -65,12 +74,82 @@ const reducer = ( state = initialState, action ) => {
   case MEDICATION_NAME:
     return Object.assign( {}, state, {
       medicationName: action.data.medicationName[0],
+      chemicalLABA: '',
+      chemicalICS: '',
+      doseICSValue: '',
+      puffValue: '',
+      timesPerDayValue: '',
       medicationList: state.medicationList.map( (row, index ) =>
         action.data.index === index ?
         { ...row,
           medicationName: action.data.medicationName[0],
           chemicalLABA: '',
           chemicalICS: '',
+          doseICSValue: '',
+          puffValue: '',
+          timesPerDayValue: '',
+        }
+          : row ),
+      isRecommendationEmpty: true,
+      isRuleSelectEmpty: true,
+      recommendation: [],
+    } );
+  case ON_CHEMICALLABA_SELECTION:
+    return Object.assign( {}, state, {
+      chemicalLABA: action.data.chemicalLABA[0],
+      chemicalICS: '',
+      doseICSValue: '',
+      puffValue: '',
+      timesPerDayValue: '',
+      medicationList: state.medicationList.map( ( row, index ) =>
+        action.data.index === index ?
+        {
+          ...row,
+          chemicalLABA: action.data.chemicalLABA[0],
+          chemicalICS: '',
+          doseICSValue: '',
+          puffValue: '',
+          timesPerDayValue: '',
+        }
+          : row ),
+      isRecommendationEmpty: true,
+      isRuleSelectEmpty: true,
+      recommendation: [],
+    } );
+
+  case ON_CHEMICALICS_SELECTION:
+    return Object.assign( {}, state, {
+      chemicalICS: action.data.chemicalICS[0],
+      doseICSValue: '',
+      puffValue: '',
+      timesPerDayValue: '',
+      medicationList: state.medicationList.map( ( row, index ) =>
+        action.data.index === index ?
+        {
+          ...row,
+          chemicalICS: action.data.chemicalICS[0],
+          doseICSValue: '',
+          puffValue: '',
+          timesPerDayValue: '',
+        }
+          : row ),
+      isRecommendationEmpty: true,
+      isRuleSelectEmpty: true,
+      recommendation: [],
+    } );
+
+  case ON_DOSEICS_CHANGE:
+    return Object.assign( {}, state, {
+      doseICSValue: action.data.doseICSValueChange[0],
+      puffValue: '',
+      timesPerDayValue: '',
+      medicationList: state.medicationList.map( ( row, index ) =>
+        action.data.index === index ?
+        {
+          ...row,
+          doseICSValue: action.data.doseICSValueChange[0],
+          puffValue: '',
+          timesPerDayValue: '',
         }
           : row ),
       isRecommendationEmpty: true,
@@ -81,10 +160,14 @@ const reducer = ( state = initialState, action ) => {
     // OnChange functions
   case ON_PUFF_CHANGE:
     return Object.assign( {}, state, {
-      puffValue: action.data.puffValueChange,
+      puffValue: action.data.puffValueChange[0],
+      timesPerDayValue: '',
       medicationList: state.medicationList.map( ( row, index ) =>
           action.data.index === index ?
-          { ...row, puffValue: action.data.puffValueChange }
+          { ...row,
+            puffValue: action.data.puffValueChange[0],
+            timesPerDayValue: '',
+          }
               : row ),
       isRecommendationEmpty: true,
       isRuleSelectEmpty: true,
@@ -93,53 +176,11 @@ const reducer = ( state = initialState, action ) => {
 
   case ON_TIMES_CHANGE:
     return Object.assign( {}, state, {
-      timesPerDayValue: action.data.timesValueChange,
+      timesPerDayValue: action.data.timesValueChange[0],
       medicationList: state.medicationList.map( ( row, index ) =>
         action.data.index === index ?
-        { ...row, timesPerDayValue: action.data.timesValueChange }
+        { ...row, timesPerDayValue: action.data.timesValueChange[0] }
               : row ),
-      isRecommendationEmpty: true,
-      isRuleSelectEmpty: true,
-      recommendation: [],
-    } );
-
-  case ON_DOSEICS_CHANGE:
-    return Object.assign( {}, state, {
-      doseICSValue: action.data.doseICSValueChange,
-      medicationList: state.medicationList.map( ( row, index ) =>
-        action.data.index === index ?
-        {
-          ...row, doseICSValue: action.data.doseICSValueChange }
-          : row ),
-      isRecommendationEmpty: true,
-      isRuleSelectEmpty: true,
-      recommendation: [],
-    } );
-
-  case ON_CHEMICALICS_SELECTION:
-    return Object.assign( {}, state, {
-      chemicalICS: action.data.chemicalICS[0],
-      medicationList: state.medicationList.map( ( row, index ) =>
-        action.data.index === index ?
-        {
-          ...row, chemicalICS: action.data.chemicalICS[0],
-        }
-        : row ),
-      isRecommendationEmpty: true,
-      isRuleSelectEmpty: true,
-      recommendation: [],
-    } );
-  case ON_CHEMICALLABA_SELECTION:
-    return Object.assign( {}, state, {
-      chemicalLABA: action.data.chemicalLABA[0],
-      medicationList: state.medicationList.map( ( row, index ) =>
-        action.data.index === index ?
-        {
-          ...row,
-          chemicalLABA: action.data.chemicalLABA[0],
-          chemicalICS: '',
-        }
-          : row ),
       isRecommendationEmpty: true,
       isRuleSelectEmpty: true,
       recommendation: [],
