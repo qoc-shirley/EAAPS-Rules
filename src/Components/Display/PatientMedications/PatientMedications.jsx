@@ -122,7 +122,6 @@ const mapDispatchToProps = dispatch => ( {
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS( index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
   onChangeChemicalICS: ( index, value ) => dispatch( actions.onChangeChemicalICS( index, value ) ),
-  onChangeChemicalLABA: ( index, value ) => dispatch( actions.onChangeChemicalLABA( index, value ) ),
   onChangeMedicationName: ( index, value ) => dispatch( actions.onChangeMedicationName( index, value ) ),
   onDeleteRow: index => dispatch( actions.onDeleteRow( index ) ),
   getPatientMedications: medications => dispatch( actions.getPatientMedications( medications ) ),

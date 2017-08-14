@@ -11,7 +11,7 @@ import {
   RECOMMENDATION,
   CLEAR,
   ON_CHEMICALICS_SELECTION,
-  ON_CHEMICALLABA_SELECTION,
+  ON_CHEMICAL_SELECTION,
   MEDICATION_NAME,
   ON_QUESTIONNAIRE_OPTION,
 } from './constants';
@@ -19,6 +19,7 @@ export const initialState = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',
+  chemical: '',
   chemicalLABA: '',
   chemicalICS: '',
   deviceName: '',
@@ -94,10 +95,11 @@ const reducer = ( state = initialState, action ) => {
       isRuleSelectEmpty: true,
       recommendation: [],
     } );
-  case ON_CHEMICALLABA_SELECTION:
+  case ON_CHEMICAL_SELECTION:
     return Object.assign( {}, state, {
       chemicalLABA: action.data.chemicalLABA[0],
-      chemicalICS: '',
+      chemicalICS: action.data.chemicalLABA[1],
+      chemical: action.data.chemicalLABA[0] + ' ,' + action.data.chemicalLABA[1],
       doseICSValue: '',
       puffValue: '',
       timesPerDayValue: '',
@@ -106,7 +108,7 @@ const reducer = ( state = initialState, action ) => {
         {
           ...row,
           chemicalLABA: action.data.chemicalLABA[0],
-          chemicalICS: '',
+          chemicalICS: action.data.chemicalLABA[1],
           doseICSValue: '',
           puffValue: '',
           timesPerDayValue: '',

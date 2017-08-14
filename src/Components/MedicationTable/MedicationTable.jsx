@@ -16,7 +16,7 @@ const MedicationTable = (
   getPatientMedications,
   medication,
   onChangeDoseICS,
-  onChangeChemicalLABA,
+  onChangeChemical,
   onChangeChemicalICS,
   onChangeDeviceName,
   onChangePuffValue,
@@ -357,8 +357,8 @@ const MedicationTable = (
             </select>
             <select
               className="chemicalLABA"
-              onChange={event => onChangeChemicalLABA( index, _.split( event.target.value, ',' ) )}
-              value={rowFields.chemicalLABA}
+              onChange={event => onChangeChemical( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.chemical}
             >
               <option>ChemicalLaba,ChemicalICS</option>
               <option>{getChemicalLABAColumn[0].chemicalLABA},{getChemicalICSColumn[0].chemicalICS}</option>
@@ -462,7 +462,7 @@ MedicationTable.propTypes = {
   onChangeTimesPerDayValue: PropTypes.func.isRequired,
   onChangeDoseICS: PropTypes.func.isRequired,
   onChangeChemicalICS: PropTypes.func.isRequired,
-  onChangeChemicalLABA: PropTypes.func.isRequired,
+  onChangeChemical: PropTypes.func.isRequired,
   onChangeMedicationName: PropTypes.func.isRequired,
   appendMedicationList: PropTypes.func.isRequired,
 };
@@ -486,7 +486,7 @@ const mapDispatchToProps = dispatch => ( {
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS( index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
   onChangeChemicalICS: ( index, value ) => dispatch( actions.onChangeChemicalICS( index, value ) ),
-  onChangeChemicalLABA: ( index, value ) => dispatch( actions.onChangeChemicalLABA( index, value ) ),
+  onChangeChemical: ( index, value ) => dispatch( actions.onChangeChemical( index, value ) ),
   onChangeMedicationName: ( index, value ) => dispatch( actions.onChangeMedicationName( index, value ) ),
   onDeleteRow: index => dispatch( actions.onDeleteRow( index ) ),
   getPatientMedications: medications => dispatch( actions.getPatientMedications( medications ) ),

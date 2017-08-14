@@ -9,7 +9,7 @@ import {
   FILTERED_MEDICATIONS,
   RECOMMENDATION,
   CLEAR,
-  ON_CHEMICALLABA_SELECTION,
+  ON_CHEMICAL_SELECTION,
   ON_CHEMICALICS_SELECTION,
   MEDICATION_NAME,
   ON_QUESTIONNAIRE_OPTION,
@@ -83,9 +83,9 @@ export const onChangeChemicalICS = ( index, chemicalICS ) => {
   };
 };
 
-export const onChangeChemicalLABA = ( index, chemicalLABA ) => {
+export const onChangeChemical = ( index, chemicalLABA ) => {
   return {
-    type: ON_CHEMICALLABA_SELECTION,
+    type: ON_CHEMICAL_SELECTION,
     data: {
       index,
       chemicalLABA,
