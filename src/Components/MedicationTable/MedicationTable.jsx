@@ -227,6 +227,21 @@ const MedicationTable = (
           return column.doseICS !== '.' && !( column.none );
         } );
 
+        let chemicalLabaAndICS = [];
+        if (_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) && _.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) {
+          chemicalLabaAndICS = [{ chemical: 'ChemicalLaba,ChemicalICS' }];
+        }
+        else {
+          chemicalLabaAndICS = [];
+          chemicalLabaAndICS.push( { chemical: 'ChemicalLaba,ChemicalICS'} );
+          chemicalLabaAndICS.push(
+            {
+              chemical: getChemicalLABAColumn[0].chemicalLABA + ',' +
+              getChemicalICSColumn[0].chemicalICS,
+            } );
+        }
+        console.log('chemicalLabaAndICS: ', chemicalLabaAndICS);
+
         // let getPuffColumn = [{ puffPerTime: 'PuffPerTime' }];
         let getPuffColumn =
           medicationData.map(
@@ -363,8 +378,13 @@ const MedicationTable = (
               onChange={event => onChangeChemical( index, _.split( event.target.value, ',' ) )}
               value={rowFields.chemical}
             >
-              <option>ChemicalLaba,ChemicalICS</option>
-              <option>{getChemicalLABAColumn[0].chemicalLABA},{getChemicalICSColumn[0].chemicalICS}</option>
+              {/*<option>ChemicalLaba,ChemicalICS</option>*/}
+              {/*<option>{getChemicalLABAColumn[0].chemicalLABA},{getChemicalICSColumn[0].chemicalICS}</option>*/}
+              {
+                chemicalLabaAndICS.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.chemical}</option>
+                  ) ) }
             </select>
             <select
               className="doseICS"
