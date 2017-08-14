@@ -380,8 +380,6 @@ const MedicationTable = (
               onChange={event => onChangeChemical( index, _.split( event.target.value, ',' ) )}
               value={rowFields.chemical}
             >
-              {/*<option>ChemicalLaba,ChemicalICS</option>*/}
-              {/*<option>{getChemicalLABAColumn[0].chemicalLABA},{getChemicalICSColumn[0].chemicalICS}</option>*/}
               {
                 chemicalLabaAndICS.map(
                   ( chemicalGroup, ICSIndex ) => (
