@@ -132,8 +132,8 @@ const MedicationTable = (
           return !( column.none );
         } );
 
-        let getChemicalLABAColumn = [{ chemicalLABA: 'ChemicalLABA' }];
-        getChemicalLABAColumn = getChemicalLABAColumn.concat( medicationData.map(
+        // let getChemicalLABAColumn = [{ chemicalLABA: 'ChemicalLABA' }];
+        let getChemicalLABAColumn = medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
                 masterMedication.name === medication.medicationList[index].medicationName ) {
@@ -145,15 +145,18 @@ const MedicationTable = (
               return ( {
                 none: '-no chemicalLABA-',
               } );
-            } ) );
+            } );
 
         getChemicalLABAColumn = _.uniqWith( getChemicalLABAColumn, _.isEqual );
         getChemicalLABAColumn = _.filter( getChemicalLABAColumn, ( column ) => {
           return column.chemicalLABA !== '.' && !( column.none );
         } );
+        if ( _.isEmpty( getChemicalLABAColumn ) ) {
+          getChemicalLABAColumn = [{ chemicalLaba: ' ---' }];
+        }
 
-        let getChemicalICSColumn = [{ chemicalICS: 'ChemicalICS' }];
-        getChemicalICSColumn = getChemicalICSColumn.concat(
+        // let getChemicalICSColumn = [{ chemicalICS: 'ChemicalICS' }];
+        let getChemicalICSColumn =
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
@@ -173,13 +176,19 @@ const MedicationTable = (
               return ( {
                 none: '-no chemicalICS-',
               } );
-            } ) );
+            } );
 
         getChemicalICSColumn = _.uniqWith( getChemicalICSColumn, _.isEqual );
         getChemicalICSColumn = _.filter( getChemicalICSColumn, ( column ) => {
           return column.chemicalICS !== '.' && !( column.none );
         } );
 
+        if ( _.isEmpty( getChemicalICSColumn ) ) {
+          getChemicalICSColumn = [{ chemicalICS: ' ---' }];
+        }
+
+        console.log('chemicalLaba: ',getChemicalLABAColumn);
+        console.log('chemicalICS: ',getChemicalICSColumn);
         let getDoseICSColumn = [{ doseICS: 'DoseICS' }];
         getDoseICSColumn = getDoseICSColumn.concat(
           medicationData.map(
@@ -351,23 +360,25 @@ const MedicationTable = (
               onChange={event => onChangeChemicalLABA( index, _.split( event.target.value, ',' ) )}
               value={rowFields.chemicalLABA}
             >
-              {
-                getChemicalLABAColumn.map(
-                  ( chemicalGroup, LABAindex ) => (
-                    <option key={LABAindex}>{chemicalGroup.chemicalLABA}</option>
-                  ) ) }
+              <option>ChemicalLaba,ChemicalICS</option>
+              <option>{getChemicalLABAColumn[0].chemicalLABA},{getChemicalICSColumn[0].chemicalICS}</option>
+              {/*{*/}
+                {/*getChemicalLABAColumn.map(*/}
+                  {/*( chemicalGroup, LABAindex ) => (*/}
+                    {/*<option key={LABAindex}>{chemicalGroup.chemicalLABA}</option>*/}
+                  {/*) ) }*/}
             </select>
-            <select
-              className="chemicalICS"
-              onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}
-              value={rowFields.chemicalICS}
-            >
-              {
-                getChemicalICSColumn.map(
-                  ( chemicalGroup, ICSIndex ) => (
-                    <option key={ICSIndex}>{chemicalGroup.chemicalICS}</option>
-                  ) ) }
-            </select>
+            {/*<select*/}
+              {/*className="chemicalICS"*/}
+              {/*onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}*/}
+              {/*value={rowFields.chemicalICS}*/}
+            {/*>*/}
+              {/*{*/}
+                {/*getChemicalICSColumn.map(*/}
+                  {/*( chemicalGroup, ICSIndex ) => (*/}
+                    {/*<option key={ICSIndex}>{chemicalGroup.chemicalICS}</option>*/}
+                  {/*) ) }*/}
+            {/*</select>*/}
             <select
               className="doseICS"
               onChange={event => onChangeDoseICS( index, _.split( event.target.value, ',' ) )}
