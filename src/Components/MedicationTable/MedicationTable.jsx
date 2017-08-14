@@ -27,7 +27,7 @@ const MedicationTable = (
   // timesPerDayValue,
 } ) => {
   const headerElements =
-['', 'Device', 'Name', 'ChemicalLABA', 'ChemicalICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
+['', 'Device', 'Name', 'ChemicalLaba/ICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
 
   const randomGenerator = uuid();
 
@@ -152,7 +152,7 @@ const MedicationTable = (
           return column.chemicalLABA !== '.' && !( column.none );
         } );
         if ( _.isEmpty( getChemicalLABAColumn ) ) {
-          getChemicalLABAColumn = [{ chemicalLaba: ' ---' }];
+          getChemicalLABAColumn = [{ chemicalLaba: '' }];
         }
 
         // let getChemicalICSColumn = [{ chemicalICS: 'ChemicalICS' }];
@@ -184,11 +184,9 @@ const MedicationTable = (
         } );
 
         if ( _.isEmpty( getChemicalICSColumn ) ) {
-          getChemicalICSColumn = [{ chemicalICS: ' ---' }];
+          getChemicalICSColumn = [{ chemicalICS: '' }];
         }
 
-        console.log('chemicalLaba: ',getChemicalLABAColumn);
-        console.log('chemicalICS: ',getChemicalICSColumn);
         let getDoseICSColumn = [{ doseICS: 'DoseICS' }];
         getDoseICSColumn = getDoseICSColumn.concat(
           medicationData.map(
@@ -229,8 +227,8 @@ const MedicationTable = (
           return column.doseICS !== '.' && !( column.none );
         } );
 
-        let getPuffColumn = [{ puffPerTime: 'PuffPerTime' }];
-        getPuffColumn = getPuffColumn.concat(
+        // let getPuffColumn = [{ puffPerTime: 'PuffPerTime' }];
+        let getPuffColumn =
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
@@ -256,30 +254,30 @@ const MedicationTable = (
               return ( {
                 none: '-no doseICS-',
               } );
-            } ) );
+            } );
         getPuffColumn = _.uniqWith( getPuffColumn, _.isEqual );
         getPuffColumn = _.filter( getPuffColumn, ( column ) => {
           return column.puffPerTime !== '.' && !( column.none );
         } );
-        let getPuffColumnRange = [{ puffPerTime: 'PuffPerTime' }];
+        let getPuffColumnRange = [{ puffPerTime: 'PuffsPerTime' }];
         if ( !_.isEmpty( getPuffColumn ) ) {
-          getPuffColumnRange = _.range( _.toInteger( getPuffColumn[0].timesPerDay ) + 1 );
+          getPuffColumnRange = _.range( _.toInteger( getPuffColumn[0].puffPerTime ) + 1 );
           getPuffColumnRange = _.chain( getPuffColumnRange )
-            .reduce( ( accResult, timesValue ) => {
-              if ( timesValue === 0 ) {
-                accResult.push( { puffPerTime: 'TimesPerDay' } );
+            .reduce( ( accResult, puffsValue ) => {
+              if ( puffsValue === 0 ) {
+                accResult.push( { puffPerTime: 'PuffsPerTime' } );
 
                 return accResult;
               }
-              accResult.push( { puffPerTime: timesValue } );
+              accResult.push( { puffPerTime: puffsValue } );
 
               return accResult;
             }, [] )
             .value();
         }
 
-        // let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
-        let getTimesColumn = [];
+        let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
+        // let getTimesColumn = [];
         getTimesColumn = getTimesColumn.concat(
           medicationData.map(
             ( masterMedication ) => {
@@ -313,21 +311,26 @@ const MedicationTable = (
           return column.timesPerDay !== '.' && !( column.none );
         } );
 
-        let getTimesColumnRange = [ { timesPerDay: 'TimesPerDay' } ];
+        let getTimesColumnRange = [{ timesPerDay: 'TimesPerDay' }];
         if ( !_.isEmpty( getTimesColumn ) ) {
-          getTimesColumnRange = _.range( _.toInteger( getTimesColumn[0].timesPerDay ) + 1 );
-          getTimesColumnRange = _.chain( getTimesColumnRange )
-            .reduce( ( accResult, timesValue ) => {
-              if ( timesValue === 0 ) {
-                accResult.push({timesPerDay: 'TimesPerDay' });
+          if ( getTimesColumn[0].timesPerDay === '1 OR 2' ) {
+            getTimesColumnRange = _.range(3);
+            getTimesColumnRange = _.chain(getTimesColumnRange)
+              .reduce((accResult, timesValue) => {
+                if (timesValue === 0) {
+                  accResult.push({timesPerDay: 'TimesPerDay'});
+
+                  return accResult;
+                }
+                accResult.push({timesPerDay: timesValue});
 
                 return accResult;
-              }
-              accResult.push({ timesPerDay: timesValue });
-
-              return accResult;
-            }, [] )
-            .value();
+              }, [])
+              .value();
+          }
+          else {
+            getTimesColumnRange = getTimesColumn;
+          }
         }
 
         return (
@@ -362,23 +365,7 @@ const MedicationTable = (
             >
               <option>ChemicalLaba,ChemicalICS</option>
               <option>{getChemicalLABAColumn[0].chemicalLABA},{getChemicalICSColumn[0].chemicalICS}</option>
-              {/*{*/}
-                {/*getChemicalLABAColumn.map(*/}
-                  {/*( chemicalGroup, LABAindex ) => (*/}
-                    {/*<option key={LABAindex}>{chemicalGroup.chemicalLABA}</option>*/}
-                  {/*) ) }*/}
             </select>
-            {/*<select*/}
-              {/*className="chemicalICS"*/}
-              {/*onChange={event => onChangeChemicalICS( index, _.split( event.target.value, ',' ) )}*/}
-              {/*value={rowFields.chemicalICS}*/}
-            {/*>*/}
-              {/*{*/}
-                {/*getChemicalICSColumn.map(*/}
-                  {/*( chemicalGroup, ICSIndex ) => (*/}
-                    {/*<option key={ICSIndex}>{chemicalGroup.chemicalICS}</option>*/}
-                  {/*) ) }*/}
-            {/*</select>*/}
             <select
               className="doseICS"
               onChange={event => onChangeDoseICS( index, _.split( event.target.value, ',' ) )}

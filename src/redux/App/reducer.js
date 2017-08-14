@@ -51,6 +51,7 @@ const reducer = ( state = initialState, action ) => {
     return Object.assign( {}, state, {
       deviceName: action.data.device[0],
       medicationName: '',
+      chemical: '',
       chemicalLABA: '',
       chemicalICS: '',
       doseICSValue: '',
@@ -76,6 +77,7 @@ const reducer = ( state = initialState, action ) => {
     return Object.assign( {}, state, {
       medicationName: action.data.medicationName[0],
       chemicalLABA: '',
+      chemical: '',
       chemicalICS: '',
       doseICSValue: '',
       puffValue: '',
@@ -109,27 +111,6 @@ const reducer = ( state = initialState, action ) => {
           ...row,
           chemicalLABA: action.data.chemicalLABA[0],
           chemicalICS: action.data.chemicalLABA[1],
-          doseICSValue: '',
-          puffValue: '',
-          timesPerDayValue: '',
-        }
-          : row ),
-      isRecommendationEmpty: true,
-      isRuleSelectEmpty: true,
-      recommendation: [],
-    } );
-
-  case ON_CHEMICALICS_SELECTION:
-    return Object.assign( {}, state, {
-      chemicalICS: action.data.chemicalICS[0],
-      doseICSValue: '',
-      puffValue: '',
-      timesPerDayValue: '',
-      medicationList: state.medicationList.map( ( row, index ) =>
-        action.data.index === index ?
-        {
-          ...row,
-          chemicalICS: action.data.chemicalICS[0],
           doseICSValue: '',
           puffValue: '',
           timesPerDayValue: '',
