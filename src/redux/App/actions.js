@@ -10,7 +10,6 @@ import {
   RECOMMENDATION,
   CLEAR,
   ON_CHEMICAL_SELECTION,
-  ON_CHEMICALICS_SELECTION,
   MEDICATION_NAME,
   ON_QUESTIONNAIRE_OPTION,
 } from './constants';
@@ -69,16 +68,6 @@ export const onChangeDoseICS = ( index, doseICSValueChange ) => {
     data: {
       index,
       doseICSValueChange,
-    },
-  };
-};
-
-export const onChangeChemicalICS = ( index, chemicalICS ) => {
-  return {
-    type: ON_CHEMICALICS_SELECTION,
-    data: {
-      index,
-      chemicalICS,
     },
   };
 };

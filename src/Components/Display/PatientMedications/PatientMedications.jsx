@@ -6,8 +6,6 @@ import * as actions from '../../../redux/App/actions';
 import './styles.css';
 
 const DisplayPatientMedications = ( { medication } ) => {
-  // const headerElements =
-  //   ['', 'Device', 'Name', 'ChemicalLABA', 'ChemicalICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
   const displayMedications = _
     .chain( medication.medicationList )
     .reduce( ( filteredData, patientMedication ) => {
@@ -121,7 +119,6 @@ const mapDispatchToProps = dispatch => ( {
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS( index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
-  onChangeChemicalICS: ( index, value ) => dispatch( actions.onChangeChemicalICS( index, value ) ),
   onChangeMedicationName: ( index, value ) => dispatch( actions.onChangeMedicationName( index, value ) ),
   onDeleteRow: index => dispatch( actions.onDeleteRow( index ) ),
   getPatientMedications: medications => dispatch( actions.getPatientMedications( medications ) ),

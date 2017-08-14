@@ -11,7 +11,6 @@ const mapDispatchToProps = dispatch => ( {
   onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue( index, value ) ),
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS( index, value ) ),
-  onChangeChemicalICS: ( index, value ) => dispatch( actions.onChangeChemicalICS( index, value ) ),
   onChangeChemical: ( index, value ) => dispatch( actions.onChangeChemical( index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
   onChangeMedicationName: ( index, value ) => dispatch( actions.onChangeMedicationName( index, value ) ),
@@ -20,7 +19,9 @@ const mapDispatchToProps = dispatch => ( {
   getPatientMedications: medications => dispatch( actions.getPatientMedications( medications ) ),
   saveRecommendation: ( rule, medications ) => dispatch( actions.saveRecommendation( rule, medications ) ),
   onClickClear: () => dispatch( actions.onClickClear() ),
-  onChangeQuestionnaireSelect: ( question, option ) => dispatch( actions.onChangeQuestionnaireSelect( question, option ) ),
+  onChangeQuestionnaireSelect:
+    ( question, option ) =>
+      dispatch( actions.onChangeQuestionnaireSelect( question, option ) ),
 } );
 
 const RulesApp = connect( mapStateToProps, mapDispatchToProps )( App );

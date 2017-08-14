@@ -17,7 +17,6 @@ const MedicationTable = (
   medication,
   onChangeDoseICS,
   onChangeChemical,
-  onChangeChemicalICS,
   onChangeDeviceName,
   onChangePuffValue,
   onChangeTimesPerDayValue,
@@ -89,15 +88,15 @@ const MedicationTable = (
     .value();
 
   const onSubmitMedications = ( medicationToDisplay ) => {
-    medicationToDisplay.map( ( filteredMedication, index ) => {
+    const insertInputs = medicationToDisplay.map( ( filteredMedication, index ) => {
       return filteredMedication.map( ( addPuffToMedication ) => {
-        addPuffToMedication.puffPerTime = medication.medicationList[index].puffValue;
-        addPuffToMedication.timesPerDayValue = medication.medicationList[index].timesPerDayValue;
-
-        return addPuffToMedication;
+        return Object.assign( {}, addPuffToMedication, {
+          puffPerTime: medication.medicationList[index].puffValue,
+          timesPerDayValue: medication.medicationList[index].timesPerDayValue,
+        } );
       } );
     } );
-    getPatientMedications( _.flatten( medicationToDisplay ) );
+    getPatientMedications( _.flatten( insertInputs ) );
   };
 
   // extract to its own component
@@ -460,7 +459,6 @@ MedicationTable.propTypes = {
   onChangePuffValue: PropTypes.func.isRequired,
   onChangeTimesPerDayValue: PropTypes.func.isRequired,
   onChangeDoseICS: PropTypes.func.isRequired,
-  onChangeChemicalICS: PropTypes.func.isRequired,
   onChangeChemical: PropTypes.func.isRequired,
   onChangeMedicationName: PropTypes.func.isRequired,
   appendMedicationList: PropTypes.func.isRequired,
@@ -484,7 +482,6 @@ const mapDispatchToProps = dispatch => ( {
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS( index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
-  onChangeChemicalICS: ( index, value ) => dispatch( actions.onChangeChemicalICS( index, value ) ),
   onChangeChemical: ( index, value ) => dispatch( actions.onChangeChemical( index, value ) ),
   onChangeMedicationName: ( index, value ) => dispatch( actions.onChangeMedicationName( index, value ) ),
   onDeleteRow: index => dispatch( actions.onDeleteRow( index ) ),
