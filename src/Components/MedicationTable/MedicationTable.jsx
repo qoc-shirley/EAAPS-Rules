@@ -92,12 +92,11 @@ const MedicationTable = (
     medicationToDisplay.map( ( filteredMedication, index ) => {
       return filteredMedication.map( ( addPuffToMedication ) => {
         addPuffToMedication.puffPerTime = medication.medicationList[index].puffValue;
-        addPuffToMedication.timesPerDay = medication.medicationList[index].timesPerDayValue;
+        addPuffToMedication.timesPerDayValue = medication.medicationList[index].timesPerDayValue;
 
         return addPuffToMedication;
       } );
     } );
-    // console.log("addPuffPerTime: ", _.flatten(displayMedications));
     getPatientMedications( _.flatten( medicationToDisplay ) );
   };
 
@@ -151,7 +150,6 @@ const MedicationTable = (
         getChemicalLABAColumn = _.filter( getChemicalLABAColumn, ( column ) => {
           return column.chemicalLABA !== '.' && !( column.none );
         } );
-        console.log('chemicalLaba: ',getChemicalLABAColumn );
         if ( _.isEmpty( getChemicalLABAColumn ) ) {
           getChemicalLABAColumn = [{ chemicalLABA: '' }];
         }
@@ -230,17 +228,13 @@ const MedicationTable = (
         else {
           chemicalLabaAndICS = [];
           chemicalLabaAndICS.push( { chemical: 'ChemicalLaba,ChemicalICS'} );
-          console.log('getChemicalLABAColumn[0].chemicalLABA: ', getChemicalLABAColumn[0].chemicalLABA );
-          console.log(' getChemicalICSColumn[0].chemicalICS: ',  getChemicalICSColumn[0].chemicalICS);
           chemicalLabaAndICS.push(
             {
               chemical: getChemicalLABAColumn[0].chemicalLABA + ',' +
               getChemicalICSColumn[0].chemicalICS,
             } );
         }
-        console.log('chemicalLabaAndICS: ', chemicalLabaAndICS);
 
-        // let getPuffColumn = [{ puffPerTime: 'PuffPerTime' }];
         let getPuffColumn =
           medicationData.map(
             ( masterMedication ) => {
@@ -289,8 +283,6 @@ const MedicationTable = (
             .value();
         }
 
-        // let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
-        // let getTimesColumn = [];
         let getTimesColumn =
           medicationData.map(
             ( masterMedication ) => {
@@ -326,7 +318,7 @@ const MedicationTable = (
 
         let getTimesColumnRange = [{ timesPerDay: 'TimesPerDay' }];
         if ( !_.isEmpty( getTimesColumn ) ) {
-          console.log('timesPerDay: ', getTimesColumn[0].timesPerDay );
+
           if ( getTimesColumn[0].timesPerDay === '1 OR 2' ) {
             getTimesColumnRange = _.range(3);
             getTimesColumnRange = _.chain(getTimesColumnRange)
@@ -349,7 +341,7 @@ const MedicationTable = (
               .value();
           }
         }
-        console.log("getTimesColumnRange: ", getTimesColumnRange);
+
         return (
           <div key={rowFields.id} className="row">
             <p>Medication {index + 1 }:</p>
