@@ -252,12 +252,28 @@ const MedicationTable = (
         getPuffColumn = _.filter( getPuffColumn, ( column ) => {
           return column.puffPerTime !== '.' && !( column.none );
         } );
+        let getPuffColumnRange = [{ puffPerTime: 'PuffPerTime' }];
+        if ( !_.isEmpty( getPuffColumn ) ) {
+          getPuffColumnRange = _.range( _.toInteger( getPuffColumn[0].timesPerDay ) + 1 );
+          getPuffColumnRange = _.chain( getPuffColumnRange )
+            .reduce( ( accResult, timesValue ) => {
+              if ( timesValue === 0 ) {
+                accResult.push( { puffPerTime: 'TimesPerDay' } );
 
-        let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
+                return accResult;
+              }
+              accResult.push( { puffPerTime: timesValue } );
+
+              return accResult;
+            }, [] )
+            .value();
+        }
+
+        // let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
+        let getTimesColumn = [];
         getTimesColumn = getTimesColumn.concat(
           medicationData.map(
             ( masterMedication ) => {
-              console.log("timesPerDay: ", masterMedication.maxPuffPerTime,medication.medicationList[index].puffValue);
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
                 masterMedication.name === medication.medicationList[index].medicationName &&
                 ( masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
@@ -288,9 +304,22 @@ const MedicationTable = (
           return column.timesPerDay !== '.' && !( column.none );
         } );
 
-        // if ( getTimesColumn.timesPerDay !== 'TimesPerDay' || getTimesColumn.timesPerDay !== '2' ) {
-        //   getTimesColumn = [{timesPerDay: 'TimesPerDay', timesPerDay: '1', timesPerDay: '2'}];
-        // }
+        let getTimesColumnRange = [ { timesPerDay: 'TimesPerDay' } ];
+        if ( !_.isEmpty( getTimesColumn ) ) {
+          getTimesColumnRange = _.range( _.toInteger( getTimesColumn[0].timesPerDay ) + 1 );
+          getTimesColumnRange = _.chain( getTimesColumnRange )
+            .reduce( ( accResult, timesValue ) => {
+              if ( timesValue === 0 ) {
+                accResult.push({timesPerDay: 'TimesPerDay' });
+
+                return accResult;
+              }
+              accResult.push({ timesPerDay: timesValue });
+
+              return accResult;
+            }, [] )
+            .value();
+        }
 
         return (
           <div key={rowFields.id} className="row">
@@ -356,7 +385,7 @@ const MedicationTable = (
               value={rowFields.puffValue}
             >
               {
-                getPuffColumn.map(
+                getPuffColumnRange.map(
                   ( chemicalGroup, ICSIndex ) => (
                     <option key={ICSIndex}>{chemicalGroup.puffPerTime}</option>
                   ) ) }
@@ -367,7 +396,7 @@ const MedicationTable = (
               value={rowFields.timesPerDayValue}
             >
               {
-                getTimesColumn.map(
+                getTimesColumnRange.map(
                   ( chemicalGroup, ICSIndex ) => (
                     <option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>
                   ) ) }
