@@ -151,8 +151,9 @@ const MedicationTable = (
         getChemicalLABAColumn = _.filter( getChemicalLABAColumn, ( column ) => {
           return column.chemicalLABA !== '.' && !( column.none );
         } );
+        console.log('chemicalLaba: ',getChemicalLABAColumn );
         if ( _.isEmpty( getChemicalLABAColumn ) ) {
-          getChemicalLABAColumn = [{ chemicalLaba: '' }];
+          getChemicalLABAColumn = [{ chemicalLABA: '' }];
         }
 
         // let getChemicalICSColumn = [{ chemicalICS: 'ChemicalICS' }];
@@ -160,14 +161,9 @@ const MedicationTable = (
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
-                   masterMedication.name === medication.medicationList[index].medicationName &&
-                  (
-                    masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
-                    (
-                      masterMedication.chemicalLABA === '.' &&
-                      (
-                        medication.medicationList[index].chemicalLABA === '' ||
-                        medication.medicationList[index].chemicalLABA === 'ChemicalLABA' ) ) ) ) {
+                   masterMedication.name === medication.medicationList[index].medicationName
+
+              ) {
                 return ( {
                   chemicalICS: masterMedication.chemicalICS,
                 } );
@@ -234,6 +230,8 @@ const MedicationTable = (
         else {
           chemicalLabaAndICS = [];
           chemicalLabaAndICS.push( { chemical: 'ChemicalLaba,ChemicalICS'} );
+          console.log('getChemicalLABAColumn[0].chemicalLABA: ', getChemicalLABAColumn[0].chemicalLABA );
+          console.log(' getChemicalICSColumn[0].chemicalICS: ',  getChemicalICSColumn[0].chemicalICS);
           chemicalLabaAndICS.push(
             {
               chemical: getChemicalLABAColumn[0].chemicalLABA + ',' +
@@ -291,9 +289,9 @@ const MedicationTable = (
             .value();
         }
 
-        let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
+        // let getTimesColumn = [{ timesPerDay: 'TimesPerDay' }];
         // let getTimesColumn = [];
-        getTimesColumn = getTimesColumn.concat(
+        let getTimesColumn =
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
@@ -320,7 +318,7 @@ const MedicationTable = (
               return ( {
                 none: '-no timesPerDay-',
               } );
-            } ) );
+            } );
         getTimesColumn = _.uniqWith( getTimesColumn, _.isEqual );
         getTimesColumn = _.filter( getTimesColumn, ( column ) => {
           return column.timesPerDay !== '.' && !( column.none );
@@ -328,6 +326,7 @@ const MedicationTable = (
 
         let getTimesColumnRange = [{ timesPerDay: 'TimesPerDay' }];
         if ( !_.isEmpty( getTimesColumn ) ) {
+          console.log('timesPerDay: ', getTimesColumn[0].timesPerDay );
           if ( getTimesColumn[0].timesPerDay === '1 OR 2' ) {
             getTimesColumnRange = _.range(3);
             getTimesColumnRange = _.chain(getTimesColumnRange)
@@ -344,10 +343,13 @@ const MedicationTable = (
               .value();
           }
           else {
-            getTimesColumnRange = getTimesColumn;
+            getTimesColumnRange.push( getTimesColumn );
+            getTimesColumnRange =  _.chain( getTimesColumnRange )
+              .flatten()
+              .value();
           }
         }
-
+        console.log("getTimesColumnRange: ", getTimesColumnRange);
         return (
           <div key={rowFields.id} className="row">
             <p>Medication {index + 1 }:</p>
