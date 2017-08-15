@@ -116,3 +116,24 @@ export const ICSDoseToDose = ( medication, dose ) => {
 
   return medication;
 };
+
+export const ICSDoseToMax = ( medication ) => {
+  const max = medication.maxPuffPerTime;
+  let equal = false;
+  let counter = max;
+  let testAdjustment;
+  while ( equal === false && ( counter > 0 ) ) {
+    testAdjustment = medication.doseICS * medication.timesPerDay * counter;
+    if ( calculate.ICSDose( testAdjustment ) <= medication.maxGreenICS ) {
+      medication.maxPuffPerTime = counter;
+      equal = true;
+    }
+    counter = counter - 1;
+  }
+  if ( equal === false && counter > max ) {
+    // console.log("ICS DOSE cannot be made equal");
+    return null;
+  }
+
+  return medication;
+};

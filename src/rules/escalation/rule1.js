@@ -52,8 +52,9 @@ const rule1 = ( patientMedications, masterMedications ) => {
                     return medication;
                   }
 
-                  if ( medication.maxGreenICS < calculate.patientICSDose( patientMedication ) ) {
-                    return medication;
+                  if ( calculate.ICSDose( medication ) === medication.maxGreenICS &&
+                    calculate.ICSDose( medication ) < calculate.patientICSDose( patientMedication ) ) {
+                    return adjust.ICSDoseToMax( medication );
                   }
 
                   return accResult;
