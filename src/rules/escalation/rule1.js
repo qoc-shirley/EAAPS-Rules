@@ -80,7 +80,13 @@ const rule1 = ( patientMedications, masterMedications ) => {
               }
 
               const matchTimesPerDay = _.chain( checkNewMedication )
-                .filter( { timesPerDay: patientMedication.timesPerDay } )
+                .filter( ( medication ) => {
+                  if ( patientMedication.timesPerDayValue === 1 ) {
+                    return medication.timesPerDay === '1 OR 2';
+                  }
+
+                  return medication.timesPerDay === patientMedication.timesPerDayValue;
+                } )
                 .value();
 
               if ( _.size( matchTimesPerDay ) >= 2 ) {
