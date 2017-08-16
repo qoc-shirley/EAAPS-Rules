@@ -1,4 +1,5 @@
 import * as calculate from './calculateICSDose';
+import _ from 'lodash';
 
 export const ICSDose = ( medication, level ) => {
   const max = medication.maxPuffPerTime;
@@ -10,7 +11,8 @@ export const ICSDose = ( medication, level ) => {
   if ( level === 'lowestMedium' ) {
     while ( lowMediumICSDose === false && ( counter <= max ) ) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-      if ( ( testAdjustment > medication.lowCeilICS ) && ( testAdjustment < medication.highFloorICS ) ) {
+      if ( ( testAdjustment > _.toInteger( medication.lowCeilICS ) ) &&
+        ( testAdjustment < _.toInteger( medication.highFloorICS ) ) ) {
         medication.maxPuffPerTime = counter;
         lowMediumICSDose = true;
       }
@@ -20,7 +22,7 @@ export const ICSDose = ( medication, level ) => {
   else if ( level === 'highest' ) {
     while ( highestICSDose === false && counter <= max ) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-      if ( testAdjustment === medication.maxGreenICS ) {
+      if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
         medication.maxPuffPerTime = counter;
         highestICSDose = true;
       }
@@ -128,7 +130,7 @@ export const ICSDoseToMax = ( medication ) => {
   let testAdjustment;
   while ( equal === false && ( counter > 0 ) ) {
     testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-    if ( testAdjustment === medication.maxGreenICS ) {
+    if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
       medication.maxPuffPerTime = counter;
       equal = true;
     }
