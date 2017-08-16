@@ -46,10 +46,10 @@ const showRecommendations = ( {
                           if ( _.isString( medicationElement ) ) {
                             return ( <p key={medicationIndex}>{medicationElement}</p> );
                           }
-                          else if ( _.isArray( medicationElement ) && _.size( medicationElement ) > 29) {
+                          else if ( _.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                             return (
                               <div key={medicationIndex} className="recommendationArray">
-                                <p className="data"/>
+                                <p className="data" />
                                 <p className="data">{medicationElement[0]}</p>
                                 <p className="data">{medicationElement[5]}</p>
                                 <p className="data">{medicationElement[7]}</p>
