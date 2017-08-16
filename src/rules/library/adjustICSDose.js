@@ -11,6 +11,7 @@ export const ICSDose = ( medication, level ) => {
     while ( lowMediumICSDose === false && ( counter <= max ) ) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
       if ( ( testAdjustment > medication.lowCeilICS ) && ( testAdjustment < medication.highFloorICS ) ) {
+        medication.maxPuffPerTime = counter;
         lowMediumICSDose = true;
       }
       counter++;
@@ -19,7 +20,8 @@ export const ICSDose = ( medication, level ) => {
   else if ( level === 'highest' ) {
     while ( highestICSDose === false && counter <= max ) {
       testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-      if ( testAdjustment >= medication.maxGreenICS ) {
+      if ( testAdjustment === medication.maxGreenICS ) {
+        medication.maxPuffPerTime = counter;
         highestICSDose = true;
       }
       counter++;
@@ -126,13 +128,13 @@ export const ICSDoseToMax = ( medication ) => {
   let testAdjustment;
   while ( equal === false && ( counter > 0 ) ) {
     testAdjustment = medication.doseICS * medication.timesPerDay * counter;
-    if ( testAdjustment  <= medication.maxGreenICS ) {
+    if ( testAdjustment === medication.maxGreenICS ) {
       medication.maxPuffPerTime = counter;
       equal = true;
     }
     counter = counter - 1;
   }
-  if ( equal === false && counter > max ) {
+  if ( equal === false ) {
     // console.log("ICS DOSE cannot be made equal");
     return null;
   }
