@@ -46,19 +46,15 @@ const rule1 = ( patientMedications, masterMedications ) => {
               let checkNewMedication = _.chain( chemicalICSMedications )
                 .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
+
                   if (!_.isNil( equalICSDose( medication, patientMedication ) ) ) {
                     console.log('a');
-                    result.push( equalICSDose( medication, patientMedication ) );
-                  }
-                  else if (!_.isNil(adjust.ICSHigherNext(medication, patientMedication))) {
-                    console.log('b: ', adjust.ICSHigherNext(medication, patientMedication));
-                    result.push(adjust.ICSHigherNext(medication, patientMedication));
-                  }
-
-                  if (calculate.ICSDose(medication) === medication.maxGreenICS &&
-                    calculate.ICSDose(medication) < calculate.patientICSDose(patientMedication)) {
-                    console.log('c');
-                    return result.push(adjust.ICSDoseToMax(medication));
+                    if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
+                      return result.push( adjust.ICSDoseToMax( medication ) );
+                    }
+                    else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
+                      return result.push( adjust.ICSHigherNext( medication, patientMedication ) );
+                    }
                   }
 
                   return accResult;
