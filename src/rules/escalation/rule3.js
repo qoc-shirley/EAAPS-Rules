@@ -45,6 +45,9 @@ const rule3 = ( patientMedications, masterMedications ) => {
                   return accResult;
                 }, [] )
                 .thru( medication => medication.low )
+                .thru( ( medication ) => {
+                  return Object.assign( {}, medication, { maxPuffPerTime: 1 } );
+                } )
                 .value(),
               );
             }
@@ -107,6 +110,9 @@ const rule3 = ( patientMedications, masterMedications ) => {
                     return accResult;
                   }, [] )
                   .thru( medication => medication.low )
+                  .thru( ( medication ) => {
+                    return Object.assign( {}, medication, { maxPuffPerTime: 1 } );
+                  } )
                   .value(),
                 );
               }
@@ -118,7 +124,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             } );
             if ( _.isEmpty( recommend ) ) {
 
-              return _.chain( medicationElement )
+              return result.push(_.chain( medicationElement )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'ICS' &&
                     ( categorize.ICSDose( medication ) === 'medium' ) &&
@@ -141,11 +147,15 @@ const rule3 = ( patientMedications, masterMedications ) => {
                   return accResult;
                 }, [] )
                 .thru( medication => medication.low )
-                .concat( result )
-                .value();
+                .thru( ( medication ) => {
+                  return Object.assign( {}, medication, { maxPuffPerTime: 1 } );
+                } )
+                .value(),
+              );
             }
+            const lowest = get.lowestICSDose( recommend );
 
-            return result.push( get.lowestICSDose( recommend ) );
+            return result.push( Object.assign( {}, lowest, { maxPuffPerTime: 1 } ) );
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
