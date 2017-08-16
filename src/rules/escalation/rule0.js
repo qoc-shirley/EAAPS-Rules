@@ -44,6 +44,12 @@ const rule0 = ( patientMedications, masterMedications ) => {
                   }
                 } )
                 .thru( get.lowestICSDose )
+                .thru(
+                  ( medication ) => {
+                    return Object.assign( {}, medication,
+                      { maxPuffPerTime: 1 },
+                      );
+                  })
                 .value(),
               );
             }
@@ -72,7 +78,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 .value();
 
               const lowestICSDose = get.lowestICSDose( newMedications );
-              result.push( lowestICSDose );
+              result.push( Object.assign( {}, lowestICSDose, { maxPuffPerTime: 1 } ) );
             }
           }
           else {
