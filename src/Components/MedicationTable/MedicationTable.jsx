@@ -99,6 +99,10 @@ const MedicationTable = (
     getPatientMedications( _.flatten( insertInputs ) );
   };
 
+  const submitChemicalData = ( index, chemicals ) => {
+    onChangeChemical( index, chemicals );
+  };
+
   // extract to its own component
   const displayRowContents = () => {
     return (
@@ -221,7 +225,7 @@ const MedicationTable = (
         } );
 
         let chemicalLabaAndICS = [];
-        if (_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) && _.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) {
+        if ( _.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) && _.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) {
           chemicalLabaAndICS = [{ chemical: 'ChemicalLaba,ChemicalICS' }];
         }
         else {
@@ -233,6 +237,12 @@ const MedicationTable = (
               getChemicalICSColumn[0].chemicalICS,
             } );
         }
+
+        // if ( rowFields.medicationName !== '' &&
+        // ( !_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) || !_.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) ) {
+        //   console.log('chemical: ', getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS);
+        //   submitChemicalData( index, [getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS] );
+        // }
 
         let getPuffColumn =
           medicationData.map(
@@ -366,6 +376,7 @@ const MedicationTable = (
                     <option key={nameIndex}>{medicationName.name}</option>
                   ) ) }
             </select>
+            {/*<p>{rowFields.chemicalLABA},{rowFields.chemicalICS}</p>*/}
             <select
               className="chemicalLABA"
               onChange={event => onChangeChemical( index, _.split( event.target.value, ',' ) )}
