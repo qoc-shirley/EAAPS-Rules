@@ -224,25 +224,26 @@ const MedicationTable = (
           return column.doseICS !== '.' && !( column.none );
         } );
 
-        let chemicalLabaAndICS = [];
-        if ( _.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) && _.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) {
-          chemicalLabaAndICS = [{ chemical: 'ChemicalLaba,ChemicalICS' }];
-        }
-        else {
-          chemicalLabaAndICS = [];
-          chemicalLabaAndICS.push( { chemical: 'ChemicalLaba,ChemicalICS'} );
-          chemicalLabaAndICS.push(
-            {
-              chemical: getChemicalLABAColumn[0].chemicalLABA + ',' +
-              getChemicalICSColumn[0].chemicalICS,
-            } );
-        }
-
-        // if ( rowFields.medicationName !== '' &&
-        // ( !_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) || !_.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) ) {
-        //   console.log('chemical: ', getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS);
-        //   submitChemicalData( index, [getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS] );
+        // let chemicalLabaAndICS = [];
+        // if ( _.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) && _.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) {
+        //   chemicalLabaAndICS = [{ chemical: 'ChemicalLaba,ChemicalICS' }];
         // }
+        // else {
+        //   chemicalLabaAndICS = [];
+        //   chemicalLabaAndICS.push( { chemical: 'ChemicalLaba,ChemicalICS'} );
+        //   chemicalLabaAndICS.push(
+        //     {
+        //       chemical: getChemicalLABAColumn[0].chemicalLABA + ',' +
+        //       getChemicalICSColumn[0].chemicalICS,
+        //     } );
+        // }
+
+        if ( rowFields.medicationName !== '' &&
+        ( !_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) || !_.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) &&
+          ( rowFields.chemicalLABA === '' && rowFields.chemicalICS === '' ) ) {
+          console.log('chemical: ', getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS);
+          submitChemicalData( index, [getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS] );
+        }
 
         let getPuffColumn =
           medicationData.map(
@@ -376,18 +377,18 @@ const MedicationTable = (
                     <option key={nameIndex}>{medicationName.name}</option>
                   ) ) }
             </select>
-            {/*<p>{rowFields.chemicalLABA},{rowFields.chemicalICS}</p>*/}
-            <select
-              className="chemicalLABA"
-              onChange={event => onChangeChemical( index, _.split( event.target.value, ',' ) )}
-              value={rowFields.chemical}
-            >
-              {
-                chemicalLabaAndICS.map(
-                  ( chemicalGroup, ICSIndex ) => (
-                    <option key={ICSIndex}>{chemicalGroup.chemical}</option>
-                  ) ) }
-            </select>
+            <p>{rowFields.chemicalLABA},{rowFields.chemicalICS}</p>
+            {/*<select*/}
+              {/*className="chemicalLABA"*/}
+              {/*onChange={event => onChangeChemical( index, _.split( event.target.value, ',' ) )}*/}
+              {/*value={rowFields.chemical}*/}
+            {/*>*/}
+              {/*{*/}
+                {/*chemicalLabaAndICS.map(*/}
+                  {/*( chemicalGroup, ICSIndex ) => (*/}
+                    {/*<option key={ICSIndex}>{chemicalGroup.chemical}</option>*/}
+                  {/*) ) }*/}
+            {/*</select>*/}
             <select
               className="doseICS"
               onChange={event => onChangeDoseICS( index, _.split( event.target.value, ',' ) )}
