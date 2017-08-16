@@ -4,15 +4,15 @@ import _ from 'lodash';
 import * as actions from '../../../redux/App/actions';
 import './styles.css';
 
-const showRecommendations = ({
+const showRecommendations = ( {
                                medication, onClickClear,
-                             }) => {
+                             } ) => {
 
   const clearRecommendations = () => {
     onClickClear();
   };
 
-  if (medication.isRuleSelectEmpty === false) {
+  if ( medication.isRuleSelectEmpty === false ) {
     return (
       <div className="recommendations">
         <h3>Recommendation(s)</h3>
@@ -30,9 +30,9 @@ const showRecommendations = ({
         <div className="scrollMedications">
           {
             medication.recommendation.map(
-              (recommendMedication, index) => {
+              ( recommendMedication, index ) => {
                 let noRecommendation = null;
-                if (_.isEmpty(recommendMedication.medications)) {
+                if ( _.isEmpty( recommendMedication.medications ) ) {
                   noRecommendation = <p>No recommendations</p>;
                 }
 
@@ -42,11 +42,11 @@ const showRecommendations = ({
                     {noRecommendation}
                     {
                       recommendMedication.medications.map(
-                        (medicationElement, medicationIndex) => {
-                          if (_.isString(medicationElement)) {
+                        ( medicationElement, medicationIndex ) => {
+                          if ( _.isString( medicationElement ) ) {
                             return ( <p key={medicationIndex}>{medicationElement}</p> );
                           }
-                          else if (_.isArray(medicationElement) && _.size(medicationElement) > 29) {
+                          else if ( _.isArray( medicationElement ) && _.size( medicationElement ) > 29) {
                             return (
                               <div key={medicationIndex} className="recommendationArray">
                                 <p className="data"/>
@@ -61,19 +61,19 @@ const showRecommendations = ({
                               </div>
                             );
                           }
-                          else if (_.isArray(medicationElement) && _.size(medicationElement) < 5) {
+                          else if ( _.isArray( medicationElement ) && _.size( medicationElement ) < 5 ) {
                             return (
                               <div key={medicationIndex} className="recommendationArray">
                                 <p></p>
                                 {
-                                  medicationElement.map((recommend, rIndex) => {
+                                  medicationElement.map( ( recommend, rIndex ) => {
                                     return <p key={rIndex} className="data">{recommend}</p>;
                                   })
                                 }
                               </div>
                             );
                           }
-                          else if (!_.isArray(medicationElement) && _.size(medicationElement) < 29) {
+                          else if ( !_.isArray( medicationElement ) && _.size( medicationElement ) < 29 ) {
                             return (
                               <div key={medicationIndex} className="recommendationObject">
                                 <p className="data"/>
@@ -88,7 +88,7 @@ const showRecommendations = ({
                               </div>
                             );
                           }
-                          else if (!_.isArray(medicationElement) && _.size(medicationElement) > 29) {
+                          else if ( !_.isArray( medicationElement ) && _.size( medicationElement ) > 29 ) {
                             return (
                               <div key={medicationIndex} className="recommendationObject">
                                 <p className="data"/>
@@ -125,7 +125,7 @@ const showRecommendations = ({
       </div>
     );
   }
-  else if (medication.isRuleSelectEmpty === true) {
+  else if ( medication.isRuleSelectEmpty === true ) {
     return null;
   }
 };
@@ -135,7 +135,7 @@ const mapStateToProps = state => ( {
 } );
 
 const mapDispatchToProps = dispatch => ( {
-  onClickClear: () => dispatch(actions.onClickClear()),
+  onClickClear: () => dispatch( actions.onClickClear() ),
 } );
 
-export default connect(mapStateToProps, mapDispatchToProps)(showRecommendations);
+export default connect( mapStateToProps, mapDispatchToProps )( showRecommendations );
