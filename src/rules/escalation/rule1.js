@@ -37,19 +37,18 @@ const rule1 = ( patientMedications, masterMedications ) => {
             return result;
           }
           else if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) ) {
-            const chemicalICSMedications = _.chain(newMedications)
-              .filter({chemicalICS: patientMedication.chemicalICS})
+            const chemicalICSMedications = _.chain( newMedications )
+              .filter( { chemicalICS: patientMedication.chemicalICS } )
               .value();
 
-            if (!_.isEmpty(chemicalICSMedications)) {
-              console.log('chemicalICSMedications: ', chemicalICSMedications);
-              let checkNewMedication = _.chain(chemicalICSMedications)
-                .filter({device: patientMedication.device})
-                .reduce((accResult, medication) => {
-                  // console.log(equalICSDose( medication, patientMedication ),adjust.ICSHigherNext( medication, patientMedication ));
-                  if (!_.isNil(equalICSDose(medication, patientMedication))) {
+            if ( !_.isEmpty( chemicalICSMedications ) ) {
+              console.log( 'chemicalICSMedications: ', chemicalICSMedications );
+              let checkNewMedication = _.chain( chemicalICSMedications )
+                .filter( { device: patientMedication.device } )
+                .reduce( ( accResult, medication ) => {
+                  if (!_.isNil( equalICSDose( medication, patientMedication ) ) ) {
                     console.log('a');
-                    result.push(equalICSDose(medication, patientMedication));
+                    result.push( equalICSDose( medication, patientMedication ) );
                   }
                   else if (!_.isNil(adjust.ICSHigherNext(medication, patientMedication))) {
                     console.log('b: ', adjust.ICSHigherNext(medication, patientMedication));
@@ -66,11 +65,10 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 }, [])
                 .value();
 
-              if (_.isEmpty(checkNewMedication)) {
+              if ( _.isEmpty(checkNewMedication)) {
                 checkNewMedication = _.chain(chemicalICSMedications)
                   .reduce((accResult, medication) => {
                     if (!_.isNil(equalICSDose(medication, patientMedication))) {
-                      console.log('aa');
                       result.push(equalICSDose(medication, patientMedication));
                     }
                     else if (!_.isNil(adjust.ICSHigherNext(medication, patientMedication))) {
