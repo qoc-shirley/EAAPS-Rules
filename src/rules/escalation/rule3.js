@@ -29,7 +29,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
                     medication.device === patientMedication.device;
-                })
+                } )
                 .reduce( ( accResult, medication ) => {
                   if (_.isNil( accResult ) ||
                     calculate.ICSDose( accResult ) >= calculate.ICSDose( medication )
@@ -43,13 +43,13 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
                   return accResult;
                 }, null )
-                .thru( (medication) => {
-                  if (medication) {
-                    return result.concat(medication);
+                .thru( ( medication ) => {
+                  if ( medication )  {
+                    return result.concat( medication );
                   }
 
                   return result;
-                })
+                } )
                 .value();
             }
 
