@@ -12,11 +12,13 @@ export const ICSDose = ( medication, level ) => {
     while ( lowMediumICSDose === false && ( counter <= max ) ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       console.log('lowCeilICS: ',medication.lowCeilICS, 'highCeilICS: ', medication.highFloorICS);
-      console.log('testAdjustment: ', testAdjustment);
+      console.log('testAdjustment: ', testAdjustment,  testAdjustment > _.toInteger( medication.lowCeilICS ),  testAdjustment < _.toInteger( medication.highFloorICS ));
       if ( ( testAdjustment > _.toInteger( medication.lowCeilICS ) ) &&
         ( testAdjustment < _.toInteger( medication.highFloorICS ) ) ) {
         medication.maxPuffPerTime = counter;
         lowMediumICSDose = true;
+
+        return medication;
       }
       counter++;
     }
@@ -27,19 +29,14 @@ export const ICSDose = ( medication, level ) => {
       if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
         medication.maxPuffPerTime = counter;
         highestICSDose = true;
+
+        return medication;
       }
       counter++;
     }
   }
-  if ( lowMediumICSDose === false && counter > max ) {
-    return [];
-  }
-  else if ( highestICSDose === false ) {
 
-    return [];
-  }
-
-  return medication;
+  return [];
 };
 
 export const checkDoseReduction = ( medication, level, originalICSDose ) => {

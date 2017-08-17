@@ -10,6 +10,7 @@ const rule7 = ( patientMedications ) => {
         patientMedication.function === 'controller,reliever' &&
         categorize.patientICSDose( patientMedication ) === 'low' ) {
         if ( adjust.ICSDose( patientMedication, 'lowestMedium' ) === [] ) {
+          console.log("not same doseICS");
           return _.chain( masterMedications )
             .filter( ( medication ) => {
               return medication.name === 'symbicort' &&
@@ -22,6 +23,7 @@ const rule7 = ( patientMedications ) => {
             .value();
         }
 
+        console.log( 'same doseICS: ', patientMedication, adjust.ICSDose( patientMedication, 'lowestMedium' ) );
         return _.chain( patientMedication )
           .thru( med => adjust.ICSDose( med, 'lowestMedium' ) )
           .concat( result )
