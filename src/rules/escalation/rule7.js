@@ -27,5 +27,32 @@ const rule7 = ( patientMedications ) => {
     }, [] )
     .value();
 };
+// const rule7 = ( patientMedications ) => {
+//   return _.chain( patientMedications )
+//     .reduce( ( result, patientMedication ) => {
+//       if ( patientMedication.name === 'symbicort' &&
+//         patientMedication.function === 'controller,reliever' &&
+//         categorize.patientICSDose( patientMedication ) === 'low' ) {
+//         if ( adjust.ICSDose( patientMedication, 'lowestMedium' ) === [] ) {
+//           return _.chain(patientMedications)
+//             .filter((medication) => {
+//               return medication.name === 'symbicort' &&
+//                 medication.function === 'controller,reliever' &&
+//                 categorize.patientICSDose( medication ) === 'low';
+//             })
+//             .max('doseICS')
+//             .concat(result)
+//             .value();
+//         }
+//         return _.chain(patientMedication)
+//           .thru(med => adjust.ICSDose( med, 'lowestMedium' ))
+//           .concat(result)
+//           .value();
+//       }
+//
+//       return result;
+//     }, [] )
+//     .value();
+// };
 
 export default rule7;
