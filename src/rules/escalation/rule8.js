@@ -20,7 +20,7 @@ const isSMARTMediumOrHigh = ( patientMedications ) => {
 const rule8 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .thru( isSMARTMediumOrHigh )
-    .thru( smartMedHighMeds => {
+    .thru( ( smartMedHighMeds ) => {
       if ( !_.size( smartMedHighMeds ) ) {
         return [];
       }
