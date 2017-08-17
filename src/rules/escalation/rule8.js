@@ -17,15 +17,6 @@ const isSMARTMediumOrHigh = ( patientMedications ) => {
   .value();
 };
 
-// const rule8 = ( patientMedications, masterMedications ) => {
-//   const smartMedication = isSMARTMediumOrHigh( patientMedications );
-//   if ( !_.isEmpty( smartMedication ) ) {
-//     return smartMedication.concat( _.filter( masterMedications, { name: 'singulair' } ) );
-//   }
-//
-//   return [];
-// };
-
 const rule8 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .thru( isSMARTMediumOrHigh )
