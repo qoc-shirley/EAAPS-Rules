@@ -3,14 +3,14 @@ import * as get from '../library/getICSDose';
 
 const rule0 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
-    .reduce( ( result, medication ) => {
-      const rule = _.partial( ( medicationElement, patientMedication ) => {
+    .reduce( ( result, originalMedication ) => {
+      const rule = _.partial( ( _masterMedications, patientMedication ) => {
         if ( patientMedication.chemicalType !== 'ICS' && patientMedication.chemicalType !== 'laba,ICS' ) {
           if (
             ( patientMedication.chemicalType === 'laba' )
-            && ( _.some( medicationElement, { chemicalType: 'laba,ICS' } ) )
+            && ( _.some( _masterMedications, { chemicalType: 'laba,ICS' } ) )
           ) {
-            const isLabaICSAndChemicalLABA = _.chain( medicationElement )
+            const isLabaICSAndChemicalLABA = _.chain( _masterMedications )
               .filter( {
                 chemicalType: 'laba,ICS',
                 chemicalLABA: patientMedication.chemicalLABA,
@@ -18,7 +18,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
               .isEmpty()
               .value();
             if ( isLabaICSAndChemicalLABA ) {
-              return result.push(_.chain( medicationElement )
+              return result.push(_.chain( _masterMedications )
                 .filter( {
                   chemicalType: 'laba,ICS',
                   chemicalLABA: patientMedication.chemicalLABA,
@@ -26,7 +26,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 } )
                 .thru( ( results ) => {
                   if ( !_.isEmpty( results ) ) {
-                    return _.chain( medicationElement )
+                    return _.chain( _masterMedications )
                       .filter( {
                         chemicalType: 'laba,ICS',
                         chemicalLABA: patientMedication.chemicalLABA,
@@ -35,8 +35,8 @@ const rule0 = ( patientMedications, masterMedications ) => {
                       .value();
                   }
                   else {
-                    return _.chain( medicationElement )
-                      .filter( medicationElement, {
+                    return _.chain( _masterMedications )
+                      .filter( _masterMedications, {
                         chemicalType: 'laba,ICS',
                         chemicalLABA: patientMedication.chemicalLABA,
                       } )
@@ -54,7 +54,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
               );
             }
             else {
-              const newMedications = _.chain( medicationElement )
+              const newMedications = _.chain( _masterMedications )
                 .reduce( ( recommend, medication ) => {
                   if ( medication.chemicalLABA === 'salmeterol' &&
                     medication.chemicalICS === 'fluticasone' &&
@@ -151,7 +151,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
           result.push( patientMedication );
         }
       }, masterMedications );
-      rule( medication );
+      rule( originalMedication );
 
       return result;
     }, [] )
