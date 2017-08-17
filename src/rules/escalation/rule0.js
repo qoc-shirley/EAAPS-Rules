@@ -69,7 +69,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                   if ( medication.chemicalLABA === 'formoterol' && medication.chemicalICS === 'budesonide' ) {
                     recommend.push( medication );
                   }
-                  if ( medication.chemicalLABA === 'formoterol' && medication.chemicalICS === 'budesonide' ) {
+                  if ( medication.chemicalLABA === 'formoterol' && medication.chemicalICS === 'mometasone' ) {
                     recommend.push( medication );
                   }
 
