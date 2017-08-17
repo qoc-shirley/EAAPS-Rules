@@ -29,7 +29,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
         .filter( { name: 'singulair' } )
         .concat( smartMedHighMeds )
         .value();
-    })
+    } )
     .value();
 };
 
