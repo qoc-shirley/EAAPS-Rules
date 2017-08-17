@@ -58,7 +58,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
           // REVEIW AND REWRITE THIS
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
-            categorize.patientICSDose( patientMedication ) === 'low' ) {
+            categorize.patientICSDose( patientMedication ) === 'low' &&
+            patientMedication.name !== 'symbicort' ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const sameChemicalLabaAndIcs = _.chain( medicationElement )
               .filter( ( masterMedication ) => {
