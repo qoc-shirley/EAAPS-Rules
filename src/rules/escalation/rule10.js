@@ -8,7 +8,7 @@ const rule10 = ( patientMedications, masterMedications ) => {
       _.partial( ( medicationElements, patientMedication ) => {
         if ( patientMedication.name === 'symbicort' &&
           patientMedication.function === 'controller,reliever' &&
-          ( calculate.patientICSDose( patientMedication ) >= patientMedication.maxGreenICS ) ) {
+          ( calculate.patientICSDose( patientMedication ) >= _.toInteger( patientMedication.maxGreenICS ) ) ) {
           if ( _.find( patientMedications, { chemicalType: 'ltra' } ) ) {
             return true;
           }
