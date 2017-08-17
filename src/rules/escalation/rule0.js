@@ -18,7 +18,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
               .isEmpty()
               .value();
             if ( isLabaICSAndChemicalLABA ) {
-              return result.push(_.chain( _masterMedications )
+              return result.push( _.chain( _masterMedications )
                 .filter( {
                   chemicalType: 'laba,ICS',
                   chemicalLABA: patientMedication.chemicalLABA,
@@ -49,7 +49,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                     return Object.assign( {}, medication,
                       { maxPuffPerTime: 1 },
                       );
-                  })
+                  } )
                 .value(),
               );
             }
