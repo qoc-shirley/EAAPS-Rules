@@ -33,6 +33,6 @@ export const ICSDose = (medication) => {
   else if (calculate.ICSDose(medication) > medication.maxGreenICS) {
     doseLevel = "excessive";
   }
-  console.log("dose: ", doseLevel, medication);
+  // console.log("dose: ", doseLevel, medication);
   return doseLevel;
 };

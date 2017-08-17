@@ -8,7 +8,7 @@ const equalICSDose = ( medication, patientMedication ) => {
     return medication;
   }
 
-  return adjust.ICSDoseToOriginalMedication( medication, patientMedication );
+  return [];
 };
 
 const minimizePuffsPerTime = ( medications, minimizeMedicationsPuffs ) => {
@@ -40,83 +40,105 @@ const rule1 = ( patientMedications, masterMedications ) => {
             const chemicalICSMedications = _.chain( newMedications )
               .filter( { chemicalICS: patientMedication.chemicalICS } )
               .value();
-
-            if ( !_.isEmpty( chemicalICSMedications ) ) {
+            const equal = _.chain( chemicalICSMedications )
+              .filter( ( medication ) => {
+                console.log("------------check adjust: ",adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [], medication)
+                return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) === [];
+              } )
+              .value();
+            console.log('equal: ', equal);
+            if ( !_.isEmpty( chemicalICSMedications ) && !_.isEmpty( equal ) ) {
               console.log( 'chemicalICSMedications: ', chemicalICSMedications );
-              let checkNewMedication = _.chain( chemicalICSMedications )
+              let checkNewMedication = _.chain( equal )
                 .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
-
-                  if (!_.isNil( equalICSDose( medication, patientMedication ) ) ) {
-                    console.log('a');
-                    if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
-                      return result.push( adjust.ICSDoseToMax( medication ) );
+                  if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
+                    const newMedAdjust =  adjust.ICSDoseToMax( medication );
+                    if ( _.isNil( accResult.toMax) ) {
+                      return Object.assign( {}, accResult, { toMax: newMedAdjust } );
                     }
-                    else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
-                      return result.push( adjust.ICSHigherNext( medication, patientMedication ) );
-                    }
-                  }
-
-                  return accResult;
-                }, [])
-                .value();
-
-              if ( _.isEmpty(checkNewMedication)) {
-                checkNewMedication = _.chain(chemicalICSMedications)
-                  .reduce((accResult, medication) => {
-                    if (!_.isNil(equalICSDose(medication, patientMedication))) {
-                      result.push(equalICSDose(medication, patientMedication));
-                    }
-                    else if (!_.isNil(adjust.ICSHigherNext(medication, patientMedication))) {
-                      console.log('bb');
-                      result.push(adjust.ICSHigherNext(medication, patientMedication));
-                    }
-
-                    if (calculate.ICSDose(medication) === medication.maxGreenICS &&
-                      calculate.ICSDose(medication) < calculate.patientICSDose(patientMedication)) {
-                      console.log('cc');
-                      return result.push(adjust.ICSDoseToMax(medication));
+                    if ( accResult.toMax.doseICS < newMedAdjust.doseICS ) {
+                      return Object.assign( {}, accResult, { toMax: newMedAdjust } );
                     }
 
                     return accResult;
-                  }, [] )
-                  .value();
-                if ( _.isEmpty( checkNewMedication ) ) {
-                  return  result.push( _.chain( chemicalICSMedications )
-                    .maxBy( 'doseICS' )
-                    .value() );
-                }
-              }
-              console.log('checkNewMedication: ', checkNewMedication);
-              const matchTimesPerDay = _.chain(checkNewMedication)
-                .filter((medication) => {
-                  if (patientMedication.timesPerDayValue === 1) {
-                    return medication.timesPerDay === '1 OR 2';
+                  }
+                  else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
+                    const newMedAdjust =  adjust.ICSHigherNext( medication, patientMedication );
+                    if ( _.isNil( accResult.toNext) ) {
+                      return Object.assign( {}, accResult, { toNext: newMedAdjust } );
+                    }
+                    if ( accResult.toNext.doseICS < newMedAdjust.doseICS ) {
+                      return Object.assign( {}, accResult, { toNext: newMedAdjust } );
+                    }
+
+                    return accResult;
                   }
 
-                  return medication.timesPerDay === patientMedication.timesPerDayValue;
-                })
+                  return medication;
+                }, [] )
+                .thru( medication => medication.toNext || medication.toMax || medication )
                 .value();
+              console.log('checkNewMedication: ', checkNewMedication);
+              if ( _.isEmpty( checkNewMedication ) && !_.isEmpty( equal ) ) {
+                checkNewMedication = _.chain(equal)
+                  .reduce( ( accResult, medication ) => {
+                    if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
+                      const newMedAdjust =  adjust.ICSDoseToMax( medication );
+                      if ( _.isNil( accResult.toMax) ) {
+                        return Object.assign( {}, accResult, { toMax: newMedAdjust } );
+                      }
+                      if ( accResult.toMax.doseICS < newMedAdjust.doseICS ) {
+                        return Object.assign( {}, accResult, { toMax: newMedAdjust } );
+                      }
 
-              if (_.size(matchTimesPerDay) >= 2) {
-                const attemptMinimize = _.chain(matchTimesPerDay)
-                  .filter((medication) => {
-                    return medication.doseICS > patientMedication.doseICS;
-                  })
+                      return accResult;
+                    }
+                    else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
+                      const newMedAdjust =  adjust.ICSHigherNext( medication, patientMedication );
+                      if ( _.isNil( accResult.toNext) ) {
+                        return Object.assign( {}, accResult, { toNext: newMedAdjust } );
+                      }
+                      if ( accResult.toNext.doseICS < newMedAdjust.doseICS ) {
+                        return Object.assign( {}, accResult, { toNext: newMedAdjust } );
+                      }
+
+                      return accResult;
+                    }
+
+                    return medication;
+                  }, [] )
+                  .thru( medication => medication.toMax || medication.toNext || medication )
                   .value();
-                if (_.isEmpty(attemptMinimize)) {
-                  result.push(matchTimesPerDay);
-                }
-
-                return attemptMinimize;
               }
-              else if (_.size(matchTimesPerDay) === 1) {
-                result.push(matchTimesPerDay);
-              }
+              console.log('checkNewMedication: ', checkNewMedication);
+              // const matchTimesPerDay = _.chain(checkNewMedication)
+              //   .filter( ( medication ) => {
+              //     if (patientMedication.timesPerDayValue === 1) {
+              //       return medication.timesPerDay === '1 OR 2';
+              //     }
+              //
+              //     return medication.timesPerDay === patientMedication.timesPerDayValue;
+              //   } )
+              //   .value();
+              //
+              // if (_.size( matchTimesPerDay ) >= 2 ) {
+              //   const attemptMinimize = _.chain( matchTimesPerDay )
+              //     .filter( ( medication ) => {
+              //       return medication.doseICS > patientMedication.doseICS;
+              //     } )
+              //     .value();
+              //   if (_.isEmpty( attemptMinimize ) ) {
+              //     result.push( matchTimesPerDay );
+              //   }
+              //
+              //   return attemptMinimize;
+              // }
+              // else if (_.size( matchTimesPerDay ) === 1 ) {
+              //   result.push( matchTimesPerDay );
+              // }
 
-              result.push( _.chain( checkNewMedication )
-                .maxBy( 'doseICS' )
-                .value() );
+              return result.push( checkNewMedication );
             }
 
             else {
