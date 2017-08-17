@@ -55,6 +55,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
                   return accResult;
                 }
                 // NEED TO REVIEW THIS - SEEMS TO BE INCORRECT
+                // talk to Jordan
                 else if ( medication.chemicalType === 'laba,ICS' &&
                           medication.chemicalLABA === patientMedication.chemicalLABA &&
                           medication.chemicalICS === patientMedication.chemicalICS &&
@@ -75,6 +76,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
             );
           }
           // REVIEW THIS - we neglected to recommend a SMART medication (e.g. tag with instant relief)
+          // => what does this mean?
           if ( patientMedication.name === 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
