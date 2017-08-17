@@ -73,7 +73,6 @@ export const onChangeDoseICS = ( index, doseICSValueChange ) => {
 };
 
 export const onChangeChemical = ( index, chemicalLABA ) => {
-  console.log("chemical input: ", chemicalLABA);
   return {
     type: ON_CHEMICAL_SELECTION,
     data: {

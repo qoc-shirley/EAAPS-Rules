@@ -103,10 +103,20 @@ const MedicationTable = (
     onChangeChemical( index, chemicals );
   };
 
+  const submitPuff = ( index, puff ) => {
+    console.log('submitPuff: ', index, 'puff: ', puff);
+    onChangePuffValue( index, puff );
+  };
+
+  // const submitTimes = ( index, times ) => {
+  //   onChangeTimesPerDayValue( index, times );
+  // };
+
   // extract to its own component
   const displayRowContents = () => {
     return (
       medication.medicationList.map( ( rowFields, index ) => {
+        let displayPuff = <p>1</p>;
         let getDeviceColumn = [{ device: 'Device' }];
         getDeviceColumn = getDeviceColumn.concat( medicationData.map(
           ( medicationDevice ) => {
@@ -134,7 +144,6 @@ const MedicationTable = (
           return !( column.none );
         } );
 
-        // let getChemicalLABAColumn = [{ chemicalLABA: 'ChemicalLABA' }];
         let getChemicalLABAColumn = medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
@@ -157,7 +166,6 @@ const MedicationTable = (
           getChemicalLABAColumn = [{ chemicalLABA: '' }];
         }
 
-        // let getChemicalICSColumn = [{ chemicalICS: 'ChemicalICS' }];
         let getChemicalICSColumn =
           medicationData.map(
             ( masterMedication ) => {
@@ -227,7 +235,6 @@ const MedicationTable = (
         if ( rowFields.medicationName !== '' &&
         ( !_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) || !_.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) &&
           ( rowFields.chemicalLABA === '' && rowFields.chemicalICS === '' ) ) {
-          console.log('chemical: ', getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS);
           submitChemicalData( index, [getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS] );
         }
 
@@ -262,21 +269,38 @@ const MedicationTable = (
         getPuffColumn = _.filter( getPuffColumn, ( column ) => {
           return column.puffPerTime !== '.' && !( column.none );
         } );
-        let getPuffColumnRange = [{ puffPerTime: 'PuffsPerTime' }];
+        let getPuffColumnRange = [];
         if ( !_.isEmpty( getPuffColumn ) ) {
-          getPuffColumnRange = _.range( _.toInteger( getPuffColumn[0].puffPerTime ) + 1 );
-          getPuffColumnRange = _.chain( getPuffColumnRange )
-            .reduce( ( accResult, puffsValue ) => {
-              if ( puffsValue === 0 ) {
-                accResult.push( { puffPerTime: 'PuffsPerTime' } );
+          if (  _.toInteger( getPuffColumn[0].puffPerTime ) !== 1 ) {
+            getPuffColumnRange.push( { puffPerTime: 'PuffsPerTime' } );
+            getPuffColumnRange = _.range( _.toInteger( getPuffColumn[0].puffPerTime ) + 1 );
+            getPuffColumnRange = _.chain( getPuffColumnRange )
+              .reduce( ( accResult, puffsValue ) => {
+                if ( puffsValue === 0 ) {
+                  accResult.push( { puffPerTime: 'PuffsPerTime' } );
+
+                  return accResult;
+                }
+                accResult.push( { puffPerTime: puffsValue } );
 
                 return accResult;
-              }
-              accResult.push( { puffPerTime: puffsValue } );
-
-              return accResult;
-            }, [] )
-            .value();
+              }, [] )
+              .value();
+            displayPuff = ( <select
+              className="puffPerTime"
+              onChange={event => onChangePuffValue( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.puffValue}
+            >
+              {
+                getPuffColumnRange.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.puffPerTime}</option>
+                  ) ) }
+            </select> );
+          }
+          else if ( rowFields.puffValue === '' ) {
+            submitPuff( index, [getPuffColumn[0].puffPerTime] );
+          }
         }
 
         let getTimesColumn =
@@ -316,15 +340,15 @@ const MedicationTable = (
         if ( !_.isEmpty( getTimesColumn ) ) {
 
           if ( getTimesColumn[0].timesPerDay === '1 OR 2' ) {
-            getTimesColumnRange = _.range(3);
-            getTimesColumnRange = _.chain(getTimesColumnRange)
-              .reduce((accResult, timesValue) => {
+            getTimesColumnRange = _.range( 3 );
+            getTimesColumnRange = _.chain( getTimesColumnRange )
+              .reduce( ( accResult, timesValue ) => {
                 if (timesValue === 0) {
-                  accResult.push({timesPerDay: 'TimesPerDay'});
+                  accResult.push( { timesPerDay: 'TimesPerDay' } );
 
                   return accResult;
                 }
-                accResult.push({timesPerDay: timesValue});
+                accResult.push( { timesPerDay: timesValue } );
 
                 return accResult;
               }, [])
@@ -375,17 +399,7 @@ const MedicationTable = (
                     <option key={ICSIndex}>{chemicalGroup.doseICS}</option>
                   ) ) }
             </select>
-            <select
-              className="puffPerTime"
-              onChange={event => onChangePuffValue( index, _.split( event.target.value, ',' ) )}
-              value={rowFields.puffValue}
-            >
-              {
-                getPuffColumnRange.map(
-                  ( chemicalGroup, ICSIndex ) => (
-                    <option key={ICSIndex}>{chemicalGroup.puffPerTime}</option>
-                  ) ) }
-            </select>
+            {displayPuff}
             <select
               className="timesPerDay"
               onChange={event => onChangeTimesPerDayValue( index, _.split( event.target.value, ',' ) )}
