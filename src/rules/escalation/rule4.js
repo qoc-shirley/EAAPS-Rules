@@ -55,7 +55,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
                   return accResult;
                 }
                 // NEED TO REVIEW THIS - SEEMS TO BE INCORRECT
-                // talk to Jordan
+                // talk to Jordan or kent
                 else if ( medication.chemicalType === 'laba,ICS' &&
                           medication.chemicalLABA === patientMedication.chemicalLABA &&
                           medication.chemicalICS === patientMedication.chemicalICS &&

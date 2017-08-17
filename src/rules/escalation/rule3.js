@@ -126,7 +126,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             } );
             if ( _.isEmpty( recommend ) ) {
 
-              return result.push(_.chain( medicationElement )
+              return result.push( _.chain( medicationElement )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'ICS' &&
                     ( categorize.ICSDose( medication ) === 'medium' ) &&
