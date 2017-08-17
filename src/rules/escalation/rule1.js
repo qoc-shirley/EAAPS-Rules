@@ -3,28 +3,6 @@ import * as calculate from '../library/calculateICSDose';
 import * as categorize from '../library/categorizeDose';
 import * as adjust from '../library/adjustICSDose';
 
-const equalICSDose = ( medication, patientMedication ) => {
-  if ( calculate.patientICSDose( patientMedication ) === calculate.ICSDose( medication ) ) {
-    return medication;
-  }
-
-  return [];
-};
-
-const minimizePuffsPerTime = ( medications, minimizeMedicationsPuffs ) => {
-  const minimize = _.filter( medications, ( medication ) => {
-    return medication.doseICS > minimizeMedicationsPuffs.doseICS;
-  } );
-  if ( _.isEmpty( minimize ) ) {
-    return null;
-  }
-  else if ( _.size( minimize ) > 1 ) {
-    return _.maxBy( minimize, 'doseICS' );
-  }
-
-  return minimize;
-};
-
 const rule1 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, patientOriginalMedication ) => {
@@ -42,13 +20,10 @@ const rule1 = ( patientMedications, masterMedications ) => {
               .value();
             const equal = _.chain( chemicalICSMedications )
               .filter( ( medication ) => {
-                console.log("------------check adjust: ",adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [], medication)
                 return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) === [];
               } )
               .value();
-            console.log('equal: ', equal);
             if ( !_.isEmpty( chemicalICSMedications ) && !_.isEmpty( equal ) ) {
-              console.log( 'chemicalICSMedications: ', chemicalICSMedications );
               let checkNewMedication = _.chain( equal )
                 .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
@@ -79,7 +54,6 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 }, [] )
                 .thru( medication => medication.toNext || medication.toMax || medication )
                 .value();
-              console.log('checkNewMedication: ', checkNewMedication);
               if ( _.isEmpty( checkNewMedication ) && !_.isEmpty( equal ) ) {
                 checkNewMedication = _.chain(equal)
                   .reduce( ( accResult, medication ) => {
@@ -95,7 +69,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
                       return accResult;
                     }
                     else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
-                      const newMedAdjust =  adjust.ICSHigherNext( medication, patientMedication );
+                      const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
                       if ( _.isNil( accResult.toNext) ) {
                         return Object.assign( {}, accResult, { toNext: newMedAdjust } );
                       }

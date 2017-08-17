@@ -20,7 +20,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           const isLtra = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
-               patientMedication.name !== 'symbicort' ) {
+               patientMedication.name !== 'symbicort' && !_.isEmpty( filterOrgMeds ) ) {
             if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
               return _.chain(  _masterMedications )
                 .filter( ( medication ) => {
@@ -59,7 +59,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
-            patientMedication.name !== 'symbicort' ) {
+            patientMedication.name !== 'symbicort' && !_.isEmpty( filterOrgMeds ) ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( ( masterMedication ) => {
@@ -166,6 +166,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
               function: 'controller,reliever',
               din: patientMedication.din,
             } ) );
+            //add a tag saying they are on SMART (string)
           }
 
           return result;
