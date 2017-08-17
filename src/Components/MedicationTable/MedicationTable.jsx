@@ -108,9 +108,9 @@ const MedicationTable = (
     onChangePuffValue( index, puff );
   };
 
-  // const submitTimes = ( index, times ) => {
-  //   onChangeTimesPerDayValue( index, times );
-  // };
+  const submitTimes = ( index, times ) => {
+    onChangeTimesPerDayValue( index, times );
+  };
 
   // extract to its own component
   const displayRowContents = () => {
@@ -354,12 +354,20 @@ const MedicationTable = (
                 return accResult;
               }, [])
               .value();
+            displayTimes = ( <select
+              className="timesPerDay"
+              onChange={event => onChangeTimesPerDayValue( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.timesPerDayValue}
+            >
+              {
+                getTimesColumnRange.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>
+                  ) ) }
+            </select>);
           }
-          else {
-            getTimesColumnRange.push( getTimesColumn );
-            getTimesColumnRange =  _.chain( getTimesColumnRange )
-              .flatten()
-              .value();
+          else if ( rowFields.timesPerDayValue === ''){
+            submitTimes( index,  [getTimesColumn[0].timesPerDay] );
           }
         }
 
@@ -402,17 +410,6 @@ const MedicationTable = (
             </select>
             {displayPuff}
             {displayTimes}
-            {/*<select*/}
-              {/*className="timesPerDay"*/}
-              {/*onChange={event => onChangeTimesPerDayValue( index, _.split( event.target.value, ',' ) )}*/}
-              {/*value={rowFields.timesPerDayValue}*/}
-            {/*>*/}
-              {/*{*/}
-                {/*getTimesColumnRange.map(*/}
-                  {/*( chemicalGroup, ICSIndex ) => (*/}
-                    {/*<option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>*/}
-                  {/*) ) }*/}
-            {/*</select>*/}
             <button
               className="button__deleteRow"
               onClick={() => deleteRow( index )}
