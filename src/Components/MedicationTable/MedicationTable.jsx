@@ -116,8 +116,8 @@ const MedicationTable = (
   const displayRowContents = () => {
     return (
       medication.medicationList.map( ( rowFields, index ) => {
-        let displayPuff = <p>1</p>;
-        let displayTimes = <p>2</p>;
+        let displayPuff = <p className="option">1</p>;
+        let displayTimes = <p className="option">2</p>;
         let getDeviceColumn = [{ device: 'Device' }];
         getDeviceColumn = getDeviceColumn.concat( medicationData.map(
           ( medicationDevice ) => {
@@ -288,7 +288,7 @@ const MedicationTable = (
               }, [] )
               .value();
             displayPuff = ( <select
-              className="puffPerTime"
+              className="option"
               onChange={event => onChangePuffValue( index, _.split( event.target.value, ',' ) )}
               value={rowFields.puffValue}
             >
@@ -355,7 +355,7 @@ const MedicationTable = (
               }, [])
               .value();
             displayTimes = ( <select
-              className="timesPerDay"
+              className="option"
               onChange={event => onChangeTimesPerDayValue( index, _.split( event.target.value, ',' ) )}
               value={rowFields.timesPerDayValue}
             >
@@ -375,7 +375,7 @@ const MedicationTable = (
           <div key={rowFields.id} className="row">
             <p>Medication {index + 1 }:</p>
             <select
-              className="device"
+              className="option"
               onChange={event => onChangeDeviceName( index, _.split( event.target.value, ',' ) )}
               value={rowFields.deviceName}
             >
@@ -386,7 +386,7 @@ const MedicationTable = (
                   ) ) }
             </select>
             <select
-              className="name"
+              className="option"
               onChange={event => onChangeMedicationName( index, _.split( event.target.value, ',' ) )}
               value={rowFields.medicationName}
             >
@@ -396,9 +396,9 @@ const MedicationTable = (
                     <option key={nameIndex}>{medicationName.name}</option>
                   ) ) }
             </select>
-            <p>{rowFields.chemicalLABA},{rowFields.chemicalICS}</p>
+            <p className="option">{rowFields.chemicalLABA},{rowFields.chemicalICS}</p>
             <select
-              className="doseICS"
+              className="option"
               onChange={event => onChangeDoseICS( index, _.split( event.target.value, ',' ) )}
               value={rowFields.doseICSValue}
             >

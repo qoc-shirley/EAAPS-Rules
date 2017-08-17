@@ -51,14 +51,21 @@
     padding: 15px;
 }
 
-.medication-table .main .row select{
+.medication-table .main .row select {
     font-size: 15px;
     height: 30px;
     text-transform: capitalize;
 }
 
+.medication-table .main .row .option {
+    flex-basis: 200px;
+}
+
 .medication-table .main  {
     padding: 0;
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
 }
 
 .medication-table .medicationHeader {
