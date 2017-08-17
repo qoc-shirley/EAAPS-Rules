@@ -7,8 +7,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
       const rule =
-        _.partial( ( medicationElement, medications, patientMedication ) => {
-          const filterOrgMeds = _.filter( medications, ( medication ) => {
+        _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
+          const filterOrgMeds = _.filter( _patientMedications, ( medication ) => {
             return medication.name !== 'symbicort' &&
               (
                 ( medication.chemicalType === 'laba,ICS' && categorize.patientICSDose( medication ) === 'low' ) ||
@@ -22,7 +22,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
                categorize.patientICSDose( patientMedication ) === 'low' &&
                patientMedication.name !== 'symbicort' ) {
             if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
-              return result.push(_.chain( medicationElement )
+              return _.chain(  _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'laba,ICS' &&
                     ( categorize.ICSDose( medication ) === 'medium' ) &&
@@ -30,27 +30,27 @@ const rule3 = ( patientMedications, masterMedications ) => {
                       medication.timesPerDay === '1 OR 2' ) &&
                     medication.device === patientMedication.device;
                 })
-                // REVIEW AND REWRITE THIS
                 .reduce( ( accResult, medication ) => {
-                  if ( _.isNil( accResult.low ) ) {
-                    accResult.low = medication;
-
-                    return accResult;
-                  }
-                  else if ( calculate.ICSDose( accResult.low ) >= calculate.ICSDose( medication ) ) {
-                    accResult.low = medication;
-
-                    return accResult;
+                  if (_.isNil( accResult ) ||
+                    calculate.ICSDose( accResult ) >= calculate.ICSDose( medication )
+                  ) {
+                    return Object.assign(
+                      {},
+                      medication,
+                      { maxPuffPerTime: 1 },
+                    );
                   }
 
                   return accResult;
-                }, [] )
-                .thru( medication => medication.low )
-                .thru( ( medication ) => {
-                  return Object.assign( {}, medication, { maxPuffPerTime: 1 } );
-                } )
-                .value(),
-              );
+                }, null )
+                .thru( (medication) => {
+                  if (medication) {
+                    return result.concat(medication);
+                  }
+
+                  return result;
+                })
+                .value();
             }
 
             return result.push( patientMedication );
@@ -61,7 +61,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             categorize.patientICSDose( patientMedication ) === 'low' &&
             patientMedication.name !== 'symbicort' ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
-            const sameChemicalLabaAndIcs = _.chain( medicationElement )
+            const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
@@ -89,7 +89,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
               if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
 
-                return result.push( _.chain( medicationElement )
+                return result.push( _.chain( _masterMedications )
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
                       ( medication.timesPerDay === patientMedication.timesPerDay ||
@@ -126,7 +126,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             } );
             if ( _.isEmpty( recommend ) ) {
 
-              return result.push( _.chain( medicationElement )
+              return result.push( _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'ICS' &&
                     ( categorize.ICSDose( medication ) === 'medium' ) &&
@@ -161,7 +161,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
-            result.push( _.filter( medicationElement, {
+            result.push( _.filter( _masterMedications, {
               name: 'symbicort',
               function: 'controller,reliever',
               din: patientMedication.din,
