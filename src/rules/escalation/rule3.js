@@ -30,6 +30,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
                       medication.timesPerDay === '1 OR 2' ) &&
                     medication.device === patientMedication.device;
                 })
+                // REVIEW AND REWRITE THIS
                 .reduce( ( accResult, medication ) => {
                   if ( _.isNil( accResult.low ) ) {
                     accResult.low = medication;
@@ -54,7 +55,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
             return result.push( patientMedication );
           }
-
+          // REVEIW AND REWRITE THIS
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
