@@ -4,8 +4,8 @@ import * as categorize from '../library/categorizeDose';
 
 const rule4 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
-      .reduce( ( result, medication ) => {
-        const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
+      .reduce( ( result, originalMedication ) => {
+        const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           if ( ( patientMedication.chemicalType === 'laba,ICS' || patientMedication.chemicalType === 'ICS' ) &&
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
@@ -15,7 +15,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
               result.push( patientMedication );
               result.push(
-                  _.chain( medicationElement )
+                  _.chain( _masterMedications )
                     .filter( { name: 'singular' } )
                     .value(),
               );
@@ -23,9 +23,9 @@ const rule4 = ( patientMedications, masterMedications ) => {
               return result;
             }
             result.push( _
-              .chain( medicationElement )
+              .chain( _masterMedications )
               .reduce( ( accResult, medication ) => {
-                const laba = _.chain( originalMedications )
+                const laba = _.chain( _patientMedications )
                   .find( { chemicalType: 'laba' } )
                   .value();
                 if ( medication.name === 'singulair' ) {
@@ -80,10 +80,10 @@ const rule4 = ( patientMedications, masterMedications ) => {
           if ( patientMedication.name === 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
-            result.push( _.filter( medicationElement, { name: 'symbicort', din: patientMedication.din } ) );
+            result.push( _.filter( _masterMedications, { name: 'symbicort', din: patientMedication.din } ) );
           }
         }, masterMedications, patientMedications );
-        rule( medication );
+        rule( originalMedication );
 
         return result;
       }, [] )
