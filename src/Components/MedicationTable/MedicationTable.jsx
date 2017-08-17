@@ -26,7 +26,7 @@ const MedicationTable = (
   // timesPerDayValue,
 } ) => {
   const headerElements =
-['', 'Device', 'Name', 'ChemicalLaba/ICS', 'DoseICS', '# of Puffs', 'Frequency', ''];
+['', 'Device', 'Name', 'ChemicalLaba/ICS', 'DoseICS', '# of Puffs', 'TimesPerDay', ''];
 
   const randomGenerator = uuid();
 
