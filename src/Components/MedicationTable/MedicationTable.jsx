@@ -104,7 +104,6 @@ const MedicationTable = (
   };
 
   const submitPuff = ( index, puff ) => {
-    console.log('submitPuff: ', index, 'puff: ', puff);
     onChangePuffValue( index, puff );
   };
 
