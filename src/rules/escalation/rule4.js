@@ -82,6 +82,8 @@ const rule4 = ( patientMedications, masterMedications ) => {
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
             result.push( _.filter( _masterMedications, { name: 'symbicort', din: patientMedication.din } ) );
           }
+
+          return result;
         }, masterMedications, patientMedications );
         rule( originalMedication );
 
