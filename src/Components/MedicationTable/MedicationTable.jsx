@@ -117,6 +117,7 @@ const MedicationTable = (
     return (
       medication.medicationList.map( ( rowFields, index ) => {
         let displayPuff = <p>1</p>;
+        let displayTimes = <p>2</p>;
         let getDeviceColumn = [{ device: 'Device' }];
         getDeviceColumn = getDeviceColumn.concat( medicationData.map(
           ( medicationDevice ) => {
@@ -343,7 +344,7 @@ const MedicationTable = (
             getTimesColumnRange = _.range( 3 );
             getTimesColumnRange = _.chain( getTimesColumnRange )
               .reduce( ( accResult, timesValue ) => {
-                if (timesValue === 0) {
+                if ( timesValue === 0 ) {
                   accResult.push( { timesPerDay: 'TimesPerDay' } );
 
                   return accResult;
@@ -400,17 +401,18 @@ const MedicationTable = (
                   ) ) }
             </select>
             {displayPuff}
-            <select
-              className="timesPerDay"
-              onChange={event => onChangeTimesPerDayValue( index, _.split( event.target.value, ',' ) )}
-              value={rowFields.timesPerDayValue}
-            >
-              {
-                getTimesColumnRange.map(
-                  ( chemicalGroup, ICSIndex ) => (
-                    <option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>
-                  ) ) }
-            </select>
+            {displayTimes}
+            {/*<select*/}
+              {/*className="timesPerDay"*/}
+              {/*onChange={event => onChangeTimesPerDayValue( index, _.split( event.target.value, ',' ) )}*/}
+              {/*value={rowFields.timesPerDayValue}*/}
+            {/*>*/}
+              {/*{*/}
+                {/*getTimesColumnRange.map(*/}
+                  {/*( chemicalGroup, ICSIndex ) => (*/}
+                    {/*<option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>*/}
+                  {/*) ) }*/}
+            {/*</select>*/}
             <button
               className="button__deleteRow"
               onClick={() => deleteRow( index )}
