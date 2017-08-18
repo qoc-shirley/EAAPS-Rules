@@ -38,7 +38,6 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 }
 
                 const adjustToOrgIcsDose = adjust.ICSDoseToOriginalMedication( medication, patientMedication );
-                console.log( 'adjustToOrgIcsDose: ', adjustToOrgIcsDose );
                 if ( medication.chemicalType === 'laba,ICS' &&
                      medication.chemicalLABA === laba.chemicalLABA &&
                      medication.chemicalICS === patientMedication.chemicalICS &&
