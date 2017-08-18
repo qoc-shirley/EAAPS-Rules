@@ -161,12 +161,11 @@ const rule3 = ( patientMedications, masterMedications ) => {
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
-            result.push( _.filter( _masterMedications, {
+            return result.concat( 'SMART', _.filter( _masterMedications, {
               name: 'symbicort',
               function: 'controller,reliever',
               din: patientMedication.din,
             } ) );
-            //add a tag saying they are on SMART (string)
           }
 
           return result;
