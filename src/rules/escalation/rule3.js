@@ -2,7 +2,6 @@ import _ from 'lodash';
 import * as adjust  from '../library/adjustICSDose';
 import * as categorize from '../library/categorizeDose';
 import * as get from '../library/getICSDose';
-import * as calculate from '../library/calculateICSDose';
 
 const rule3 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
@@ -23,9 +22,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
                patientMedication.name !== 'symbicort' ) {
-            console.log( 'laba,ICS' );
             if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
-              console.log( 'not medium' );
               return _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'laba,ICS' &&
@@ -47,16 +44,14 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 .thru( _medication => result.push( _medication ) )
                 .value();
             }
-            console.log( 'medium' );
 
             return result.push( patientMedication );
           }
-          // REVEIW AND REWRITE THIS
+
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
             patientMedication.name !== 'symbicort' ) {
-            console.log( 'ICS and LABA' );
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
@@ -141,7 +136,6 @@ const rule3 = ( patientMedications, masterMedications ) => {
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
-            console.log('recommend SMART');
             return result.push( ['SMART', _.filter( _masterMedications, {
               name: 'symbicort',
               function: 'controller,reliever',
