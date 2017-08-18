@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as adjust  from '../library/adjustICSDose';
 import * as categorize from '../library/categorizeDose';
 import * as get from '../library/getICSDose';
 import * as calculate from '../library/calculateICSDose';
@@ -25,35 +26,26 @@ const rule3 = ( patientMedications, masterMedications ) => {
             console.log( 'laba,ICS' );
             if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
               console.log( 'not medium' );
-              return _.chain( _masterMedications )
+              return result.push( _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'laba,ICS' &&
-                    ( categorize.ICSDose( medication ) === 'medium' ) &&
+                    ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
                       medication.device === patientMedication.device;
                 } )
-                .reduce( ( accResult, medication ) => {
-                  if (_.isNil( accResult ) ||
-                    calculate.ICSDose( accResult ) >= calculate.ICSDose( medication )
-                  ) {
-                    return Object.assign(
-                      {},
-                      medication,
-                      { maxPuffPerTime: 1 },
-                    );
+                .minBy( ( minMedication ) => {
+                  if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '1' ) {
+                    return minMedication.doseICS * minMedication.maxPuffPerTime;
+                  }
+                  else if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '2' ) {
+                    return minMedication.doseICS * minMedication.maxPuffPerTime * 2;
                   }
 
-                  return accResult;
-                }, null )
-                .thru( ( medication ) => {
-                  if ( medication )  {
-                    return result.concat( medication );
-                  }
-
-                  return result;
+                  return minMedication.doseICS * minMedication.timesPerDay * minMedication.maxPuffPerTime;
                 } )
-                .value();
+                .value(),
+              );
             }
             console.log( 'medium' );
 
