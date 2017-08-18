@@ -6,10 +6,11 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
       .reduce( ( result, originalMedication ) => {
         const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           if ( ( patientMedication.chemicalType === 'laba,ICS' || ( patientMedication.chemicalType === 'ICS' &&
-              !_.isEmpty( _.filter( patientMedications, { chemicalType: 'laba' } ) ) ) ) &&
+              !_.isEmpty( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) ) ) &&
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
+            const singulair = _.filter( _masterMedications, { name: 'singulair' } );
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
               console.log( 'laba,ICS' );
 
@@ -20,15 +21,12 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             }
             console.log( 'laba and ICS' );
 
+            let newMedication = null;
             return _.chain( _masterMedications )
               .reduce( ( accResult, medication ) => {
                 const laba = _.chain( _patientMedications )
                   .find( { chemicalType: 'laba' } )
                   .value();
-                if ( medication.name === 'singulair' ) {
-                  accResult.push( medication );
-                }
-
                 if ( medication.chemicalType !== 'laba,ICS' &&
                   ( ( medication.chemicalLABA !== laba.chemicalLABA &&
                       medication.chemicalICS !== patientMedication.chemicalICS ) ||
@@ -36,48 +34,49 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       medication.device !== laba.device )
                   )
                 ) {
-                  return accResult.push( patientMedication );
+                  return _.concat( accResult, patientMedication );
                 }
 
                 const adjustToOrgIcsDose = adjust.ICSDoseToOriginalMedication( medication, patientMedication );
+                console.log( 'adjustToOrgIcsDose: ', adjustToOrgIcsDose );
                 if ( medication.chemicalType === 'laba,ICS' &&
                      medication.chemicalLABA === laba.chemicalLABA &&
                      medication.chemicalICS === patientMedication.chemicalICS &&
                   ( medication.device === patientMedication.device || medication.device === laba.device )
-                  && ( _.isNil( accResult.new ) ||
-                    // compare original ICSDOSE to new Medication
-                    // and also check if the doseICS is greater than stored doseICS
+                  && ( _.isNil( newMedication ) ||
                     ( !_.isEmpty( adjustToOrgIcsDose ) &&
-                     accResult.new.doseICS < adjustToOrgIcsDose.doseICS ) )
+                      _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
                    ) {
-                  return Object.assign( {}, accResult, { new: adjustToOrgIcsDose } );
+                  newMedication = adjustToOrgIcsDose;
+
+                  return _.concat( accResult, newMedication );
                 }
-                // NEED TO REVIEW THIS - SEEMS TO BE INCORRECT
-                // talk to Jordan or kent
+
                 else if ( medication.chemicalType === 'laba,ICS' &&
                           medication.chemicalLABA === laba.chemicalLABA &&
                           medication.chemicalICS === patientMedication.chemicalICS &&
-                        ( _.isNil( accResult.new ) ||
+                        ( _.isNil(newMedication ) ||
                           ( !_.isEmpty( adjustToOrgIcsDose ) &&
-                          accResult.new.doseICS < adjustToOrgIcsDose.doseICS ) )
+                          _.toInteger(newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
                         ) {
-                  return Object.assign( {}, accResult, { new: medication } );
+                  newMedication = adjustToOrgIcsDose;
+
+                  return _.concat( accResult, newMedication );
                 }
 
                 return accResult;
               }, [] )
-              .thru( medication => medication.new || medication )
-              .concat( result )
+              .uniqBy( 'id' )
+              .thru( _medication => result.push( [_medication, singulair] ) )
               .value();
           }
-          // REVIEW THIS - we neglected to recommend a SMART medication (e.g. tag with instant relief)
-          // => what does this mean?
+
           if ( patientMedication.name === 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
-            return result.concat( 'SMART',
+            return result.push( ['SMART',
               _.filter( _masterMedications,
-                { name: 'symbicort', function: 'controller,reliever', din: patientMedication.din } ) );
+                { name: 'symbicort', function: 'controller,reliever', din: patientMedication.din } )] );
           }
 
           return result;
