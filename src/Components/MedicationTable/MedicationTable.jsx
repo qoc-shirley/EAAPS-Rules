@@ -99,6 +99,9 @@ const MedicationTable = (
     getPatientMedications( _.flatten( insertInputs ) );
   };
 
+  // componentWillMount(){
+  //
+  // }
   const submitChemicalData = ( index, chemicals ) => {
     onChangeChemical( index, chemicals );
   };
