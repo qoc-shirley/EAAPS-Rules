@@ -2,8 +2,7 @@ import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
 import * as categorize from '../library/categorizeDose';
 
-const rule4 = ( patientMedications, masterMedications ) => {
-  return _.chain( patientMedications )
+const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
       .reduce( ( result, originalMedication ) => {
         const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           if ( ( patientMedication.chemicalType === 'laba,ICS' || ( patientMedication.chemicalType === 'ICS' &&
@@ -11,13 +10,15 @@ const rule4 = ( patientMedications, masterMedications ) => {
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
-
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
+              console.log( 'laba,ICS' );
+
               return _.chain( _masterMedications )
-                .filter( { name: 'singular' } )
-                .concat( result, patientMedication )
+                .filter( { name: 'singulair' } )
+                .thru( _medication => result.push( [_medication, patientMedication] ) )
                 .value();
             }
+            console.log( 'laba and ICS' );
 
             return _.chain( _masterMedications )
               .reduce( ( accResult, medication ) => {
@@ -65,9 +66,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
 
                 return accResult;
               }, [] )
-              .thru( ( medication ) => {
-                return medication.new || medication;
-              } )
+              .thru( medication => medication.new || medication )
               .concat( result )
               .value();
           }
@@ -87,7 +86,7 @@ const rule4 = ( patientMedications, masterMedications ) => {
 
         return result;
       }, [] )
+    .flattenDeep()
     .value();
-};
 
 export default rule4;
