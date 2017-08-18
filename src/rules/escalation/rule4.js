@@ -35,9 +35,8 @@ const rule4 = ( patientMedications, masterMedications ) => {
                     medication.device !== laba.device
                   )
                 ) {
-                  accResult.push( patientMedication );
 
-                  return accResult;
+                  return accResult.push( patientMedication );
                 }
 
                 const adjustToOrgIcsDose = adjust.ICSDoseToOriginalMedication( medication, patientMedication );
