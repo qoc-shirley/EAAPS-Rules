@@ -18,17 +18,18 @@ const rule3 = ( patientMedications, masterMedications ) => {
           } );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           const isLtra = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
+          const laba = _.find( isLaba, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
-               patientMedication.name !== 'symbicort' && !_.isEmpty( filterOrgMeds ) ) {
+               patientMedication.name !== 'symbicort' ) {
             if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
-              return _.chain(  _masterMedications )
+              return _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'laba,ICS' &&
                     ( categorize.ICSDose( medication ) === 'medium' ) &&
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
-                    medication.device === patientMedication.device;
+                    ( medication.device === patientMedication.device || medication.device === laba.device );
                 } )
                 .reduce( ( accResult, medication ) => {
                   if (_.isNil( accResult ) ||
@@ -59,8 +60,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
-            patientMedication.name !== 'symbicort' && !_.isEmpty( filterOrgMeds ) ) {
-            const laba = _.find( isLaba, { chemicalType: 'laba' } );
+            patientMedication.name !== 'symbicort' ) {
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
@@ -89,34 +89,35 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
               if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
 
-                return result.push( _.chain( _masterMedications )
+                return _.chain( _masterMedications )
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
                       ( medication.timesPerDay === patientMedication.timesPerDay ||
                         medication.timesPerDay === '1 OR 2' ) &&
                       ( categorize.ICSDose( medication ) === 'medium' ) &&
-                      medication.device === patientMedication.device;
+                      ( medication.device === patientMedication.device || medication.device === laba.device );
                   } )
                   .reduce( ( accResult, medication ) => {
-                    if ( _.isNil( accResult.low ) ) {
-                      accResult.low = medication;
-
-                      return accResult;
-                    }
-                    else if ( calculate.ICSDose( accResult.low ) >= calculate.ICSDose( medication ) ) {
-                      accResult.low = medication;
-
-                      return accResult;
+                    if (_.isNil( accResult ) ||
+                      calculate.ICSDose( accResult ) >= calculate.ICSDose( medication )
+                    ) {
+                      return Object.assign(
+                        {},
+                        medication,
+                        { maxPuffPerTime: 1 },
+                      );
                     }
 
                     return accResult;
-                  }, [] )
-                  .thru( medication => medication.low )
+                  }, null )
                   .thru( ( medication ) => {
-                    return Object.assign( {}, medication, { maxPuffPerTime: 1 } );
+                    if ( medication )  {
+                      return result.concat( medication );
+                    }
+
+                    return result;
                   } )
-                  .value(),
-                );
+                  .value();
               }
 
               return result.push( patientMedication );
@@ -126,34 +127,35 @@ const rule3 = ( patientMedications, masterMedications ) => {
             } );
             if ( _.isEmpty( recommend ) ) {
 
-              return result.push( _.chain( _masterMedications )
+              return _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'ICS' &&
-                    ( categorize.ICSDose( medication ) === 'medium' ) &&
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
+                    ( categorize.ICSDose( medication ) === 'medium' ) &&
                     ( medication.device === patientMedication.device || medication.device === laba.device );
                 } )
                 .reduce( ( accResult, medication ) => {
-                  if ( _.isNil( accResult.low ) ) {
-                    accResult.low = medication;
-
-                    return accResult;
-                  }
-                  else if ( calculate.ICSDose( accResult.low ) >= calculate.ICSDose( medication ) ) {
-                    accResult.low = medication;
-
-                    return accResult;
+                  if (_.isNil( accResult ) ||
+                    calculate.ICSDose( accResult ) >= calculate.ICSDose( medication )
+                  ) {
+                    return Object.assign(
+                      {},
+                      medication,
+                      { maxPuffPerTime: 1 },
+                    );
                   }
 
                   return accResult;
-                }, [] )
-                .thru( medication => medication.low )
+                }, null )
                 .thru( ( medication ) => {
-                  return Object.assign( {}, medication, { maxPuffPerTime: 1 } );
+                  if ( medication )  {
+                    return result.concat( medication );
+                  }
+
+                  return result;
                 } )
-                .value(),
-              );
+                .value();
             }
             const lowest = get.lowestICSDose( recommend );
 
