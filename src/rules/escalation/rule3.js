@@ -22,14 +22,16 @@ const rule3 = ( patientMedications, masterMedications ) => {
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
                patientMedication.name !== 'symbicort' ) {
+            console.log( 'laba,ICS' );
             if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
+              console.log( 'not medium' );
               return _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'laba,ICS' &&
                     ( categorize.ICSDose( medication ) === 'medium' ) &&
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
-                    ( medication.device === patientMedication.device || medication.device === laba.device );
+                      medication.device === patientMedication.device;
                 } )
                 .reduce( ( accResult, medication ) => {
                   if (_.isNil( accResult ) ||
@@ -53,6 +55,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
                 } )
                 .value();
             }
+            console.log( 'medium' );
 
             return result.push( patientMedication );
           }
@@ -61,6 +64,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
             patientMedication.name !== 'symbicort' ) {
+            console.log( 'ICS and LABA' );
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
