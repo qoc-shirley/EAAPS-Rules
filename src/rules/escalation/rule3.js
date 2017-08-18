@@ -26,7 +26,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             console.log( 'laba,ICS' );
             if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
               console.log( 'not medium' );
-              return result.push( _.chain( _masterMedications )
+              return _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'laba,ICS' &&
                     ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
@@ -44,8 +44,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
                   return minMedication.doseICS * minMedication.timesPerDay * minMedication.maxPuffPerTime;
                 } )
-                .value(),
-              );
+                .thru( _medication => result.push( _medication ) )
+                .value();
             }
             console.log( 'medium' );
 
@@ -93,26 +93,17 @@ const rule3 = ( patientMedications, masterMedications ) => {
                       ( categorize.ICSDose( medication ) === 'medium' ) &&
                       ( medication.device === patientMedication.device || medication.device === laba.device );
                   } )
-                  .reduce( ( accResult, medication ) => {
-                    if (_.isNil( accResult ) ||
-                      calculate.ICSDose( accResult ) >= calculate.ICSDose( medication )
-                    ) {
-                      return Object.assign(
-                        {},
-                        medication,
-                        { maxPuffPerTime: 1 },
-                      );
+                  .minBy( ( minMedication ) => {
+                    if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '1' ) {
+                      return minMedication.doseICS * minMedication.maxPuffPerTime;
+                    }
+                    else if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '2' ) {
+                      return minMedication.doseICS * minMedication.maxPuffPerTime * 2;
                     }
 
-                    return accResult;
-                  }, null )
-                  .thru( ( medication ) => {
-                    if ( medication )  {
-                      return result.concat( medication );
-                    }
-
-                    return result;
+                    return minMedication.doseICS * minMedication.timesPerDay * minMedication.maxPuffPerTime;
                   } )
+                  .thru( _medication => result.push( _medication ) )
                   .value();
               }
 
@@ -131,26 +122,17 @@ const rule3 = ( patientMedications, masterMedications ) => {
                     ( categorize.ICSDose( medication ) === 'medium' ) &&
                     ( medication.device === patientMedication.device || medication.device === laba.device );
                 } )
-                .reduce( ( accResult, medication ) => {
-                  if (_.isNil( accResult ) ||
-                    calculate.ICSDose( accResult ) >= calculate.ICSDose( medication )
-                  ) {
-                    return Object.assign(
-                      {},
-                      medication,
-                      { maxPuffPerTime: 1 },
-                    );
+                .minBy( ( minMedication ) => {
+                  if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '1' ) {
+                    return minMedication.doseICS * minMedication.maxPuffPerTime;
+                  }
+                  else if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '2' ) {
+                    return minMedication.doseICS * minMedication.maxPuffPerTime * 2;
                   }
 
-                  return accResult;
-                }, null )
-                .thru( ( medication ) => {
-                  if ( medication )  {
-                    return result.concat( medication );
-                  }
-
-                  return result;
+                  return minMedication.doseICS * minMedication.timesPerDay * minMedication.maxPuffPerTime;
                 } )
+                .thru( _medication => result.push( _medication ) )
                 .value();
             }
             const lowest = get.lowestICSDose( recommend );
@@ -159,11 +141,12 @@ const rule3 = ( patientMedications, masterMedications ) => {
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
-            return result.concat( 'SMART', _.filter( _masterMedications, {
+            console.log('recommend SMART');
+            return result.push( ['SMART', _.filter( _masterMedications, {
               name: 'symbicort',
               function: 'controller,reliever',
               din: patientMedication.din,
-            } ) );
+            } )] );
           }
 
           return result;
@@ -173,7 +156,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
 
       return result;
     }, [] )
-    .flatten()
+    .flattenDeep()
     .value();
 };
 
