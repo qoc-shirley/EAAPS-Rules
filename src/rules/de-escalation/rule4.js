@@ -19,7 +19,7 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         if ( patientMedication.chemicalType === 'ICS' && noLaba && !_.isEmpty( isLtra ) ) {
           // Provide a choice to discontinue the LTRA
           let rule1Recommendation = rule1( [patientMedication], medicationElement, asthmaControlAnswers );
-          let rule2Recommendation =  rule2( [patientMedication], medicationElement );
+          let rule2Recommendation = rule2( [patientMedication], medicationElement );
           if ( _.isEmpty( rule1Recommendation ) ) {
             rule1Recommendation = 'no Recommendations';
           }
