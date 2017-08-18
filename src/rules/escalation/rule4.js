@@ -80,10 +80,9 @@ const rule4 = ( patientMedications, masterMedications ) => {
           if ( patientMedication.name === 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
-            result.push(
+            return result.concat( 'SMART',
               _.filter( _masterMedications,
                 { name: 'symbicort', function: 'controller,reliever', din: patientMedication.din } ) );
-            // add tag
           }
 
           return result;
