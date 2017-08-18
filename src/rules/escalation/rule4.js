@@ -29,13 +29,12 @@ const rule4 = ( patientMedications, masterMedications ) => {
                 }
 
                 if ( medication.chemicalType !== 'laba,ICS' &&
-                  medication.chemicalLABA !== laba.chemicalLABA &&
-                  medication.chemicalICS !== patientMedication.chemicalICS &&
-                  ( medication.device !== patientMedication.device &&
-                    medication.device !== laba.device
+                  ( ( medication.chemicalLABA !== laba.chemicalLABA &&
+                      medication.chemicalICS !== patientMedication.chemicalICS ) ||
+                    ( medication.device !== patientMedication.device &&
+                      medication.device !== laba.device )
                   )
                 ) {
-
                   return accResult.push( patientMedication );
                 }
 
@@ -50,7 +49,6 @@ const rule4 = ( patientMedications, masterMedications ) => {
                     ( !_.isEmpty( adjustToOrgIcsDose ) &&
                      accResult.new.doseICS < adjustToOrgIcsDose.doseICS ) )
                    ) {
-
                   return Object.assign( {}, accResult, { new: adjustToOrgIcsDose } );
                 }
                 // NEED TO REVIEW THIS - SEEMS TO BE INCORRECT
@@ -62,7 +60,6 @@ const rule4 = ( patientMedications, masterMedications ) => {
                           ( !_.isEmpty( adjustToOrgIcsDose ) &&
                           accResult.new.doseICS < adjustToOrgIcsDose.doseICS ) )
                         ) {
-
                   return Object.assign( {}, accResult, { new: medication } );
                 }
 
