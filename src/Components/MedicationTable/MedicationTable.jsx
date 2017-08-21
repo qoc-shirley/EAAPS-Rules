@@ -373,6 +373,11 @@ const MedicationTable = (
           }
         }
 
+        if ( rowFields.deviceName === 'pills' ) {
+          displayPuff = <p className="option" />;
+          displayTimes = <p className="option">1</p>;
+        }
+
         return (
           <div key={rowFields.id} className="row">
             <p>Medication {index + 1 }:</p>
