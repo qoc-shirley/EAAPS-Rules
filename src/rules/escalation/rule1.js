@@ -24,7 +24,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
               } )
               .value();
             if ( !_.isEmpty( chemicalICSMedications ) && !_.isEmpty( equal ) ) {
-              let checkNewMedication = _.chain( equal )
+              const checkNewMedication = _.chain( equal )
                 .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
                   if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {

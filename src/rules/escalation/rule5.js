@@ -32,21 +32,20 @@ const rule5 = ( patientMedications, masterMedications ) => {
                 } )
                 .reduce( ( accResult, medication ) => {
                   if ( _.isNil( accResult.high ) ) {
-                    // return Object.assign(
-                    //   accResult,
-                    //   {
-                    //     high: medication,
-                    //   },
-                    // );
-
-                    accResult.high = medication;
-
-                    return accResult;
+                    return Object.assign(
+                      accResult,
+                      {
+                        high: medication,
+                      },
+                    );
                   }
                   else if ( accResult.high.doseICS <= medication.doseICS ) {
-                    accResult.high = medication;
-
-                    return accResult;
+                    return Object.assign(
+                      accResult,
+                      {
+                        high: medication,
+                      },
+                    );
                   }
 
                   return accResult;
@@ -119,7 +118,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
               .maxBy( 'doseICS' )
               .value(),
             );
-            result.push( originalMedicationLtra ) ;
+            result.push( originalMedicationLtra );
 
             return result;
           }
