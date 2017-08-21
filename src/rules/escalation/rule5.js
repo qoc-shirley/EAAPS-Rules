@@ -19,7 +19,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
           } );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' && patientMedication.name !== 'symbicort' &&
-               calculate.patientICSDose( patientMedication ) < patientMedication.maxGreenICS ) {
+               calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) &&
+            originalMedicationLtra ) {
             const recommendHighest = adjust.ICSDose( patientMedication, 'highest' );
             result.push( originalMedicationLtra );
             if ( _.isEmpty( recommendHighest ) ) {
@@ -62,7 +63,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
             return result;
           }
           else if ( ( patientMedication.chemicalType === 'ICS' &&
-                      calculate.patientICSDose( patientMedication ) < patientMedication.maxGreenICS ) &&
+                      calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
                     !_.isEmpty( isLaba )
                   ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
@@ -135,6 +136,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   din: patientMedication.din,
                 } ),
             );
+            // add tag
           }
 
           return result;

@@ -28,8 +28,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
                   if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
-                    const newMedAdjust =  adjust.ICSDoseToMax( medication );
-                    if ( _.isNil( accResult.toMax) ) {
+                    const newMedAdjust = adjust.ICSDoseToMax( medication );
+                    if ( _.isNil( accResult.toMax ) ) {
                       return Object.assign( {}, accResult, { toMax: newMedAdjust } );
                     }
                     if ( accResult.toMax.doseICS < newMedAdjust.doseICS ) {
@@ -39,8 +39,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
                     return accResult;
                   }
                   else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
-                    const newMedAdjust =  adjust.ICSHigherNext( medication, patientMedication );
-                    if ( _.isNil( accResult.toNext) ) {
+                    const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
+                    if ( _.isNil( accResult.toNext ) ) {
                       return Object.assign( {}, accResult, { toNext: newMedAdjust } );
                     }
                     if ( accResult.toNext.doseICS < newMedAdjust.doseICS ) {
@@ -54,37 +54,37 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 }, [] )
                 .thru( medication => medication.toNext || medication.toMax || medication )
                 .value();
-              if ( _.isEmpty( checkNewMedication ) && !_.isEmpty( equal ) ) {
-                checkNewMedication = _.chain(equal)
-                  .reduce( ( accResult, medication ) => {
-                    if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
-                      const newMedAdjust =  adjust.ICSDoseToMax( medication );
-                      if ( _.isNil( accResult.toMax) ) {
-                        return Object.assign( {}, accResult, { toMax: newMedAdjust } );
-                      }
-                      if ( accResult.toMax.doseICS < newMedAdjust.doseICS ) {
-                        return Object.assign( {}, accResult, { toMax: newMedAdjust } );
-                      }
-
-                      return accResult;
-                    }
-                    else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
-                      const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
-                      if ( _.isNil( accResult.toNext) ) {
-                        return Object.assign( {}, accResult, { toNext: newMedAdjust } );
-                      }
-                      if ( accResult.toNext.doseICS < newMedAdjust.doseICS ) {
-                        return Object.assign( {}, accResult, { toNext: newMedAdjust } );
-                      }
-
-                      return accResult;
-                    }
-
-                    return medication;
-                  }, [] )
-                  .thru( medication => medication.toMax || medication.toNext || medication )
-                  .value();
-              }
+              // if ( _.isEmpty( checkNewMedication ) && !_.isEmpty( equal ) ) {
+              //   checkNewMedication = _.chain(equal)
+              //     .reduce( ( accResult, medication ) => {
+              //       if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
+              //         const newMedAdjust =  adjust.ICSDoseToMax( medication );
+              //         if ( _.isNil( accResult.toMax) ) {
+              //           return Object.assign( {}, accResult, { toMax: newMedAdjust } );
+              //         }
+              //         if ( accResult.toMax.doseICS < newMedAdjust.doseICS ) {
+              //           return Object.assign( {}, accResult, { toMax: newMedAdjust } );
+              //         }
+              //
+              //         return accResult;
+              //       }
+              //       else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
+              //         const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
+              //         if ( _.isNil( accResult.toNext) ) {
+              //           return Object.assign( {}, accResult, { toNext: newMedAdjust } );
+              //         }
+              //         if ( accResult.toNext.doseICS < newMedAdjust.doseICS ) {
+              //           return Object.assign( {}, accResult, { toNext: newMedAdjust } );
+              //         }
+              //
+              //         return accResult;
+              //       }
+              //
+              //       return medication;
+              //     }, [] )
+              //     .thru( medication => medication.toMax || medication.toNext || medication )
+              //     .value();
+              // }
               console.log('checkNewMedication: ', checkNewMedication);
               // const matchTimesPerDay = _.chain(checkNewMedication)
               //   .filter( ( medication ) => {
@@ -112,9 +112,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
               //   result.push( matchTimesPerDay );
               // }
 
-              return result.push( checkNewMedication );
+              // return result.push( checkNewMedication );
             }
-
             else {
               // medicationElement = medication from spreadsheet
               const masterMedication = medicationElement;

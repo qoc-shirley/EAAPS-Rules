@@ -274,7 +274,34 @@ const MedicationTable = (
         } );
         let getPuffColumnRange = [];
         if ( !_.isEmpty( getPuffColumn ) ) {
-          if (  _.toInteger( getPuffColumn[0].puffPerTime ) !== 1 ) {
+          if ( rowFields.deviceName === 'turbuhaler' && rowFields.medicationName === 'oxeze' ) {
+            getPuffColumnRange.push( { puffPerTime: 'PuffsPerTime' } );
+            getPuffColumnRange = _.range( 5 );
+            getPuffColumnRange = _.chain( getPuffColumnRange )
+              .reduce( ( accResult, puffsValue ) => {
+                if ( puffsValue === 0 ) {
+                  accResult.push( { puffPerTime: 'PuffsPerTime' } );
+
+                  return accResult;
+                }
+                accResult.push( { puffPerTime: puffsValue } );
+
+                return accResult;
+              }, [] )
+              .value();
+            displayPuff = ( <select
+              className="option"
+              onChange={event => onChangePuffValue( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.puffValue}
+            >
+              {
+                getPuffColumnRange.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.puffPerTime}</option>
+                  ) ) }
+            </select> );
+          }
+          else if (  _.toInteger( getPuffColumn[0].puffPerTime ) !== 1 ) {
             getPuffColumnRange.push( { puffPerTime: 'PuffsPerTime' } );
             getPuffColumnRange = _.range( _.toInteger( getPuffColumn[0].puffPerTime ) + 1 );
             getPuffColumnRange = _.chain( getPuffColumnRange )
@@ -368,6 +395,11 @@ const MedicationTable = (
                   ) ) }
             </select>);
           }
+          else if ( rowFields.timesPerDayValue === '' && getTimesColumn[0].timesPerDay === '1' ) {
+            console.log('timesPerDay 1: ',  getTimesColumn[0].timesPerDay);
+            displayTimes = <p className="option">1</p>;
+            submitTimes( index, ['1'] );
+          }
           else if ( rowFields.timesPerDayValue === ''){
             submitTimes( index,  [getTimesColumn[0].timesPerDay] );
           }
@@ -375,6 +407,9 @@ const MedicationTable = (
 
         if ( rowFields.deviceName === 'pills' ) {
           displayPuff = <p className="option" />;
+          displayTimes = <p className="option">1</p>;
+        }
+        if ( rowFields.timesPerDayValue === '1' ) {
           displayTimes = <p className="option">1</p>;
         }
 
