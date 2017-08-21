@@ -26,11 +26,16 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .isEmpty()
           .value();
 
-        if ( patientMedication === 'ICS' && ( !noLaba || !noLabaICS ) && !noLtra ) {
+        if ( ( patientMedication.chemicalType === 'laba,ICS' || ( patientMedication === 'ICS' && !noLaba ) ) &&
+          !noLtra ) {
           // Provide a choice to discontinue the LTRA
+          let rule3Recommendation = rule3( [patientMedication], medicationElement, asthmaControlAnswers );
+          if ( _.isEmpty( rule3Recommendation ) ) {
+            rule3Recommendation = 'No recommendation';
+          }
           result.push( [
             'discontinue Ltra and continue ICS and laba/laba,ICS: ', _.concat( patientMedication, noLaba, noLabaICS ),
-            'continue recommend: ', rule3( [patientMedication], medicationElement, asthmaControlAnswers ),
+            'continue recommend: ', rule3Recommendation,
             'continue ltra: ', noLtra,
           ] );
         }
