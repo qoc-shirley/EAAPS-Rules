@@ -44,14 +44,10 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               findMedication.name === 'asthmanex' &&
               findMedication.device === 'twisthaler'
             ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'alvesco' &&
               findMedication.device === 'inhaler1'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'arnuity' &&
-              findMedication.device === 'inhaler2'
-            ) || (
+             ) || (
               !_.isNil( adjust.ICSDoseToDose( findMedication, 250 ) ) &&
               findMedication.name === 'advair' &&
               findMedication.device === 'inhaler2'
@@ -68,9 +64,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               findMedication.name === 'zenhale' &&
               findMedication.device === 'inhaler2'
             ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'zenhale' &&
-              findMedication.device === 'inhaler2'
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+              findMedication.name === 'arnuity' &&
+              findMedication.device === 'ellipta'
             ) || (
               !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'breo' &&
@@ -103,7 +99,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
-                  masterMedication.chemicalLABA === patientMedication.chemicalLABA;
+                  masterMedication.chemicalLABA === laba.chemicalLABA;
               } )
               .value();
             if ( patientMedication.chemicalType === 'ICS' ) {
@@ -174,7 +170,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     'OR continue:',
                     patientMedication,
                   ] );
-
+                // has to be presented as an option
               }
             }
             // on SMART
@@ -230,9 +226,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   patientMedication,
                 ] );
             }
-            // and laba?
 
-            return result.push( patientMedication );
+            return result.push( [patientMedication, laba] );
           }
         }
 

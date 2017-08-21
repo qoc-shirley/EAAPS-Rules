@@ -7,8 +7,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, patientOriginalMedication ) => {
       const rule =
-        _.partial( ( medicationElement, medications, patientMedication ) => {
-          const newMedications = _.filter( medicationElement, { chemicalType: 'laba,ICS' } );
+        _.partial( ( _masterMedications, medications, patientMedication ) => {
+          const newMedications = _.filter( _masterMedications, { chemicalType: 'laba,ICS' } );
           if ( patientMedication.chemicalType === 'ltra' ) {
             result.push( patientMedication );
 
@@ -59,10 +59,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
             }
 
             else {
-              // medicationElement = medication from spreadsheet
-              const masterMedication = medicationElement;
               result.push(
-                _.chain( masterMedication )
+                _.chain( _masterMedications )
                   .filter( ( medication ) => {
                     return (
                       medication.chemicalLABA === 'salmeterol' &&
