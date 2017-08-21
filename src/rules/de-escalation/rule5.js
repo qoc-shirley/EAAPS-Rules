@@ -9,27 +9,27 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .filter( ( medication ) => {
             return medication.chemicalType === 'laba';
           } )
-          .isEmpty()
           .value();
 
         const noLabaICS = _.chain( originalMedications )
           .filter( ( medication ) => {
             return medication.chemicalType === 'laba,ICS';
           } )
-          .isEmpty()
           .value();
 
         const noLtra = _.chain( originalMedications )
           .filter( ( medication ) => {
             return medication.chemicalType === 'ltra';
           } )
-          .isEmpty()
           .value();
 
-        if ( ( patientMedication.chemicalType === 'laba,ICS' || ( patientMedication === 'ICS' && !noLaba ) ) &&
-          !noLtra ) {
+        if (
+            ( patientMedication.chemicalType === 'laba,ICS' ||
+              ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( noLaba ) ) )
+          && !_.isEmpty( noLtra ) ) {
           // Provide a choice to discontinue the LTRA
-          let rule3Recommendation = rule3( [patientMedication], medicationElement, asthmaControlAnswers );
+          let rule3Recommendation =
+            rule3( _.concat( patientMedication, noLaba ), medicationElement, asthmaControlAnswers );
           if ( _.isEmpty( rule3Recommendation ) ) {
             rule3Recommendation = 'No recommendation';
           }
@@ -46,7 +46,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
       return result;
     }, [] )
-    .flatten()
+    .flattenDeep()
     .value();
 };
 

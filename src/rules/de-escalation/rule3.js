@@ -94,15 +94,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               ( medication ) => {
                 return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
               } ) ) ) {
-
-            const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
-              .filter( ( masterMedication ) => {
-                return masterMedication.chemicalType === 'laba,ICS' &&
-                  masterMedication.chemicalICS === patientMedication.chemicalICS &&
-                  masterMedication.chemicalLABA === laba.chemicalLABA;
-              } )
-              .value();
             if ( patientMedication.chemicalType === 'ICS' ) {
+              const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
+                .filter( ( masterMedication ) => {
+                  return masterMedication.chemicalType === 'laba,ICS' &&
+                    masterMedication.chemicalICS === patientMedication.chemicalICS &&
+                    masterMedication.chemicalLABA === laba.chemicalLABA;
+                } )
+                .value();
               const fifty = _.chain( sameChemicalLabaAndIcs )
                 .filter( ( medication ) => {
                   return calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
@@ -125,6 +124,13 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
+              const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
+                .filter( ( masterMedication ) => {
+                  return masterMedication.chemicalType === 'laba,ICS' &&
+                    masterMedication.chemicalICS === patientMedication.chemicalICS &&
+                    masterMedication.chemicalLABA === patientMedication.chemicalLABA;
+                } )
+                .value();
               return result.push( totalDoseReduction( patientMedication, sameChemicalLabaAndIcs ) );
             }
           }
