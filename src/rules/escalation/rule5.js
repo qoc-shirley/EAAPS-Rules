@@ -6,10 +6,10 @@ const rule5 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
       const rule =
-        _.partial( ( medicationElement, medications, patientMedication ) => {
-          const originalMedicationLtra = _.filter( medications, { chemicalType: 'ltra' } );
-          const originalMedicationLaba = _.filter( medications, { chemicalType: 'laba' } );
-          const filterOrgMeds = _.filter( medications, ( medication ) => {
+        _.partial( ( _masterMedications, patientMedications, patientMedication ) => {
+          const originalMedicationLtra = _.filter( patientMedications, { chemicalType: 'ltra' } );
+          const originalMedicationLaba = _.filter( patientMedications, { chemicalType: 'laba' } );
+          const filterOrgMeds = _.filter( patientMedications, ( medication ) => {
             return medication.name !== 'symbicort' &&
               (
                 medication.chemicalType === 'laba' ||
@@ -24,7 +24,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
             const recommendHighest = adjust.ICSDose( patientMedication, 'highest' );
             result.push( originalMedicationLtra );
             if ( _.isEmpty( recommendHighest ) ) {
-              return result.push( _.chain( medicationElement )
+              return result.push( _.chain( _masterMedications )
                 .filter( ( medication ) => {
                   return medication.chemicalType === 'laba,ICS' &&
                     ( adjust.ICSDose( medication, 'highest' ) !== [] ) &&
@@ -64,10 +64,10 @@ const rule5 = ( patientMedications, masterMedications ) => {
           }
           else if ( ( patientMedication.chemicalType === 'ICS' &&
                       calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
-                    !_.isEmpty( isLaba )
+                    !_.isEmpty( isLaba ) && !_.isEmpty( originalMedicationLtra )
                   ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
-            const filteredMedication = _.chain( medicationElement )
+            const filteredMedication = _.chain( _masterMedications )
               .filter( ( masterMedication ) => {
                 return masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
@@ -85,13 +85,10 @@ const rule5 = ( patientMedications, masterMedications ) => {
               })
               .value();
             if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
-              result.push( originalMedicationLtra );
-              result.push( originalMedicationLaba );
-
-              //result.concat( [originalMedicationLtra , originalMedicationLaba ])
+              result.push( [originalMedicationLtra, originalMedicationLaba] );
 
               return result.push(
-                _.chain( medicationElement )
+                _.chain( _masterMedications )
                   .filter( ( medication ) => {
                     return medication.chemicalType === 'ICS' &&
                       medication.name === patientMedication.name &&
@@ -99,7 +96,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
                       ( medication.timesPerDay === patientMedication.timesPerDay ||
                         medication.timesPerDay === '1 OR 2' ) &&
                       ( medication.device === patientMedication.device || medication.device === laba.device );
-                  })
+                  } )
                   .reduce( ( accResult, medication ) => {
                     if ( _.isNil( accResult.high ) ) {
                       accResult.high = medication;
@@ -122,21 +119,20 @@ const rule5 = ( patientMedications, masterMedications ) => {
               .maxBy( 'doseICS' )
               .value(),
             );
-            result.push( originalMedicationLtra) ;
+            result.push( originalMedicationLtra ) ;
 
             return result;
           }
-          else if ( patientMedication.name === 'symbicort' && _.some( medications, { chemicalType: 'ltra' } ) ) {
-            result.push(
+          else if ( patientMedication.name === 'symbicort' && _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
+            result.push( ['SMART',
               _.filter(
-                medicationElement,
+                _masterMedications,
                 {
                   name: 'symbicort',
                   function: 'controller,reliever',
                   din: patientMedication.din,
-                } ),
+                } )],
             );
-            // add tag
           }
 
           return result;
@@ -146,7 +142,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
 
       return result;
     }, [] )
-    .flatten()
+    .flattenDeep()
     .uniqBy( 'id' )
     .value();
 };
