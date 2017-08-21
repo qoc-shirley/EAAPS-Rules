@@ -54,66 +54,10 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 }, [] )
                 .thru( medication => medication.toNext || medication.toMax || medication )
                 .value();
-              // if ( _.isEmpty( checkNewMedication ) && !_.isEmpty( equal ) ) {
-              //   checkNewMedication = _.chain(equal)
-              //     .reduce( ( accResult, medication ) => {
-              //       if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
-              //         const newMedAdjust =  adjust.ICSDoseToMax( medication );
-              //         if ( _.isNil( accResult.toMax) ) {
-              //           return Object.assign( {}, accResult, { toMax: newMedAdjust } );
-              //         }
-              //         if ( accResult.toMax.doseICS < newMedAdjust.doseICS ) {
-              //           return Object.assign( {}, accResult, { toMax: newMedAdjust } );
-              //         }
-              //
-              //         return accResult;
-              //       }
-              //       else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
-              //         const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
-              //         if ( _.isNil( accResult.toNext) ) {
-              //           return Object.assign( {}, accResult, { toNext: newMedAdjust } );
-              //         }
-              //         if ( accResult.toNext.doseICS < newMedAdjust.doseICS ) {
-              //           return Object.assign( {}, accResult, { toNext: newMedAdjust } );
-              //         }
-              //
-              //         return accResult;
-              //       }
-              //
-              //       return medication;
-              //     }, [] )
-              //     .thru( medication => medication.toMax || medication.toNext || medication )
-              //     .value();
-              // }
-              console.log('checkNewMedication: ', checkNewMedication);
-              // const matchTimesPerDay = _.chain(checkNewMedication)
-              //   .filter( ( medication ) => {
-              //     if (patientMedication.timesPerDayValue === 1) {
-              //       return medication.timesPerDay === '1 OR 2';
-              //     }
-              //
-              //     return medication.timesPerDay === patientMedication.timesPerDayValue;
-              //   } )
-              //   .value();
-              //
-              // if (_.size( matchTimesPerDay ) >= 2 ) {
-              //   const attemptMinimize = _.chain( matchTimesPerDay )
-              //     .filter( ( medication ) => {
-              //       return medication.doseICS > patientMedication.doseICS;
-              //     } )
-              //     .value();
-              //   if (_.isEmpty( attemptMinimize ) ) {
-              //     result.push( matchTimesPerDay );
-              //   }
-              //
-              //   return attemptMinimize;
-              // }
-              // else if (_.size( matchTimesPerDay ) === 1 ) {
-              //   result.push( matchTimesPerDay );
-              // }
 
-              // return result.push( checkNewMedication );
+              return result.push( checkNewMedication );
             }
+
             else {
               // medicationElement = medication from spreadsheet
               const masterMedication = medicationElement;
