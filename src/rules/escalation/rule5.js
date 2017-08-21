@@ -20,7 +20,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' && patientMedication.name !== 'symbicort' &&
                calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) &&
-            originalMedicationLtra ) {
+           !_.isEmpty( originalMedicationLtra ) ) {
             const recommendHighest = adjust.ICSDose( patientMedication, 'highest' );
             result.push( originalMedicationLtra );
             if ( _.isEmpty( recommendHighest ) ) {
