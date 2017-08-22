@@ -5,8 +5,9 @@ import * as categorize from '../library/categorizeDose';
 const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
       .reduce( ( result, originalMedication ) => {
         const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
+          const labaMedication = _.filter( _patientMedications, { chemicalType: 'laba' } );
           if ( ( patientMedication.chemicalType === 'laba,ICS' || ( patientMedication.chemicalType === 'ICS' &&
-              !_.isEmpty( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) ) ) &&
+              !_.isEmpty( labaMedication ) ) ) &&
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
@@ -16,7 +17,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
               return _.chain( _masterMedications )
                 .filter( { name: 'singulair' } )
-                .thru( _medication => result.push( [_medication, patientMedication] ) )
+                .thru( _medication => result.push( [_medication,
+                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] ) )
                 .value();
             }
             console.log( 'laba and ICS' );
@@ -34,7 +36,9 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       medication.device !== laba.device )
                   )
                 ) {
-                  return _.concat( accResult, patientMedication );
+                  console.log('no match wih any');
+                  return _.concat( accResult,
+                    Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
                 }
 
                 const adjustToOrgIcsDose = adjust.ICSDoseToOriginalMedication( medication, patientMedication );
@@ -46,6 +50,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     ( !_.isEmpty( adjustToOrgIcsDose ) &&
                       _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
                    ) {
+                  console.log('match device and chemical');
                   newMedication = adjustToOrgIcsDose;
 
                   return _.concat( accResult, newMedication );
@@ -58,6 +63,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                           ( !_.isEmpty( adjustToOrgIcsDose ) &&
                           _.toInteger(newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
                         ) {
+                  console.log('only match chemical');
                   newMedication = adjustToOrgIcsDose;
 
                   return _.concat( accResult, newMedication );
@@ -66,7 +72,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 return accResult;
               }, [] )
               .uniqBy( 'id' )
-              .thru( _medication => result.push( [_medication, singulair] ) )
+              .thru( _medication => result.push( [_medication, singulair, labaMedication] ) )
               .value();
           }
 
