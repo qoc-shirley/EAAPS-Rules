@@ -23,8 +23,10 @@ export const ICSDose = ( medication, level ) => {
     }
   }
   else if ( level === 'highest' ) {
+    console.log('max:', max);
     while ( highestICSDose === false && counter <= max ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
+      console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
       if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
         medication.maxPuffPerTime = counter;
         highestICSDose = true;
@@ -83,9 +85,9 @@ export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => 
   let testAdjustment;
   while ( equal === false && ( counter <= max ) ) {
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-    console.log('testAdjustment: ', testAdjustment, calculate.patientICSDose( patientMedication ));
+    // console.log('testAdjustment: ', testAdjustment, calculate.patientICSDose( patientMedication ));
     if ( testAdjustment === calculate.patientICSDose( patientMedication ) ) {
-      console.log("equal: ", medication);
+      // console.log("adjust equal: ", medication);
       medication.maxPuffPerTime = counter;
       equal = true;
 
