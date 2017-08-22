@@ -30,7 +30,7 @@ const rule8 = ( patientMedications, masterMedications ) => {
 
       return _.chain( masterMedications )
         .filter( { name: 'singulair' } )
-        .concat( smartMedHighMeds )
+        .concat( 'SMART', smartMedHighMeds )
         .value();
     } )
     .value();

@@ -10,11 +10,13 @@ const rule9 = ( patientMedications ) => {
         ( calculate.ICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
         _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
         if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
+          result.push( 'SMART' );
           result.push( patientMedication );
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
         else {
           const filterMedication = _.filter( patientMedications, { chemicalType: patientMedication.chemicalType } );
+          result.push( 'SMART' );
           result.push( match.minimizePuffsPerTime( filterMedication, patientMedication ) );
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
