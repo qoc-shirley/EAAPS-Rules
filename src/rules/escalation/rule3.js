@@ -30,16 +30,12 @@ const rule3 = ( patientMedications, masterMedications ) => {
                       medication.timesPerDay === '1 OR 2' ) &&
                       medication.device === patientMedication.device;
                 } )
-                .minBy( ( minMedication ) => {
-                  if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '1' ) {
-                    return minMedication.doseICS * minMedication.maxPuffPerTime;
-                  }
-                  else if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '2' ) {
-                    return minMedication.doseICS * minMedication.maxPuffPerTime * 2;
-                  }
-
-                  return minMedication.doseICS * minMedication.timesPerDay * minMedication.maxPuffPerTime;
+                .thru( ( convert ) => {
+                  return _.map( convert, ( convertEach ) => {
+                    return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                  } );
                 } )
+                .maxBy( 'doseICS' )
                 .thru( _medication => result.push( _medication ) )
                 .value();
             }
