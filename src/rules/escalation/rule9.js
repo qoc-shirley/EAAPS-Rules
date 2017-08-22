@@ -7,7 +7,7 @@ const rule9 = ( patientMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
       if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
-        ( calculate.ICSDose( patientMedication ) < patientMedication.maxGreenICS ) &&
+        ( calculate.ICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
         _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
         if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
           result.push( patientMedication );
