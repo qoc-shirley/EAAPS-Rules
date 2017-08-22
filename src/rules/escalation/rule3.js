@@ -21,28 +21,23 @@ const rule3 = ( patientMedications, masterMedications ) => {
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
                patientMedication.name !== 'symbicort' ) {
-            if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
-              return _.chain( _masterMedications )
-                .filter( ( medication ) => {
-                  return medication.chemicalType === 'laba,ICS' &&
-                    ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
-                    ( medication.timesPerDay === patientMedication.timesPerDay ||
-                      medication.timesPerDay === '1 OR 2' ) &&
-                      medication.device === patientMedication.device;
-                } )
-                .thru( ( convert ) => {
-                  return _.map( convert, ( convertEach ) => {
-                    return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
-                  } );
-                } )
-                .maxBy( 'doseICS' )
-                .thru( _medication => result.push( _medication ) )
-                .value();
-            }
-
-            return result.push( patientMedication );
+            return _.chain( _masterMedications )
+              .filter( ( medication ) => {
+                return medication.chemicalType === 'laba,ICS' &&
+                  ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
+                  ( medication.timesPerDay === patientMedication.timesPerDay ||
+                    medication.timesPerDay === '1 OR 2' ) &&
+                    medication.device === patientMedication.device;
+              } )
+              .thru( ( convert ) => {
+                return _.map( convert, ( convertEach ) => {
+                  return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                } );
+              } )
+              .maxBy( 'doseICS' )
+              .thru( _medication => result.push( _medication ) )
+              .value();
           }
-
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
