@@ -86,6 +86,11 @@ const rule3 = ( patientMedications, masterMedications ) => {
                     return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
                   } );
                 } )
+                .thru( ( convert ) => {
+                  return _.map( convert, ( convertEach ) => {
+                    return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                  } );
+                } )
                 .maxBy( 'doseICS' )
                 .thru( _medication => result.push( _medication ) )
                 .value();
@@ -118,6 +123,11 @@ const rule3 = ( patientMedications, masterMedications ) => {
               } )
               .filter( ( adjustMedication ) => {
                 return adjust.ICSDose( adjustMedication, 'lowestMedium' ) !== [];
+              } )
+              .thru( ( convert ) => {
+                return _.map( convert, ( convertEach ) => {
+                  return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                } );
               } )
               .maxBy( 'doseICS' )
               .value();
