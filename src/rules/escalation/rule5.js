@@ -21,7 +21,23 @@ const rule5 = ( patientMedications, masterMedications ) => {
           if ( patientMedication.chemicalType === 'laba,ICS' && patientMedication.name !== 'symbicort' &&
                calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) &&
            !_.isEmpty( originalMedicationLtra ) ) {
-            const recommendHighest = adjust.ICSDose( patientMedication, 'highest' );
+            const recommendHighest = _.chain( _masterMedications )
+              .filter( ( sameMedication ) => {
+                return sameMedication.chemicalType === patientMedication.chemicalType &&
+                  sameMedication.name === patientMedication.name &&
+                  sameMedication.device === patientMedication.device;
+              } )
+              .filter( ( adjustToMax ) => {
+                return adjust.ICSDose( adjustToMax, 'highest' );
+              } )
+              .thru( ( convert ) => {
+                return _.map( convert, ( convertEach ) => {
+                  return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                } );
+              } )
+              .maxBy( 'doseICS' )
+              .value();
+            console.log('recommendHighest: ', recommendHighest);
             result.push( originalMedicationLtra );
             if ( _.isEmpty( recommendHighest ) ) {
               return result.push( _.chain( _masterMedications )
