@@ -19,14 +19,14 @@ const rule7 = ( patientMedications ) => {
             } )
             .max( 'doseICS' )
             .thru( _med => adjust.ICSDose( _med, 'lowestMedium' ) )
-            .concat( result )
+            .concat( result, 'SMART' )
             .value();
         }
 
         console.log( 'same doseICS: ', patientMedication, adjust.ICSDose( patientMedication, 'lowestMedium' ) );
         return _.chain( patientMedication )
           .thru( med => adjust.ICSDose( med, 'lowestMedium' ) )
-          .concat( result )
+          .concat( result, 'SMART' )
           .value();
       }
 

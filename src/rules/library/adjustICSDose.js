@@ -11,8 +11,9 @@ export const ICSDose = ( medication, level ) => {
   if ( level === 'lowestMedium' ) {
     while ( lowMediumICSDose === false && ( counter <= max ) ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      if ( ( testAdjustment > _.toInteger( medication.lowCeilICS ) ) &&
-        ( testAdjustment < _.toInteger( medication.highFloorICS ) ) ) {
+      if ( testAdjustment > _.toInteger( medication.lowCeilICS ) &&
+        testAdjustment < _.toInteger( medication.highFloorICS ) ) {
+        // console.log( 'test adjustment: ', testAdjustment, counter );
         medication.maxPuffPerTime = counter;
         lowMediumICSDose = true;
 
