@@ -17,6 +17,11 @@ const rule7 = ( patientMedications ) => {
                 medication.function === 'controller,reliever' &&
                 categorize.patientICSDose( medication ) === 'low';
             } )
+            .thru( ( convert ) => {
+              return _.map( convert, ( convertEach ) => {
+                return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+              } );
+            } )
             .max( 'doseICS' )
             .thru( _med => adjust.ICSDose( _med, 'lowestMedium' ) )
             .concat( result, 'SMART' )
