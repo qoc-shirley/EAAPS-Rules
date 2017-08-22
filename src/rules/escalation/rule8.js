@@ -24,8 +24,8 @@ const rule8 = ( patientMedications, masterMedications ) => {
       if ( !_.size( smartMedHighMeds ) ) {
         return [];
       }
-      console.log('smartMedHighMeds: ', smartMedHighMeds);
-      const recommend = Object.assign( smartMedHighMeds, { maxPuffPerTime: smartMedHighMeds.puffPerTime } );
+      console.log('smartMedHighMeds: ', smartMedHighMeds[0]);
+      const recommend = Object.assign( smartMedHighMeds[0], { maxPuffPerTime: smartMedHighMeds[0].puffPerTime } );
       console.log('recommend: ', recommend);
 
       return _.chain( masterMedications )
