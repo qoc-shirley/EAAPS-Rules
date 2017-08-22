@@ -131,6 +131,11 @@ const rule5 = ( patientMedications, masterMedications ) => {
               );
             }
             result.push( _.chain( isfilteredMedicationDevice )
+              .thru( ( convert ) => {
+                return _.map( convert, ( convertEach ) => {
+                  return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                } );
+              } )
               .maxBy( 'doseICS' )
               .value(),
             );
