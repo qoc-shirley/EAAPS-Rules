@@ -70,82 +70,58 @@ const rule3 = ( patientMedications, masterMedications ) => {
               } )
               .value();
 
-            if ( _.isEmpty( sameChemicalLabaAndIcs ) || _.isEmpty( getDeviceIcsOrLaba ) ) {
+            if ( !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
               // console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba)
-              if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
-                result.push( isLaba );
-              }
-              else if ( _.isEmpty( getDeviceIcsOrLaba ) ) {
-                result.push( isLtra );
-              }
+              result.push( isLtra );
 
-              if ( categorize.patientICSDose( patientMedication ) !== 'medium' ) {
-
-                return _.chain( _masterMedications )
-                  .filter( ( medication ) => {
-                    return medication.chemicalType === 'ICS' &&
-                      ( medication.timesPerDay === patientMedication.timesPerDay ||
-                        medication.timesPerDay === '1 OR 2' ) &&
-                      ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
-                      ( medication.device === patientMedication.device || medication.device === laba.device );
-                  } )
-                  .maxBy( 'doseICS' )
-                  // .minBy( ( minMedication ) => {
-                  //   if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '1' ) {
-                  //     return minMedication.doseICS * minMedication.maxPuffPerTime;
-                  //   }
-                  //   else if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '2' ) {
-                  //     return minMedication.doseICS * minMedication.maxPuffPerTime * 2;
-                  //   }
-                  //
-                  //   return minMedication.doseICS * minMedication.timesPerDay * minMedication.maxPuffPerTime;
-                  // } )
-                  .thru( _medication => result.push( _medication ) )
-                  .value();
-              }
-
-              return result.push( patientMedication );
-            }
-            console.log('test getDeviceIcsOrLaba');
-            const recommend = _.filter( getDeviceIcsOrLaba, ( medication ) => {
-              return categorize.ICSDose( medication ) === 'medium';
-            } );
-            if ( _.isEmpty( [] ) ) {
-              console.log('recommend: ', _.chain( sameChemicalLabaAndIcs )
+              return _.chain( _masterMedications )
                 .filter( ( medication ) => {
-                  return medication.chemicalType === 'ICS' &&
+                  return medication.chemicalType === 'ICS' && medication.name === patientMedication.name &&
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
                     ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
-                    ( medication.device === patientMedication.device || medication.device === laba.device );
+                    medication.device === patientMedication.device;
                 } )
-                .value());
-
-              return _.chain( sameChemicalLabaAndIcs )
-                .filter( ( medication ) => {
-                  return medication.chemicalType === 'ICS' &&
-                    ( medication.timesPerDay === patientMedication.timesPerDay ||
-                      medication.timesPerDay === '1 OR 2' ) &&
-                    ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
-                    ( medication.device === patientMedication.device || medication.device === laba.device );
+                .thru( ( convert ) => {
+                  return _.map( convert, ( convertEach ) => {
+                    return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                  } );
                 } )
                 .maxBy( 'doseICS' )
-                // .minBy( ( minMedication ) => {
-                //   if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '1' ) {
-                //     return minMedication.doseICS * minMedication.maxPuffPerTime;
-                //   }
-                //   else if ( minMedication.timesPerDay === '1 OR 2' && patientMedication.timesPerDay === '2' ) {
-                //     return minMedication.doseICS * minMedication.maxPuffPerTime * 2;
-                //   }
-                //
-                //   return minMedication.doseICS * minMedication.timesPerDay * minMedication.maxPuffPerTime;
-                // } )
                 .thru( _medication => result.push( _medication ) )
                 .value();
             }
-            const lowest = get.lowestICSDose( recommend );
+            console.log('test getDeviceIcsOrLaba');
+            if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
+              result.push( isLaba );
 
-            return result.push( Object.assign( {}, lowest, { maxPuffPerTime: 1 } ) );
+              return _.chain( _masterMedications )
+                .filter( ( medication ) => {
+                  return medication.chemicalType === 'ICS' && medication.name === patientMedication.name &&
+                    ( medication.timesPerDay === patientMedication.timesPerDay ||
+                      medication.timesPerDay === '1 OR 2' ) &&
+                    ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
+                    ( medication.device === patientMedication.device || medication.device === laba.device );
+                } )
+                .thru( ( convert ) => {
+                  return _.map( convert, ( convertEach ) => {
+                    return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                  } );
+                } )
+                .maxBy( 'doseICS' )
+                .thru( _medication => result.push( _medication ) )
+                .value();
+            }
+
+            return _.chain( sameChemicalLabaAndIcs )
+              .filter( ( chooseDevice ) => {
+                return chooseDevice.device === patientMedication.device;
+              } )
+              .filter( ( adjustMedication ) => {
+                return adjust.ICSDose( adjustMedication, 'lowestMedium' ) !== [];
+              } )
+              .maxBy( 'doseICS' )
+              .value();
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
