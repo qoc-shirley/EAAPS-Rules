@@ -67,12 +67,14 @@ const rule2 = ( patientMedications, masterMedications ) => {
           } )
           .isEmpty()
           .value();
+        console.log('compareLowestDose: ', compareLowestDose);
         if ( patientMedication.chemicalType === 'ICS' &&
           noLabaLtra &&
           !_.isEmpty(  _.filter( compareLowestDose,
             ( medication ) => {
               return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
             } ) ) ) {
+          console.log('in');
           const recommend = _.chain( compareLowestDose )
             .filter( ( medication ) => {
               return medication.chemicalICS === patientMedication.chemicalICS &&
