@@ -24,7 +24,7 @@ const showRecommendations = ( {
           <p className="title">ChemicalLABA</p>
           <p className="title">ChemicalICS</p>
           <p className="title">Dose ICS</p>
-          <p className="title">Max Puff Per Time</p>
+          <p className="title">Puff Per Time</p>
           <p className="title">Times Per Day</p>
         </div>
         <div className="scrollMedications">
