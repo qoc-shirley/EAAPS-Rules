@@ -76,9 +76,10 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             } ) ) ) {
           const questionTwo = asthmaControlAnswers[0].asthmaSymptoms;
           if ( questionTwo === '0' ) {
-            result.push( 'discontinue medication: ', patientMedication );
-            result.push( 'OR' );
-            result.push( 'continue medication: ', patientMedication );
+            result.push( ['discontinue medication: ',
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
+              'OR', 'continue medication: ',
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] );
 
             return result;
           }
@@ -92,6 +93,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
       return result;
     }, [] )
+    .flattenDeep()
     .value();
 };
 
