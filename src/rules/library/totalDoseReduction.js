@@ -67,10 +67,10 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
         .value();
     }
 
-    return Object.assign( betweenFiftyAndFullDose, { maxPuffPerTime: 1 } );
+    return betweenFiftyAndFullDose;
   }
 
-  return Object.assign( exactlyFifty, { maxPuffPerTime: 1 } );
+  return exactlyFifty;
 };
 
 export default totalDoseReduction;
