@@ -94,11 +94,11 @@ const rule1 = ( patientMedications, masterMedications ) => {
                     else {
                       if ( category === 'excessive' &&
                         calculate.ICSDose( accMedicationCategory[category] ) <= calculate.ICSDose( medication ) ) {
-                        accMedicationCategory[category] = medication;
+                        accMedicationCategory[category] = adjust.ICSDose( medication, 'highest' );
                       }
                       else if ( calculate.ICSDose( accMedicationCategory[category] ) >
                         calculate.ICSDose( medication ) ) {
-                        accMedicationCategory[category] = medication;
+                        accMedicationCategory[category] = Object.assign( medication, { maxPuffPerTime: 1 } );
                       }
                     }
 
