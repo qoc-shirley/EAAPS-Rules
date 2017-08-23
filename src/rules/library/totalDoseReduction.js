@@ -27,13 +27,18 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
           calculate.patientICSDose( patientMedication ),
         ) !== [];
       } )
-      .thru( get.lowestICSDose )
-      .thru(
-        ( medication ) => {
-          return Object.assign( {}, medication,
-            { maxPuffPerTime: 1 },
-          );
-        } )
+      // .thru( get.lowestICSDose )
+      // .thru(
+      //   ( medication ) => {
+      //     return Object.assign( {}, medication,
+      //       { maxPuffPerTime: 1 },
+      //     );
+      //   } )
+      .minBy( ( minMedication ) => {
+        return _.toInteger( minMedication.doseICS ) *
+          _.toInteger( minMedication.timesPerDay ) *
+          _.toInteger( minMedication.maxPuffPerTime );
+      } )
       .value();
 
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
@@ -57,13 +62,18 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
             calculate.patientICSDose( patientMedication ),
           );
         } )
-        .thru( get.lowestICSDose )
-        .thru(
-          ( medication ) => {
-            return Object.assign( {}, medication,
-              { maxPuffPerTime: 1 },
-            );
-          } )
+        // .thru( get.lowestICSDose )
+        // .thru(
+        //   ( medication ) => {
+        //     return Object.assign( {}, medication,
+        //       { maxPuffPerTime: 1 },
+        //     );
+        //   } )
+        .minBy( ( minMedication ) => {
+          return _.toInteger( minMedication.doseICS ) *
+            _.toInteger( minMedication.timesPerDay ) *
+            _.toInteger( minMedication.maxPuffPerTime );
+        } )
         .value();
     }
 
