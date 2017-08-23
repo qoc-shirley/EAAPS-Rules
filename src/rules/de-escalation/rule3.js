@@ -131,6 +131,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     masterMedication.chemicalLABA === patientMedication.chemicalLABA;
                 } )
                 .value();
+              console.log('laba,ICS sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs);
               return result.push( totalDoseReduction( patientMedication, sameChemicalLabaAndIcs ) );
             }
           }
@@ -140,7 +141,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // not on smart
               if ( patientMedication.chemicalType === 'ICS' ) {
                 // discontinue laba medication
-                return result.push( patientMedication ) ;
+                return result.push(
+                  Object.assign( patientMedication,
+                    {
+                      maxPuffPerTime: patientMedication.puffPerTime,
+                      timesPerDay: patientMedication.timesPerDayValue,
+                    } ),
+                  isLaba,
+                );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
                 // recommend medication with same chemicalICS as original Medication

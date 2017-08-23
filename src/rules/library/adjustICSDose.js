@@ -109,17 +109,15 @@ export const ICSDoseToDose = ( medication, dose ) => {
   let testAdjustment;
   while ( equal === false && ( counter <= max ) ) {
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-    if ( testAdjustment  === dose ) {
+    if ( testAdjustment === dose ) {
       equal = true;
+
+      return medication;
     }
     counter++;
   }
-  if ( equal === false && counter > max ) {
-    // console.log("ICS DOSE cannot be made equal");
-    return null;
-  }
 
-  return medication;
+  return [];
 };
 
 export const ICSDoseToMax = ( medication ) => {
