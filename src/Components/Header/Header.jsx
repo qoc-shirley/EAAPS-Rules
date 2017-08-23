@@ -4,7 +4,7 @@ import './styles.css';
 const Header = () => {
   return (
     <div className="header">
-      <h1>Escalation Rules</h1>
+      <h1>CDSS-Escalation and De-Escalation Rules</h1>
     </div>
   );
 };
