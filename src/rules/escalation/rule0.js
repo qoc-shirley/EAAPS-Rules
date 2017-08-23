@@ -85,67 +85,63 @@ const rule0 = ( patientMedications, masterMedications ) => {
             }
           }
           else {
-            result.push(
-              {
-                id: '*',
-                device: '-',
-                name: 'Flovent',
-                chemicalLABA: '-',
-                chemicalICS: '-',
-                doseICS: '125 ug 1 Puff Bid',
-                puffPerTime: '-',
-                timesPerDay: '-',
-              },
-              {
-                id: 'Or *',
-                device: 'Discus',
-                name: '-',
-                chemicalLABA: '-',
-                chemicalICS: '-',
-                doseICS: '100 ug 1 PUFF puff bid',
-                puffPerTime: '-',
-                timesPerDay: '-',
-              },
-              {
-                id: '-',
-                device: '-',
-                name: 'Pulmicort',
-                chemicalLABA: '-',
-                chemicalICS: '-',
-                doseICS: '200 ug 1 PUFF bid',
-                puffPerTime: '-',
-                timesPerDay: '-',
-              },
-              {
-                id: '-',
-                device: '-',
-                name: 'Asmanex',
-                chemicalLABA: '-',
-                chemicalICS: '-',
-                doseICS: '200 ug I PUFF od',
-                puffPerTime: '-',
-                timesPerDay: '-',
-              },
-              {
-                id: '-',
-                device: '-',
-                name: 'Alvesco',
-                chemicalLABA: '-',
-                chemicalICS: '-',
-                doseICS: '200 ug I PUFF od',
-                puffPerTime: '-',
-                timesPerDay: '-',
-              },
-              {
-                id: '-',
-                device: '-',
-                name: 'QVAR',
-                chemicalLABA: '-',
-                chemicalICS: '-',
-                doseICS: '100 I PUFF ug bid',
-                puffPerTime: '-',
-                timesPerDay: '-',
-              },
+            console.log('patientMedication: ', patientMedication);
+            const recommendationOne = _.chain( _masterMedications )
+              .filter( { name: 'flovent', doseICS: '125' } )
+              .thru( ( changeOne ) => {
+                return _.map( changeOne, ( changeOneEach ) => {
+                  return Object.assign( changeOneEach, { maxPuffPerTime: 1 } );
+                } );
+              } )
+              .value();
+            const recommendationTwo = _.chain( _masterMedications )
+              .filter( { device: 'diskus', doseICS: '100' } )
+              .thru( ( changeTwo ) => {
+                return _.map( changeTwo, ( changeTwoEach ) => {
+                  return Object.assign( changeTwoEach, { maxPuffPerTime: 1 } );
+                } );
+              } )
+              .value();
+            const recommendationThree =  _.chain( _masterMedications )
+              .filter( { name: 'pulmicort', doseICS: '200' } )
+              .thru( ( changeThree ) => {
+                return _.map( changeThree, ( changeThreeEach ) => {
+                  return Object.assign( changeThreeEach, { maxPuffPerTime: 1 } );
+                } );
+              } )
+              .value();
+            const recommendationFour = _.chain( _masterMedications )
+              .filter( { name: 'asmanex', doseICS: '200' } )
+              .thru( ( changeFour ) => {
+                return _.map( changeFour, ( changeFourEach ) => {
+                  return Object.assign( changeFourEach, { maxPuffPerTime: 1 } );
+                } );
+              } )
+              .value();
+            const recommendationFive = _.chain( _masterMedications )
+              .filter( { name: 'alvesco', doseICS: '200' } )
+              .thru( ( changeFive ) => {
+                return _.map( changeFive, ( changeFiveEach ) => {
+                  return Object.assign( changeFiveEach, { maxPuffPerTime: 1 } );
+                } );
+              } )
+              .value();
+            const recommendationSix =  _.chain( _masterMedications )
+              .thru( ( changeSix ) => {
+                return _.map( changeSix, ( changeSixEach ) => {
+                  return Object.assign( changeSixEach, { maxPuffPerTime: 1 } );
+                } );
+              } )
+              .filter( { name: 'qvar', doseICS: '100' } )
+              .value();
+
+            result.push( 'Options: ',
+              recommendationOne,
+              recommendationTwo,
+              recommendationThree,
+              recommendationFour,
+              recommendationFive,
+              recommendationSix,
               );
           }
         }
