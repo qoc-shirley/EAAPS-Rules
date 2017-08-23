@@ -28,9 +28,9 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           console.log(rule1( [patientMedication], medicationElement, asthmaControlAnswers ));
           result.push( [
-            'discontinue ltra and continue ICS: ', patientMedication,
-            'continue ltra: ', isLtra[0],
-            'continue ICS: ', 'Rule1: ', rule1Recommendation,
+            'discontinue ltra: ', patientMedication,
+            'continue ltra : ', isLtra[0],
+            'Rule1: ', rule1Recommendation,
             'Rule2: ', rule2Recommendation,
           ] );
         }

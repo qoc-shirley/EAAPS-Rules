@@ -34,9 +34,8 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             rule3Recommendation = 'No recommendation';
           }
           result.push( [
-            'discontinue Ltra and continue ICS and laba/laba,ICS: ', _.concat( patientMedication, noLaba, noLabaICS ),
-            'continue recommend: ', rule3Recommendation,
-            'continue ltra: ', noLtra,
+            'discontinue Ltra: ', _.concat( patientMedication, noLaba, noLabaICS ),
+            'continue ltra (Rule3): ', rule3Recommendation, noLtra,
           ] );
         }
 
