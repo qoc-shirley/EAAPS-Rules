@@ -84,7 +84,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             return result;
           }
 
-          return result.push( patientMedication );
+          return result.push(  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
         }
 
         return result;

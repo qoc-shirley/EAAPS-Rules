@@ -49,6 +49,7 @@ saveRecommendation,
   };
 
   const deescalationRules = () => {
+    const clonedMasterMedication = _.cloneDeep( medicationData );
     const asthmaControlAnswers = [
       {
         wakeUp: medication.wakeUp,
@@ -61,20 +62,22 @@ saveRecommendation,
     saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
     saveRecommendation(
       'Rule 1',
-      getDeEscalation.rules.rule1( medication.patientMedications, medicationData, asthmaControlAnswers ) );
-    saveRecommendation( 'Rule 2', getDeEscalation.rules.rule2( medication.patientMedications, medicationData ) );
+      getDeEscalation.rules.rule1( medication.patientMedications, clonedMasterMedication, asthmaControlAnswers ) );
+    saveRecommendation(
+      'Rule 2',
+      getDeEscalation.rules.rule2( medication.patientMedications, clonedMasterMedication ) );
     saveRecommendation(
       'Rule 3',
       getDeEscalation.rules.rule3(
         medication.patientMedications,
-        medicationData, asthmaControlAnswers,
+        clonedMasterMedication, asthmaControlAnswers,
       ) );
     saveRecommendation(
       'Rule 4',
-      getDeEscalation.rules.rule4( medication.patientMedications, medicationData, asthmaControlAnswers ) );
+      getDeEscalation.rules.rule4( medication.patientMedications, clonedMasterMedication, asthmaControlAnswers ) );
     saveRecommendation(
       'Rule 5',
-      getDeEscalation.rules.rule5( medication.patientMedications, medicationData, asthmaControlAnswers ) );
+      getDeEscalation.rules.rule5( medication.patientMedications, clonedMasterMedication, asthmaControlAnswers ) );
   };
 
   const clearRecommendations = () => {
