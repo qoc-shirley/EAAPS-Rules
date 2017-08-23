@@ -17,7 +17,8 @@ const rule0 = ( patientMedications, masterMedications ) => {
               } )
               .isEmpty()
               .value();
-            if ( isLabaICSAndChemicalLABA ) {
+            console.log('isLabaICSAndChemicalLABA: ',isLabaICSAndChemicalLABA);
+            if ( patientMedication.chemicalType === 'laba' && !isLabaICSAndChemicalLABA ) {
               return result.push( _.chain( _masterMedications )
                 .filter( {
                   chemicalType: 'laba,ICS',
@@ -25,6 +26,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                   device: patientMedication.device,
                 } )
                 .thru( ( results ) => {
+                  console.log('results: ', results);
                   if ( !_.isEmpty( results ) ) {
                     return _.chain( _masterMedications )
                       .filter( {
@@ -35,8 +37,9 @@ const rule0 = ( patientMedications, masterMedications ) => {
                       .value();
                   }
                   else {
+                    console.log('results empty');
                     return _.chain( _masterMedications )
-                      .filter( _masterMedications, {
+                      .filter( {
                         chemicalType: 'laba,ICS',
                         chemicalLABA: patientMedication.chemicalLABA,
                       } )
