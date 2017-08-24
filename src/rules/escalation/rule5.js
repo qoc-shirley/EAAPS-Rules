@@ -6,10 +6,10 @@ const rule5 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
       const rule =
-        _.partial( ( _masterMedications, patientMedications, patientMedication ) => {
-          const originalMedicationLtra = _.filter( patientMedications, { chemicalType: 'ltra' } );
-          const originalMedicationLaba = _.filter( patientMedications, { chemicalType: 'laba' } );
-          const filterOrgMeds = _.filter( patientMedications, ( medication ) => {
+        _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
+          const originalMedicationLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
+          const originalMedicationLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
+          const filterOrgMeds = _.filter( _patientMedications, ( medication ) => {
             return medication.name !== 'symbicort' &&
               (
                 medication.chemicalType === 'laba' ||
@@ -143,7 +143,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
 
             return result;
           }
-          else if ( patientMedication.name === 'symbicort' && _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
+          else if ( patientMedication.name === 'symbicort' &&
+            _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             result.push( ['SMART',
               _.filter(
                 _masterMedications,
