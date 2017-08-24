@@ -78,8 +78,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         const compareLowestDose = _.chain( filterMedications )
           .filter(
           {
-            chemicalType: patientMedication.chemicalType,
-            name: patientMedication.name,
             device: patientMedication.device,
           } )
           .value();
@@ -102,6 +100,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     masterMedication.chemicalLABA === laba.chemicalLABA;
                 } )
                 .value();
+              console.log('sameChemicalLabaAndIcs: ',sameChemicalLabaAndIcs);
               const fifty = _.chain( sameChemicalLabaAndIcs )
                 .filter( ( medication ) => {
                   return calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
@@ -112,7 +111,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 } )
                 .thru( ( convert ) => {
                   return _.map( convert, ( convertEach ) => {
-                    return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                    return Object.assign( convertEach,
+                      {
+                        doseICS: _.toInteger( convertEach.doseICS ),
+                        maxPuffPerTime: 1,
+                      } );
                   } );
                 } )
                 .maxBy( 'doseICS' )
