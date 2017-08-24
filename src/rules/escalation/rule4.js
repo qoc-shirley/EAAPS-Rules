@@ -80,8 +80,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
             return result.push( ['SMART',
-              _.filter( _masterMedications,
-                { name: 'symbicort', function: 'controller,reliever', din: patientMedication.din } )] );
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] );
           }
 
           return result;
