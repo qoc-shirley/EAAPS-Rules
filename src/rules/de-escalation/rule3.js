@@ -155,7 +155,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       maxPuffPerTime: patientMedication.puffPerTime,
                       timesPerDay: patientMedication.timesPerDayValue,
                     } ),
-                  isLaba,
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
