@@ -110,6 +110,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .filter( ( medication ) => {
                   return medication.device === patientMedication.device || medication.device === laba.device;
                 } )
+                .thru( ( convert ) => {
+                  return _.map( convert, ( convertEach ) => {
+                    return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                  } );
+                } )
                 .maxBy( 'doseICS' )
                 .value();
               console.log("fifty: ", fifty);
@@ -172,6 +177,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       device: patientMedication.device,
                       chemicalICS: patientMedication.chemicalICS,
                     } )
+                    .filter( ( nextHigherMedication ) => {
+                      return adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [];
+                    } )
+                    .thru( ( convert ) => {
+                      return _.map( convert, ( convertEach ) => {
+                        return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                      } );
+                    } )
                     .maxBy( 'doseICS' )
                     .value(),
                   );
@@ -226,6 +239,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     chemicalType: 'laba,ICS',
                     device: patientMedication.device,
                     chemicalICS: patientMedication.chemicalICS,
+                  } )
+                  .filter( ( nextHigherMedication ) => {
+                    return adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [];
+                  } )
+                  .thru( ( convert ) => {
+                    return _.map( convert, ( convertEach ) => {
+                      return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
+                    } );
                   } )
                   .maxBy( 'doseICS' )
                   .value(),

@@ -148,18 +148,17 @@ export const ICSHigherNext = ( medication, patientMedication ) => {
   let counter = 1;
   let testAdjustment;
   while ( higherNext === false && ( counter <= max ) ) {
-    testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay )* counter;
+    testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
     // console.log(testAdjustment , calculate.patientICSDose( patientMedication ));
     if ( testAdjustment > calculate.patientICSDose( patientMedication ) ) {
       medication.maxPuffPerTime = counter;
       higherNext = true;
+
+      return medication;
     }
     counter = counter + 1;
   }
-  if ( higherNext === false ) {
-    // console.log("ICS DOSE cannot be made equal");
-    return null;
-  }
 
-  return medication;
+  return [];
+
 };
