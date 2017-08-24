@@ -24,6 +24,7 @@ const rule3 = ( patientMedications, masterMedications ) => {
             return _.chain( _masterMedications )
               .filter( ( medication ) => {
                 return medication.chemicalType === 'laba,ICS' &&
+                  medication.name === patientMedication.name &&
                   ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
                   ( medication.timesPerDay === patientMedication.timesPerDay ||
                     medication.timesPerDay === '1 OR 2' ) &&
@@ -125,11 +126,8 @@ const rule3 = ( patientMedications, masterMedications ) => {
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
-            return result.push( ['SMART', _.filter( _masterMedications, {
-              name: 'symbicort',
-              function: 'controller,reliever',
-              din: patientMedication.din,
-            } )] );
+            return result.push( ['SMART',
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] );
           }
 
           return result;
