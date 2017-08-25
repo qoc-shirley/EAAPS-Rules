@@ -4,6 +4,7 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
+  ON_DOSELABA_CHANGE,
   DEVICE,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
@@ -68,6 +69,16 @@ export const onChangeDoseICS = ( index, doseICSValueChange ) => {
     data: {
       index,
       doseICSValueChange,
+    },
+  };
+};
+
+export const onChangeDoseLaba = ( index, doseLabaValueChange ) => {
+  return {
+    type: ON_DOSELABA_CHANGE,
+    data: {
+      index,
+      doseLabaValueChange,
     },
   };
 };

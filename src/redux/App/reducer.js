@@ -5,6 +5,7 @@ import {
   ON_PUFF_CHANGE,
   ON_TIMES_CHANGE,
   ON_DOSEICS_CHANGE,
+  ON_DOSELABA_CHANGE,
   DEVICE,
   MEDICATION_TO_STACK,
   FILTERED_MEDICATIONS,
@@ -18,6 +19,7 @@ export const initialState = {
   puffValue: '',
   timesPerDayValue: '',
   doseICSValue: '',
+  doseLabaValue: '',
   chemical: '',
   chemicalLABA: '',
   chemicalICS: '',
@@ -120,6 +122,27 @@ const reducer = ( state = initialState, action ) => {
       recommendation: [],
     } );
 
+  case ON_DOSELABA_CHANGE:
+    return Object.assign( {}, state, {
+      doseLabaValue: action.data.doseLabaValueChange[0],
+      doseICSValue: '',
+      puffValue: '',
+      timesPerDayValue: '',
+      medicationList: state.medicationList.map( ( row, index ) =>
+        action.data.index === index ?
+        {
+          ...row,
+          doseLabaValue: action.data.doseICSValueChange[0],
+          doseICSValue: '',
+          puffValue: '',
+          timesPerDayValue: '',
+        }
+          : row ),
+      isRecommendationEmpty: true,
+      isRuleSelectEmpty: true,
+      recommendation: [],
+    } );
+
   case ON_DOSEICS_CHANGE:
     return Object.assign( {}, state, {
       doseICSValue: action.data.doseICSValueChange[0],
@@ -127,12 +150,12 @@ const reducer = ( state = initialState, action ) => {
       timesPerDayValue: '',
       medicationList: state.medicationList.map( ( row, index ) =>
         action.data.index === index ?
-        {
-          ...row,
-          doseICSValue: action.data.doseICSValueChange[0],
-          puffValue: '',
-          timesPerDayValue: '',
-        }
+          {
+            ...row,
+            doseICSValue: action.data.doseICSValueChange[0],
+            puffValue: '',
+            timesPerDayValue: '',
+          }
           : row ),
       isRecommendationEmpty: true,
       isRuleSelectEmpty: true,
