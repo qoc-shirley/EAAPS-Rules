@@ -40,6 +40,7 @@ const MedicationTable = (
       doseICSValue: '',
       puffValue: '',
       timesPerDayValue: '',
+      doseLabaValue: '',
       id: randomGenerator,
     }];
     appendMedicationList( initialInputValues );
@@ -225,12 +226,12 @@ const MedicationTable = (
               }
 
               return ( {
-                none: '-no doseICS-',
+                none: '-no doseLaba-',
               } );
             } ) );
 
         getDoseLabaColumn = _.uniqWith( getDoseLabaColumn, _.isEqual );
-        getDoseLabaColumn = _.filter( getDoseLabaColumn, column => column.doseICS !== '.' && !( column.none ) );
+        getDoseLabaColumn = _.filter( getDoseLabaColumn, column => column.doseLaba !== '.' && !( column.none ) );
 
 
         let getDoseICSColumn = [{ doseICS: 'DoseICS' }];
