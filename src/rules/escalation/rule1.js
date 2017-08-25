@@ -45,6 +45,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
                   else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
                     const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
                     if ( _.isEmpty( toNext ) || toNext.doseICS < newMedAdjust.doseICS ) {
+                      //ICS DOSE is same but doseICS is greater than the one stored
                       console.log('toNext before: ', toNext);
                       toNext = newMedAdjust;
                       console.log('toNext before: ', toNext);

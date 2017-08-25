@@ -132,7 +132,7 @@ const reducer = ( state = initialState, action ) => {
         action.data.index === index ?
         {
           ...row,
-          doseLabaValue: action.data.doseICSValueChange[0],
+          doseLabaValue: action.data.doseLabaValueChange[0],
           doseICSValue: '',
           puffValue: '',
           timesPerDayValue: '',

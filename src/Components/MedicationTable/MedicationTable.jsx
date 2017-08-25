@@ -16,6 +16,7 @@ const MedicationTable = (
   getPatientMedications,
   medication,
   onChangeDoseICS,
+  onChangeDoseLaba,
   onChangeChemical,
   onChangeDeviceName,
   onChangePuffValue,
@@ -26,7 +27,7 @@ const MedicationTable = (
   // timesPerDayValue,
 } ) => {
   const headerElements =
-['', 'Device', 'Name', 'ChemicalLaba/ICS', 'DoseICS', '# of Puffs', 'TimesPerDay', ''];
+['', 'Device', 'Name', 'ChemicalLaba/ICS', 'DoseLaba', 'DoseICS', '# of Puffs', 'TimesPerDay', ''];
 
   const randomGenerator = uuid();
 
@@ -53,8 +54,7 @@ const MedicationTable = (
     .reduce( ( filteredData, patientMedication ) => {
       filteredData.push(
         _.chain( medicationData )
-          .filter( ( masterMedication ) => {
-            return (
+          .filter( masterMedication => (
               (
                 patientMedication.timesPerDayValue === masterMedication.timesPerDay ||
                 ( patientMedication.timesPerDayValue === '' && masterMedication.timesPerDay === '.' ) ||
@@ -64,6 +64,10 @@ const MedicationTable = (
               (
                 ( patientMedication.doseICSValue === masterMedication.doseICS ) ||
                 ( patientMedication.doseICSValue === '' && masterMedication.doseICS === '.' )
+              ) &&
+              (
+                ( patientMedication.doseLabaValue === masterMedication.doseLABA ) ||
+                ( patientMedication.doseLabaValue === '' && masterMedication.doseLABA === '.' )
               ) &&
               (
                 ( patientMedication.chemicalLABA === masterMedication.chemicalLABA ) ||
@@ -78,8 +82,7 @@ const MedicationTable = (
               ( patientMedication.medicationName === masterMedication.name ) &&
               ( patientMedication.deviceName === masterMedication.device ) &&
               ( patientMedication.puffValue <= masterMedication.maxPuffPerTime )
-            );
-          } )
+            ) )
           .value(),
       );
 
@@ -88,14 +91,11 @@ const MedicationTable = (
     .value();
 
   const onSubmitMedications = ( medicationToDisplay ) => {
-    const insertInputs = medicationToDisplay.map( ( filteredMedication, index ) => {
-      return filteredMedication.map( ( addPuffToMedication ) => {
-        return Object.assign( {}, addPuffToMedication, {
-          puffPerTime: medication.medicationList[index].puffValue,
-          timesPerDayValue: medication.medicationList[index].timesPerDayValue,
-        } );
-      } );
-    } );
+    const insertInputs = medicationToDisplay.map( ( filteredMedication, index ) =>
+      filteredMedication.map( addPuffToMedication => Object.assign( {}, addPuffToMedication, {
+        puffPerTime: medication.medicationList[index].puffValue,
+        timesPerDayValue: medication.medicationList[index].timesPerDayValue,
+      } ) ) );
     getPatientMedications( _.flatten( insertInputs ) );
   };
 
@@ -115,18 +115,15 @@ const MedicationTable = (
   };
 
   // extract to its own component
-  const displayRowContents = () => {
-    return (
+  const displayRowContents = () => (
       medication.medicationList.map( ( rowFields, index ) => {
         let displayPuff = <p className="option">1</p>;
         let displayTimes = <p className="option">2</p>;
         let getDeviceColumn = [{ device: 'Device' }];
         getDeviceColumn = getDeviceColumn.concat( medicationData.map(
-          ( medicationDevice ) => {
-            return ( {
-              device: medicationDevice.device,
-            } );
-          } ) );
+          medicationDevice => ( {
+            device: medicationDevice.device,
+          } ) ) );
         getDeviceColumn = _.uniqWith( getDeviceColumn, _.isEqual );
 
         let getNameColumn = [{ name: 'Medication Name' }];
@@ -143,9 +140,7 @@ const MedicationTable = (
             } );
           } ) );
         getNameColumn = _.uniqWith( getNameColumn, _.isEqual );
-        getNameColumn = _.filter( getNameColumn, ( column ) => {
-          return !( column.none );
-        } );
+        getNameColumn = _.filter( getNameColumn, column => !( column.none ) );
 
         let getChemicalLABAColumn = medicationData.map(
             ( masterMedication ) => {
@@ -162,9 +157,8 @@ const MedicationTable = (
             } );
 
         getChemicalLABAColumn = _.uniqWith( getChemicalLABAColumn, _.isEqual );
-        getChemicalLABAColumn = _.filter( getChemicalLABAColumn, ( column ) => {
-          return column.chemicalLABA !== '.' && !( column.none );
-        } );
+        getChemicalLABAColumn = _.filter( getChemicalLABAColumn, column =>
+          column.chemicalLABA !== '.' && !( column.none ) );
         if ( _.isEmpty( getChemicalLABAColumn ) ) {
           getChemicalLABAColumn = [{ chemicalLABA: '' }];
         }
@@ -187,16 +181,21 @@ const MedicationTable = (
             } );
 
         getChemicalICSColumn = _.uniqWith( getChemicalICSColumn, _.isEqual );
-        getChemicalICSColumn = _.filter( getChemicalICSColumn, ( column ) => {
-          return column.chemicalICS !== '.' && !( column.none );
-        } );
+        getChemicalICSColumn = _.filter( getChemicalICSColumn, column =>
+          column.chemicalICS !== '.' && !( column.none ) );
 
         if ( _.isEmpty( getChemicalICSColumn ) ) {
           getChemicalICSColumn = [{ chemicalICS: '' }];
         }
 
-        let getDoseICSColumn = [{ doseICS: 'DoseICS' }];
-        getDoseICSColumn = getDoseICSColumn.concat(
+        if ( rowFields.medicationName !== '' &&
+        ( !_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) || !_.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) &&
+          ( rowFields.chemicalLABA === '' && rowFields.chemicalICS === '' ) ) {
+          submitChemicalData( index, [getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS] );
+        }
+
+        let getDoseLabaColumn = [{ doseLaba: 'DoseLaba' }];
+        getDoseLabaColumn = getDoseLabaColumn.concat(
           medicationData.map(
             ( masterMedication ) => {
               if ( masterMedication.device === medication.medicationList[index].deviceName &&
@@ -221,6 +220,49 @@ const MedicationTable = (
                 )
               ) {
                 return ( {
+                  doseLaba: masterMedication.doseLABA,
+                } );
+              }
+
+              return ( {
+                none: '-no doseICS-',
+              } );
+            } ) );
+
+        getDoseLabaColumn = _.uniqWith( getDoseLabaColumn, _.isEqual );
+        getDoseLabaColumn = _.filter( getDoseLabaColumn, column => column.doseICS !== '.' && !( column.none ) );
+
+
+        let getDoseICSColumn = [{ doseICS: 'DoseICS' }];
+        getDoseICSColumn = getDoseICSColumn.concat(
+          medicationData.map(
+            ( masterMedication ) => {
+              if ( masterMedication.device === medication.medicationList[index].deviceName &&
+                masterMedication.name === medication.medicationList[index].medicationName &&
+                (
+                  masterMedication.chemicalLABA === medication.medicationList[index].chemicalLABA ||
+                  (
+                    masterMedication.chemicalLABA === '.' &&
+                    (
+                      medication.medicationList[index].chemicalLABA === '' ||
+                      medication.medicationList[index].chemicalLABA === 'ChemicalLABA' ) )
+                ) &&
+                (
+                  masterMedication.chemicalICS === medication.medicationList[index].chemicalICS ||
+                  (
+                    masterMedication.chemicalICS === '.' &&
+                    (
+                      medication.medicationList[index].chemicalICS === '' ||
+                      medication.medicationList[index].chemicalICS === 'ChemicalICS'
+                    )
+                  )
+                ) &&
+                ( masterMedication.doseLABA === medication.medicationList[index].doseLabaValue ||
+                  ( masterMedication.doseLABA === '.' &&
+                    ( medication.medicationList[index].doseLabaValue === '' ||
+                      medication.medicationList[index].doseLabaValue === 'DoseLaba' ) ) )
+              ) {
+                return ( {
                   doseICS: masterMedication.doseICS,
                 } );
               }
@@ -231,15 +273,7 @@ const MedicationTable = (
             } ) );
 
         getDoseICSColumn = _.uniqWith( getDoseICSColumn, _.isEqual );
-        getDoseICSColumn = _.filter( getDoseICSColumn, ( column ) => {
-          return column.doseICS !== '.' && !( column.none );
-        } );
-
-        if ( rowFields.medicationName !== '' &&
-        ( !_.isEmpty( getChemicalLABAColumn[0].chemicalLABA ) || !_.isEmpty( getChemicalICSColumn[0].chemicalICS ) ) &&
-          ( rowFields.chemicalLABA === '' && rowFields.chemicalICS === '' ) ) {
-          submitChemicalData( index, [getChemicalLABAColumn[0].chemicalLABA, getChemicalICSColumn[0].chemicalICS] );
-        }
+        getDoseICSColumn = _.filter( getDoseICSColumn, column => column.doseICS !== '.' && !( column.none ) );
 
         let getPuffColumn =
           medicationData.map(
@@ -257,7 +291,11 @@ const MedicationTable = (
                 ( masterMedication.doseICS === medication.medicationList[index].doseICSValue ||
                   ( masterMedication.doseICS === '.' &&
                     ( medication.medicationList[index].doseICSValue === '' ||
-                      medication.medicationList[index].doseICSValue === 'DoseICS' ) ) )
+                      medication.medicationList[index].doseICSValue === 'DoseICS' ) ) ) &&
+                ( masterMedication.doseLABA === medication.medicationList[index].doseLabaValue ||
+                  ( masterMedication.doseLABA === '.' &&
+                    ( medication.medicationList[index].doseLabaValue === '' ||
+                      medication.medicationList[index].doseLabaValue === 'DoseLaba' ) ) )
               ) {
                 return ( {
                   puffPerTime: masterMedication.maxPuffPerTime,
@@ -269,9 +307,7 @@ const MedicationTable = (
               } );
             } );
         getPuffColumn = _.uniqWith( getPuffColumn, _.isEqual );
-        getPuffColumn = _.filter( getPuffColumn, ( column ) => {
-          return column.puffPerTime !== '.' && !( column.none );
-        } );
+        getPuffColumn = _.filter( getPuffColumn, column => column.puffPerTime !== '.' && !( column.none ) );
         let getPuffColumnRange = [];
         if ( !_.isEmpty( getPuffColumn ) ) {
           if ( rowFields.deviceName === 'turbuhaler' && rowFields.medicationName === 'oxeze' ) {
@@ -301,7 +337,7 @@ const MedicationTable = (
                   ) ) }
             </select> );
           }
-          else if (  _.toInteger( getPuffColumn[0].puffPerTime ) !== 1 ) {
+          else if ( _.toInteger( getPuffColumn[0].puffPerTime ) !== 1 ) {
             getPuffColumnRange.push( { puffPerTime: 'PuffsPerTime' } );
             getPuffColumnRange = _.range( _.toInteger( getPuffColumn[0].puffPerTime ) + 1 );
             getPuffColumnRange = _.chain( getPuffColumnRange )
@@ -350,6 +386,10 @@ const MedicationTable = (
                   ( masterMedication.doseICS === '.' &&
                     ( medication.medicationList[index].doseICSValue === '' ||
                       medication.medicationList[index].doseICSValue === 'DoseICS' ) ) ) &&
+                ( masterMedication.doseLABA === medication.medicationList[index].doseLabaValue ||
+                  ( masterMedication.doseLABA === '.' &&
+                    ( medication.medicationList[index].doseLabaValue === '' ||
+                      medication.medicationList[index].doseLabaValue === 'DoseLaba' ) ) ) &&
                  masterMedication.maxPuffPerTime >= medication.medicationList[index].puffValue
               ) {
                 return ( {
@@ -362,13 +402,10 @@ const MedicationTable = (
               } );
             } );
         getTimesColumn = _.uniqWith( getTimesColumn, _.isEqual );
-        getTimesColumn = _.filter( getTimesColumn, ( column ) => {
-          return column.timesPerDay !== '.' && !( column.none );
-        } );
+        getTimesColumn = _.filter( getTimesColumn, column => column.timesPerDay !== '.' && !( column.none ) );
 
         let getTimesColumnRange = [{ timesPerDay: 'TimesPerDay' }];
         if ( !_.isEmpty( getTimesColumn ) ) {
-
           if ( getTimesColumn[0].timesPerDay === '1 OR 2' ) {
             getTimesColumnRange = _.range( 3 );
             getTimesColumnRange = _.chain( getTimesColumnRange )
@@ -381,7 +418,7 @@ const MedicationTable = (
                 accResult.push( { timesPerDay: timesValue } );
 
                 return accResult;
-              }, [])
+              }, [] )
               .value();
             displayTimes = ( <select
               className="option"
@@ -393,15 +430,14 @@ const MedicationTable = (
                   ( chemicalGroup, ICSIndex ) => (
                     <option key={ICSIndex}>{chemicalGroup.timesPerDay}</option>
                   ) ) }
-            </select>);
+            </select> );
           }
           else if ( rowFields.timesPerDayValue === '' && getTimesColumn[0].timesPerDay === '1' ) {
-            console.log('timesPerDay 1: ',  getTimesColumn[0].timesPerDay);
             displayTimes = <p className="option">1</p>;
             submitTimes( index, ['1'] );
           }
-          else if ( rowFields.timesPerDayValue === ''){
-            submitTimes( index,  [getTimesColumn[0].timesPerDay] );
+          else if ( rowFields.timesPerDayValue === '' ) {
+            submitTimes( index, [getTimesColumn[0].timesPerDay] );
           }
         }
 
@@ -441,6 +477,17 @@ const MedicationTable = (
             <p className="option">{rowFields.chemicalLABA},{rowFields.chemicalICS}</p>
             <select
               className="option"
+              onChange={event => onChangeDoseLaba( index, _.split( event.target.value, ',' ) )}
+              value={rowFields.doseLabaValue}
+            >
+              {
+                getDoseLabaColumn.map(
+                  ( chemicalGroup, ICSIndex ) => (
+                    <option key={ICSIndex}>{chemicalGroup.doseLaba}</option>
+                  ) ) }
+            </select>
+            <select
+              className="option"
               onChange={event => onChangeDoseICS( index, _.split( event.target.value, ',' ) )}
               value={rowFields.doseICSValue}
             >
@@ -461,7 +508,6 @@ const MedicationTable = (
           </div>
         );
       } ) );
-  };
 
   return (
     <div className="medication-table">
@@ -523,6 +569,7 @@ const mapDispatchToProps = dispatch => ( {
   onChangePuffValue: ( index, value ) => dispatch( actions.onChangePuffValue( index, value ) ),
   onChangeTimesPerDayValue: ( index, value ) => dispatch( actions.onChangeTimesPerDayValue( index, value ) ),
   onChangeDoseICS: ( index, value ) => dispatch( actions.onChangeDoseICS( index, value ) ),
+  onChangeDoseLaba: ( index, value ) => dispatch( actions.onChangeDoseLaba( index, value ) ),
   onChangeDeviceName: ( index, value ) => dispatch( actions.onChangeDeviceName( index, value ) ),
   onChangeChemical: ( index, value ) => dispatch( actions.onChangeChemical( index, value ) ),
   onChangeMedicationName: ( index, value ) => dispatch( actions.onChangeMedicationName( index, value ) ),
