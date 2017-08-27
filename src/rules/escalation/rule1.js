@@ -21,7 +21,8 @@ const rule1 = ( patientMedications, masterMedications ) => {
             console.log('chemicalICSMedications: ', chemicalICSMedications);
             const equal = _.chain( chemicalICSMedications )
               .filter( ( medication ) => {
-                return adjust.ICSDoseToOriginalMedication( medication, patientMedication ) !== [];
+                console.log('getEqual: ',  adjust.ICSDoseToOriginalMedication( medication, patientMedication ));
+                return !_.isEmpty( adjust.ICSDoseToOriginalMedication( medication, patientMedication ) );
               } )
               .value();
             console.log('equal: ', equal);
@@ -31,6 +32,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
               const checkNewMedication = _.chain( equal )
                 .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
+                  console.log('patientMedication vs newMedication: ',  calculate.patientICSDose( patientMedication ), calculate.ICSDose( medication ) );
                   if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
                     const newMedAdjust = adjust.ICSDose( medication, 'highest' );
                     console.log('newMedAdjust: ', newMedAdjust);
@@ -91,7 +93,10 @@ const rule1 = ( patientMedications, masterMedications ) => {
                     const category = categorize.ICSDose( medication );
 
                     if ( _.isNil( accMedicationCategory[category] ) ) {
-                      accMedicationCategory[category] = medication;
+                      if ( category === 'excessive' ) {
+                        accMedicationCategory[category] = adjust.ICSDose( medication, 'highest' );
+                      }
+                      accMedicationCategory[category] = Object.assign( medication, { maxPuffPerTime: 1 } );
                     }
 
                     else {
@@ -102,6 +107,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
                       else if ( calculate.ICSDose( accMedicationCategory[category] ) >
                         calculate.ICSDose( medication ) ) {
                         accMedicationCategory[category] = Object.assign( medication, { maxPuffPerTime: 1 } );
+                        console.log('categories: ', accMedicationCategory);
                       }
                     }
 

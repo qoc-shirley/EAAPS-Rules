@@ -58,6 +58,7 @@ const reducer = ( state = initialState, action ) => {
       doseICSValue: '',
       puffValue: '',
       timesPerDayValue: '',
+      doseLabaValue: '',
       medicationList: state.medicationList.map( ( row, index ) =>
           action.data.index === index ?
           { ...row,
@@ -66,6 +67,7 @@ const reducer = ( state = initialState, action ) => {
             chemicalLABA: '',
             chemicalICS: '',
             doseICSValue: '',
+            doseLabaValue: '',
             puffValue: '',
             timesPerDayValue: '',
           }
@@ -81,6 +83,7 @@ const reducer = ( state = initialState, action ) => {
       chemical: '',
       chemicalICS: '',
       doseICSValue: '',
+      doseLabaValue: '',
       puffValue: '',
       timesPerDayValue: '',
       medicationList: state.medicationList.map( (row, index ) =>
@@ -90,6 +93,7 @@ const reducer = ( state = initialState, action ) => {
           chemicalLABA: '',
           chemicalICS: '',
           doseICSValue: '',
+          doseLabaValue: '',
           puffValue: '',
           timesPerDayValue: '',
         }
@@ -104,6 +108,7 @@ const reducer = ( state = initialState, action ) => {
       chemicalICS: action.data.chemicalLABA[1],
       chemical: action.data.chemicalLABA[0] + ' ,' + action.data.chemicalLABA[1],
       doseICSValue: '',
+      doseLabaValue: '',
       puffValue: '',
       timesPerDayValue: '',
       medicationList: state.medicationList.map( ( row, index ) =>
@@ -113,6 +118,7 @@ const reducer = ( state = initialState, action ) => {
           chemicalLABA: action.data.chemicalLABA[0],
           chemicalICS: action.data.chemicalLABA[1],
           doseICSValue: '',
+          doseLabaValue: '',
           puffValue: '',
           timesPerDayValue: '',
         }

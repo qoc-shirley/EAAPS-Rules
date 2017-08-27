@@ -87,7 +87,7 @@ export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => 
   let testAdjustment;
   while ( equal === false && ( counter <= max ) ) {
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-    // console.log('testAdjustment: ', testAdjustment, calculate.patientICSDose( patientMedication ));
+    console.log('testAdjustment, patientMedication: ', testAdjustment, calculate.patientICSDose( patientMedication ));
     if ( testAdjustment === calculate.patientICSDose( patientMedication ) ) {
       // console.log("adjust equal: ", medication);
       medication.maxPuffPerTime = counter;
