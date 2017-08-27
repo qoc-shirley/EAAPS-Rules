@@ -28,7 +28,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   sameMedication.device === patientMedication.device;
               } )
               .filter( ( adjustToMax ) => {
-                return adjust.ICSDose( adjustToMax, 'highest' );
+                console.log('adjust To Max: ', adjust.ICSDose( adjustToMax, 'highest' ) );
+                return adjust.ICSDose( adjustToMax, 'highest' ) !== [];
               } )
               .thru( ( convert ) => {
                 return _.map( convert, ( convertEach ) => {
