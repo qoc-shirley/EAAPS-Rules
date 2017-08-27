@@ -29,17 +29,14 @@ const rule1 = ( patientMedications, masterMedications ) => {
             if ( !_.isEmpty( chemicalICSMedications ) && !_.isEmpty( equal ) ) {
               let toMax = [];
               let toNext = [];
-              const checkNewMedication = _.chain( equal )
+              let checkNewMedication = _.chain( equal )
                 .filter( { device: patientMedication.device } )
                 .reduce( ( accResult, medication ) => {
-                  console.log('patientMedication vs newMedication: ',  calculate.patientICSDose( patientMedication ), calculate.ICSDose( medication ) );
                   if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
                     const newMedAdjust = adjust.ICSDose( medication, 'highest' );
                     console.log('newMedAdjust: ', newMedAdjust);
                     if ( _.isEmpty( toMax ) || toMax.doseICS < newMedAdjust.doseICS ) {
-                      console.log('toMax before: ', toMax);
                       toMax = newMedAdjust;
-                      console.log('toMax after: ', toMax);
 
                       return accResult;
                     }
@@ -50,9 +47,7 @@ const rule1 = ( patientMedications, masterMedications ) => {
                       ( toNext.doseICS < newMedAdjust.doseICS &&
                       calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
                       // ICS DOSE is same but doseICS is greater than the one stored
-                      console.log('toNext before: ', toNext);
                       toNext = newMedAdjust;
-                      console.log('toNext before: ', toNext);
 
                       return accResult;
                     }
@@ -64,7 +59,36 @@ const rule1 = ( patientMedications, masterMedications ) => {
                 }, [] )
                 .thru( medication => medication )
                 .value();
-              // console.log('afterrrrrr: ', toMax, toNext);
+              if ( _.isEmpty( checkNewMedication ) ) {
+                checkNewMedication = _.chain( equal )
+                  .reduce( ( accResult, medication ) => {
+                    if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
+                      const newMedAdjust = adjust.ICSDose( medication, 'highest' );
+                      if ( _.isEmpty( toMax ) || toMax.doseICS < newMedAdjust.doseICS ) {
+                        toMax = newMedAdjust;
+
+                        return accResult;
+                      }
+                    }
+                    else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
+                      const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
+                      if ( _.isEmpty( toNext ) ||
+                        ( toNext.doseICS < newMedAdjust.doseICS &&
+                          calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
+                        // ICS DOSE is same but doseICS is greater than the one stored
+                        toNext = newMedAdjust;
+
+                        return accResult;
+                      }
+
+                      return accResult;
+                    }
+
+                    return medication;
+                  }, [] )
+                  .thru( medication => medication )
+                  .value();
+              }
 
               return result.push( [checkNewMedication, toMax, toNext] );
             }
