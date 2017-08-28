@@ -4,33 +4,25 @@ import * as adjust from '../library/adjustICSDose';
 
 const totalDoseReduction = ( patientMedication, filteredMedications ) => {
   const exactlyFifty = _.chain( filteredMedications )
-    .thru( ( medication ) => {
-      return adjust.checkDoseReduction(
+    .thru( medication => adjust.checkDoseReduction(
         medication,
         'exactlyFifty',
         calculate.patientICSDose( patientMedication ),
-      );
-    } )
-    .filter( ( medication ) => {
-      return medication.device === patientMedication.device;
-    } )
+      ) )
+    .filter( medication => medication.device === patientMedication.device )
     .value();
 
   if ( _.isEmpty( exactlyFifty ) ) {
     // adjust timesPerDay/DoseICS and prioritize puffsPerTime
     const betweenFiftyAndFullDose = _.chain( filteredMedications )
-      .filter( ( medication ) => {
-        return adjust.checkDoseReduction(
+      .filter( medication => adjust.checkDoseReduction(
           medication,
           'betweenFiftyAndFullDose',
           calculate.patientICSDose( patientMedication ),
-        ) !== [];
-      } )
-      .minBy( ( minMedication ) => {
-        return _.toInteger( minMedication.doseICS ) *
+        ) !== [] )
+      .minBy( minMedication => _.toInteger( minMedication.doseICS ) *
           _.toInteger( minMedication.timesPerDay ) *
-          _.toInteger( minMedication.maxPuffPerTime );
-      } )
+          _.toInteger( minMedication.maxPuffPerTime ) )
       .value();
 
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
@@ -54,11 +46,9 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
             calculate.patientICSDose( patientMedication ),
           );
         } )
-        .minBy( ( minMedication ) => {
-          return _.toInteger( minMedication.doseICS ) *
+        .minBy( minMedication => _.toInteger( minMedication.doseICS ) *
             _.toInteger( minMedication.timesPerDay ) *
-            _.toInteger( minMedication.maxPuffPerTime );
-        } )
+            _.toInteger( minMedication.maxPuffPerTime ) )
         .value();
     }
 
