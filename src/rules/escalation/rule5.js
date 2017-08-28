@@ -1,53 +1,43 @@
+/* eslint-disable no-param-reassign */
 import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
 import * as adjust from '../library/adjustICSDose';
 
-const rule5 = ( patientMedications, masterMedications ) => {
-  return _.chain( patientMedications )
+const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
       const rule =
         _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
-          console.log('master medications: ', _masterMedications);
+          // console.log('master medications: ', _masterMedications);
           const originalMedicationLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
           const originalMedicationLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
-          const filterOrgMeds = _.filter( _patientMedications, ( medication ) => {
-            return medication.name !== 'symbicort' &&
+          const filterOrgMeds = _.filter( _patientMedications, medication => medication.name !== 'symbicort' &&
               (
                 medication.chemicalType === 'laba' ||
                 ( medication.chemicalType === 'ICS' &&
                   calculate.patientICSDose( medication ) < _.toInteger( medication.maxGreenICS ) )
-              );
-          } );
+              ) );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' && patientMedication.name !== 'symbicort' &&
                calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) &&
            !_.isEmpty( originalMedicationLtra ) ) {
             const recommendHighest = _.chain( _masterMedications )
-              .filter( ( sameMedication ) => {
-                return sameMedication.chemicalType === patientMedication.chemicalType &&
+              .filter( sameMedication => sameMedication.chemicalType === patientMedication.chemicalType &&
                   sameMedication.name === patientMedication.name &&
-                  sameMedication.device === patientMedication.device;
-              } )
-              .filter( ( adjustToMax ) => {
-                console.log('adjust To Max: ', adjustToMax,  adjust.ICSDose( adjustToMax, 'highest' ) );
-                return adjust.ICSDose( adjustToMax, 'highest' ) !== [];
-              } )
-              .thru( ( convert ) => {
-                return _.map( convert, ( convertEach ) => {
-                  return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
-                } );
-              } )
+                  sameMedication.device === patientMedication.device )
+              .filter( adjustToMax =>
+                // console.log('adjust To Max: ', adjustToMax,  adjust.ICSDose( adjustToMax, 'highest' ) );
+                 adjust.ICSDose( adjustToMax, 'highest' ) !== [] )
+              .thru( convert => _.map( convert,
+                  convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
               .maxBy( 'doseICS' )
               .value();
-            console.log('recommendHighest: ', recommendHighest);
+            // console.log('recommendHighest: ', recommendHighest);
             result.push( originalMedicationLtra );
             if ( _.isEmpty( recommendHighest ) ) {
               return result.push( _.chain( _masterMedications )
-                .filter( ( medication ) => {
-                  return medication.chemicalType === 'laba,ICS' &&
+                .filter( medication => medication.chemicalType === 'laba,ICS' &&
                     ( adjust.ICSDose( medication, 'highest' ) !== [] ) &&
-                    medication.device === patientMedication.device;
-                } )
+                    medication.device === patientMedication.device )
                 .reduce( ( accResult, medication ) => {
                   if ( _.isNil( accResult.high ) ) {
                     return Object.assign(
@@ -69,9 +59,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   return accResult;
                 }, [] )
                 .thru( medication => medication.high )
-                .thru( ( medication ) => {
-                  return adjust.ICSDoseToMax( medication );
-                } )
+                .thru( medication => adjust.ICSDoseToMax( medication ) )
                 .value(),
               );
             }
@@ -85,35 +73,26 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const filteredMedication = _.chain( _masterMedications )
-              .filter( ( masterMedication ) => {
-                return masterMedication.chemicalType === 'laba,ICS' &&
+              .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
-                  _.filter( isLaba, ( medication ) => {
-                    return masterMedication.chemicalLABA === medication.chemicalLABA;
-                  } );
-              } )
+                  _.filter( isLaba, medication => masterMedication.chemicalLABA === medication.chemicalLABA ) )
               .value();
 
             const isfilteredMedicationDevice = _.chain( filteredMedication )
-              .filter( ( medication ) => {
-
-                return medication.device === patientMedication.device ||
-                  medication.device === laba.device;
-              })
+              .filter( medication => medication.device === patientMedication.device ||
+                  medication.device === laba.device )
               .value();
             if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
               result.push( [originalMedicationLtra, originalMedicationLaba] );
 
               return result.push(
                 _.chain( _masterMedications )
-                  .filter( ( medication ) => {
-                    return medication.chemicalType === 'ICS' &&
+                  .filter( medication => medication.chemicalType === 'ICS' &&
                       medication.name === patientMedication.name &&
                       ( adjust.ICSDose( medication, 'highest' ) !== [] ) &&
                       ( medication.timesPerDay === patientMedication.timesPerDay ||
                         medication.timesPerDay === '1 OR 2' ) &&
-                      ( medication.device === patientMedication.device || medication.device === laba.device );
-                  } )
+                      ( medication.device === patientMedication.device || medication.device === laba.device ) )
                   .reduce( ( accResult, medication ) => {
                     if ( _.isNil( accResult.high ) ) {
                       accResult.high = medication;
@@ -133,11 +112,8 @@ const rule5 = ( patientMedications, masterMedications ) => {
               );
             }
             result.push( _.chain( isfilteredMedicationDevice )
-              .thru( ( convert ) => {
-                return _.map( convert, ( convertEach ) => {
-                  return Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } );
-                } );
-              } )
+              .thru( convert => _.map( convert,
+                  convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
               .maxBy( 'doseICS' )
               .value(),
             );
@@ -168,6 +144,5 @@ const rule5 = ( patientMedications, masterMedications ) => {
     .flattenDeep()
     .uniqBy( 'id' )
     .value();
-};
 
 export default rule5;
