@@ -3,13 +3,11 @@ import * as calculate from '../library/calculateICSDose';
 import * as adjust from '../library/adjustICSDose';
 import totalDoseReduction from '../library/totalDoseReduction';
 
-const rule2 = ( patientMedications, masterMedications ) => {
-  return _.chain( patientMedications )
+const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
         const filterMedications = _.chain( medicationElement )
-          .filter( ( findMedication ) => {
-            return (
+          .filter( findMedication => (
               !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'flovent' &&
               findMedication.device === 'inhaler2'
@@ -49,8 +47,7 @@ const rule2 = ( patientMedications, masterMedications ) => {
                 !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
                 findMedication.name === 'arnuity' &&
                 findMedication.device === 'inhaler2'
-              );
-          } )
+              ) )
           .value();
 
         const compareLowestDose = _.chain( filterMedications )
@@ -62,24 +59,18 @@ const rule2 = ( patientMedications, masterMedications ) => {
           } )
           .value();
         const noLabaLtra = _.chain( originalMedications )
-          .filter( ( medication ) => {
-            return medication.chemicalType === 'laba' || medication.chemicalType === 'ltra';
-          } )
+          .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
-        console.log('compareLowestDose: ', compareLowestDose);
+        // console.log('compareLowestDose: ', compareLowestDose);
         if ( patientMedication.chemicalType === 'ICS' &&
           noLabaLtra &&
-          !_.isEmpty(  _.filter( compareLowestDose,
-            ( medication ) => {
-              return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication );
-            } ) ) ) {
-          console.log('in');
+          !_.isEmpty( _.filter( compareLowestDose,
+            _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) ) ) ) {
+          // console.log('in');
           const recommend = _.chain( compareLowestDose )
-            .filter( ( medication ) => {
-              return medication.chemicalICS === patientMedication.chemicalICS &&
-                medication.device === patientMedication.device;
-            } )
+            .filter( _recommendMedication => _recommendMedication.chemicalICS === patientMedication.chemicalICS &&
+              _recommendMedication.device === patientMedication.device )
             .value();
           result.push( totalDoseReduction( patientMedication, recommend ) );
         }
@@ -91,6 +82,5 @@ const rule2 = ( patientMedications, masterMedications ) => {
       return result;
     }, [] )
     .value();
-};
 
 export default rule2;
