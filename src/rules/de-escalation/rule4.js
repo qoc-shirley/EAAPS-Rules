@@ -2,14 +2,11 @@ import _ from 'lodash';
 import rule1 from './rule1';
 import rule2 from './rule2';
 
-const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
-  return _.chain( patientMedications )
+const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
         const noLaba = _.chain( originalMedications )
-          .filter( ( medication ) => {
-            return medication.chemicalType === 'laba';
-          } )
+          .filter( _medication => _medication.chemicalType === 'laba' )
           .isEmpty()
           .value();
         const isLtra = _.chain( originalMedications )
@@ -26,7 +23,7 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           if ( _.isEmpty( rule2Recommendation ) ) {
             rule2Recommendation = 'no Recommendations';
           }
-          console.log(rule1( [patientMedication], medicationElement, asthmaControlAnswers ));
+          // console.log(rule1( [patientMedication], medicationElement, asthmaControlAnswers ));
           result.push( [
             'discontinue ltra: ', patientMedication,
             'continue ltra : ', isLtra[0],
@@ -43,6 +40,5 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
     }, [] )
     .flattenDeep()
     .value();
-};
 
 export default rule4;
