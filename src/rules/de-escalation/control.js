@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
-const control = ( data ) => {
-  return _.chain( data )
+const control = data => _.chain( data )
     .thru( ( questionData ) => {
       if ( questionData[0].wakeUp !== '0' &&
         questionData[0].asthmaSymptoms !== '0' &&
@@ -15,6 +14,5 @@ const control = ( data ) => {
     } )
     .thru( patientControl => patientControl )
     .value();
-};
 
 export default control;
