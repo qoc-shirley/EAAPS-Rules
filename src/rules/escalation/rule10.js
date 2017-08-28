@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
 
-const rule10 = ( patientMedications, masterMedications ) => {
-  return _
+const rule10 = ( patientMedications, masterMedications ) => _
     .chain( patientMedications )
     .filter(
       _.partial( ( medicationElements, patientMedication ) => {
@@ -15,6 +14,8 @@ const rule10 = ( patientMedications, masterMedications ) => {
 
           return false;
         }
+
+        return false;
       }, masterMedications ),
     )
     .thru( ( arr ) => {
@@ -25,6 +26,5 @@ const rule10 = ( patientMedications, masterMedications ) => {
       return [];
     } )
     .value();
-};
 
 export default rule10;
