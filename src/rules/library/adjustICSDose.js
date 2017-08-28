@@ -23,7 +23,7 @@ export const ICSDose = ( medication, level ) => {
     }
   }
   else if ( level === 'highest' ) {
-    // console.log('max:', max);
+    console.log('max:', max);
     console.log('medication: ', medication);
     while ( highestICSDose === false && counter <= max ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;

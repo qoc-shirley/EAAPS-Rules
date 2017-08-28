@@ -7,6 +7,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
     .reduce( ( result, originalMedication ) => {
       const rule =
         _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
+          console.log('master medications: ', _masterMedications);
           const originalMedicationLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
           const originalMedicationLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
           const filterOrgMeds = _.filter( _patientMedications, ( medication ) => {
@@ -14,7 +15,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
               (
                 medication.chemicalType === 'laba' ||
                 ( medication.chemicalType === 'ICS' &&
-                  calculate.patientICSDose( medication ) < medication.maxGreenICS )
+                  calculate.patientICSDose( medication ) < _.toInteger( medication.maxGreenICS ) )
               );
           } );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
@@ -28,7 +29,7 @@ const rule5 = ( patientMedications, masterMedications ) => {
                   sameMedication.device === patientMedication.device;
               } )
               .filter( ( adjustToMax ) => {
-                console.log('adjust To Max: ', adjust.ICSDose( adjustToMax, 'highest' ) );
+                console.log('adjust To Max: ', adjustToMax,  adjust.ICSDose( adjustToMax, 'highest' ) );
                 return adjust.ICSDose( adjustToMax, 'highest' ) !== [];
               } )
               .thru( ( convert ) => {

@@ -32,13 +32,14 @@ saveRecommendation,
 
   const escalationRules = () => {
     const clonedMasterMedication = _.cloneDeep( medicationData );
+    const clonedMasterMedication2 = _.cloneDeep( medicationData );
     saveRecommendation( 'Rule -1', getEscalation.rules.ruleMinus1( medication.patientMedications ) );
     saveRecommendation( 'Rule 0', getEscalation.rules.rule0( medication.patientMedications, clonedMasterMedication ) );
     saveRecommendation( 'Rule 1', getEscalation.rules.rule1( medication.patientMedications, clonedMasterMedication ) );
     saveRecommendation( 'Rule 3', getEscalation.rules.rule3( medication.patientMedications, clonedMasterMedication ) );
     saveRecommendation( 'Rule 4', _.flatten(
       getEscalation.rules.rule4( medication.patientMedications, clonedMasterMedication ) ) );
-    saveRecommendation( 'Rule 5', getEscalation.rules.rule5( medication.patientMedications, clonedMasterMedication ) );
+    saveRecommendation( 'Rule 5', getEscalation.rules.rule5( medication.patientMedications, clonedMasterMedication2 ) );
     saveRecommendation( 'Rule 6', getEscalation.rules.rule6( medication.patientMedications ) );
     saveRecommendation( 'Rule 7', getEscalation.rules.rule7( medication.patientMedications ) );
     saveRecommendation( 'Rule 8', getEscalation.rules.rule8( medication.patientMedications, clonedMasterMedication ) );
