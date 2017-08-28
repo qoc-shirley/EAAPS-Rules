@@ -2,14 +2,11 @@ import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
 import * as calculate from '../library/calculateICSDose';
 
-const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
-  return _.chain( patientMedications )
+const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
-
         const filterMedications = _.chain( medicationElement )
-          .filter( ( findMedication ) => {
-            return (
+          .filter( findMedication => (
                 !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
                 findMedication.name === 'flovent' &&
                 findMedication.device === 'inhaler2'
@@ -49,8 +46,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
                 findMedication.name === 'arnuity' &&
                 findMedication.device === 'ellipta'
-              );
-          } )
+              ) )
           .value();
 
         const compareLowestDose = _.chain( filterMedications )
@@ -62,18 +58,14 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           } )
           .value();
         const noLabaLtra = _.chain( originalMedications )
-          .filter( ( medication ) => {
-            return medication.chemicalType === 'laba' || medication.chemicalType === 'ltra';
-          } )
+          .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
 
         if ( patientMedication.chemicalType === 'ICS' &&
           noLabaLtra &&
           !_.isEmpty( _.filter( compareLowestDose,
-            ( medication ) => {
-              return calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( medication );
-            } ) ) ) {
+            _medication => calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( _medication ) ) ) ) {
           const questionTwo = asthmaControlAnswers[0].asthmaSymptoms;
           if ( questionTwo === '0' ) {
             result.push( ['discontinue medication: ',
@@ -84,7 +76,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             return result;
           }
 
-          return result.push(  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
+          return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
         }
 
         return result;
@@ -95,6 +87,5 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
     }, [] )
     .flattenDeep()
     .value();
-};
 
 export default rule1;
