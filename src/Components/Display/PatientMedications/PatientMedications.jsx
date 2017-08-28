@@ -33,7 +33,7 @@ const DisplayPatientMedications = ( { medication } ) => {
               <p className="title">{row.chemicalICS}</p>
               <p className="title">{row.doseICS}</p>
               <p className="title">{row.puffPerTime}</p>
-              <p className="title">{row.timesPerDayValue}</p>
+              <p className="title">{row.timesPerDay}</p>
             </div>
           </div>
         );

@@ -95,7 +95,7 @@ const MedicationTable = (
     const insertInputs = medicationToDisplay.map( ( filteredMedication, index ) =>
       filteredMedication.map( addPuffToMedication => Object.assign( {}, addPuffToMedication, {
         puffPerTime: medication.medicationList[index].puffValue,
-        timesPerDayValue: medication.medicationList[index].timesPerDayValue,
+        timesPerDay: medication.medicationList[index].timesPerDayValue,
       } ) ) );
     getPatientMedications( _.flatten( insertInputs ) );
   };

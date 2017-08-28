@@ -8,11 +8,11 @@ export const patientICSDose = ( medication ) => {
     return _.toInteger( medication.doseICS ) * _.toInteger( medication.puffPerTime );
   }
   else if ( medication.puffPerTime === '' ) {
-    return _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDayValue );
+    return _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay );
   }
 
   return _.toInteger( medication.doseICS ) *
-    _.toInteger( medication.timesPerDayValue ) *
+    _.toInteger( medication.timesPerDay ) *
     _.toInteger( medication.puffPerTime );
 };
 
