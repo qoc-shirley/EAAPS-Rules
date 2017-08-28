@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import uuid from 'uuid';
-// import InputField from '../InputField/InputField';
 import * as actions from '../../redux/App/actions';
 import medicationData from '../../medicationData/medicationData';
 import Row from '../Row/Row';
@@ -12,7 +11,6 @@ import './styles.css';
 const MedicationTable = (
 {
   appendMedicationList,
-  // doseICSValue,
   getPatientMedications,
   medication,
   onChangeDoseICS,
@@ -23,8 +21,6 @@ const MedicationTable = (
   onChangeTimesPerDayValue,
   onChangeMedicationName,
   onClickDeleteMedication,
-  // puffValue,
-  // timesPerDayValue,
 } ) => {
   const headerElements =
 ['', 'Device', 'Name', 'ChemicalLaba/ICS', 'DoseLaba', 'DoseICS', '# of Puffs', 'TimesPerDay', ''];
@@ -538,15 +534,13 @@ const MedicationTable = (
 };
 
 MedicationTable.propTypes = {
-  // puffValue: PropTypes.string,
-  // timesPerDayValue: PropTypes.string,
-  // doseICSValue: PropTypes.string,
   getPatientMedications: PropTypes.func.isRequired,
   onClickDeleteMedication: PropTypes.func.isRequired,
   onChangeDeviceName: PropTypes.func.isRequired,
   onChangePuffValue: PropTypes.func.isRequired,
   onChangeTimesPerDayValue: PropTypes.func.isRequired,
   onChangeDoseICS: PropTypes.func.isRequired,
+  onChangeDoseLaba: PropTypes.func.isRequired,
   onChangeChemical: PropTypes.func.isRequired,
   onChangeMedicationName: PropTypes.func.isRequired,
   appendMedicationList: PropTypes.func.isRequired,

@@ -95,12 +95,12 @@ saveRecommendation,
           >
             Escalation
           </button>
-          {/*<button*/}
-            {/*className="button__runRules"*/}
-            {/*onClick={() => deescalationRules()}*/}
-          {/*>*/}
-            {/*De-escalation*/}
-          {/*</button>*/}
+          <button
+            className="button__runRules"
+            onClick={() => deescalationRules()}
+          >
+            De-escalation
+          </button>
           <input
             className="clear"
             type="submit"
@@ -125,6 +125,8 @@ saveRecommendation,
         </div>
       );
     }
+
+    return null;
   };
 
   return (
@@ -133,7 +135,7 @@ saveRecommendation,
         <Header />
       </div>
       <div className="app__main">
-        {/*<Questionnaire />*/}
+        <Questionnaire />
         <MedicationTable
           onChangeMedication={onMedicationSelection}
           onChangePuffValue={onChangePuffValue}
@@ -155,7 +157,6 @@ saveRecommendation,
 
 App.PropTypes = {
   appendMedicationList: PropTypes.func,
-  displayResult: PropTypes.func,
   medication: PropTypes.array,
   medicationList: PropTypes.array,
   onChangeDoseICS: PropTypes.func,
