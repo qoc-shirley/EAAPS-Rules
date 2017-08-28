@@ -6,7 +6,6 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
     .reduce( ( result, originalMedication ) => {
       const rule =
         _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
-          console.log( 'rule3' );
           const filterOrgMeds = _.filter( _patientMedications, medication => medication.name !== 'symbicort' &&
               (
                 ( medication.chemicalType === 'laba,ICS' && categorize.patientICSDose( medication ) === 'low' ) ||
@@ -36,7 +35,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
             patientMedication.name !== 'symbicort' ) {
-            console.log( 'laba and ICS' );
+            // console.log( 'laba and ICS' );
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
@@ -65,7 +64,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .thru( _medication => result.push( _medication ) )
                 .value();
             }
-            console.log( 'test getDeviceIcsOrLaba' );
+            // console.log( 'test getDeviceIcsOrLaba' );
             if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
               result.push( isLaba );
 
