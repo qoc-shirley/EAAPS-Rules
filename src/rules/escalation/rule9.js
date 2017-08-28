@@ -3,8 +3,7 @@ import * as calculate from '../library/calculateICSDose';
 import * as adjust from '../library/adjustICSDose';
 import * as match from '../library/match';
 
-const rule9 = ( patientMedications ) => {
-  return _.chain( patientMedications )
+const rule9 = patientMedications => _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
       if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
         ( calculate.ICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
@@ -27,6 +26,5 @@ const rule9 = ( patientMedications ) => {
     .flatten()
     .uniqBy( 'id' )
     .value();
-};
 
 export default rule9;
