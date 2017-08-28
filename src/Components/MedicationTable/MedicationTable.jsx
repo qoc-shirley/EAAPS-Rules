@@ -233,7 +233,6 @@ const MedicationTable = (
         getDoseLabaColumn = _.uniqWith( getDoseLabaColumn, _.isEqual );
         getDoseLabaColumn = _.filter( getDoseLabaColumn, column => column.doseLaba !== '.' && !( column.none ) );
 
-
         let getDoseICSColumn = [{ doseICS: 'DoseICS' }];
         getDoseICSColumn = getDoseICSColumn.concat(
           medicationData.map(
