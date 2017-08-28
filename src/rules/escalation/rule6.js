@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
 
-const rule6 = ( patientMedications ) => {
-  return _
+const rule6 = patientMedications => _
     .chain( patientMedications )
     .filter( ( patientMedication ) => {
       const filterChemicalTypeLtra = _.filter( patientMedications, { chemicalType: 'ltra' } );
@@ -27,6 +26,5 @@ const rule6 = ( patientMedications ) => {
       return [];
     } )
     .value();
-};
 
 export default rule6;
