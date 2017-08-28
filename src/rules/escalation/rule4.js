@@ -13,7 +13,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
             const singulair = _.filter( _masterMedications, { name: 'singulair' } );
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
-              console.log( 'laba,ICS' );
+              // console.log( 'laba,ICS' );
 
               return _.chain( _masterMedications )
                 .filter( { name: 'singulair' } )
@@ -21,9 +21,10 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] ) )
                 .value();
             }
-            console.log( 'laba and ICS' );
+            // console.log( 'laba and ICS' );
 
             let newMedication = null;
+
             return _.chain( _masterMedications )
               .reduce( ( accResult, medication ) => {
                 const laba = _.chain( _patientMedications )
@@ -36,7 +37,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       medication.device !== laba.device )
                   )
                 ) {
-                  console.log('no match wih any');
+                  // console.log('no match wih any');
                   return _.concat( accResult,
                     Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
                 }
@@ -50,7 +51,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     ( !_.isEmpty( adjustToOrgIcsDose ) &&
                       _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
                    ) {
-                  console.log('match device and chemical');
+                  // console.log('match device and chemical');
                   newMedication = adjustToOrgIcsDose;
 
                   return _.concat( accResult, newMedication );
@@ -59,11 +60,11 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 else if ( medication.chemicalType === 'laba,ICS' &&
                           medication.chemicalLABA === laba.chemicalLABA &&
                           medication.chemicalICS === patientMedication.chemicalICS &&
-                        ( _.isNil(newMedication ) ||
+                        ( _.isNil( newMedication ) ||
                           ( !_.isEmpty( adjustToOrgIcsDose ) &&
-                          _.toInteger(newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
+                          _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
                         ) {
-                  console.log('only match chemical');
+                  // console.log('only match chemical');
                   newMedication = adjustToOrgIcsDose;
 
                   return _.concat( accResult, newMedication );
