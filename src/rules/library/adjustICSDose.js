@@ -19,15 +19,15 @@ export const ICSDose = ( medication, level ) => {
 
         return medication;
       }
-      counter++;
+      counter += 1;
     }
   }
   else if ( level === 'highest' ) {
-    console.log('max:', max);
-    console.log('medication: ', medication);
+    // console.log('max:', max);
+   //  console.log('medication: ', medication);
     while ( highestICSDose === false && counter <= max ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
+      // console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
       // console.log('compare values: ',  testAdjustment === _.toInteger( medication.maxGreenICS ));
       if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
         medication.maxPuffPerTime = counter;
@@ -35,7 +35,7 @@ export const ICSDose = ( medication, level ) => {
 
         return medication;
       }
-      counter++;
+      counter += 1;
     }
   }
 
@@ -58,7 +58,7 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
 
         return medication;
       }
-      counter++;
+      counter += 1;
     }
   }
   else if ( level === 'betweenFiftyAndFullDose' ) {
@@ -72,12 +72,11 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
 
         return medication;
       }
-      counter++;
+      counter += 1;
     }
   }
 
   return [];
-
 };
 
 export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => {
@@ -87,7 +86,7 @@ export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => 
   let testAdjustment;
   while ( equal === false && ( counter <= max ) ) {
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-    console.log('testAdjustment, patientMedication: ', testAdjustment, calculate.patientICSDose( patientMedication ));
+    // console.log( 'testAdjustment, patientMedication: ', testAdjustment, calculate.patientICSDose( patientMedication ) );
     if ( testAdjustment === calculate.patientICSDose( patientMedication ) ) {
       // console.log("adjust equal: ", medication);
       medication.maxPuffPerTime = counter;
@@ -95,11 +94,10 @@ export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => 
 
       return medication;
     }
-    counter++;
+    counter += 1;
   }
 
   return [];
-
 };
 
 export const ICSDoseToDose = ( medication, dose ) => {
@@ -114,29 +112,29 @@ export const ICSDoseToDose = ( medication, dose ) => {
 
       return medication;
     }
-    counter++;
+    counter += 1;
   }
 
   return [];
 };
 
-export const ICSDoseToMax = ( medication ) => {
-  const max = _.toInteger( medication.maxPuffPerTime );
-  let equal = false;
-  let counter = max;
-  let testAdjustment;
-  while ( equal === false && ( counter > 0 ) ) {
-    testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-    if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
-      medication.maxPuffPerTime = counter;
-      equal = true;
-      return medication;
-    }
-    counter = counter - 1;
-  }
-
-  return [];
-};
+// export const ICSDoseToMax = ( medication ) => {
+//   const max = _.toInteger( medication.maxPuffPerTime );
+//   let equal = false;
+//   let counter = max;
+//   let testAdjustment;
+//   while ( equal === false && ( counter > 0 ) ) {
+//     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
+//     if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
+//       medication.maxPuffPerTime = counter;
+//       equal = true;
+//       return medication;
+//     }
+//     counter = counter - 1;
+//   }
+//
+//   return [];
+// };
 
 export const ICSHigherNext = ( medication, patientMedication ) => {
   // console.log(medication, patientMedication);
@@ -153,9 +151,8 @@ export const ICSHigherNext = ( medication, patientMedication ) => {
 
       return medication;
     }
-    counter = counter + 1;
+    counter += 1;
   }
 
   return [];
-
 };

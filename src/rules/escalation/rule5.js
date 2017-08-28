@@ -59,7 +59,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   return accResult;
                 }, [] )
                 .thru( medication => medication.high )
-                .thru( medication => adjust.ICSDoseToMax( medication ) )
+                .thru( medication => adjust.ICSDose( medication, 'highest' ) )
                 .value(),
               );
             }
