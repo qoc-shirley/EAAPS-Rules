@@ -1,26 +1,19 @@
 import _ from 'lodash';
 import rule3 from './rule3';
 
-const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) => {
-  return _.chain( patientMedications )
+const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
         const noLaba = _.chain( originalMedications )
-          .filter( ( medication ) => {
-            return medication.chemicalType === 'laba';
-          } )
+          .filter( _medication => _medication.chemicalType === 'laba' )
           .value();
 
         const noLabaICS = _.chain( originalMedications )
-          .filter( ( medication ) => {
-            return medication.chemicalType === 'laba,ICS';
-          } )
+          .filter( _medication => _medication.chemicalType === 'laba,ICS' )
           .value();
 
         const noLtra = _.chain( originalMedications )
-          .filter( ( medication ) => {
-            return medication.chemicalType === 'ltra';
-          } )
+          .filter( _medication => _medication.chemicalType === 'ltra' )
           .value();
 
         if (
@@ -47,6 +40,5 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
     }, [] )
     .flattenDeep()
     .value();
-};
 
 export default rule5;
