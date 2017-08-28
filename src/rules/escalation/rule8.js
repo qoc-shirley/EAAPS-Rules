@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import * as categorize from '../library/categorizeDose';
 
-const isSMARTMediumOrHigh = ( patientMedications ) => {
-  return _.chain( patientMedications )
+const isSMARTMediumOrHigh = patientMedications => _.chain( patientMedications )
   .filter( ( patientMedication ) => {
     const icsDose = categorize.patientICSDose( patientMedication );
 
@@ -15,25 +14,20 @@ const isSMARTMediumOrHigh = ( patientMedications ) => {
     return false;
   } )
   .value();
-};
 
-const rule8 = ( patientMedications, masterMedications ) => {
-  return _.chain( patientMedications )
+const rule8 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .thru( isSMARTMediumOrHigh )
     .thru( ( smartMedHighMeds ) => {
       if ( !_.size( smartMedHighMeds ) ) {
         return [];
       }
-      console.log('smartMedHighMeds: ', smartMedHighMeds[0]);
       const recommend = Object.assign( smartMedHighMeds[0], { maxPuffPerTime: smartMedHighMeds[0].puffPerTime } );
-      console.log('recommend: ', recommend);
 
       return _.chain( masterMedications )
         .filter( { name: 'singulair' } )
-        .concat( 'SMART', smartMedHighMeds )
+        .concat( 'SMART', recommend )
         .value();
     } )
     .value();
-};
 
 export default rule8;
