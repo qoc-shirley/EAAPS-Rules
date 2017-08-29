@@ -10,11 +10,10 @@ export const timesPerDay = ( medications, matchMedication ) =>
 export const doseICS = ( medications, matchMedication ) =>
   _.filter( medications, { doseICS: matchMedication.doseICS } );
 
-export const minimizePuffsPerTime = ( medications, minimizeMedicationsPuffs ) => {
-  const minimize = _.filter( medications, medication => medication.doseICS < minimizeMedicationsPuffs.doseICS );
-  if ( _.size( minimize ) > 1 ) {
-    return _.maxBy( minimize, 'doseICS' );
-  }
-
-  return minimize;
+export const minimizePuffsPerTime = ( medications ) => {
+  return _.chain( medications )
+    .thru( convert => _.map( convert,
+      convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
+    .maxBy( 'doseICS' )
+    .value();
 };

@@ -5,7 +5,7 @@ import './styles.css';
 
 const DisplayPatientMedications = ( { medication } ) => {
   let showPatientMedications = null;
-  if ( _.isEmpty(  medication.patientMedications ) ) {
+  if ( _.isEmpty( medication.patientMedications ) ) {
     showPatientMedications = <p key="on">No Medications were found</p>;
   }
   else {

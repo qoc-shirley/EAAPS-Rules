@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
 import * as adjust from '../library/adjustICSDose';
 import * as match from '../library/match';
+import medicationData from '../../medicationData/medicationData';
 
 const rule9 = patientMedications => _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
@@ -14,9 +15,19 @@ const rule9 = patientMedications => _.chain( patientMedications )
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
         else {
-          const filterMedication = _.filter( patientMedications, { chemicalType: patientMedication.chemicalType } );
+          console.log('cannot match dosePerPuff');
+          const filterMedication = _.chain( medicationData )
+            .filter( {
+              chemicalType: patientMedication.chemicalType,
+              name: patientMedication.name,
+              function: patientMedication.function,
+            } )
+            .filter( medication => adjust.ICSDose( medication, 'highest' ) !== [] )
+            .value();
+          console.log( filterMedication );
           result.push( 'SMART' );
-          result.push( match.minimizePuffsPerTime( filterMedication, patientMedication ) );
+          console.log( match.minimizePuffsPerTime( filterMedication ));
+          result.push( match.minimizePuffsPerTime( filterMedication ) );
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
       }
