@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
 import * as categorize from '../library/categorizeDose';
+import * as match from '../library/match';
 import masterMedications from '../../medicationData/medicationData';
 
 const rule7 = patientMedications => _.chain( patientMedications )
@@ -8,14 +9,12 @@ const rule7 = patientMedications => _.chain( patientMedications )
       if ( patientMedication.name === 'symbicort' &&
         patientMedication.function === 'controller,reliever' &&
         categorize.patientICSDose( patientMedication ) === 'low' ) {
-        if ( adjust.ICSDose( patientMedication, 'lowestMedium' ) === [] ) {
+        if ( _.isEmpty( adjust.ICSDose( patientMedication, 'lowestMedium' ) ) ) {
           return _.chain( masterMedications )
             .filter( medication => medication.name === 'symbicort' &&
                 medication.function === 'controller,reliever' &&
                 categorize.patientICSDose( medication ) === 'low' )
-            .thru( convert => _.map( convert,
-                convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-            .max( 'doseICS' )
+            .thru( _medication => match.minimizePuffsPerTime( _medication ) )
             .thru( _med => adjust.ICSDose( _med, 'lowestMedium' ) )
             .concat( result, 'SMART' )
             .value();
