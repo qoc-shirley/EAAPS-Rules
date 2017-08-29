@@ -120,7 +120,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           else if ( patientMedication.name === 'symbicort' &&
             _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             result.push( ['SMART',
-                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )],
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )],
             );
           }
 
