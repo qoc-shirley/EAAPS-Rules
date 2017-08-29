@@ -15,7 +15,6 @@ const rule9 = patientMedications => _.chain( patientMedications )
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
         else {
-          console.log('cannot match dosePerPuff');
           const filterMedication = _.chain( medicationData )
             .filter( {
               chemicalType: patientMedication.chemicalType,
@@ -24,9 +23,7 @@ const rule9 = patientMedications => _.chain( patientMedications )
             } )
             .filter( medication => adjust.ICSDose( medication, 'highest' ) !== [] )
             .value();
-          console.log( filterMedication );
           result.push( 'SMART' );
-          console.log( match.minimizePuffsPerTime( filterMedication ));
           result.push( match.minimizePuffsPerTime( filterMedication ) );
           result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
         }
