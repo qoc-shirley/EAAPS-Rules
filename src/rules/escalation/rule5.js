@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
 import * as adjust from '../library/adjustICSDose';
+import * as match from '../library/match';
 
 const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
@@ -25,11 +26,8 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   sameMedication.name === patientMedication.name &&
                   sameMedication.device === patientMedication.device )
               .filter( adjustToMax =>
-                // console.log('adjust To Max: ', adjustToMax,  adjust.ICSDose( adjustToMax, 'highest' ) );
                  adjust.ICSDose( adjustToMax, 'highest' ) !== [] )
-              .thru( convert => _.map( convert,
-                  convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-              .maxBy( 'doseICS' )
+              .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .value();
             // console.log('recommendHighest: ', recommendHighest);
             result.push( originalMedicationLtra );
@@ -112,9 +110,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               );
             }
             result.push( _.chain( isfilteredMedicationDevice )
-              .thru( convert => _.map( convert,
-                  convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-              .maxBy( 'doseICS' )
+              .thru( _medication => match.minimizePuffsPerTime( _medication ))
               .value(),
             );
             result.push( originalMedicationLtra );
