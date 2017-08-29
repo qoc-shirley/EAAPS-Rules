@@ -110,7 +110,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               );
             }
             result.push( _.chain( isfilteredMedicationDevice )
-              .thru( _medication => match.minimizePuffsPerTime( _medication ))
+              .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .value(),
             );
             result.push( originalMedicationLtra );

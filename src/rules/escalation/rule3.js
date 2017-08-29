@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
 import * as categorize from '../library/categorizeDose';
+import * as match from '../library/match';
 
 const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
@@ -25,9 +26,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   ( medication.timesPerDay === patientMedication.timesPerDay ||
                     medication.timesPerDay === '1 OR 2' ) &&
                     medication.device === patientMedication.device )
-              .thru( convert => _.map( convert,
-                  convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-              .maxBy( 'doseICS' )
+              .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .thru( _medication => result.push( _medication ) )
               .value();
           }
@@ -58,9 +57,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       medication.timesPerDay === '1 OR 2' ) &&
                     ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
                     medication.device === patientMedication.device )
-                .thru( convert => _.map( convert,
-                    convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-                .maxBy( 'doseICS' )
+                .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .thru( _medication => result.push( _medication ) )
                 .value();
             }
@@ -75,9 +72,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       medication.timesPerDay === '1 OR 2' ) &&
                     ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
                     ( medication.device === patientMedication.device || medication.device === laba.device ) )
-                .thru( convert => _.map( convert,
-                    convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-                .maxBy( 'doseICS' )
+                .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .thru( _medication => result.push( _medication ) )
                 .value();
             }
@@ -85,9 +80,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             return _.chain( sameChemicalLabaAndIcs )
               .filter( chooseDevice => chooseDevice.device === patientMedication.device )
               .filter( adjustMedication => adjust.ICSDose( adjustMedication, 'lowestMedium' ) !== [] )
-              .thru( convert => _.map( convert,
-                  convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-              .maxBy( 'doseICS' )
+              .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .value();
           }
           else if ( patientMedication.name === 'symbicort' &&
