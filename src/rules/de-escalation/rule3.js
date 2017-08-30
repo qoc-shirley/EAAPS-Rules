@@ -176,7 +176,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     'discontinue:',
                     get.highestICSDose( equalICSDose ),
                     'OR continue:',
-                    patientMedication,
+                    Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
                   ] );
                 // has to be presented as an option
               }
@@ -234,11 +234,15 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   'discontinue:',
                   get.highestICSDose( equalICSDose ),
                   'OR continue:',
-                  patientMedication,
+                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
                 ] );
             }
 
-            return result.push( [patientMedication, isLaba] );
+            return result.push(
+              [
+                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
+                isLaba,
+              ] );
           }
         }
 
