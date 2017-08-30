@@ -139,7 +139,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       maxPuffPerTime: patientMedication.puffPerTime,
                       timesPerDay: patientMedication.timesPerDay,
                     } ),
-                  isLaba,
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -183,6 +182,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               }
             }
             // on SMART
+            console.log('onSmart');
             const questionThree = asthmaControlAnswers[0].rescuePuffer;
             if ( questionThree === '0' ) {
               // console.log( 'rescue puffer: 0' );
@@ -209,9 +209,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .filter( _medication =>
                   !_.isNil( adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) ) )
                 .value();
-              // console.log( 'equalICSDose: ', equalICSDose );
+              console.log( 'equalICSDose: ', equalICSDose );
               if ( _.isEmpty( equalICSDose ) ) {
-                // console.log( 'equalICSDose empty' );
+                console.log( 'equalICSDose empty' );
 
                 return result.push( _.chain( medicationElement )
                   .filter(
@@ -238,7 +238,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 ] );
             }
 
-            return result.push( [patientMedication, laba] );
+            return result.push( [patientMedication, isLaba] );
           }
         }
 
