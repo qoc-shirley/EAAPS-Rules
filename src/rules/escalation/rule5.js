@@ -83,6 +83,10 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
               result.push( [originalMedicationLtra, originalMedicationLaba] );
 
+              if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
+                return result.push( adjust.ICSDose( patientMedication, 'highest' ) );
+              }
+
               return result.push(
                 _.chain( _masterMedications )
                   .filter( medication => medication.chemicalType === 'ICS' &&
@@ -120,7 +124,8 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           else if ( patientMedication.name === 'symbicort' &&
             _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             result.push( ['SMART',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )],
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
+              originalMedicationLtra],
             );
           }
 
