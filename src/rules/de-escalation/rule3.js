@@ -137,8 +137,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   Object.assign( patientMedication,
                     {
                       maxPuffPerTime: patientMedication.puffPerTime,
-                      timesPerDay: patientMedication.timesPerDayValue,
+                      timesPerDay: patientMedication.timesPerDay,
                     } ),
+                  isLaba,
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
