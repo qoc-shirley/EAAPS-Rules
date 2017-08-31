@@ -217,17 +217,27 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                 return accNewMedications;
               }, { diskus: [], inhaler2Advair: [], inhaler2Zenhale: [], symbicort: [] } )
-              .thru( ( _newMedications ) => {
-                const findLowestOrHighestMedication = _.chain( _newMedications )
-                  .filter( _medication => categorize.ICSDose( _medication ) === category )
-                  .value();
-                if ( _.isEmpty( findLowestOrHighestMedication ) && category === 'excessive' ) {
-                  return _.chain( _newMedications )
-                    .filter( _medication => adjust.ICSDose( _medication, 'highest' ) !== [] )
+              .map( ( _newMedications ) => {
+                console.log('newMedications: ', _newMedications );
+                if ( category === 'excessive' ) {
+                  const findLowestOrHighestMedication = _.chain( _newMedications )
+                    .filter( _medication => categorize.ICSDose( _medication ) === category &&
+                      adjust.ICSDose( _medication, 'highest' ) !== [] )
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                     .value();
+                  if ( _.isEmpty( findLowestOrHighestMedication ) ) {
+                    return _.chain( _newMedications )
+                      .filter( _medication => adjust.ICSDose( _medication, 'highest' ) !== [] )
+                      .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                      .value();
+                  }
                 }
-                else if ( _.isEmpty( findLowestOrHighestMedication ) ) {
+                const findLowestOrHighestMedication = _.chain( _newMedications )
+                  .filter( _medication => categorize.ICSDose( _medication ) === category &&
+                    adjust.ICSDose( _medication, category ) !== [] )
+                  .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                  .value();
+                if ( _.isEmpty( findLowestOrHighestMedication ) ) {
                   return _.chain( _newMedications )
                     .filter( _medication => adjust.ICSDose( _medication, category ) !== [] )
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
@@ -247,6 +257,6 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
       return result;
     }, [] )
-    .flatten()
+    .flattenDeep()
     .value();
 export default rule1;
