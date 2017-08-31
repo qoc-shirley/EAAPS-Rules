@@ -133,53 +133,6 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
               return result.push( [checkNewMedication, toMax, toNext] );
             }
-
-            // result.push(
-            //     _.chain( _masterMedications )
-            //       .filter( medication => (
-            //           medication.chemicalLABA === 'salmeterol' &&
-            //           medication.chemicalICS === 'fluticasone' &&
-            //           medication.device === 'diskus'
-            //         ) || (
-            //           medication.chemicalLABA === 'salmeterol' &&
-            //           medication.chemicalICS === 'fluticasone' &&
-            //           medication.device === 'inhaler2'
-            //         ) || (
-            //           medication.chemicalLABA === 'formoterol' &&
-            //           medication.chemicalICS === 'budesonide'
-            //         ) || (
-            //           medication.chemicalLABA === 'formoterol' &&
-            //           medication.chemicalICS === 'mometasone'
-            //         ) )
-            //       .reduce( ( accMedicationCategory, medication ) => {
-            //         const category = categorize.ICSDose( medication );
-            //
-            //         if ( _.isNil( accMedicationCategory[category] ) ) {
-            //           if ( category === 'excessive' ) {
-            //             // eslint-disable-next-line no-param-reassign
-            //             accMedicationCategory[category] = adjust.ICSDose( medication, 'highest' );
-            //           }
-            //           // eslint-disable-next-line no-param-reassign
-            //           accMedicationCategory[category] = Object.assign( medication, { maxPuffPerTime: 1 } );
-            //         }
-            //
-            //         else if ( category === 'excessive' &&
-            //             calculate.ICSDose( accMedicationCategory[category] ) <= calculate.ICSDose( medication ) ) {
-            //           // eslint-disable-next-line no-param-reassign
-            //           accMedicationCategory[category] = adjust.ICSDose( medication, 'highest' );
-            //         }
-            //         else if ( calculate.ICSDose( accMedicationCategory[category] ) >
-            //             calculate.ICSDose( medication ) ) {
-            //           // eslint-disable-next-line no-param-reassign
-            //           accMedicationCategory[category] = Object.assign( medication, { maxPuffPerTime: 1 } );
-            //             // console.log('categories: ', accMedicationCategory);
-            //         }
-            //
-            //         return accMedicationCategory;
-            //       }, {} )
-            //       .thru( list => list[categorize.patientICSDose( patientMedication )] || [] )
-            //       .value(),
-            //   );
             const category = categorize.patientICSDose( patientMedication );
 
             return result.push( _.chain( _masterMedications )
@@ -187,7 +140,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 if ( medication.chemicalLABA === 'salmeterol' &&
                   medication.chemicalICS === 'fluticasone' &&
                   medication.device === 'diskus' ) {
-                   accNewMedications.diskus.push( medication );
+                  accNewMedications.diskus.push( medication );
                 }
                 else if ( medication.chemicalLABA === 'salmeterol' &&
                   medication.chemicalICS === 'fluticasone' &&
