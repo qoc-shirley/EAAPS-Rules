@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as calculate from '../library/calculateICSDose';
 import * as categorize from '../library/categorizeDose';
 import * as adjust from '../library/adjustICSDose';
+import * as match from '../library/match';
 
 const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, patientOriginalMedication ) => {
@@ -181,7 +182,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             //   );
             const category = categorize.patientICSDose( patientMedication );
 
-            return _.chain( _masterMedications )
+            return result.push( _.chain( _masterMedications )
               .reduce( ( accNewMedications, medication ) => {
                 if ( medication.chemicalLABA === 'salmeterol' &&
                   medication.chemicalICS === 'fluticasone' &&
@@ -216,7 +217,27 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                 return accNewMedications;
               }, { diskus: [], inhaler2Advair: [], inhaler2Zenhale: [], symbicort: [] } )
-              .value();
+              .thru( ( _newMedications ) => {
+                const findLowestOrHighestMedication = _.chain( _newMedications )
+                  .filter( _medication => categorize.ICSDose( _medication ) === category )
+                  .value();
+                if ( _.isEmpty( findLowestOrHighestMedication ) && category === 'excessive' ) {
+                  return _.chain( _newMedications )
+                    .filter( _medication => adjust.ICSDose( _medication, 'highest' ) !== [] )
+                    .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                    .value();
+                }
+                else if ( _.isEmpty( findLowestOrHighestMedication ) ) {
+                  return _.chain( _newMedications )
+                    .filter( _medication => adjust.ICSDose( _medication, category ) !== [] )
+                    .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                    .value();
+                }
+
+                return findLowestOrHighestMedication;
+              } )
+              .value(),
+            );
           }
 
           return result;

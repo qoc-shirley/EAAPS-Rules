@@ -19,12 +19,12 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
                patientMedication.name !== 'symbicort' ) {
-            if ( _.isEmpty( adjust.ICSDose( patientMedication, 'lowestMedium' ) ) ) {
+            if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
 
               return _.chain( _masterMedications )
                 .filter( medication => medication.chemicalType === 'laba,ICS' &&
                   medication.name === patientMedication.name &&
-                  ( adjust.ICSDose(medication, 'lowestMedium') !== [] ) &&
+                  ( adjust.ICSDose( medication, 'medium' ) !== [] ) &&
                   ( medication.timesPerDay === patientMedication.timesPerDay ||
                     medication.timesPerDay === '1 OR 2' ) &&
                   medication.device === patientMedication.device )
@@ -33,7 +33,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .value();
             }
 
-            return result.push( adjust.ICSDose( patientMedication, 'lowestMedium' ) );
+            return result.push( adjust.ICSDose( patientMedication, 'medium' ) );
           }
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
@@ -55,44 +55,44 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               // console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba)
               result.push( isLtra );
 
-              if ( _.isEmpty( adjust.ICSDose( patientMedication, 'lowestMedium' ) ) ) {
+              if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
                   .filter( medication => medication.chemicalType === 'ICS' &&
                     medication.name === patientMedication.name &&
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
-                    ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
+                    ( adjust.ICSDose( medication, 'medium' ) !== [] ) &&
                     medication.device === patientMedication.device )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .thru( _medication => result.push( _medication ) )
                   .value();
               }
 
-              return result.push( adjust.ICSDose( patientMedication, 'lowestMedium' ) );
+              return result.push( adjust.ICSDose( patientMedication, 'medium' ) );
             }
             // console.log( 'test getDeviceIcsOrLaba' );
             if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
               result.push( isLaba );
 
-              if ( _.isEmpty( adjust.ICSDose( patientMedication, 'lowestMedium' ) ) ) {
+              if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
                   .filter( medication => medication.chemicalType === 'ICS' &&
                     medication.name === patientMedication.name &&
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
-                    ( adjust.ICSDose( medication, 'lowestMedium' ) !== [] ) &&
+                    ( adjust.ICSDose( medication, 'medium' ) !== [] ) &&
                     ( medication.device === patientMedication.device || medication.device === laba.device ) )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .thru( _medication => result.push( _medication ) )
                   .value();
               }
 
-              return result.push( adjust.ICSDose( patientMedication, 'lowestMedium' ) );
+              return result.push( adjust.ICSDose( patientMedication, 'medium' ) );
             }
 
             return _.chain( sameChemicalLabaAndIcs )
               .filter( chooseDevice => chooseDevice.device === patientMedication.device )
-              .filter( adjustMedication => adjust.ICSDose( adjustMedication, 'lowestMedium' ) !== [] )
+              .filter( adjustMedication => adjust.ICSDose( adjustMedication, 'medium' ) !== [] )
               .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .value();
           }

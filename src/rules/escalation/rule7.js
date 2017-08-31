@@ -9,19 +9,19 @@ const rule7 = patientMedications => _.chain( patientMedications )
       if ( patientMedication.name === 'symbicort' &&
         patientMedication.function === 'controller,reliever' &&
         categorize.patientICSDose( patientMedication ) === 'low' ) {
-        if ( _.isEmpty( adjust.ICSDose( patientMedication, 'lowestMedium' ) ) ) {
+        if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
           return _.chain( masterMedications )
             .filter( medication => medication.name === 'symbicort' &&
                 medication.function === 'controller,reliever' &&
                 categorize.patientICSDose( medication ) === 'low' )
             .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-            .thru( _med => adjust.ICSDose( _med, 'lowestMedium' ) )
+            .thru( _med => adjust.ICSDose( _med, 'medium' ) )
             .concat( result, 'SMART' )
             .value();
         }
 
         return _.chain( patientMedication )
-          .thru( med => adjust.ICSDose( med, 'lowestMedium' ) )
+          .thru( med => adjust.ICSDose( med, 'medium' ) )
           .concat( result, 'SMART' )
           .value();
       }

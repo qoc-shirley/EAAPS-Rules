@@ -8,7 +8,7 @@ export const ICSDose = ( medication, level ) => {
   let counter = 1;
   let testAdjustment;
 
-  if ( level === 'lowestMedium' ) {
+  if ( level === 'medium' ) {
     while ( lowMediumICSDose === false && ( counter <= max ) ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment > _.toInteger( medication.lowCeilICS ) &&
