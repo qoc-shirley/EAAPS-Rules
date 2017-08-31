@@ -68,12 +68,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             _medication => calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( _medication ) ) ) ) {
           const questionTwo = asthmaControlAnswers[0].asthmaSymptoms;
           if ( questionTwo === '0' ) {
-            result.push( ['discontinue medication: ',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-              'OR', 'continue medication: ',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] );
-
-            return result;
+            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
           }
 
           return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
