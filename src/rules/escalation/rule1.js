@@ -187,32 +187,20 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 if ( medication.chemicalLABA === 'salmeterol' &&
                   medication.chemicalICS === 'fluticasone' &&
                   medication.device === 'diskus' ) {
-                  return Object( accNewMedications,
-                    {
-                      diskus: accNewMedications.diskus.push( medication ),
-                    } );
+                   accNewMedications.diskus.push( medication );
                 }
                 else if ( medication.chemicalLABA === 'salmeterol' &&
                   medication.chemicalICS === 'fluticasone' &&
                   medication.device === 'inhaler2' ) {
-                  return Object( accNewMedications,
-                    {
-                      inhaler2Advair: accNewMedications.inhaler2Advair.push( medication ),
-                    } );
+                  accNewMedications.inhaler2Advair.push( medication );
                 }
                 else if ( medication.chemicalLABA === 'formoterol' &&
                   medication.chemicalICS === 'budesonide' ) {
-                  return Object( accNewMedications,
-                    {
-                      inhaler2Zenhale: accNewMedications.inhaler2Zenhale.push( medication ),
-                    } );
+                  accNewMedications.inhaler2Zenhale.push( medication );
                 }
                 else if ( medication.chemicalLABA === 'formoterol' &&
                   medication.chemicalICS === 'mometasone' ) {
-                  return Object( accNewMedications,
-                    {
-                      symbicort: accNewMedications.symbicort.push( medication ),
-                    } );
+                  accNewMedications.symbicort.push( medication );
                 }
 
                 return accNewMedications;
