@@ -26,10 +26,10 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           if ( _.isEmpty( rule3Recommendation ) ) {
             rule3Recommendation = 'No recommendation';
           }
-          result.push( [
+          result.push( 'statement5',
             'discontinue Ltra: ', _.concat( patientMedication, noLaba, noLabaICS ),
             'continue ltra (Rule3): ', rule3Recommendation, noLtra,
-          ] );
+          );
         }
 
         return result;
