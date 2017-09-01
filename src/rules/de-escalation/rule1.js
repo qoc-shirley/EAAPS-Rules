@@ -69,12 +69,12 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication) {
           const avgAsthmaSymptoms = asthmaControlAnswers[0].asthmaSymptoms;
           if ( avgAsthmaSymptoms === '0' ) {
-            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-              'statement1Ai' );
+            return result.push( 'statement1Ai',
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
           }
           else if ( avgAsthmaSymptoms === '1' || avgAsthmaSymptoms === '2' || avgAsthmaSymptoms === '3' ) {
-            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-              'statement1Aii' );
+            return result.push( 'statement1Aii',
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
           }
 
           return [];

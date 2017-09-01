@@ -70,23 +70,23 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             ) )
           .value();
         // console.log( 'filterMedications: ', filterMedications );
-        const compareLowestDose = _.chain( filterMedications )
+        const medicationsWithLowestDose = _.chain( filterMedications )
           .filter(
           {
             device: patientMedication.device,
           } )
           .value();
-        // console.log( 'compareLowestDose: ', compareLowestDose );
+        // console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
         const notOnSMART = _.chain( originalMedications )
           .filter( { name: 'symbicort', function: 'controller,reliever' } )
           .isEmpty()
           .value();
 
         if ( !check ) {
-          if ( !_.isEmpty( _.filter( compareLowestDose,
+          if ( !_.isEmpty( _.filter( medicationsWithLowestDose,
               _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) ) ) ) {
             if ( patientMedication.chemicalType === 'ICS' ) {
-              const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
+              const sameChemicalLabaAndIcs = _.chain( medicationsWithLowestDose )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                     masterMedication.chemicalICS === patientMedication.chemicalICS &&
                     masterMedication.chemicalLABA === laba.chemicalLABA )
@@ -117,7 +117,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
-              const sameChemicalLabaAndIcs = _.chain( compareLowestDose )
+              const sameChemicalLabaAndIcs = _.chain( medicationsWithLowestDose )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                     masterMedication.chemicalICS === patientMedication.chemicalICS &&
                     masterMedication.chemicalLABA === patientMedication.chemicalLABA )
@@ -139,6 +139,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       maxPuffPerTime: patientMedication.puffPerTime,
                       timesPerDay: patientMedication.timesPerDay,
                     } ),
+                  isLaba,
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -172,12 +173,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 }
 
                 return result.push(
-                  [
-                    'discontinue:',
                     get.highestICSDose( equalICSDose ),
-                    'OR continue:',
-                    Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-                  ] );
+                    Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
                 // has to be presented as an option
               }
             }
@@ -229,20 +226,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 );
               }
 
-              return result.push(
-                [
-                  'discontinue:',
-                  get.highestICSDose( equalICSDose ),
-                  'OR continue:',
-                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-                ] );
+              return result.push( get.highestICSDose( equalICSDose ),
+                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
             }
 
-            return result.push(
-              [
-                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-                isLaba,
-              ] );
+            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
+                isLaba );
           }
         }
 
