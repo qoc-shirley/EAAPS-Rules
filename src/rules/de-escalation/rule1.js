@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
 import * as calculate from '../library/calculateICSDose';
 
+// add tag to medications to determine message for UI
 const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
