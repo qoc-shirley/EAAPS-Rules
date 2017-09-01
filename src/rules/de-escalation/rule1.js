@@ -66,12 +66,17 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           noLabaLtra &&
           !_.isEmpty( _.filter( compareLowestDose,
             _medication => calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( _medication ) ) ) ) {
-          const questionTwo = asthmaControlAnswers[0].asthmaSymptoms;
-          if ( questionTwo === '0' ) {
-            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
+          const avgAsthmaSymptoms = asthmaControlAnswers[0].asthmaSymptoms;
+          if ( avgAsthmaSymptoms === '0' ) {
+            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
+              'statement1Ai' );
+          }
+          else if ( avgAsthmaSymptoms === '1' || avgAsthmaSymptoms === '2' || avgAsthmaSymptoms === '3' ) {
+            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
+              'statement1Aii' );
           }
 
-          return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
+          return [];
         }
 
         return result;
