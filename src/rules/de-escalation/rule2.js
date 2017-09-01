@@ -62,12 +62,13 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
-        console.log('compareLowestDose: ', compareLowestDose);
-        if ( patientMedication.chemicalType === 'ICS' &&
-          noLabaLtra &&
-          !_.isEmpty( _.filter( compareLowestDose,
-            _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) ) ) ) {
-          console.log('in');
+        const compareLowestDoseToPatientMedication = _.chain( compareLowestDose )
+          .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
+          .isEmpty()
+          .value();
+        // console.log('compareLowestDose: ', compareLowestDose);
+        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication ) {
+          // console.log('in');
           const recommend = _.chain( compareLowestDose )
             .filter( _recommendMedication => _recommendMedication.chemicalICS === patientMedication.chemicalICS &&
               _recommendMedication.device === patientMedication.device )
