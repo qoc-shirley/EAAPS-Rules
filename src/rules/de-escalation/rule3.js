@@ -133,7 +133,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // not on smart
               if ( patientMedication.chemicalType === 'ICS' ) {
                 // discontinue laba medication
-                return result.push( 'statement3baiAndii',
+                return result.push( 'statement 3 b a i And ii',
                   Object.assign( patientMedication,
                     {
                       maxPuffPerTime: patientMedication.puffPerTime,
@@ -172,7 +172,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   );
                 }
 
-                return result.push( 'statement3baiAndii',
+                return result.push( 'statement 3 b a i And ii',
                     get.highestICSDose( equalICSDose ),
                     Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
                 // has to be presented as an option
@@ -226,11 +226,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 );
               }
 
-              return result.push( 'statement3bb1', get.highestICSDose( equalICSDose ),
+              return result.push( 'statement 3 b b1', get.highestICSDose( equalICSDose ),
                   Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
             }
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
-              return result.push( 'statement3bb2',
+              return result.push( 'statement 3 b b2',
                 Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
                 isLaba );
             }
