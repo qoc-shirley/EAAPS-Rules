@@ -24,12 +24,12 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             rule2Recommendation = 'no Recommendations';
           }
           // console.log(rule1( [patientMedication], medicationElement, asthmaControlAnswers ));
-          result.push( [
+          result.push( 'statement4',
             'discontinue ltra: ', patientMedication,
             'continue ltra : ', isLtra[0],
             'Rule1: ', rule1Recommendation,
             'Rule2: ', rule2Recommendation,
-          ] );
+          );
         }
 
         return result;
