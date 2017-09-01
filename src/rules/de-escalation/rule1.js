@@ -49,7 +49,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               ) )
           .value();
 
-        const compareLowestDose = _.chain( filterMedications )
+        const medicationsWithLowestDose = _.chain( filterMedications )
           .filter(
           {
             chemicalType: patientMedication.chemicalType,
@@ -61,11 +61,12 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
+        const compareLowestDoseToPatientMedication = _.chain( medicationsWithLowestDose )
+          .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
+          .isEmpty()
+          .value();
 
-        if ( patientMedication.chemicalType === 'ICS' &&
-          noLabaLtra &&
-          !_.isEmpty( _.filter( compareLowestDose,
-            _medication => calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( _medication ) ) ) ) {
+        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication) {
           const avgAsthmaSymptoms = asthmaControlAnswers[0].asthmaSymptoms;
           if ( avgAsthmaSymptoms === '0' ) {
             return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
