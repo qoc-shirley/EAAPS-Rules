@@ -133,7 +133,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // not on smart
               if ( patientMedication.chemicalType === 'ICS' ) {
                 // discontinue laba medication
-                return result.push(
+                return result.push( 'statement3baiAndii',
                   Object.assign( patientMedication,
                     {
                       maxPuffPerTime: patientMedication.puffPerTime,
@@ -172,7 +172,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   );
                 }
 
-                return result.push(
+                return result.push( 'statement3baiAndii',
                     get.highestICSDose( equalICSDose ),
                     Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
                 // has to be presented as an option
@@ -180,8 +180,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             }
             // on SMART
            //  console.log('onSmart');
-            const questionThree = asthmaControlAnswers[0].rescuePuffer;
-            if ( questionThree === '0' ) {
+            const avgUseOfRescuePuff = asthmaControlAnswers[0].rescuePuffer;
+            if ( avgUseOfRescuePuff === '0' ) {
               // console.log( 'rescue puffer: 0' );
               const reliever = _.chain( originalMedications )
                 .filter( _medication =>
@@ -226,12 +226,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 );
               }
 
-              return result.push( get.highestICSDose( equalICSDose ),
+              return result.push( 'statement3bb1', get.highestICSDose( equalICSDose ),
                   Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
             }
-
-            return result.push( Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
+            else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
+              return result.push( 'statement3bb2',
+                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
                 isLaba );
+            }
           }
         }
 
