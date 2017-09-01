@@ -3,6 +3,7 @@ import rule2 from './rule2';
 import * as adjust from '../library/adjustICSDose';
 import * as calculate from '../library/calculateICSDose';
 import * as get from '../library/getICSDose';
+import * as match from '../library/match';
 import totalDoseReduction from '../library/totalDoseReduction';
 
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
@@ -98,22 +99,27 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication ) )
                 .filter( _medication =>
                   _medication.device === patientMedication.device || _medication.device === laba.device )
-                .thru( convert => _.map( convert, convertEach => Object.assign( convertEach,
-                  {
-                    doseICS: _.toInteger( convertEach.doseICS ),
-                    maxPuffPerTime: 1,
-                  } ) ) )
-                .maxBy( 'doseICS' )
+                // .thru( convert => _.map( convert, convertEach => Object.assign( convertEach,
+                //   {
+                //     doseICS: _.toInteger( convertEach.doseICS ),
+                //     maxPuffPerTime: 1,
+                //   } ) ) )
+                // .maxBy( 'doseICS' )
+                .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                .thru( _medication => Object.assign( _medication, { maxPuffPerTime: 1, tag: 'd4' } ) )
                 .value();
               // console.log( 'fifty: ', fifty );
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
-                result.push( rule2( [patientMedication], medicationElement ) );
+                const getRecommendationFromRule2 = rule2( [patientMedication], medicationElement );
+                //add tag
+                result.push( getRecommendationFromRule2 );
                 result.push( isLaba );
 
                 return result;
               }
 
+              // add tag
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -124,6 +130,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .value();
               // console.log( 'laba,ICS sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs );
 
+              // add tag
               return result.push( totalDoseReduction( patientMedication, sameChemicalLabaAndIcs ) );
             }
           }
@@ -133,11 +140,13 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // not on smart
               if ( patientMedication.chemicalType === 'ICS' ) {
                 // discontinue laba medication
+                // add tags
                 return result.push( 'statement 3 b a i And ii',
                   Object.assign( patientMedication,
                     {
                       maxPuffPerTime: patientMedication.puffPerTime,
                       timesPerDay: patientMedication.timesPerDay,
+                      tag: 'd4',
                     } ),
                   isLaba,
                 );
@@ -156,6 +165,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     !_.isNil( adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) ) )
                   .value();
                 if ( _.isEmpty( equalICSDose ) ) {
+                  // add tag
                   return result.push( _.chain( medicationElement )
                     .filter(
                     {
@@ -165,16 +175,15 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     } )
                     .filter( nextHigherMedication =>
                       adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
-                    .thru( convert => _.map( convert,
-                        convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-                    .maxBy( 'doseICS' )
+                    .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                     .value(),
                   );
                 }
+                const getHighestDose = get.highestICSDose( equalICSDose );
 
                 return result.push( 'statement 3 b a i And ii',
-                    get.highestICSDose( equalICSDose ),
-                    Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
+                  Object.assign( getHighestDose, { tag: 'd4' } ),
+                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd4' } ) );
                 // has to be presented as an option
               }
             }
@@ -210,6 +219,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               if ( _.isEmpty( equalICSDose ) ) {
                 // console.log( 'equalICSDose empty' );
 
+                // add tag
                 return result.push( _.chain( medicationElement )
                   .filter(
                   {
@@ -219,20 +229,20 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   } )
                   .filter( nextHigherMedication =>
                     adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
-                  .thru( convert => _.map( convert,
-                      convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
-                  .maxBy( 'doseICS' )
+                  .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .value(),
                 );
               }
+              const getHighestDose = get.highestICSDose( equalICSDose );
 
-              return result.push( 'statement 3 b b1', get.highestICSDose( equalICSDose ),
-                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
+              return result.push( 'statement 3 b b1',
+                Object.assign( getHighestDose, { tag: 'd4' } ),
+                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd4' } ) );
             }
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
               return result.push( 'statement 3 b b2',
-                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-                isLaba );
+                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd4' } ),
+                Object.assign( isLaba, { tag: 'd4' } ) );
             }
           }
         }

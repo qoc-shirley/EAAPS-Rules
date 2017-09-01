@@ -75,7 +75,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           else if ( avgAsthmaSymptoms === '1' || avgAsthmaSymptoms === '2' || avgAsthmaSymptoms === '3' ) {
             return result.push( 'statement1Aii',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd1' } ) );
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd2' } ) );
           }
 
           return [];

@@ -74,7 +74,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               _recommendMedication.device === patientMedication.device )
             .value();
           const operationTotalDoseReduction = totalDoseReduction( patientMedication, recommend );
-          result.push( Object.assign( operationTotalDoseReduction, { tag: 'd2' } ) );
+          result.push( Object.assign( operationTotalDoseReduction, { tag: 'd3' } ) );
         }
 
         return result;
