@@ -30,10 +30,12 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   medication.device === patientMedication.device )
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .thru( _medication => result.push( _medication ) )
+                .thru( _medication => Object.assign( _medication, { tag: 'e6' } ) )
                 .value();
             }
+            const adjustToMediumDose =  adjust.ICSDose( patientMedication, 'medium' );
 
-            return result.push( adjust.ICSDose( patientMedication, 'medium' ) );
+            return result.push( Object.assign( adjustToMediumDose, { tag: 'e6' } ) );
           }
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
@@ -53,7 +55,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
             if ( !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
               // console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba)
-              result.push( isLtra );
+              result.push( Object.assign( isLtra, { tag: 'e8' } ) );
 
               if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
@@ -65,14 +67,16 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     medication.device === patientMedication.device )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .thru( _medication => result.push( _medication ) )
+                  .thru( _medication => Object.assign( _medication, { tag: 'e7' } ) )
                   .value();
               }
+              const adjustToMedium = adjust.ICSDose( patientMedication, 'medium' );
 
-              return result.push( adjust.ICSDose( patientMedication, 'medium' ) );
+              return result.push( Object.assign( adjustToMedium, { tag: 'e7' } ) );
             }
             // console.log( 'test getDeviceIcsOrLaba' );
             if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
-              result.push( isLaba );
+              result.push( Object.assign( isLaba, { tag: 'e8' } ) );
 
               if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
@@ -84,22 +88,25 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     ( medication.device === patientMedication.device || medication.device === laba.device ) )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .thru( _medication => result.push( _medication ) )
+                  .thru( _medication => Object.assign( _medication, { tag: 'e8' } ) )
                   .value();
               }
+              const adjustToMedium = adjust.ICSDose( patientMedication, 'medium' );
 
-              return result.push( adjust.ICSDose( patientMedication, 'medium' ) );
+              return result.push( Object.assign( adjustToMedium, { tag: 'e8' } ) );
             }
 
             return _.chain( sameChemicalLabaAndIcs )
               .filter( chooseDevice => chooseDevice.device === patientMedication.device )
               .filter( adjustMedication => adjust.ICSDose( adjustMedication, 'medium' ) !== [] )
               .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+              .thru( _medication => Object.assign( _medication, { tag: 'e7' } ) )
               .value();
           }
           else if ( patientMedication.name === 'symbicort' &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
             return result.push( ['SMART',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] );
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e9' } )] );
           }
 
           return result;

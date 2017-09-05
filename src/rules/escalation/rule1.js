@@ -10,7 +10,8 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
         _.partial( ( _masterMedications, patientMedication ) => {
           const newMedications = _.filter( _masterMedications, { chemicalType: 'laba,ICS' } );
           if ( patientMedication.chemicalType === 'ltra' ) {
-            result.push( patientMedication );
+            // is there supposed to be a seperate message for case ltra? or will it go under 1 ii?
+            result.push( Object.assign( patientMedication, { tag: '' } ) );
 
             return result;
           }
@@ -39,7 +40,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       if ( _.isEmpty( toMax ) ||
                         ( toMax.doseICS < newMedAdjust.doseICS &&
                           calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
-                        toMax = newMedAdjust;
+                        toMax = Object.assign( newMedAdjust, { tag: 'e4' } );
 
                         return accResult;
                       }
@@ -50,7 +51,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                         ( toNext.doseICS < newMedAdjust.doseICS &&
                           calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
                         // ICS DOSE is same but doseICS is greater than the one stored
-                        toNext = newMedAdjust;
+                        toNext = Object.assign( newMedAdjust, { tag: 'e4' } );
 
                         return accResult;
                       }
@@ -60,7 +61,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                     return medication;
                   }, [] )
-                  .thru( medication => medication )
+                  .thru( _medication => Object.assign( _medication, { tag: 'e4' } ) )
                   .value();
                 if ( _.isEmpty( checkNewMedication ) ) {
                   checkNewMedication = _.chain( equal )
@@ -70,7 +71,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                         if ( _.isEmpty( toMax ) ||
                           ( toMax.doseICS < newMedAdjust.doseICS &&
                             calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
-                          toMax = newMedAdjust;
+                          toMax = Object.assign( newMedAdjust, { tag: 'e4' } );
 
                           return accResult;
                         }
@@ -81,7 +82,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                           ( toNext.doseICS < newMedAdjust.doseICS &&
                             calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
                           // ICS DOSE is same but doseICS is greater than the one stored
-                          toNext = newMedAdjust;
+                          toNext = Object.assign( newMedAdjust, { tag: 'e4' } );
 
                           return accResult;
                         }
@@ -91,7 +92,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                       return medication;
                     }, [] )
-                    .thru( medication => medication )
+                    .thru( _medication => Object.assign( _medication, { tag: 'e4' } ) )
                     .value();
                 }
               }
@@ -106,7 +107,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       if ( _.isEmpty( toMax ) ||
                         ( toMax.doseICS < newMedAdjust.doseICS &&
                         calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
-                        toMax = newMedAdjust;
+                        toMax = Object.assign( newMedAdjust, { tag: 'e4' } );
 
                         return accResult;
                       }
@@ -117,7 +118,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                         ( toNext.doseICS < newMedAdjust.doseICS &&
                           calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
                         // ICS DOSE is same but doseICS is greater than the one stored
-                        toNext = newMedAdjust;
+                        toNext = Object.assign( newMedAdjust, { tag: 'e4' } );
 
                         return accResult;
                       }
@@ -127,7 +128,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                     return medication;
                   }, [] )
-                  .thru( medication => medication )
+                  .thru( _medication => Object.assign( _medication, { tag: 'e4' } ) )
                   .value();
               }
 
@@ -165,11 +166,13 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     .filter( _medication => categorize.ICSDose( _medication ) === category &&
                       adjust.ICSDose( _medication, 'highest' ) !== [] )
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                    .thru( _medication => Object.assign( _medication, { tag: 'e5' } ) )
                     .value();
                   if ( _.isEmpty( findLowestOrHighestMedication ) ) {
                     return _.chain( _newMedications )
                       .filter( _medication => adjust.ICSDose( _medication, 'highest' ) !== [] )
                       .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                      .thru( _medication => Object.assign( _medication, { tag: 'e5' } ) )
                       .value();
                   }
                 }
@@ -177,11 +180,13 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   .filter( _medication => categorize.ICSDose( _medication ) === category &&
                     adjust.ICSDose( _medication, category ) !== [] )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                  .thru( _medication => Object.assign( _medication, { tag: 'e5' } ) )
                   .value();
                 if ( _.isEmpty( findLowestOrHighestMedication ) ) {
                   return _.chain( _newMedications )
                     .filter( _medication => adjust.ICSDose( _medication, category ) !== [] )
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                    .thru( _medication => Object.assign( _medication, { tag: 'e5' } ) )
                     .value();
                 }
 
