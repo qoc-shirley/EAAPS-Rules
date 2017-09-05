@@ -25,10 +25,10 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           // console.log(rule1( [patientMedication], medicationElement, asthmaControlAnswers ));
           result.push( 'statement4',
-            'discontinue ltra: ', patientMedication,
-            'continue ltra : ', isLtra[0],
-            'Rule1: ', rule1Recommendation,
-            'Rule2: ', rule2Recommendation,
+            'discontinue ltra: ', Object.assign( patientMedication, { tag: 'd10' } ),
+            'continue ltra : ', Object.assign( isLtra[0], { tag: 'd10' } ),
+            'Rule1: ', Object.assign( rule1Recommendation, { tag: 'd10' } ),
+            'Rule2: ', Object.assign( rule2Recommendation, { tag: 'd10' } ),
           );
         }
 
