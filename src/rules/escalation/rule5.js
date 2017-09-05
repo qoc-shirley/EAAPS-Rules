@@ -58,10 +58,11 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 }, [] )
                 .thru( medication => medication.high )
                 .thru( medication => adjust.ICSDose( medication, 'highest' ) )
+                .thru( _medication => Object.assign( _medication, { tag: 'e13' } ) )
                 .value(),
               );
             }
-            result.push( recommendHighest );
+            result.push( Object.assign( recommendHighest, { tag: 'e13' } ) );
 
             return result;
           }
@@ -81,10 +82,15 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   medication.device === laba.device )
               .value();
             if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
-              result.push( [originalMedicationLtra, originalMedicationLaba] );
+              result.push(
+                [
+                  Object.assign( originalMedicationLtra, { tag: 'e15' } ),
+                  Object.assign( originalMedicationLaba, { tag: 'e15' } )] );
 
               if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
-                return result.push( adjust.ICSDose( patientMedication, 'highest' ) );
+                const adjustToMax = adjust.ICSDose( patientMedication, 'highest' );
+
+                return result.push( Object.assign( adjustToMax, { tag: 'e14' } ) );
               }
 
               return result.push(
@@ -110,22 +116,30 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     return accResult;
                   }, [] )
                   .thru( medication => medication.high )
+                  .thru( ( _medication ) => {
+                    if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
+                      return Object.assign( _medication, { tag: 'e15' } );
+                    }
+
+                    return Object.assign( _medication, { tag: 'e14' } );
+                  } )
                   .value(),
               );
             }
             result.push( _.chain( isfilteredMedicationDevice )
               .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+              .thru( _medication => Object.assign( _medication, { tag: 'e14' } ) )
               .value(),
             );
-            result.push( originalMedicationLtra );
+            result.push( Object.assign( originalMedicationLtra, { tag: 'e14' } ) );
 
             return result;
           }
           else if ( patientMedication.name === 'symbicort' &&
             _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             result.push( ['SMART',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ),
-              originalMedicationLtra],
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e16' } ),
+              Object.assign( originalMedicationLtra, { tag: 'e16' } )],
             );
           }
 
