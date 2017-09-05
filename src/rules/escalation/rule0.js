@@ -51,7 +51,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
       .reduce( ( result, originalMedication ) => {
         const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           const noIcsOrLabaIcs = _.chain( _patientMedications )
-            .filter( _medication => _medication === 'ICS' || _medication === 'laba,ICS' )
+            .filter( _medication => _medication.chemicalType === 'ICS' || _medication.chemicalType === 'laba,ICS' )
             .isEmpty()
             .value();
           if ( noIcsOrLabaIcs ) {
