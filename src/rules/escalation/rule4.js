@@ -18,7 +18,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               return _.chain( _masterMedications )
                 .filter( { name: 'singulair' } )
                 .thru( _medication => result.push( [_medication,
-                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] ) )
+                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e10' } )] ) )
                 .value();
             }
             // console.log( 'laba and ICS' );
@@ -73,7 +73,12 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 return accResult;
               }, [] )
               .uniqBy( 'id' )
-              .thru( _medication => result.push( [_medication, singulair, labaMedication] ) )
+              .thru( _medication => result.push(
+                [
+                  Object.assign( _medication, { tag: 'e11' } ),
+                  Object.assign( singulair, { tag: 'e11' } ),
+                  Object.assign( labaMedication, { tag: 'e11' } ),
+                ] ) )
               .value();
           }
 
@@ -81,7 +86,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) ) {
             return result.push( ['SMART',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } )] );
+              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e12' } )] );
           }
 
           return result;
