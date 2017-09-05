@@ -7,15 +7,24 @@ import * as match from '../library/match';
 const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, patientOriginalMedication ) => {
       const rule =
-        _.partial( ( _masterMedications, patientMedication ) => {
+        _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           const newMedications = _.filter( _masterMedications, { chemicalType: 'laba,ICS' } );
-          if ( patientMedication.chemicalType === 'ltra' ) {
+          const onlyICS = _.chain( _patientMedications )
+            .filter( _medication =>
+              _medication === 'ltra' ||
+              _medication === 'laba' ||
+              _medication === 'saba' ||
+              _medication === 'laac',
+            )
+            .isEmpty()
+            .value();
+          if ( patientMedication.chemicalType === 'ltra' && _.some( _patientMedications, { chemicalType: 'ICS' } ) ) {
             // is there supposed to be a seperate message for case ltra? or will it go under 1 ii?
             result.push( Object.assign( patientMedication, { tag: '' } ) );
 
             return result;
           }
-          else if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) ) {
+          else if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) && onlyICS ) {
             const chemicalICSMedications = _.chain( newMedications )
               .filter( { chemicalICS: patientMedication.chemicalICS } )
               .value();
@@ -197,7 +206,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           }
 
           return result;
-        }, masterMedications );
+        }, masterMedications, patientMedications );
 
       rule( patientOriginalMedication );
 
