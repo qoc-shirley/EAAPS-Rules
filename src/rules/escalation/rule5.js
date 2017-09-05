@@ -82,7 +82,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .filter( medication => medication.device === patientMedication.device ||
                   medication.device === laba.device )
               .value();
-            if ( true || _.isEmpty( isfilteredMedicationDevice ) ) {
+            if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
               result.push(
                 [
                   Object.assign( originalMedicationLtra[0], { tag: 'e15' } ),

@@ -33,20 +33,25 @@ saveRecommendation,
   const escalationRules = () => {
     const clonedMasterMedication = _.cloneDeep( medicationData );
     const clonedMasterMedication2 = _.cloneDeep( medicationData );
+    const clonedMasterMedication3 = _.cloneDeep( medicationData );
+    const clonedMasterMedication4 = _.cloneDeep( medicationData );
+    const clonedMasterMedication5 = _.cloneDeep( medicationData );
+    const clonedMasterMedication6 = _.cloneDeep( medicationData );
+    const clonedMasterMedication7 = _.cloneDeep( medicationData );
     saveRecommendation( 'Rule -1', getEscalation.rules.ruleMinus1( medication.patientMedications ) );
-    saveRecommendation( 'Rule 0', getEscalation.rules.rule0( medication.patientMedications, clonedMasterMedication ) );
-    saveRecommendation( 'Rule 1', getEscalation.rules.rule1( medication.patientMedications, clonedMasterMedication ) );
-    saveRecommendation( 'Rule 3', getEscalation.rules.rule3( medication.patientMedications, clonedMasterMedication ) );
+    saveRecommendation( 'Rule 0', getEscalation.rules.rule0( medication.patientMedications, clonedMasterMedication3 ) );
+    saveRecommendation( 'Rule 1', getEscalation.rules.rule1( medication.patientMedications, clonedMasterMedication4 ) );
+    saveRecommendation( 'Rule 3', getEscalation.rules.rule3( medication.patientMedications, clonedMasterMedication5 ) );
     saveRecommendation( 'Rule 4', _.flatten(
       getEscalation.rules.rule4( medication.patientMedications, clonedMasterMedication ) ) );
     saveRecommendation( 'Rule 5', getEscalation.rules.rule5( medication.patientMedications, clonedMasterMedication2 ) );
     saveRecommendation( 'Rule 6', getEscalation.rules.rule6( medication.patientMedications ) );
     saveRecommendation( 'Rule 7', getEscalation.rules.rule7( medication.patientMedications ) );
-    saveRecommendation( 'Rule 8', getEscalation.rules.rule8( medication.patientMedications, clonedMasterMedication ) );
+    saveRecommendation( 'Rule 8', getEscalation.rules.rule8( medication.patientMedications, clonedMasterMedication6 ) );
     saveRecommendation( 'Rule 9', getEscalation.rules.rule9( medication.patientMedications ) );
     saveRecommendation( 'Rule 10', getEscalation.rules.rule10( medication.patientMedications ) );
     saveRecommendation( 'Rule 11',
-      getEscalation.rules.rule11( medication.patientMedications, clonedMasterMedication ) );
+      getEscalation.rules.rule11( medication.patientMedications, clonedMasterMedication7 ) );
   };
 
   const deescalationRules = () => {
