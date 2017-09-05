@@ -28,9 +28,10 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .filter( adjustToMax =>
                  adjust.ICSDose( adjustToMax, 'highest' ) !== [] )
               .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+              .thru( _medication => Object.assign( _medication, { tag: 'e13' } ) )
               .value();
             // console.log('recommendHighest: ', recommendHighest);
-            result.push( originalMedicationLtra );
+            result.push( Object.assign( originalMedicationLtra[0], { tag: 'e13' } ) );
             if ( _.isEmpty( recommendHighest ) ) {
               return result.push( _.chain( _masterMedications )
                 .filter( medication => medication.chemicalType === 'laba,ICS' &&
@@ -81,16 +82,16 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .filter( medication => medication.device === patientMedication.device ||
                   medication.device === laba.device )
               .value();
-            if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
+            if ( true || _.isEmpty( isfilteredMedicationDevice ) ) {
               result.push(
                 [
-                  Object.assign( originalMedicationLtra, { tag: 'e15' } ),
-                  Object.assign( originalMedicationLaba, { tag: 'e15' } )] );
+                  Object.assign( originalMedicationLtra[0], { tag: 'e15' } ),
+                  Object.assign( originalMedicationLaba[0], { tag: 'e15' } )] );
 
               if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
                 const adjustToMax = adjust.ICSDose( patientMedication, 'highest' );
 
-                return result.push( Object.assign( adjustToMax, { tag: 'e14' } ) );
+                return result.push( Object.assign( adjustToMax, { tag: 'e15' } ) );
               }
 
               return result.push(
@@ -116,13 +117,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     return accResult;
                   }, [] )
                   .thru( medication => medication.high )
-                  .thru( ( _medication ) => {
-                    if ( _.isEmpty( filteredMedication ) || _.isEmpty( isfilteredMedicationDevice ) ) {
-                      return Object.assign( _medication, { tag: 'e15' } );
-                    }
-
-                    return Object.assign( _medication, { tag: 'e14' } );
-                  } )
+                  .thru( _medication => Object.assign( _medication, { tag: 'e15' } ) )
                   .value(),
               );
             }
@@ -131,7 +126,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .thru( _medication => Object.assign( _medication, { tag: 'e14' } ) )
               .value(),
             );
-            result.push( Object.assign( originalMedicationLtra, { tag: 'e14' } ) );
+            result.push( Object.assign( originalMedicationLtra[0], { tag: 'e14' } ) );
 
             return result;
           }
