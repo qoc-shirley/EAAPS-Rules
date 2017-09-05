@@ -31,7 +31,8 @@ const rule11 = ( patientMedications, _masterMedications ) => {
     filteredPatientMedications = [];
   }
 
-  return _.concat( newMedication, filteredPatientMedications );
+  return _.concat( Object.assign( newMedication, { tag: 'e22' } ),
+    Object.assign( filteredPatientMedications, { tag: 'e22' } ) );
 };
 
 export default rule11;
