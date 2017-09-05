@@ -9,10 +9,14 @@ const rule9 = patientMedications => _.chain( patientMedications )
       if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
         ( calculate.ICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
         _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
+        const ltra = _.chain( patientMedications )
+          .filter( patientMedications, { chemicalType: 'ltra' } )
+          .thru( _medication => Object.assign( _medication, { tag: 'e20' } ) )
+          .value();
         if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
           result.push( 'SMART' );
-          result.push( patientMedication );
-          result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
+          result.push( Object.assign( patientMedication, { tag: 'e20' } ) );
+          result.push( ltra );
         }
         else {
           const filterMedication = _.chain( medicationData )
@@ -22,10 +26,10 @@ const rule9 = patientMedications => _.chain( patientMedications )
               function: patientMedication.function,
             } )
             .filter( medication => adjust.ICSDose( medication, 'highest' ) !== [] )
+            .thru( _medication => match.minimizePuffsPerTime( _medication ) )
             .value();
-          result.push( 'SMART' );
-          result.push( match.minimizePuffsPerTime( filterMedication ) );
-          result.push( _.filter( patientMedications, { chemicalType: 'ltra' } ) );
+          result.push( 'SMART', Object.assign( filterMedication, { tag: 'e20' } ),
+            ltra );
         }
       }
 
