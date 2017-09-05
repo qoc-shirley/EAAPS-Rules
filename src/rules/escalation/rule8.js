@@ -21,7 +21,8 @@ const rule8 = ( patientMedications, masterMedications ) => _.chain( patientMedic
       if ( !_.size( smartMedHighMeds ) ) {
         return [];
       }
-      const recommend = Object.assign( smartMedHighMeds[0], { maxPuffPerTime: smartMedHighMeds[0].puffPerTime } );
+      const recommend =
+        Object.assign( smartMedHighMeds[0], { maxPuffPerTime: smartMedHighMeds[0].puffPerTime, tag: 'e19' } );
 
       return _.chain( masterMedications )
         .filter( { name: 'singulair' } )
