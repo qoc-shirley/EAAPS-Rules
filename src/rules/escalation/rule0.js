@@ -56,14 +56,12 @@ const rule0 = ( patientMedications, masterMedications ) => {
             .value();
           if ( noIcsOrLabaIcs ) {
             if ( patientMedication.chemicalType === 'ltra' ) {
-              console.log('ltra  medication: ', patientMedication);
               result.push( patientMedication );
             }
             else if (
               ( patientMedication.chemicalType === 'laba' )
               && ( _.some( _masterMedications, { chemicalType: 'laba,ICS' } ) )
             ) {
-              console.log('laba medication: ', patientMedication);
               const isLabaICSAndChemicalLABA = _.chain( _masterMedications )
                 .filter( {
                   chemicalType: 'laba,ICS',
