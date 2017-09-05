@@ -44,7 +44,7 @@ const rule0 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .thru( get.lowestICSDose )
                 .thru(
                   medication => Object.assign( {}, medication,
-                      { maxPuffPerTime: 1 },
+                      { maxPuffPerTime: 1, tag: 'e2' },
                       ) )
                 .value(),
               );
@@ -74,7 +74,7 @@ const rule0 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .value();
 
             const lowestICSDose = get.lowestICSDose( newMedications );
-            result.push( Object.assign( {}, lowestICSDose, { maxPuffPerTime: 1 } ) );
+            result.push( Object.assign( {}, lowestICSDose, { maxPuffPerTime: 1, tag: 'e3' } ) );
           }
           else {
             const recommendationOne = _.chain( _masterMedications )
