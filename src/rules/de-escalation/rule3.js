@@ -113,13 +113,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 // de-escalation rule 2 and continue laba medication
                 const getRecommendationFromRule2 = rule2( [patientMedication], medicationElement );
                 //add tag: d5
-                result.push( getRecommendationFromRule2 );
-                result.push( isLaba );
+                result.push( Object.assign( getRecommendationFromRule2, { tag: 'd5' } ) );
+                result.push( Object.assign( isLaba, { tag: 'd5' } ) );
 
                 return result;
               }
 
-              // add tag: d5
               return result.push( fifty );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -130,8 +129,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .value();
               // console.log( 'laba,ICS sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs );
 
-              // add tag: d7
-              return result.push( totalDoseReduction( patientMedication, sameChemicalLabaAndIcs ) );
+              // add tag: d6
+              const operationTotalDoseReduction = totalDoseReduction( patientMedication, sameChemicalLabaAndIcs );
+              return result.push( operationTotalDoseReduction );
             }
           }
           // console.log( 'smaller than lowest dose' );
@@ -148,7 +148,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       timesPerDay: patientMedication.timesPerDay,
                       tag: 'd7',
                     } ),
-                  isLaba,
+                  Object.assign( isLaba, { tag: 'd7' } ),
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -176,14 +176,15 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     .filter( nextHigherMedication =>
                       adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                    .thru( _medication => Object.assign( _medication, { tag: 'd7' } ) )
                     .value(),
                   );
                 }
                 const getHighestDose = get.highestICSDose( equalICSDose );
 
                 return result.push( 'statement 3 b a i And ii',
-                  Object.assign( getHighestDose, { tag: 'd8' } ),
-                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd8' } ) );
+                  Object.assign( getHighestDose, { tag: 'd7' } ),
+                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd7' } ) );
                 // has to be presented as an option
               }
             }
@@ -236,13 +237,13 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               const getHighestDose = get.highestICSDose( equalICSDose );
 
               return result.push( 'statement 3 b b1',
-                Object.assign( getHighestDose, { tag: 'd4' } ),
-                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd4' } ) );
+                Object.assign( getHighestDose, { tag: 'd8' } ),
+                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd8' } ) );
             }
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
               return result.push( 'statement 3 b b2',
-                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd4' } ),
-                Object.assign( isLaba, { tag: 'd4' } ) );
+                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd9' } ),
+                Object.assign( isLaba, { tag: 'd9' } ) );
             }
           }
         }
