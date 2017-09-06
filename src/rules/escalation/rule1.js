@@ -11,7 +11,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           const newMedications = _.filter( _masterMedications, { chemicalType: 'laba,ICS' } );
           const onlyICS = _.chain( _patientMedications )
             .filter( _medication =>
-              _medication.chemicalType === 'ltra' ||
+             //  _medication.chemicalType === 'ltra' ||
               _medication.chemicalType === 'laba' ||
               _medication.chemicalType === 'saba' ||
               _medication.chemicalType === 'laac' ||
@@ -19,6 +19,15 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             )
             .isEmpty()
             .value();
+          // const onlyLtraAndIcs =  _.chain( _patientMedications )
+          //   .filter( _medication =>
+          //     _medication.chemicalType === 'laba' ||
+          //     _medication.chemicalType === 'saba' ||
+          //     _medication.chemicalType === 'laac' ||
+          //     _medication.chemicalType === 'laba,ICS',
+          //   )
+          //   .isEmpty()
+          //   .value();
           if ( patientMedication.chemicalType === 'ltra' && _.some( _patientMedications, { chemicalType: 'ICS' } ) ) {
             // is there supposed to be a seperate message for case ltra? or will it go under 1 ii?
             result.push( Object.assign( patientMedication, { tag: '' } ) );
