@@ -9,14 +9,8 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
       const rule =
         _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           // console.log('master medications: ', _masterMedications);
-          const originalMedicationLtra = _.chain( _patientMedications)
-            .filter( { chemicalType: 'ltra' } )
-            .map( _medication => Object.assign( _medication, { tag: 'e22' } ) )
-            .value();
-          const originalMedicationLaba = _.chain( _patientMedications)
-            .filter( { chemicalType: 'laba' } )
-            .map( _medication => Object.assign( _medication, { tag: 'e22' } ) )
-            .value();
+          const originalMedicationLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
+          const originalMedicationLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
           const filterOrgMeds = _.filter( _patientMedications, medication => medication.name !== 'symbicort' &&
               (
                 medication.chemicalType === 'laba' ||
@@ -131,8 +125,8 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             }
             result.push( _.chain( isfilteredMedicationDevice )
               .filter( toMax => adjust.ICSDose( toMax, 'highest' ) !== [] )
-              .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .thru( _medication => Object.assign( _medication, { tag: 'e14' } ) )
+              .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .value(),
             );
             result.push( Object.assign( originalMedicationLtra[0], { tag: 'e14' } ) );
@@ -143,7 +137,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             result.push( ['SMART',
               Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e16' } ),
-              Object.assign( originalMedicationLtra[0], { tag: 'e16' } )],
+              Object.assign( originalMedicationLtra, { tag: 'e16' } )],
             );
           }
 
