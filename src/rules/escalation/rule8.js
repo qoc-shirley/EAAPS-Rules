@@ -4,7 +4,7 @@ import * as categorize from '../library/categorizeDose';
 const isSMARTMediumOrHigh = patientMedications => _.chain( patientMedications )
   .filter( ( patientMedication ) => {
     const icsDose = categorize.patientICSDose( patientMedication );
-
+    console.log('patientMedications: ', patientMedications);
     if ( patientMedication.name === 'symbicort' &&
       patientMedication.function === 'controller,reliever' &&
       ( icsDose === 'medium' || icsDose === 'high' ) ) {

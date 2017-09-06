@@ -46,11 +46,13 @@ const MedicationTable = (
     onClickDeleteMedication( index );
   };
 
+  const masterMedications = _.cloneDeep( medicationData );
+
   const displayMedications = _
     .chain( medication.medicationList )
     .reduce( ( filteredData, patientMedication ) => {
       filteredData.push(
-        _.chain( medicationData )
+        _.chain( masterMedications )
           .filter( masterMedication => (
               (
                 patientMedication.timesPerDayValue === masterMedication.timesPerDay ||
