@@ -33,7 +33,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .thru( _medication => Object.assign( _medication, { tag: 'e6' } ) )
                 .value();
             }
-            const adjustToMediumDose =  adjust.ICSDose( patientMedication, 'medium' );
+            const adjustToMediumDose = adjust.ICSDose( patientMedication, 'medium' );
 
             return result.push( Object.assign( adjustToMediumDose, { tag: 'e6' } ) );
           }
@@ -41,7 +41,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
             patientMedication.name !== 'symbicort' ) {
-            // console.log( 'laba and ICS' );
+            console.log( 'laba and ICS' );
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
@@ -54,8 +54,8 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .value();
 
             if ( !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
-              // console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba)
-              result.push( Object.assign( isLtra, { tag: 'e8' } ) );
+              console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba)
+              result.push( Object.assign( isLtra[0], { tag: 'e8' } ) );
 
               if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
@@ -74,9 +74,9 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
               return result.push( Object.assign( adjustToMedium, { tag: 'e7' } ) );
             }
-            // console.log( 'test getDeviceIcsOrLaba' );
+            console.log( 'test getDeviceIcsOrLaba' );
             if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
-              result.push( Object.assign( isLaba, { tag: 'e8' } ) );
+              result.push( Object.assign( isLaba[0], { tag: 'e8' } ) );
 
               if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
