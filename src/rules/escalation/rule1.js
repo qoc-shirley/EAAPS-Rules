@@ -14,7 +14,8 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               _medication.chemicalType === 'ltra' ||
               _medication.chemicalType === 'laba' ||
               _medication.chemicalType === 'saba' ||
-              _medication.chemicalType === 'laac',
+              _medication.chemicalType === 'laac' ||
+              _medication.chemicalType === 'laba,ICS',
             )
             .isEmpty()
             .value();

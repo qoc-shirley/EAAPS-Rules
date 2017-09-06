@@ -31,8 +31,10 @@ const rule11 = ( patientMedications, _masterMedications ) => {
     filteredPatientMedications = [];
   }
 
-  return _.concat( Object.assign( newMedication, { tag: 'e22' } ),
-    Object.assign( filteredPatientMedications, { tag: 'e22' } ) );
+  return _.concat( Object.assign( newMedication[0], { tag: 'e22' } ),
+    _.chain( filteredPatientMedications )
+      .map( _medication => Object.assign( _medication, { tag: 'e22' } ) )
+      .value());
 };
 
 export default rule11;
