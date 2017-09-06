@@ -26,6 +26,7 @@ const rule8 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
       return _.chain( masterMedications )
         .filter( { name: 'singulair' } )
+        .thru( singulair => Object.assign( singulair[0], { tag: 'e19' } ) )
         .concat( 'SMART', recommend )
         .value();
     } )
