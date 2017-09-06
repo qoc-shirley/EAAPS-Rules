@@ -137,7 +137,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             result.push( ['SMART',
               Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e16' } ),
-              Object.assign( originalMedicationLtra, { tag: 'e16' } )],
+              Object.assign( originalMedicationLtra[0], { tag: 'e16' } )],
             );
           }
 
