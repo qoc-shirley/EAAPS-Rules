@@ -19,63 +19,114 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         const isLaba = _.filter( originalMedications, { chemicalType: 'laba' } );
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
-        const filterMedications = _.chain( medicationElement )
-          .filter( findMedication => (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'flovent' &&
-              findMedication.device === 'inhaler2'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'flovent' &&
-              findMedication.device === 'diskus'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'pulmicort' &&
-              findMedication.device === 'turbuhaler'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'qvar' &&
-              findMedication.device === 'inhaler1'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'asthmanex' &&
-              findMedication.device === 'twisthaler'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'alvesco' &&
-              findMedication.device === 'inhaler1'
-             ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 250 ) ) &&
-              findMedication.name === 'advair' &&
-              findMedication.device === 'inhaler2'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'advair' &&
-              findMedication.device === 'diskus'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'symbicort' &&
-              findMedication.device === 'turbuhaler'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'zenhale' &&
-              findMedication.device === 'inhaler2'
-            ) || (
-            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'arnuity' &&
-              findMedication.device === 'ellipta'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'breo' &&
-              findMedication.device === 'ellipta'
-            ) )
-          .value();
+        // const filterMedications = _.chain( medicationElement )
+        //   .filter( findMedication => (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+        //       findMedication.name === 'flovent' &&
+        //       findMedication.device === 'inhaler2'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+        //       findMedication.name === 'flovent' &&
+        //       findMedication.device === 'diskus'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+        //       findMedication.name === 'pulmicort' &&
+        //       findMedication.device === 'turbuhaler'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+        //       findMedication.name === 'qvar' &&
+        //       findMedication.device === 'inhaler1'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+        //       findMedication.name === 'asthmanex' &&
+        //       findMedication.device === 'twisthaler'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+        //       findMedication.name === 'alvesco' &&
+        //       findMedication.device === 'inhaler1'
+        //      ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 250 ) ) &&
+        //       findMedication.name === 'advair' &&
+        //       findMedication.device === 'inhaler2'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+        //       findMedication.name === 'advair' &&
+        //       findMedication.device === 'diskus'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+        //       findMedication.name === 'symbicort' &&
+        //       findMedication.device === 'turbuhaler'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+        //       findMedication.name === 'zenhale' &&
+        //       findMedication.device === 'inhaler2'
+        //     ) || (
+        //     !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+        //       findMedication.name === 'arnuity' &&
+        //       findMedication.device === 'ellipta'
+        //     ) || (
+        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+        //       findMedication.name === 'breo' &&
+        //       findMedication.device === 'ellipta'
+        //     ) )
+        //   .value();
         // console.log( 'filterMedications: ', filterMedications );
-        const medicationsWithLowestDose = _.chain( filterMedications )
+        const medicationsWithLowestDose = _.chain( medicationElement )
+          .filter( findMedication => (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+            findMedication.name === 'flovent' &&
+            findMedication.device === 'inhaler2'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+            findMedication.name === 'flovent' &&
+            findMedication.device === 'diskus'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+            findMedication.name === 'pulmicort' &&
+            findMedication.device === 'turbuhaler'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+            findMedication.name === 'qvar' &&
+            findMedication.device === 'inhaler1'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+            findMedication.name === 'asthmanex' &&
+            findMedication.device === 'twisthaler'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+            findMedication.name === 'alvesco' &&
+            findMedication.device === 'inhaler1'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 250 ) ) &&
+            findMedication.name === 'advair' &&
+            findMedication.device === 'inhaler2'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+            findMedication.name === 'advair' &&
+            findMedication.device === 'diskus'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+            findMedication.name === 'symbicort' &&
+            findMedication.device === 'turbuhaler'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+            findMedication.name === 'zenhale' &&
+            findMedication.device === 'inhaler2'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+            findMedication.name === 'arnuity' &&
+            findMedication.device === 'ellipta'
+          ) || (
+            !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+            findMedication.name === 'breo' &&
+            findMedication.device === 'ellipta'
+          ) )
           .filter(
           {
             device: patientMedication.device,
           } )
+         .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
+          .isEmpty()
           .value();
         // console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
         const notOnSMART = _.chain( originalMedications )
@@ -85,8 +136,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
         if ( !check ) {
           // there is a medication that symbicort is greater
-          if ( !_.isEmpty( _.filter( medicationsWithLowestDose,
-              _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) ) ) ) {
+          if ( !medicationsWithLowestDose ) {
             if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
               const sameChemicalLabaAndIcs = _.chain( medicationsWithLowestDose )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
