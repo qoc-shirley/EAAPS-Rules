@@ -9,8 +9,14 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
       const rule =
         _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           // console.log('master medications: ', _masterMedications);
-          const originalMedicationLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
-          const originalMedicationLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
+          const originalMedicationLtra = _.chain( _patientMedications)
+            .filter( { chemicalType: 'ltra' } )
+            .map( _medication => Object.assign( _medication, { tag: 'e22' } ) )
+            .value();
+          const originalMedicationLaba = _.chain( _patientMedications)
+            .filter( { chemicalType: 'laba' } )
+            .map( _medication => Object.assign( _medication, { tag: 'e22' } ) )
+            .value();
           const filterOrgMeds = _.filter( _patientMedications, medication => medication.name !== 'symbicort' &&
               (
                 medication.chemicalType === 'laba' ||
