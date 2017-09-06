@@ -84,9 +84,10 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .value();
 
         if ( !check ) {
+          // there is a medication that symbicort is greater
           if ( !_.isEmpty( _.filter( medicationsWithLowestDose,
               _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) ) ) ) {
-            if ( patientMedication.chemicalType === 'ICS' ) {
+            if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
               const sameChemicalLabaAndIcs = _.chain( medicationsWithLowestDose )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                     masterMedication.chemicalICS === patientMedication.chemicalICS &&
@@ -131,11 +132,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
               // add tag: d6
               const operationTotalDoseReduction = totalDoseReduction( patientMedication, sameChemicalLabaAndIcs );
-              return result.push( operationTotalDoseReduction );
+              return result.push( Object.assign( operationTotalDoseReduction, { tag: 'd6' } ) );
             }
           }
           // console.log( 'smaller than lowest dose' );
-          if ( patientMedication.chemicalType === 'ICS' || patientMedication.chemicalType === 'laba,ICS' ) {
+          if ( ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) ||
+            patientMedication.chemicalType === 'laba,ICS' ) {
             if ( notOnSMART ) {
               // not on smart
               if ( patientMedication.chemicalType === 'ICS' ) {
@@ -148,7 +150,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       timesPerDay: patientMedication.timesPerDay,
                       tag: 'd7',
                     } ),
-                  Object.assign( isLaba, { tag: 'd7' } ),
+                  Object.assign( isLaba[0], { tag: 'd7' } ),
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -200,10 +202,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .value();
               // console.log( 'reliever: ', reliever );
               if ( reliever ) {
-                result.push( _.chain( medicationElement )
+                result.push( { reliever:_.chain( medicationElement )
                   .filter( _medication =>
                     _medication.name !== 'symbicort' && _medication.function === 'controller,reliever' )
-                  .value(),
+                  .map( addTag => Object.assign( addTag, { tag: 'd8' } ) )
+                  .value() },
                 );
               }
               const equalICSDose = _.chain( medicationElement )
@@ -231,6 +234,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   .filter( nextHigherMedication =>
                     adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                  .thru( addTag => Object.assign( addTag, { tag: 'd8' } ) )
                   .value(),
                 );
               }
@@ -243,7 +247,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
               return result.push( 'statement 3 b b2',
                 Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd9' } ),
-                Object.assign( isLaba, { tag: 'd9' } ) );
+                Object.assign( isLaba[0], { tag: 'd9' } ) );
             }
           }
         }
@@ -254,7 +258,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
       return result;
     }, [] )
-    .flatten()
+    .flattenDeep()
     .value();
 
 export default rule3;
