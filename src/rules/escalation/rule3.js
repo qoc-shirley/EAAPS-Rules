@@ -14,13 +14,12 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 ( medication.chemicalType === 'ICS' && categorize.patientICSDose( medication ) === 'low' ) )
               ) );
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
-          const isLtra = _.filter( filterOrgMeds, { chemicalType: 'ICS' } );
+          const isLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
           const laba = _.find( isLaba, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
                patientMedication.name !== 'symbicort' ) {
             if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
-
               return _.chain( _masterMedications )
                 .filter( medication => medication.chemicalType === 'laba,ICS' &&
                   medication.name === patientMedication.name &&
@@ -41,7 +40,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
             patientMedication.name !== 'symbicort' ) {
-            console.log( 'laba and ICS' );
+            // console.log( 'laba and ICS' );
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
@@ -53,9 +52,9 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   medication.device === laba.device )
               .value();
 
-            if ( !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
-              console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba)
-              result.push( Object.assign( isLtra[0], { tag: 'e8' } ) );
+            if (  !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
+              // console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba, isLtra)
+              result.push( Object.assign( isLtra, { tag: 'e7' } ) );
 
               if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
@@ -66,15 +65,15 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     ( adjust.ICSDose( medication, 'medium' ) !== [] ) &&
                     medication.device === patientMedication.device )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                  .thru( _medication => result.push( _medication ) )
                   .thru( _medication => Object.assign( _medication, { tag: 'e7' } ) )
+                  .thru( _medication => result.push( _medication ) )
                   .value();
               }
               const adjustToMedium = adjust.ICSDose( patientMedication, 'medium' );
 
               return result.push( Object.assign( adjustToMedium, { tag: 'e7' } ) );
             }
-            console.log( 'test getDeviceIcsOrLaba' );
+            // console.log( 'test getDeviceIcsOrLaba' );
             if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
               result.push( Object.assign( isLaba[0], { tag: 'e8' } ) );
 
@@ -85,7 +84,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     ( medication.timesPerDay === patientMedication.timesPerDay ||
                       medication.timesPerDay === '1 OR 2' ) &&
                     ( adjust.ICSDose( medication, 'medium' ) !== [] ) &&
-                    ( medication.device === patientMedication.device || medication.device === laba.device ) )
+                    medication.device === patientMedication.device )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .thru( _medication => result.push( _medication ) )
                   .thru( _medication => Object.assign( _medication, { tag: 'e8' } ) )
