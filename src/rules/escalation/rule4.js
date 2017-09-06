@@ -10,7 +10,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               !_.isEmpty( labaMedication ) ) ) &&
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
-            categorize.patientICSDose( patientMedication ) === 'high' ) ) {
+            categorize.patientICSDose( patientMedication ) === 'high' ) &&
+            !_.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             const singulair = _.filter( _masterMedications, { name: 'singulair' } );
             if ( patientMedication.chemicalType === 'laba,ICS' ) {
               // console.log( 'laba,ICS' );

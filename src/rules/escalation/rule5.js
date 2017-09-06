@@ -75,7 +75,9 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             const filteredMedication = _.chain( _masterMedications )
               .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
-                  _.filter( isLaba, medication => masterMedication.chemicalLABA === medication.chemicalLABA ) )
+                 !_.isEmpty(
+                   _.filter( isLaba, medication => masterMedication.chemicalLABA === medication.chemicalLABA ) )
+              )
               .value();
 
             const isfilteredMedicationDevice = _.chain( filteredMedication )
@@ -122,6 +124,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               );
             }
             result.push( _.chain( isfilteredMedicationDevice )
+              .filter( toMax => adjust.ICSDose( toMax, 'highest' ) !== [] )
               .thru( _medication => match.minimizePuffsPerTime( _medication ) )
               .thru( _medication => Object.assign( _medication, { tag: 'e14' } ) )
               .value(),
