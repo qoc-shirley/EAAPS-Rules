@@ -11,10 +11,10 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           const newMedications = _.filter( _masterMedications, { chemicalType: 'laba,ICS' } );
           const onlyICS = _.chain( _patientMedications )
             .filter( _medication =>
-              _medication === 'ltra' ||
-              _medication === 'laba' ||
-              _medication === 'saba' ||
-              _medication === 'laac',
+              _medication.chemicalType === 'ltra' ||
+              _medication.chemicalType === 'laba' ||
+              _medication.chemicalType === 'saba' ||
+              _medication.chemicalType === 'laac',
             )
             .isEmpty()
             .value();
