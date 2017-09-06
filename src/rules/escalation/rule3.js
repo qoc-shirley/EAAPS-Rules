@@ -9,7 +9,6 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
         _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           const filterOrgMeds = _.filter( _patientMedications, medication => medication.name !== 'symbicort' &&
               (
-                ( medication.chemicalType === 'laba,ICS' && categorize.patientICSDose( medication ) === 'low' ) ||
                 ( medication.chemicalType === 'laba' ||
                 ( medication.chemicalType === 'ICS' && categorize.patientICSDose( medication ) === 'low' ) )
               ) );
@@ -18,7 +17,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           const laba = _.find( isLaba, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
-               patientMedication.name !== 'symbicort' ) {
+               patientMedication.name !== 'symbicort' && _.isEmpty( filterOrgMeds ) ) {
             if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
               return _.chain( _masterMedications )
                 .filter( medication => medication.chemicalType === 'laba,ICS' &&
