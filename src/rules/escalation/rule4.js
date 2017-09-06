@@ -17,7 +17,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
               return _.chain( _masterMedications )
                 .filter( { name: 'singulair' } )
-                .thru( _medication => result.push( [_medication,
+                .thru( _medication => result.push( [
+                  Object.assign( _medication[0], { tag: 'e10' } ),
                   Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e10' } )] ) )
                 .value();
             }
