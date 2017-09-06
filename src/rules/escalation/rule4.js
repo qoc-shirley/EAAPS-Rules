@@ -76,9 +76,9 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .uniqBy( 'id' )
               .thru( _medication => result.push(
                 [
-                  Object.assign( _medication, { tag: 'e11' } ),
-                  Object.assign( singulair, { tag: 'e11' } ),
-                  Object.assign( labaMedication, { tag: 'e11' } ),
+                  Object.assign( _medication[0], { tag: 'e11' } ),
+                  Object.assign( singulair[0], { tag: 'e11' } ),
+                  Object.assign( labaMedication[0], { tag: 'e11' } ),
                 ] ) )
               .value();
           }
