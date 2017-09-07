@@ -154,11 +154,12 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               name: patientMedication.name,
               device: patientMedication.device,
               } )
-            .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
+            .filter( _medication => {console.log('medications: ', _medication );  return calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( _medication ) } )
             .isEmpty()
             .value();
+        console.log( 'compareLowestDoseToPatientMedication: ', compareLowestDoseToPatientMedication);
 
-        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication) {
+        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication ) {
           const avgAsthmaSymptoms = asthmaControlAnswers[0].asthmaSymptoms;
           if ( avgAsthmaSymptoms === '0' ) {
             return result.push( 'statement1Ai',

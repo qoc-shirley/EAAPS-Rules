@@ -126,7 +126,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             device: patientMedication.device,
           } )
          .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
-          .isEmpty()
           .value();
         // console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
         const notOnSMART = _.chain( originalMedications )
@@ -136,7 +135,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
         if ( !check ) {
           // there is a medication that symbicort is greater
-          if ( !medicationsWithLowestDose ) {
+          if ( !_.isEmpty( medicationsWithLowestDose ) ) {
             if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
               const sameChemicalLabaAndIcs = _.chain( medicationsWithLowestDose )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
