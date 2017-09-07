@@ -5,8 +5,8 @@ import totalDoseReduction from '../library/totalDoseReduction';
 
 const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
-      const rule = _.partial( ( medicationElement, originalMedications, patientMedication ) => {
-        const medicationsWithLowestDose =_.chain( medicationElement )
+      const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
+        const medicationsWithLowestDose = _.chain( _masterMedications )
           .filter( findMedication => (
               !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'flovent' &&
@@ -52,9 +52,9 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             chemicalType: patientMedication.chemicalType,
             name: patientMedication.name,
             device: patientMedication.device,
-            } )
+          } )
           .value();
-        const noLabaLtra = _.chain( originalMedications )
+        const noLabaLtra = _.chain( _patientMedications )
           .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
