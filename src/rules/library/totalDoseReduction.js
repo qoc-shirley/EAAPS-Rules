@@ -19,7 +19,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
           'betweenFiftyAndFullDose',
           calculate.patientICSDose( patientMedication ),
         );
-   //  console.log('betweenFiftyAndFullDose: ', betweenFiftyAndFullDose);
+   console.log('betweenFiftyAndFullDose 1: ', betweenFiftyAndFullDose);
 
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
       // console.log('betweenfifty')
@@ -36,6 +36,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
               return Object.assign( medication, { timesPerDay: 2 } );
             }
           }
+          console.log('asdf');
 
           return adjust.checkDoseReduction(
             medication,

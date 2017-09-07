@@ -86,10 +86,9 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
     }
   }
   else if ( level === 'betweenFiftyAndFullDose' ) {
-    exactlyFifty = true;
     while ( betweenFiftyAndFullDose === false && counter <= max ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter)
+      console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter, medication)
       if ( testAdjustment >= originalICSDose / 2 &&
          testAdjustment < originalICSDose ) {
         betweenFiftyAndFullDose = true;
@@ -99,6 +98,8 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
       }
       counter += 1;
     }
+
+    return [];
   }
 
   return [];
