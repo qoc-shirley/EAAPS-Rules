@@ -160,19 +160,21 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 const equalICSDose = _.chain( medicationElement )
                   .filter(
                   {
-                    chemicalType: 'laba,ICS',
+                    chemicalType: 'ICS',
                     device: patientMedication.device,
                     chemicalICS: patientMedication.chemicalICS,
                   } )
                   .filter( _medication =>
-                    !_.isNil( adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) ) )
+                    adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) !== [] &&
+                    _medication.doseICS === patientMedication.doseICS )
+                  .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .value();
                 if ( _.isEmpty( equalICSDose ) ) {
                   // add tag: d8
                   return result.push( _.chain( medicationElement )
                     .filter(
                     {
-                      chemicalType: 'laba,ICS',
+                      chemicalType: 'ICS',
                       device: patientMedication.device,
                       chemicalICS: patientMedication.chemicalICS,
                     } )
@@ -187,7 +189,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
                 return result.push( 'statement 3 b a i And ii',
                   // Object.assign( getHighestDose, { tag: 'd7' } ),
-                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd7' } ) );
+                  Object.assign( equalICSDose, { tag: 'd7' } ) );
                 // has to be presented as an option
               }
             }
