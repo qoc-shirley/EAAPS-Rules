@@ -67,7 +67,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .isEmpty()
           .value();
 
-        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication) {
+        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication ) {
           const avgAsthmaSymptoms = asthmaControlAnswers[0].asthmaSymptoms;
           if ( avgAsthmaSymptoms === '0' ) {
             return result.push( 'statement1Ai',

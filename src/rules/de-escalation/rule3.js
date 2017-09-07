@@ -131,7 +131,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
               // add tag: d6
               const operationTotalDoseReduction = totalDoseReduction( patientMedication, sameChemicalLabaAndIcs );
-              return result.push( operationTotalDoseReduction );
+              return result.push( Object.assign( operationTotalDoseReduction, { tag: 'd6' } ) );
             }
           }
           // console.log( 'smaller than lowest dose' );
