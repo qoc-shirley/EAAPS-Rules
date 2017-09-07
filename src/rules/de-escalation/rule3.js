@@ -99,14 +99,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication ) )
                 .filter( _medication =>
                   _medication.device === patientMedication.device || _medication.device === laba.device )
-                // .thru( convert => _.map( convert, convertEach => Object.assign( convertEach,
-                //   {
-                //     doseICS: _.toInteger( convertEach.doseICS ),
-                //     maxPuffPerTime: 1,
-                //   } ) ) )
-                // .maxBy( 'doseICS' )
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                // .thru( _medication => Object.assign( _medication, { maxPuffPerTime: 1, tag: 'd4' } ) )
                 .value();
               // console.log( 'fifty: ', fifty );
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
@@ -114,7 +107,10 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 const getRecommendationFromRule2 = rule2( [patientMedication], medicationElement );
                 //add tag: d5
                 console.log('frome rule2');
-                result.push( Object.assign( getRecommendationFromRule2, { tag: 'd5' } ) );
+                if ( _.isEmpty( getRecommendationFromRule2) ) {
+                  return result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
+                }
+                result.push( Object.assign( getRecommendationFromRule2[0], { tag: 'd5' } ) );
                 result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
 
                 return result;
@@ -208,6 +204,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 result.push( 'reliever(s):', _.chain( medicationElement )
                   .filter( _medication =>
                     _medication.name !== 'symbicort' && _medication.function === 'controller,reliever' )
+                  .map( _reliever => Object.assign( _reliever, { tag: 'd8' } ) )
                   .value(),
                 );
               }
