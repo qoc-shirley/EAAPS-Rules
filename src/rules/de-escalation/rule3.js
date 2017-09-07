@@ -155,9 +155,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
                 const getRecommendationFromRule2 = rule2( [patientMedication], medicationElement );
-                //add tag: d5
-                console.log('frome rule2');
-                if ( _.isEmpty( getRecommendationFromRule2) ) {
+                // add tag: d5
+                // console.log('frome rule2');
+                if ( _.isEmpty( getRecommendationFromRule2 ) ) {
                   return result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
                 }
                 result.push( Object.assign( getRecommendationFromRule2[0], { tag: 'd5' } ) );
@@ -240,7 +240,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               }
             }
             // on SMART
-            console.log('onSmart');
+            // console.log('onSmart');
             const avgUseOfRescuePuff = asthmaControlAnswers[0].rescuePuffer;
             if ( avgUseOfRescuePuff === '0' ) {
               // console.log( 'rescue puffer: 0' );
