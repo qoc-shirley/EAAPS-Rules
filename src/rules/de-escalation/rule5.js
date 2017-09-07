@@ -8,10 +8,6 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .filter( _medication => _medication.chemicalType === 'laba' )
           .value();
 
-        const noLabaICS = _.chain( originalMedications )
-          .filter( _medication => _medication.chemicalType === 'laba,ICS' )
-          .value();
-
         const noLtra = _.chain( originalMedications )
           .filter( _medication => _medication.chemicalType === 'ltra' )
           .value();
@@ -26,14 +22,22 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           if ( _.isEmpty( rule3Recommendation ) ) {
             rule3Recommendation = 'No recommendation';
           }
+          if ( !_.isEmpty( noLaba ) ){
+            return result.push( 'statement5',
+              'discontinue Ltra: ',
+              Object.assign( patientMedication, { tag: 'd11' } ),
+              Object.assign( noLaba[0], { tag: 'd11' } ),
+              'continue ltra (Rule3): ',
+              Object.assign( rule3Recommendation, { tag: 'd11' } ),
+              Object.assign( noLtra[0], { tag: 'd11' } ),
+            );
+          }
           result.push( 'statement5',
             'discontinue Ltra: ',
             Object.assign( patientMedication, { tag: 'd11' } ),
-            Object.assign( noLaba, { tag: 'd11' } ),
-            Object.assign( noLabaICS, { tag: 'd11' } ),
             'continue ltra (Rule3): ',
             Object.assign( rule3Recommendation, { tag: 'd11' } ),
-            Object.assign( noLtra, { tag: 'd11' } ),
+            Object.assign( noLtra[0], { tag: 'd11' } ),
           );
         }
 
