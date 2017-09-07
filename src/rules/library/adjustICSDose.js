@@ -89,9 +89,11 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
     exactlyFifty = true;
     while ( betweenFiftyAndFullDose === false && counter <= max ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
+      console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter)
       if ( testAdjustment >= originalICSDose / 2 &&
          testAdjustment < originalICSDose ) {
         betweenFiftyAndFullDose = true;
+        console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
 
         return Object.assign( medication, { maxPuffPerTime: counter } );
       }

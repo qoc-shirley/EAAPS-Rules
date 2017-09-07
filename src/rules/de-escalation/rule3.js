@@ -200,7 +200,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .value();
               // console.log( 'reliever: ', reliever );
               if ( reliever ) {
-                result.push( _.chain( medicationElement )
+                result.push( 'reliever(s):', _.chain( medicationElement )
                   .filter( _medication =>
                     _medication.name !== 'symbicort' && _medication.function === 'controller,reliever' )
                   .value(),
