@@ -7,7 +7,7 @@ const isSMARTMediumOrHigh = patientMedications => _.chain( patientMedications )
     console.log('patientMedications: ', patientMedications);
     if ( patientMedication.name === 'symbicort' &&
       patientMedication.function === 'controller,reliever' &&
-      ( icsDose === 'medium' || icsDose === 'high' ) ) {
+      ( icsDose === 'medium' || icsDose === 'high' ) && !_.some( patientMedications, { chemicalType: 'ltra' } ) ) {
       return true;
     }
 

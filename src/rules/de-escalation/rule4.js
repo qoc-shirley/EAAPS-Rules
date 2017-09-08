@@ -23,13 +23,13 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           if ( _.isEmpty( rule2Recommendation ) ) {
             rule2Recommendation = 'no Recommendations';
           }
-          // console.log(rule1( [patientMedication], medicationElement, asthmaControlAnswers ));
-          //change result when pushing to CDSS
+          console.log(rule1( [patientMedication], medicationElement, asthmaControlAnswers ));
+          // change result when pushing to CDSS
           result.push( 'statement4',
             'discontinue ltra: ', Object.assign( isLtra[0], { tag: 'd10' } ),
             'continue ltra : ', Object.assign( isLtra[0], { tag: 'd10' } ),
-            'Rule1: ', Object.assign( rule1Recommendation[1], { tag: 'd10' } ),
-            'Rule2: ', Object.assign( rule2Recommendation[0], { tag: 'd10' } ),
+            'Rule1: ', Object.assign( rule1Recommendation, { tag: 'd10' } ),
+            'Rule2: ', Object.assign( rule2Recommendation, { tag: 'd10' } ),
           );
         }
 

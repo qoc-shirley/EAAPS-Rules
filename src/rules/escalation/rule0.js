@@ -1,15 +1,47 @@
 import _ from 'lodash';
 import * as get from '../library/getICSDose';
-import * as recommendation from '../library/rule0Helper';
 
 const rule0 = ( patientMedications, masterMedications ) => {
+  const recommendationOne = _.chain( masterMedications )
+    .filter( { name: 'flovent', doseICS: '125' } )
+    .thru( changeOne =>
+      _.map( changeOne, changeOneEach => Object.assign( changeOneEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+    .value();
+  const recommendationTwo = _.chain( masterMedications )
+    .filter( { device: 'diskus', doseICS: '100' } )
+    .thru( changeTwo =>
+      _.map( changeTwo, changeTwoEach => Object.assign( changeTwoEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+    .value();
+  const recommendationThree = _.chain( masterMedications )
+    .filter( { name: 'pulmicort', doseICS: '200' } )
+    .thru( changeThree =>
+      _.map( changeThree, changeThreeEach =>
+        Object.assign( changeThreeEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+    .value();
+  const recommendationFour = _.chain( masterMedications )
+    .filter( { name: 'asmanex', doseICS: '200' } )
+    .thru( changeFour =>
+      _.map( changeFour, changeFourEach =>
+        Object.assign( changeFourEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+    .value();
+  const recommendationFive = _.chain( masterMedications )
+    .filter( { name: 'alvesco', doseICS: '200' } )
+    .thru( changeFive =>
+      _.map( changeFive, changeFiveEach =>
+        Object.assign( changeFiveEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+    .value();
+  const recommendationSix = _.chain( masterMedications )
+    .filter( { name: 'qvar', doseICS: '100' } )
+    .thru( changeSix =>
+      _.map( changeSix, changeSixEach => Object.assign( changeSixEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+    .value();
   if ( _.isEmpty( patientMedications ) ) {
-    const recommendations = [[recommendation.floventMedication,
-      recommendation.alvescoMedication,
-      recommendation.asmanexMedication,
-      recommendation.diskusMedication,
-      recommendation.pulmicortMedication,
-      recommendation.qvarMedication,
+    const recommendations = [[recommendationOne,
+      recommendationTwo,
+      recommendationThree,
+      recommendationFour,
+      recommendationFive,
+      recommendationSix,
     ]];
 
     return _.flattenDeep( recommendations );
@@ -103,12 +135,12 @@ const rule0 = ( patientMedications, masterMedications ) => {
           }
           else {
             result.push( 'Options: ',
-              recommendation.floventMedication,
-              recommendation.alvescoMedication,
-              recommendation.asmanexMedication,
-              recommendation.diskusMedication,
-              recommendation.pulmicortMedication,
-              recommendation.qvarMedication,
+              recommendationOne,
+              recommendationTwo,
+              recommendationThree,
+              recommendationFour,
+              recommendationFive,
+              recommendationSix,
             );
           }
         }
