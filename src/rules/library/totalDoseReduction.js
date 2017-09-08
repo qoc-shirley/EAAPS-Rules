@@ -4,7 +4,7 @@ import * as adjust from '../library/adjustICSDose';
 
 const totalDoseReduction = ( patientMedication, filteredMedications ) => {
   // console.log('in totalDose: ', patientMedication, filteredMedications);
-  let exactlyFiftyWithPatientMedication = adjust.checkDoseReduction(
+  const exactlyFiftyWithPatientMedication = adjust.checkDoseReduction(
     patientMedication,
     'exactlyFifty',
     calculate.patientICSDose( patientMedication ),
@@ -19,7 +19,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
           'betweenFiftyAndFullDose',
           calculate.patientICSDose( patientMedication ),
         );
-   console.log('betweenFiftyAndFullDose 1: ', betweenFiftyAndFullDose);
+   // console.log('betweenFiftyAndFullDose 1: ', betweenFiftyAndFullDose);
 
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
       // console.log('betweenfifty')
@@ -36,7 +36,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
               return Object.assign( medication, { timesPerDay: 2 } );
             }
           }
-          console.log('asdf');
+          // console.log('asdf');
 
           return adjust.checkDoseReduction(
             medication,

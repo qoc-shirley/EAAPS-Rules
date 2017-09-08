@@ -8,72 +8,20 @@ import totalDoseReduction from '../library/totalDoseReduction';
 
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
-      const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
-        const check = _.chain( originalMedications )
+      const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
+        const check = _.chain( _patientMedications )
           .filter( labaICSMedication => labaICSMedication.chemicalType === 'laba,ICS' ||
               ( labaICSMedication.chemicalType === 'laba' &&
-                _.some( originalMedications, { chemicalType: 'ICS' } ) ) )
+                _.some( _patientMedications, { chemicalType: 'ICS' } ) ) )
           .isEmpty()
           .value();
 
-        const isLaba = _.filter( originalMedications, { chemicalType: 'laba' } );
+        const isLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
-        // const filterMedications = _.chain( medicationElement )
-        //   .filter( findMedication => (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-        //       findMedication.name === 'flovent' &&
-        //       findMedication.device === 'inhaler2'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-        //       findMedication.name === 'flovent' &&
-        //       findMedication.device === 'diskus'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-        //       findMedication.name === 'pulmicort' &&
-        //       findMedication.device === 'turbuhaler'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-        //       findMedication.name === 'qvar' &&
-        //       findMedication.device === 'inhaler1'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-        //       findMedication.name === 'asthmanex' &&
-        //       findMedication.device === 'twisthaler'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-        //       findMedication.name === 'alvesco' &&
-        //       findMedication.device === 'inhaler1'
-        //      ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 250 ) ) &&
-        //       findMedication.name === 'advair' &&
-        //       findMedication.device === 'inhaler2'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-        //       findMedication.name === 'advair' &&
-        //       findMedication.device === 'diskus'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-        //       findMedication.name === 'symbicort' &&
-        //       findMedication.device === 'turbuhaler'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-        //       findMedication.name === 'zenhale' &&
-        //       findMedication.device === 'inhaler2'
-        //     ) || (
-        //     !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-        //       findMedication.name === 'arnuity' &&
-        //       findMedication.device === 'ellipta'
-        //     ) || (
-        //       !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-        //       findMedication.name === 'breo' &&
-        //       findMedication.device === 'ellipta'
-        //     ) )
-        //   .value();
-        // console.log( 'filterMedications: ', filterMedications );
         const medicationsWithLowestDose =
           // _.chain( filterMedications )
-          _.chain( medicationElement )
+          _.chain( _masterMedications )
             .filter( findMedication => (
               !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'flovent' &&
@@ -128,7 +76,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           } )
           .value();
         // console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
-        const notOnSMART = _.chain( originalMedications )
+        const notOnSMART = _.chain( _patientMedications )
           .filter( { name: 'symbicort', function: 'controller,reliever' } )
           .isEmpty()
           .value();
@@ -154,7 +102,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // console.log( 'fifty: ', fifty );
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
-                const getRecommendationFromRule2 = rule2( [patientMedication], medicationElement );
+                const getRecommendationFromRule2 = rule2( [patientMedication], _masterMedications );
                 // add tag: d5
                 // console.log('frome rule2');
                 if ( _.isEmpty( getRecommendationFromRule2 ) ) {
@@ -203,7 +151,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
                 // recommend medication with same chemicalICS as original Medication
                 // console.log( 'laba,ICS' );
-                const equalICSDose = _.chain( medicationElement )
+                const equalICSDose = _.chain( _masterMedications )
                   .filter(
                   {
                     chemicalType: 'ICS',
@@ -217,7 +165,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   .value();
                 if ( _.isEmpty( equalICSDose ) ) {
                   // add tag: d8
-                  return result.push( _.chain( medicationElement )
+                  return result.push( _.chain( _masterMedications )
                     .filter(
                     {
                       chemicalType: 'ICS',
@@ -241,24 +189,24 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             }
             // on SMART
             // console.log('onSmart');
-            const avgUseOfRescuePuff = asthmaControlAnswers[0].rescuePuffer;
+            const avgUseOfRescuePuff = _questionnaireAnswers[0].rescuePuffer;
             if ( avgUseOfRescuePuff === '0' ) {
               // console.log( 'rescue puffer: 0' );
-              const reliever = _.chain( originalMedications )
+              const reliever = _.chain( _patientMedications )
                 .filter( _medication =>
                   _medication.name !== 'symbicort' && _medication.function === 'controller,reliever' )
                 .isEmpty()
                 .value();
               // console.log( 'reliever: ', reliever );
               if ( reliever ) {
-                result.push( 'reliever(s):', _.chain( medicationElement )
+                result.push( 'reliever(s):', _.chain( _masterMedications )
                   .filter( _medication =>
                     _medication.name !== 'symbicort' && _medication.function === 'controller,reliever' )
                   .map( _reliever => Object.assign( _reliever, { tag: 'd8' } ) )
                   .value(),
                 );
               }
-              const equalICSDose = _.chain( medicationElement )
+              const equalICSDose = _.chain( _masterMedications )
                 .filter(
                 {
                   chemicalType: 'ICS',
@@ -275,7 +223,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 // console.log( 'equalICSDose empty' );
 
                 // add tag
-                return result.push( _.chain( medicationElement )
+                return result.push( _.chain( _masterMedications )
                   .filter(
                   {
                     chemicalType: 'ICS',
