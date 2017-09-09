@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import * as getDescalation from '../../rules/escalation/rules';
+import * as getDescalation from '../../rules/de-escalation/rules';
 import masterMedications from '../../medicationData/medicationData';
 
 const ruleMinus1 = ( patientMedications, asthmaControlAnswers ) => {
   if ( _.some( patientMedications, { chemicalType: 'laac' } ) ) {
-    const runThroughEscalationRules = _.chain( {
+    const runThroughDeEscalationRules = _.chain( {
       rule1: getDescalation.rules.rule1,
       rule2: getDescalation.rules.rule2,
       rule3: getDescalation.rules.rule3,
@@ -26,7 +26,7 @@ const ruleMinus1 = ( patientMedications, asthmaControlAnswers ) => {
 
     return _.chain( patientMedications )
       .filter( patientMedication => patientMedication.chemicalType === 'laac' )
-      .concat( runThroughEscalationRules )
+      .concat( runThroughDeEscalationRules )
       .thru( _medication => Object.assign( _medication, { tag: 'd0' } ) )
       .value();
   }
