@@ -123,6 +123,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     masterMedication.chemicalLABA === patientMedication.chemicalLABA )
                 .value();
               // console.log( 'laba,ICS sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs );
+              // need to return ICS , laba separate
 
               // add tag: d6
               const operationTotalDoseReduction = totalDoseReduction( patientMedication, sameChemicalLabaAndIcs );
