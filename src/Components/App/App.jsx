@@ -66,7 +66,8 @@ saveRecommendation,
         stoppedExercising: medication.stoppedExercising,
       }];
     getDeEscalation.rules.control( asthmaControlAnswers );
-    saveRecommendation( 'Rule -1', getDeEscalation.rules.ruleMinus1( medication.patientMedications ) );
+    saveRecommendation( 'Rule -1',
+      getDeEscalation.rules.ruleMinus1( medication.patientMedications, asthmaControlAnswers ) );
     saveRecommendation(
       'Rule 1',
       getDeEscalation.rules.rule1( medication.patientMedications, clonedMasterMedication, asthmaControlAnswers ) );
