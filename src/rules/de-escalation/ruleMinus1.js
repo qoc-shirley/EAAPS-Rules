@@ -15,8 +15,8 @@ const ruleMinus1 = ( patientMedications, asthmaControlAnswers ) => {
         const masterMedication = _.cloneDeep( masterMedications );
         const asthmaControlAnswer = _.cloneDeep( asthmaControlAnswers );
         const patientOriginalMedications = _.cloneDeep( patientMedications );
-        if ( rule === 'rule2' || rule === 'rule3' ) {
-          return rule( patientOriginalMedications, masterMedication);
+        if ( rule === 'rule2' ) {
+          return rule( patientOriginalMedications, masterMedication );
         }
 
         return rule( patientOriginalMedications, masterMedication, asthmaControlAnswer );
