@@ -44,7 +44,7 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               ||
               (
                 !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-                findMedication.name === 'asthmanex' &&
+                findMedication.name === 'asmanex' &&
                 findMedication.device === 'twisthaler'
               )
               ||

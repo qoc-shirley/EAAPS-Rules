@@ -9,97 +9,105 @@ import totalDoseReduction from '../library/totalDoseReduction';
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
-        const check = _.chain( _patientMedications )
+
+        const medicationsWithLowestDose =
+          // _.chain( filterMedications )
+          _.chain( _masterMedications )
+            .filter( {
+              device: patientMedication.device,
+              name: patientMedication.name,
+            } )
+            .filter(findMedication => (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'flovent' &&
+                findMedication.device === 'inhaler2'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+                findMedication.name === 'flovent' &&
+                findMedication.device === 'diskus'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+                findMedication.name === 'pulmicort' &&
+                findMedication.device === 'turbuhaler'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'qvar' &&
+                findMedication.device === 'inhaler1'
+              ) ||
+              (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'asmanex' &&
+                findMedication.device === 'twisthaler'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'alvesco' &&
+                findMedication.device === 'inhaler1'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 250 ) ) &&
+                findMedication.name === 'advair' &&
+                findMedication.device === 'inhaler2'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+                findMedication.name === 'advair' &&
+                findMedication.device === 'diskus'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+                findMedication.name === 'symbicort' &&
+                findMedication.device === 'turbuhaler'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+                findMedication.name === 'zenhale' &&
+                findMedication.device === 'inhaler2'
+              ) || (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'arnuity' &&
+                findMedication.device === 'ellipta'
+              ) || (
+                !_.isEmpty(adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'breo' &&
+                findMedication.device === 'ellipta'
+              ),
+            )
+          .value();
+        console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
+        const notOnSMART = _.chain( _patientMedications )
+          .filter( { name: 'symbicort', function: 'controller,reliever' } )
+          .isEmpty()
+          .value();
+
+        const checkPatientMedications = _.chain( _patientMedications )
           .filter( labaICSMedication => labaICSMedication.chemicalType === 'laba,ICS' ||
-              ( labaICSMedication.chemicalType === 'laba' &&
-                _.some( _patientMedications, { chemicalType: 'ICS' } ) ) )
+            ( labaICSMedication.chemicalType === 'laba' &&
+              _.some( _patientMedications, { chemicalType: 'ICS' } ) ) )
           .isEmpty()
           .value();
 
         const isLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
-        const medicationsWithLowestDose =
-          // _.chain( filterMedications )
-          _.chain( _masterMedications )
-            .filter( findMedication => (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'flovent' &&
-              findMedication.device === 'inhaler2'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'flovent' &&
-              findMedication.device === 'diskus'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'pulmicort' &&
-              findMedication.device === 'turbuhaler'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'qvar' &&
-              findMedication.device === 'inhaler1'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'asthmanex' &&
-              findMedication.device === 'twisthaler'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'alvesco' &&
-              findMedication.device === 'inhaler1'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 250 ) ) &&
-              findMedication.name === 'advair' &&
-              findMedication.device === 'inhaler2'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'advair' &&
-              findMedication.device === 'diskus'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'symbicort' &&
-              findMedication.device === 'turbuhaler'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
-              findMedication.name === 'zenhale' &&
-              findMedication.device === 'inhaler2'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'arnuity' &&
-              findMedication.device === 'ellipta'
-            ) || (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'breo' &&
-              findMedication.device === 'ellipta'
-            ) )
-          .filter( {
-            device: patientMedication.device,
-          } )
-          .value();
-        // console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
-        const notOnSMART = _.chain( _patientMedications )
-          .filter( { name: 'symbicort', function: 'controller,reliever' } )
-          .isEmpty()
-          .value();
-
-        if ( !check ) {
+        if ( !checkPatientMedications ) {
           if ( !_.isEmpty( _.filter( medicationsWithLowestDose,
               _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) ) ) ) {
             if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
-              const sameChemicalLabaAndIcs = _.chain( medicationsWithLowestDose )
+              // filter medications from medicationsWithLowestDose ( medications of lowest possible dose ) with same
+              // chemicalICS and chemicalLABA as _patientMedications
+              const sameChemicalLabaAndIcs = _.chain( _masterMedications )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                     masterMedication.chemicalICS === patientMedication.chemicalICS &&
                     masterMedication.chemicalLABA === laba.chemicalLABA )
                 .value();
-              // console.log( 'sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs );
+
+              console.log('sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs);
+              // see if patientMedication can be adjusted to half its dose
               const fifty = _.chain( sameChemicalLabaAndIcs )
-                .filter( _medication =>
-                    calculate.ICSDose( _medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
-                    calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication ) )
+                .filter( _medication => { console.log(_medication, calculate.ICSDose( _medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+                  calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication )); return calculate.ICSDose( _medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+                  calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication ) } )
                 .filter( _medication =>
                   _medication.device === patientMedication.device || _medication.device === laba.device )
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .value();
-              // console.log( 'fifty: ', fifty );
+              console.log( 'fifty: ', fifty );
               if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
                 const getRecommendationFromRule2 = rule2( [patientMedication], _masterMedications );
@@ -117,7 +125,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               return result.push( Object.assign( fifty, { maxPuffPerTime: 1, tag: 'd4' } ) );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
-              const sameChemicalLabaAndIcs = _.chain( medicationsWithLowestDose )
+              const sameChemicalLabaAndIcs = _.chain( _masterMedications )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                     masterMedication.chemicalICS === patientMedication.chemicalICS &&
                     masterMedication.chemicalLABA === patientMedication.chemicalLABA )

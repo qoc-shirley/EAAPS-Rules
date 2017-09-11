@@ -39,7 +39,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             ||
             (
               !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
-              findMedication.name === 'asthmanex' &&
+              findMedication.name === 'asmanex' &&
               findMedication.device === 'twisthaler'
             )
             ||
