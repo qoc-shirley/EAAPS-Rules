@@ -86,13 +86,18 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             }
           }
 
-          if ( patientMedication.name === 'symbicort' &&
+          if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) &&
-            !_.some( _patientMedications, { chemicalType: 'ltra' } )) {
+            !_.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
             // multiple triggers causes the tag to be e19 but should be fixed when we fix the multiple trigger problem
-            return result.push( ['SMART',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e12' } )] );
+            return result.push(
+              Object.assign( patientMedication,
+                {
+                  maxPuffPerTime: patientMedication.puffPerTime,
+                  tag: 'e12',
+                  isSmart: true,
+                } ) );
           }
 
           return result;
