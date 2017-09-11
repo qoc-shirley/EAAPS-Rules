@@ -7,7 +7,13 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
         const medicationsWithLowestDose = _.chain( _masterMedications )
+          .filter( {
+            chemicalType: patientMedication.chemicalType,
+            name: patientMedication.name,
+            device: patientMedication.device,
+          } )
           .filter( findMedication => (
+            // adjust.ICSDoseToDose - returns medication that has an ICS DOSE of 100
               !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'flovent' &&
               findMedication.device === 'inhaler2'
@@ -48,28 +54,26 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               findMedication.name === 'arnuity' &&
               findMedication.device === 'inhaler2'
             ) )
-          .filter( {
-            chemicalType: patientMedication.chemicalType,
-            name: patientMedication.name,
-            device: patientMedication.device,
-          } )
           .value();
+
         const noLabaLtra = _.chain( _patientMedications )
           .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
+
         const compareLowestDoseToPatientMedication = _.chain( medicationsWithLowestDose )
-          .filter( _medication => {console.log(_medication, calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication )); return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) })
+          .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
           .isEmpty()
           .value();
-        // console.log('medicationsWithLowestDose: ', medicationsWithLowestDose);
         if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication ) {
-          // console.log('in');
+          // medicationsWithLowestDose - filtered medication from provided list of lowest possible dose medications
           const recommend = _.chain( medicationsWithLowestDose )
             .filter( _recommendMedication => _recommendMedication.chemicalICS === patientMedication.chemicalICS &&
               _recommendMedication.device === patientMedication.device )
             .value();
-          // console.log('totoalDose: ', patientMedication, recommend)
+
+          // totalDoseReduction - either reducing the patientMedication by half or adjusting it to be between half the
+          // patientMedication dose to it's full dose
           const operationTotalDoseReduction = totalDoseReduction( patientMedication, recommend );
           result.push( Object.assign( operationTotalDoseReduction, { tag: 'd3' } ) );
         }
