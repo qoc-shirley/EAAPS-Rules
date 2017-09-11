@@ -103,8 +103,13 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           }
           else if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
-            return result.push( ['SMART',
-              Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e9' } )] );
+            return result.push(
+              Object.assign( patientMedication,
+                {
+                  maxPuffPerTime: patientMedication.puffPerTime,
+                  tag: 'e9',
+                  isSmart: true,
+                } ) );
           }
 
           return result;
