@@ -129,7 +129,16 @@ export const ICSDoseToDose = ( medication, dose ) => {
   let equal = false;
   let counter = 1;
   let testAdjustment;
+  let timesPerDayRange = false;
+  if ( medication.timesPerDay === '1 OR 2' ) {
+    timesPerDayRange = true;
+    Object.assign( medication, { timesPerDay: 1 } );
+  }
   while ( equal === false && ( counter <= max ) ) {
+    if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+      counter = 1;
+      Object.assign( medication, { timesPerDay: 2 } );
+    }
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
     if ( testAdjustment === dose ) {
       equal = true;

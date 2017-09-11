@@ -14,43 +14,43 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           } )
           .filter( findMedication => (
             // adjust.ICSDoseToDose - returns medication that has an ICS DOSE of 100
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+              !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'flovent' &&
               findMedication.device === 'inhaler2'
             )
             ||
             (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+              !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
               findMedication.name === 'flovent' &&
               findMedication.device === 'diskus'
             )
             ||
             (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+              !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
               findMedication.name === 'pulmicort' &&
               findMedication.device === 'turbuhaler'
             )
             ||
             (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+              !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'qvar' &&
               findMedication.device === 'inhaler1'
             )
             ||
             (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+              !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'asthmanex' &&
               findMedication.device === 'twisthaler'
             )
             ||
             (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+              !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
               findMedication.name === 'alvesco' &&
               findMedication.device === 'inhaler1'
             )
             ||
             (
-              !_.isNil( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+              !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'arnuity' &&
               findMedication.device === 'inhaler2'
             ) )
@@ -65,6 +65,8 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
           .isEmpty()
           .value();
+
+        console.log('in: ',medicationsWithLowestDose, compareLowestDoseToPatientMedication );
         if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication ) {
           // medicationsWithLowestDose - filtered medication from provided list of lowest possible dose medications
           const recommend = _.chain( medicationsWithLowestDose )
