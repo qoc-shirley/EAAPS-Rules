@@ -4,8 +4,9 @@ import * as categorize from '../library/categorizeDose';
 const isSMARTMediumOrHigh = patientMedications => _.chain( patientMedications )
   .filter( ( patientMedication ) => {
     const icsDose = categorize.patientICSDose( patientMedication );
-    console.log('patientMedications: ', patientMedications);
+    // console.log('patientMedications: ', patientMedications);
     if ( patientMedication.name === 'symbicort' &&
+        patientMedication.isSmart === true &&
       patientMedication.function === 'controller,reliever' &&
       ( icsDose === 'medium' || icsDose === 'high' ) && !_.some( patientMedications, { chemicalType: 'ltra' } ) ) {
       return true;
@@ -27,7 +28,7 @@ const rule8 = ( patientMedications, masterMedications ) => _.chain( patientMedic
       return _.chain( masterMedications )
         .filter( { name: 'singulair' } )
         .thru( singulair => Object.assign( singulair[0], { tag: 'e19' } ) )
-        .concat( 'SMART', recommend )
+        .concat( recommend )
         .value();
     } )
     .value();
