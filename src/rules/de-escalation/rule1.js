@@ -10,55 +10,56 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
+        const _masterMedicationsClone = _.cloneDeep( _masterMedications );
 
         const compareLowestDoseToPatientMedication =
-          _.chain( _masterMedications )
-            .filter( findMedication => (
-                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
-                findMedication.name === 'flovent' &&
-                findMedication.device === 'inhaler2'
-              )
-              ||
-              (
-                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 200 ) ) &&
-                findMedication.name === 'flovent' &&
-                findMedication.device === 'diskus'
-              )
-              ||
-              (
-                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 200 ) ) &&
-                findMedication.name === 'pulmicort' &&
-                findMedication.device === 'turbuhaler'
-              )
-              ||
-              (
-                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
-                findMedication.name === 'qvar' &&
-                findMedication.device === 'inhaler1'
-              )
-              ||
-              (
-                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
-                findMedication.name === 'asthmanex' &&
-                findMedication.device === 'twisthaler'
-              )
-              ||
-              (
-                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
-                findMedication.name === 'alvesco' &&
-                findMedication.device === 'inhaler1'
-              )
-              ||
-              (
-                !_.isNil( adjust.ICSDoseToOriginalMedication( findMedication, 100 ) ) &&
-                findMedication.name === 'arnuity' &&
-                findMedication.device === 'ellipta'
-              ) )
+          _.chain( _masterMedicationsClone )
             .filter( {
               chemicalType: patientMedication.chemicalType,
               name: patientMedication.name,
               device: patientMedication.device,
             } )
+            .filter( findMedication => (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'flovent' &&
+                findMedication.device === 'inhaler2'
+              )
+              ||
+              (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+                findMedication.name === 'flovent' &&
+                findMedication.device === 'diskus'
+              )
+              ||
+              (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 200 ) ) &&
+                findMedication.name === 'pulmicort' &&
+                findMedication.device === 'turbuhaler'
+              )
+              ||
+              (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'qvar' &&
+                findMedication.device === 'inhaler1'
+              )
+              ||
+              (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'asthmanex' &&
+                findMedication.device === 'twisthaler'
+              )
+              ||
+              (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'alvesco' &&
+                findMedication.device === 'inhaler1'
+              )
+              ||
+              (
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                findMedication.name === 'arnuity' &&
+                findMedication.device === 'ellipta'
+              ) )
             .filter( _medication => calculate.patientICSDose( patientMedication ) <= calculate.ICSDose( _medication ) )
             .isEmpty()
             .value();

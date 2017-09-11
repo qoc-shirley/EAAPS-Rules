@@ -88,11 +88,11 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
   else if ( level === 'betweenFiftyAndFullDose' ) {
     while ( betweenFiftyAndFullDose === false && counter <= max ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter, medication)
+      // console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter, medication)
       if ( testAdjustment >= originalICSDose / 2 &&
          testAdjustment < originalICSDose ) {
         betweenFiftyAndFullDose = true;
-        console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
+        // console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
 
         return Object.assign( medication, { maxPuffPerTime: counter } );
       }
@@ -133,6 +133,7 @@ export const ICSDoseToDose = ( medication, dose ) => {
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
     if ( testAdjustment === dose ) {
       equal = true;
+      // console.log('equal: ', medication, testAdjustment, dose, counter);
 
       return medication;
     }
@@ -141,24 +142,6 @@ export const ICSDoseToDose = ( medication, dose ) => {
 
   return [];
 };
-
-// export const ICSDoseToMax = ( medication ) => {
-//   const max = _.toInteger( medication.maxPuffPerTime );
-//   let equal = false;
-//   let counter = max;
-//   let testAdjustment;
-//   while ( equal === false && ( counter > 0 ) ) {
-//     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-//     if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
-//       medication.maxPuffPerTime = counter;
-//       equal = true;
-//       return medication;
-//     }
-//     counter = counter - 1;
-//   }
-//
-//   return [];
-// };
 
 export const ICSHigherNext = ( medication, patientMedication ) => {
   // console.log(medication, patientMedication);

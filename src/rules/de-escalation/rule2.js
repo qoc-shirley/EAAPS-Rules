@@ -59,7 +59,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           .isEmpty()
           .value();
         const compareLowestDoseToPatientMedication = _.chain( medicationsWithLowestDose )
-          .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
+          .filter( _medication => {console.log(_medication, calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication )); return calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) })
           .isEmpty()
           .value();
         // console.log('medicationsWithLowestDose: ', medicationsWithLowestDose);
