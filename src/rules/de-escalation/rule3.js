@@ -108,7 +108,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .value();
               console.log( 'fifty: ', fifty );
-              if ( _.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( fifty ) ) {
+              if ( _.isEmpty( sameChemicalLabaAndIcs ) || _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
                 const getRecommendationFromRule2 = rule2( [patientMedication], _masterMedications );
                 // add tag: d5
