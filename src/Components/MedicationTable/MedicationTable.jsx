@@ -90,11 +90,20 @@ const MedicationTable = (
     .value();
 
   const onSubmitMedications = ( medicationToDisplay ) => {
-    const insertInputs = medicationToDisplay.map( ( filteredMedication, index ) =>
-      filteredMedication.map( addPuffToMedication => Object.assign( {}, addPuffToMedication, {
+    const insertInputs = medicationToDisplay.map( ( filteredMedication, index ) => {
+      if ( filteredMedication[0].name === 'symbicort' ) {
+        return filteredMedication.map( addPuffToMedication => Object.assign( {}, addPuffToMedication, {
+          puffPerTime: medication.medicationList[index].puffValue,
+          timesPerDay: medication.medicationList[index].timesPerDayValue,
+          isSmart: false,
+        } ) );
+      }
+
+      return filteredMedication.map(addPuffToMedication => Object.assign( {}, addPuffToMedication, {
         puffPerTime: medication.medicationList[index].puffValue,
         timesPerDay: medication.medicationList[index].timesPerDayValue,
-      } ) ) );
+      } ) );
+    } );
     getPatientMedications( _.flatten( insertInputs ) );
   };
 
