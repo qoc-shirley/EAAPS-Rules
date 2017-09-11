@@ -6,7 +6,7 @@ import masterMedications from '../../medicationData/medicationData';
 
 const rule7 = patientMedications => _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
-      if ( patientMedication.name === 'symbicort' &&
+      if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === true &&
         patientMedication.function === 'controller,reliever' &&
         categorize.patientICSDose( patientMedication ) === 'low' ) {
         if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
@@ -17,14 +17,14 @@ const rule7 = patientMedications => _.chain( patientMedications )
             .thru( _medication => match.minimizePuffsPerTime( _medication ) )
             .thru( _med => adjust.ICSDose( _med, 'medium' ) )
             .thru( addTag => Object.assign( addTag, { tag: 'e18' } ) )
-            .concat( result, 'SMART' )
+            .concat( result )
             .value();
         }
 
         return _.chain( patientMedication )
           .thru( med => adjust.ICSDose( med, 'medium' ) )
           .thru( addTag => Object.assign( addTag, { tag: 'e18' } ) )
-          .concat( result, 'SMART' )
+          .concat( result )
           .value();
       }
 
