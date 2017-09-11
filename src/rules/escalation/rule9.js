@@ -7,12 +7,12 @@ import medicationData from '../../medicationData/medicationData';
 const rule9 = patientMedications => _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
       if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
+          patientMedication.isSmart === true &&
         ( calculate.ICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
         _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
         const ltra = _.filter( patientMedications, { chemicalType: 'ltra' } );
         if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
           console.log('ltra: ', ltra);
-          result.push( 'SMART' );
           result.push( Object.assign( patientMedication, { tag: 'e20' } ) );
           result.push( Object.assign( ltra[0], { tag: 'e20' } ) );
         }
@@ -27,7 +27,7 @@ const rule9 = patientMedications => _.chain( patientMedications )
             .filter( medication => adjust.ICSDose( medication, 'highest' ) !== [] )
             .thru( _medication => match.minimizePuffsPerTime( _medication ) )
             .value();
-          result.push( 'SMART', Object.assign( filterMedication, { tag: 'e20' } ),
+          result.push( Object.assign( filterMedication, { tag: 'e20' } ),
             Object.assign( ltra[0], { tag: 'e20' } ));
         }
       }
