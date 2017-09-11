@@ -10,10 +10,9 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .filter( _noMedication => _noMedication.chemicalType === 'laba' || _noMedication.chemicalType === 'ltra' )
           .isEmpty()
           .value();
-        const _masterMedicationsClone = _.cloneDeep( _masterMedications );
 
         const compareLowestDoseToPatientMedication =
-          _.chain( _masterMedicationsClone )
+          _.chain( _masterMedications )
             .filter( {
               chemicalType: patientMedication.chemicalType,
               name: patientMedication.name,
