@@ -66,7 +66,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           .isEmpty()
           .value();
 
-        console.log('in: ',medicationsWithLowestDose, compareLowestDoseToPatientMedication );
+        // console.log('in: ',medicationsWithLowestDose, compareLowestDoseToPatientMedication );
         if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication ) {
           // medicationsWithLowestDose - filtered medication from provided list of lowest possible dose medications
           const recommend = _.chain( _masterMedications )
