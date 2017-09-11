@@ -6,6 +6,7 @@ const rule10 = ( patientMedications, masterMedications ) => _
     .filter(
       _.partial( ( medicationElements, patientMedication ) => {
         if ( patientMedication.name === 'symbicort' &&
+            patientMedication.isSmart === true &&
           patientMedication.function === 'controller,reliever' &&
           ( calculate.patientICSDose( patientMedication ) >= _.toInteger( patientMedication.maxGreenICS ) ) ) {
           if ( _.find( patientMedications, { chemicalType: 'ltra' } ) ) {
@@ -20,7 +21,7 @@ const rule10 = ( patientMedications, masterMedications ) => _
     )
     .thru( ( arr ) => {
       if ( _.size( arr ) ) {
-        return [['Consult a respirologist'], { tag: 'e21' }];
+        return [['Consult a respirologist'], { tag: 'e21', isSmart: true }];
       }
 
       return [];
