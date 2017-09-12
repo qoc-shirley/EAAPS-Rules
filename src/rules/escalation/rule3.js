@@ -12,12 +12,15 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 ( medication.chemicalType === 'laba' ||
                 ( medication.chemicalType === 'ICS' && categorize.patientICSDose( medication ) === 'low' ) )
               ) );
+          const isLaac = _.chain( _patientMedications )
+            .some( _patientMedications, { chemicalType: 'laac' } )
+            .value();
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           const isLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
           const laba = _.find( isLaba, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' &&
                categorize.patientICSDose( patientMedication ) === 'low' &&
-               patientMedication.name !== 'symbicort' && _.isEmpty( filterOrgMeds ) ) {
+               patientMedication.name !== 'symbicort' && _.isEmpty( filterOrgMeds ) && !isLaac ) {
             if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
               return _.chain( _masterMedications )
                 .filter( medication => medication.chemicalType === 'laba,ICS' &&
@@ -38,7 +41,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           else if ( patientMedication.chemicalType === 'ICS' &&
             !_.isEmpty( isLaba ) &&
             categorize.patientICSDose( patientMedication ) === 'low' &&
-            patientMedication.name !== 'symbicort' ) {
+            patientMedication.name !== 'symbicort' && !isLaac ) {
             // console.log( 'laba and ICS' );
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
@@ -102,7 +105,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .value();
           }
           else if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
-              !_.some( _patientMedications, { chemicalType: 'ltra' } ) &&
+              !_.some( _patientMedications, { chemicalType: 'ltra' } ) && !isLaac &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
             return result.push(
               Object.assign( patientMedication,
