@@ -8,7 +8,7 @@ const rule9 = patientMedications => _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
       if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
           patientMedication.isSmart === true &&
-        ( calculate.ICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
+        ( calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
         _.some( patientMedications, { chemicalType: 'ltra' } ) &&
         !_.some( patientMedications, { chemicalType: 'laac' } ) ) {
         const ltra = _.filter( patientMedications, { chemicalType: 'ltra' } );
