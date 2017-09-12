@@ -4,11 +4,13 @@ import * as categorize from '../library/categorizeDose';
 const isSMARTMediumOrHigh = patientMedications => _.chain( patientMedications )
   .filter( ( patientMedication ) => {
     const icsDose = categorize.patientICSDose( patientMedication );
+    const isLaac = _.some( patientMedications, { chemicalType: 'laac' } );
     // console.log('patientMedications: ', patientMedications);
     if ( patientMedication.name === 'symbicort' &&
         patientMedication.isSmart === true &&
       patientMedication.function === 'controller,reliever' &&
-      ( icsDose === 'medium' || icsDose === 'high' ) && !_.some( patientMedications, { chemicalType: 'ltra' } ) ) {
+      ( icsDose === 'medium' || icsDose === 'high' ) && !_.some( patientMedications, { chemicalType: 'ltra' } ) &&
+      !isLaac ) {
       return true;
     }
 
