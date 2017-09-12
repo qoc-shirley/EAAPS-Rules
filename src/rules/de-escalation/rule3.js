@@ -9,7 +9,6 @@ import totalDoseReduction from '../library/totalDoseReduction';
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
-
         const compareLowestDoseToPatientMedication =
           _.chain( _masterMedications )
             .filter( {
@@ -89,7 +88,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
         if ( !checkPatientMedications &&
           !_.some( _patientMedications, { chemicalType: 'laac' } ) &&
-          !_.some( _patientMedications, { chemicalType: 'ltra' } )) {
+          !_.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
           if ( !compareLowestDoseToPatientMedication ) {
             if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
               const sameChemicalLabaAndIcs = _.chain( _masterMedications )
@@ -178,7 +177,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   .value();
                 if ( _.isEmpty( equalICSDose ) ) {
                   // add tag: d8
-                  const returnICSWithSameDevice =  _.chain( _masterMedications )
+                  const returnICSWithSameDevice = _.chain( _masterMedications )
                     .filter(
                     {
                       chemicalType: 'ICS',
@@ -191,11 +190,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     // .thru( _medication => Object.assign( _medication, { tag: 'd7' } ) )
                     .value();
                   if ( _.isEmpty( returnICSWithSameDevice ) ) {
-                    return result.push(  _.chain( _masterMedications )
+                    return result.push( _.chain( _masterMedications )
                       .filter( {
                         chemicalType: 'ICS',
                         chemicalICS: patientMedication.chemicalICS,
-                        } )
+                      } )
                       .filter( nextHigherMedication =>
                         adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
                       .thru( _medication => match.minimizePuffsPerTime( _medication ) )
