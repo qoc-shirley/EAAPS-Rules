@@ -4,6 +4,9 @@ import masterMedications from '../../medicationData/medicationData';
 
 const ruleMinus1 = ( patientMedications, asthmaControlAnswers ) => {
   if ( _.some( patientMedications, { chemicalType: 'laac' } ) ) {
+    const filterOutLaac = _.chain( patientMedications )
+      .filter( medication => medication.chemicalType !== 'laac' )
+      .value();
     const runThroughDeEscalationRules = _.chain( {
       rule1: getDescalation.rules.rule1,
       rule2: getDescalation.rules.rule2,
@@ -14,7 +17,7 @@ const ruleMinus1 = ( patientMedications, asthmaControlAnswers ) => {
       .map( ( rule ) => {
         const masterMedication = _.cloneDeep( masterMedications );
         const asthmaControlAnswer = _.cloneDeep( asthmaControlAnswers );
-        const patientOriginalMedications = _.cloneDeep( patientMedications );
+        const patientOriginalMedications = _.cloneDeep( filterOutLaac );
         if ( rule === 'rule2' ) {
           return rule( patientOriginalMedications, masterMedication );
         }
