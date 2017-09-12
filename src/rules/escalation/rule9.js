@@ -9,7 +9,8 @@ const rule9 = patientMedications => _.chain( patientMedications )
       if ( patientMedication.name === 'symbicort' && patientMedication.function === 'controller,reliever' &&
           patientMedication.isSmart === true &&
         ( calculate.ICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
-        _.some( patientMedications, { chemicalType: 'ltra' } ) ) {
+        _.some( patientMedications, { chemicalType: 'ltra' } ) &&
+        !_.some( patientMedications, { chemicalType: 'laac' } ) ) {
         const ltra = _.filter( patientMedications, { chemicalType: 'ltra' } );
         if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
           console.log('ltra: ', ltra);

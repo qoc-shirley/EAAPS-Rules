@@ -6,10 +6,11 @@ import masterMedications from '../../medicationData/medicationData';
 
 const rule7 = patientMedications => _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
-      const isLaac = _.some( patientMedications, { chemicalType: 'laac' } );
       if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === true &&
         patientMedication.function === 'controller,reliever' &&
-        categorize.patientICSDose( patientMedication ) === 'low' && !isLaac ) {
+        categorize.patientICSDose( patientMedication ) === 'low' &&
+        !_.some( patientMedications, { chemicalType: 'ltra' } ) &&
+        !_.some( patientMedications, { chemicalType: 'laac' } )) {
         if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
           return _.chain( masterMedications )
             .filter( medication => medication.name === 'symbicort' &&
