@@ -11,7 +11,6 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
 
         const medicationsWithLowestDose =
-          // _.chain( filterMedications )
           _.chain( _masterMedications )
             .filter( {
               device: patientMedication.device,
@@ -69,9 +68,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               ),
             )
           .value();
-        console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
+        // console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
         const notOnSMART = _.chain( _patientMedications )
-          .filter( { name: 'symbicort', function: 'controller,reliever' } )
+          .filter( { name: 'symbicort', function: 'controller,reliever', isSmart: true } )
           .isEmpty()
           .value();
 
@@ -97,17 +96,17 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     masterMedication.chemicalLABA === laba.chemicalLABA )
                 .value();
 
-              console.log('sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs);
+              // console.log('sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs);
               // see if patientMedication can be adjusted to half its dose
               const fifty = _.chain( sameChemicalLabaAndIcs )
-                .filter( _medication => { console.log(_medication, calculate.ICSDose( _medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
-                  calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication )); return calculate.ICSDose( _medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
-                  calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication ) } )
+                .filter( _medication =>
+                  calculate.ICSDose( _medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+                  calculate.ICSDose( _medication ) < calculate.patientICSDose( patientMedication ) )
                 .filter( _medication =>
                   _medication.device === patientMedication.device || _medication.device === laba.device )
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .value();
-              console.log( 'fifty: ', fifty );
+              // console.log( 'fifty: ', fifty );
               if ( _.isEmpty( sameChemicalLabaAndIcs ) || _.isEmpty( fifty ) ) {
                 // de-escalation rule 2 and continue laba medication
                 const getRecommendationFromRule2 = rule2( [patientMedication], _masterMedications );
