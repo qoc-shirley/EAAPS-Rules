@@ -133,16 +133,15 @@ const rule0 = ( patientMedications, masterMedications ) => {
               .thru( addToRecommendation => result.push( addToRecommendation ) )
               .value();
           }
-          else {
-            result.push( 'Options: ',
-              recommendationOne,
-              recommendationTwo,
-              recommendationThree,
-              recommendationFour,
-              recommendationFive,
-              recommendationSix,
-            );
-          }
+
+          return result.push( 'Options: ',
+            recommendationOne,
+            recommendationTwo,
+            recommendationThree,
+            recommendationFour,
+            recommendationFive,
+            recommendationSix,
+          );
         }
 
         return result;

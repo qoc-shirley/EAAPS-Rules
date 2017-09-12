@@ -142,7 +142,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   tag: 'e16',
                   isSmart: true,
                 } ),
-              Object.assign( originalMedicationLtra, { tag: 'e16' } )],
+              Object.assign( originalMedicationLtra[0], { tag: 'e16' } )],
             );
           }
 

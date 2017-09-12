@@ -7,6 +7,7 @@ const ruleMinus1 = ( patientMedications ) => {
     const filterOutLaac = _.chain( patientMedications )
       .filter( medication => medication.chemicalType !== 'laac' )
       .value();
+
     const runThroughEscalationRules = _.chain( {
       rule0: getEscalation.rules.rule0,
       rule1: getEscalation.rules.rule1,
@@ -34,7 +35,7 @@ const ruleMinus1 = ( patientMedications ) => {
     return _.chain( patientMedications )
       .filter( patientMedication => patientMedication.chemicalType === 'laac' )
       .concat( runThroughEscalationRules )
-      .thru( _medication => Object.assign( _medication, { tag: 'e0' } ) )
+      .map( _medication => Object.assign( _medication, { tag: 'e0' } ) )
       .value();
   }
 

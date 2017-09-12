@@ -102,6 +102,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .value();
           }
           else if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
+              !_.some( _patientMedications, { chemicalType: 'ltra' } ) &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
             return result.push(
               Object.assign( patientMedication,
