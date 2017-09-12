@@ -62,12 +62,14 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 findMedication.name === 'arnuity' &&
                 findMedication.device === 'ellipta'
               ) || (
-                !_.isEmpty(adjust.ICSDoseToDose( findMedication, 100 ) ) &&
+                !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
                 findMedication.name === 'breo' &&
                 findMedication.device === 'ellipta'
               ),
             )
-          .value();
+            .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
+            .isEmpty()
+            .value();
         // console.log( 'medicationsWithLowestDose: ', medicationsWithLowestDose );
         const notOnSMART = _.chain( _patientMedications )
           .filter( { name: 'symbicort', function: 'controller,reliever', isSmart: true } )
@@ -85,11 +87,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
         if ( !checkPatientMedications ) {
-          if ( !_.isEmpty( _.filter( medicationsWithLowestDose,
-              _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) ) ) ) {
+          if ( !medicationsWithLowestDose ) {
             if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
-              // filter medications from medicationsWithLowestDose ( medications of lowest possible dose ) with same
-              // chemicalICS and chemicalLABA as _patientMedications
               const sameChemicalLabaAndIcs = _.chain( _masterMedications )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                     masterMedication.chemicalICS === patientMedication.chemicalICS &&
@@ -116,7 +115,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   return result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
                 }
                 result.push( Object.assign( getRecommendationFromRule2[0], { tag: 'd5' } ) );
-                result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
+                result.push( Object.assign( isLaba[0], { tag: 'd5', maxPuffPerTime: isLaba[0].puffPerTime } ) );
 
                 return result;
               }
@@ -153,7 +152,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       timesPerDay: patientMedication.timesPerDay,
                       tag: 'd7',
                     } ),
-                  Object.assign( isLaba[0], { tag: 'd7' } ),
+                  Object.assign( isLaba[0], { tag: 'd7', maxPuffPerTime: isLaba[0].puffPerTime } ),
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -254,7 +253,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
               return result.push( 'statement 3 b b2',
                 Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd9' } ),
-                Object.assign( isLaba[0], { tag: 'd9' } ) );
+                Object.assign( isLaba[0], { tag: 'd9', maxPuffPerTime: isLaba[0].puffPerTime } ) );
             }
           }
         }
