@@ -6,13 +6,14 @@ const rule6 = patientMedications => _
     .filter( ( patientMedication ) => {
       const filterChemicalTypeLtra = _.filter( patientMedications, { chemicalType: 'ltra' } );
       const filterChemicalTypeLaba = _.filter( patientMedications, { chemicalType: 'laba' } );
+      const isLaac = _.some( patientMedications, { chemicalType: 'laac' } );
 
       if ( patientMedication.name !== 'symbicort' &&
         ( patientMedication.chemicalType === 'laba,ICS' ||
         ( !_.isEmpty( filterChemicalTypeLaba ) && patientMedication.chemicalType === 'ICS' )
         ) &&
         calculate.patientICSDose( patientMedication ) >= _.toInteger( patientMedication.maxGreenICS ) &&
-        !_.isEmpty( filterChemicalTypeLtra ) ) {
+        !_.isEmpty( filterChemicalTypeLtra ) && !isLaac ) {
         return true;
       }
 
