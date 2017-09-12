@@ -11,7 +11,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             patientMedication.name !== 'symbicort' &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) &&
-            !_.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
+            !_.some( _patientMedications, { chemicalType: 'ltra' } ) &&
+            !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
             const LabaAndIcs = _.filter( _patientMedications, { chemicalType: 'ICS' } );
             const singulair = _.filter( _masterMedications, { name: 'singulair' } );
             if ( patientMedication.chemicalType === 'laba,ICS' && _.isEmpty( LabaAndIcs ) ) {
@@ -89,7 +90,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) &&
-            !_.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
+            !_.some( _patientMedications, { chemicalType: 'ltra' } ) &&
+            !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
             // multiple triggers causes the tag to be e19 but should be fixed when we fix the multiple trigger problem
             return result.push(
               Object.assign( patientMedication,
