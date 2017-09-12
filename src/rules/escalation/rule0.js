@@ -50,11 +50,14 @@ const rule0 = ( patientMedications, masterMedications ) => {
   return _.chain( patientMedications )
     .reduce( ( result, originalMedication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
-        const noIcsOrLabaIcs = _.chain( _patientMedications )
-          .filter( _medication => _medication.chemicalType === 'ICS' || _medication.chemicalType === 'laba,ICS' )
+        const noIcsOrLabaIcsOrLaac = _.chain( _patientMedications )
+          .filter( _medication =>
+            _medication.chemicalType === 'ICS' ||
+            _medication.chemicalType === 'laba,ICS' ||
+            _medication.chemicalType === 'laac' )
           .isEmpty()
           .value();
-        if ( noIcsOrLabaIcs ) {
+        if ( noIcsOrLabaIcsOrLaac ) {
           if ( patientMedication.chemicalType === 'ltra' ) {
             result.push( Object.assign( patientMedication, { tag: 'e2' } ) );
           }
