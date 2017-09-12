@@ -10,7 +10,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
 
-        const medicationsWithLowestDose =
+        const compareLowestDoseToPatientMedication =
           _.chain( _masterMedications )
             .filter( {
               device: patientMedication.device,
@@ -84,10 +84,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           .value();
 
         const isLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
+        // if there is more than one laba
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
         if ( !checkPatientMedications ) {
-          if ( !medicationsWithLowestDose ) {
+          if ( !compareLowestDoseToPatientMedication ) {
             if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
               const sameChemicalLabaAndIcs = _.chain( _masterMedications )
                 .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
@@ -132,6 +133,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // need to return ICS , laba separate
 
               // add tag: d6
+              // totalDoseReduction - see if the medication can be adjusted to half of it's dose if not then adjust it
+              // to a dose between half its dose and smaller than its full dose (if there is more than one medication
+              // choose the smallest ICS DOSE (floor)
               const operationTotalDoseReduction = totalDoseReduction( patientMedication, sameChemicalLabaAndIcs );
 
               return result.push( Object.assign( operationTotalDoseReduction, { tag: 'd6' } ) );
@@ -201,14 +205,16 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               // console.log( 'rescue puffer: 0' );
               const reliever = _.chain( _patientMedications )
                 .filter( _medication =>
-                  _medication.name !== 'symbicort' && _medication.function === 'controller,reliever' )
+                  _medication.name !== 'symbicort' &&
+                  ( _medication.function === 'controller,reliever' || _medication.function === 'reliever' ) )
                 .isEmpty()
                 .value();
               // console.log( 'reliever: ', reliever );
               if ( reliever ) {
                 result.push( 'reliever(s):', _.chain( _masterMedications )
                   .filter( _medication =>
-                    _medication.name !== 'symbicort' && _medication.function === 'controller,reliever' )
+                    _medication.name !== 'symbicort' &&
+                    ( _medication.function === 'controller,reliever' || _medication.function === 'reliever' ) )
                   .map( _reliever => Object.assign( _reliever, { tag: 'd8' } ) )
                   .value(),
                 );
