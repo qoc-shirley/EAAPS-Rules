@@ -3,12 +3,12 @@ import rule3 from './rule3';
 
 const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
-      const rule = _.partial( ( medicationElement, originalMedications, asthmaControlAnswers, patientMedication ) => {
-        const noLaba = _.chain( originalMedications )
+      const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
+        const noLaba = _.chain( _patientMedications )
           .filter( _medication => _medication.chemicalType === 'laba' )
           .value();
 
-        const noLtra = _.chain( originalMedications )
+        const noLtra = _.chain( _patientMedications )
           .filter( _medication => _medication.chemicalType === 'ltra' )
           .value();
 
@@ -18,7 +18,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           && !_.isEmpty( noLtra ) ) {
           // Provide a choice to discontinue the LTRA
           let rule3Recommendation =
-            rule3( _.concat( patientMedication, noLaba ), medicationElement, asthmaControlAnswers );
+            rule3( _.concat( patientMedication, noLaba ), _masterMedications, _questionnaireAnswers );
           if ( _.isEmpty( rule3Recommendation ) ) {
             rule3Recommendation = 'No recommendation';
           }
