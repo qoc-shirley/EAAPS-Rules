@@ -64,7 +64,8 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           .value();
 
         // console.log('in: ',medicationsWithLowestDose, compareLowestDoseToPatientMedication );
-        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication ) {
+        if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication &&
+          !_.some( _patientMedications, { chemicalType: 'laac' } )) {
           const recommend = _.chain( _masterMedications )
             .filter( _recommendMedication => _recommendMedication.chemicalICS === patientMedication.chemicalICS &&
               _recommendMedication.device === patientMedication.device )

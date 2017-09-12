@@ -87,7 +87,9 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         // if there is more than one laba
         const laba = _.find( isLaba, { chemicalType: 'laba' } );
 
-        if ( !checkPatientMedications ) {
+        if ( !checkPatientMedications &&
+          !_.some( _patientMedications, { chemicalType: 'laac' } ) &&
+          !_.some( _patientMedications, { chemicalType: 'ltra' } )) {
           if ( !compareLowestDoseToPatientMedication ) {
             if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( isLaba ) ) {
               const sameChemicalLabaAndIcs = _.chain( _masterMedications )
