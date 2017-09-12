@@ -176,7 +176,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   .value();
                 if ( _.isEmpty( equalICSDose ) ) {
                   // add tag: d8
-                  return result.push( _.chain( _masterMedications )
+                  const returnICSWithSameDevice =  _.chain( _masterMedications )
                     .filter(
                     {
                       chemicalType: 'ICS',
@@ -184,11 +184,25 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       chemicalICS: patientMedication.chemicalICS,
                     } )
                     .filter( nextHigherMedication =>
-                      adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
+                      !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                    .thru( _medication => Object.assign( _medication, { tag: 'd7' } ) )
-                    .value(),
-                  );
+                    // .thru( _medication => Object.assign( _medication, { tag: 'd7' } ) )
+                    .value();
+                  if ( _.isEmpty( returnICSWithSameDevice ) ) {
+                    return result.push(  _.chain( _masterMedications )
+                      .filter( {
+                        chemicalType: 'ICS',
+                        chemicalICS: patientMedication.chemicalICS,
+                        } )
+                      .filter( nextHigherMedication =>
+                        adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
+                      .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                      .thru( _medication => Object.assign( _medication, { tag: 'd7' } ) )
+                      .value(),
+                      );
+                  }
+
+                  return result.push( Object.assign( returnICSWithSameDevice, { tag: 'd7' } ) );
                 }
                 // const getHighestDose = get.highestICSDose( equalICSDose );
 

@@ -155,12 +155,22 @@ export const ICSDoseToDose = ( medication, dose ) => {
 };
 
 export const ICSHigherNext = ( medication, patientMedication ) => {
-  // console.log(medication, patientMedication);
+  console.log(medication);
   const max = _.toInteger( medication.maxPuffPerTime );
   let higherNext = false;
   let counter = 1;
   let testAdjustment;
+  let timesPerDayRange = false;
+  if ( medication.timesPerDay === '1 OR 2' ) {
+    // console.log('1or2');
+    timesPerDayRange = true;
+    Object.assign( medication, { timesPerDay: 1 } );
+  }
   while ( higherNext === false && ( counter <= max ) ) {
+    if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+      counter = 1;
+      Object.assign( medication, { timesPerDay: 2 } );
+    }
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
     // console.log(testAdjustment , calculate.patientICSDose( patientMedication ));
     if ( testAdjustment > calculate.patientICSDose( patientMedication ) ) {

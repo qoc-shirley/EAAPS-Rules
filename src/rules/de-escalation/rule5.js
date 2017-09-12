@@ -17,15 +17,16 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( noLaba ) ) )
           && !_.isEmpty( noLtra ) ) {
           // Provide a choice to discontinue the LTRA
+          const patientMedicationClone = _.cloneDeep( patientMedication );
           let rule3Recommendation =
-            rule3( _.concat( patientMedication, noLaba ), _masterMedications, _questionnaireAnswers );
+            rule3( _.concat( patientMedicationClone, noLaba ), _masterMedications, _questionnaireAnswers );
           if ( _.isEmpty( rule3Recommendation ) ) {
             rule3Recommendation = 'No recommendation';
           }
           if ( !_.isEmpty( noLaba ) ) {
             return result.push( 'statement5',
               'discontinue Ltra: ',
-              Object.assign( patientMedication, { tag: 'd11' } ),
+              Object.assign( patientMedication, { tag: 'd11', maxPuffPerTime: patientMedication.puffPerTime } ),
               Object.assign( noLaba[0], { tag: 'd11' } ),
               'continue ltra (Rule3): ',
               Object.assign( rule3Recommendation, { tag: 'd11' } ),
@@ -34,7 +35,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           result.push( 'statement5',
             'discontinue Ltra: ',
-            Object.assign( patientMedication, { tag: 'd11' } ),
+            Object.assign( patientMedication, { tag: 'd11', maxPuffPerTime: patientMedication.puffPerTime } ),
             'continue ltra (Rule3): ',
             Object.assign( rule3Recommendation, { tag: 'd11' } ),
             Object.assign( noLtra[0], { tag: 'd11' } ),

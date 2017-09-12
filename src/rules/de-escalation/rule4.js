@@ -15,8 +15,10 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
 
         if ( patientMedication.chemicalType === 'ICS' && noLaba && !_.isEmpty( isLtra ) ) {
           // Provide a choice to discontinue the LTRA
-          let rule1Recommendation = rule1( [patientMedication], _masterMedications, _questionnaireAnswers );
-          let rule2Recommendation = rule2( [patientMedication], _masterMedications );
+          const patientMedicationClone1 = _.cloneDeep( patientMedication );
+          const patientMedicationClone2 = _.cloneDeep( patientMedication );
+          let rule1Recommendation = rule1( [patientMedicationClone1], _masterMedications, _questionnaireAnswers );
+          let rule2Recommendation = rule2( [patientMedicationClone2], _masterMedications );
           if ( _.isEmpty( rule1Recommendation ) ) {
             rule1Recommendation = 'no Recommendations';
           }

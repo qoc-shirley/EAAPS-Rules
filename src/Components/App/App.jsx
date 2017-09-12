@@ -30,27 +30,27 @@ saveRecommendation,
     showPatientMedications = null;
   }
 
-  const clonedMasterMedication1 = _.cloneDeep( medicationData );
-  const clonedMasterMedication2 = _.cloneDeep( medicationData );
-  const clonedMasterMedication3 = _.cloneDeep( medicationData );
-  const clonedMasterMedication4 = _.cloneDeep( medicationData );
-  const clonedMasterMedication5 = _.cloneDeep( medicationData );
-  const clonedMasterMedication6 = _.cloneDeep( medicationData );
-  const clonedMasterMedication7 = _.cloneDeep( medicationData );
-  const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication4 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication5 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication6 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication7 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication8 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication9 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication10 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication11 = _.cloneDeep( medication.patientMedications );
-  const clonedPatientMedication12 = _.cloneDeep( medication.patientMedications );
-
   const escalationRules = () => {
+    const clonedMasterMedication1 = _.cloneDeep( medicationData );
+    const clonedMasterMedication2 = _.cloneDeep( medicationData );
+    const clonedMasterMedication3 = _.cloneDeep( medicationData );
+    const clonedMasterMedication4 = _.cloneDeep( medicationData );
+    const clonedMasterMedication5 = _.cloneDeep( medicationData );
+    const clonedMasterMedication6 = _.cloneDeep( medicationData );
+    const clonedMasterMedication7 = _.cloneDeep( medicationData );
+    const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication4 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication5 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication6 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication7 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication8 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication9 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication10 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication11 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication12 = _.cloneDeep( medication.patientMedications );
+
     saveRecommendation( 'Rule -1', getEscalation.rules.ruleMinus1( clonedPatientMedication1 ) );
     saveRecommendation( 'Rule 0', getEscalation.rules.rule0( clonedPatientMedication2, clonedMasterMedication3 ) );
     saveRecommendation( 'Rule 1', getEscalation.rules.rule1( clonedPatientMedication3, clonedMasterMedication4 ) );
@@ -68,7 +68,18 @@ saveRecommendation,
   };
 
   const deescalationRules = () => {
-    const clonedMasterMedication = _.cloneDeep( medicationData );
+    const clonedMasterMedication1 = _.cloneDeep( medicationData );
+    const clonedMasterMedication2 = _.cloneDeep( medicationData );
+    const clonedMasterMedication3 = _.cloneDeep( medicationData );
+    const clonedMasterMedication4 = _.cloneDeep( medicationData );
+    const clonedMasterMedication5 = _.cloneDeep( medicationData );
+    const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication4 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication5 = _.cloneDeep( medication.patientMedications );
+    const clonedPatientMedication6 = _.cloneDeep( medication.patientMedications );
+
     const asthmaControlAnswers = [
       {
         wakeUp: medication.wakeUp,
@@ -79,25 +90,25 @@ saveRecommendation,
       }];
     getDeEscalation.rules.control( asthmaControlAnswers );
     saveRecommendation( 'Rule -1',
-      getDeEscalation.rules.ruleMinus1( medication.patientMedications, asthmaControlAnswers ) );
+      getDeEscalation.rules.ruleMinus1( clonedPatientMedication1, asthmaControlAnswers ) );
     saveRecommendation(
       'Rule 1',
-      getDeEscalation.rules.rule1( medication.patientMedications, clonedMasterMedication, asthmaControlAnswers ) );
+      getDeEscalation.rules.rule1( clonedPatientMedication2, clonedMasterMedication1, asthmaControlAnswers ) );
     saveRecommendation(
       'Rule 2',
-      getDeEscalation.rules.rule2( medication.patientMedications, clonedMasterMedication ) );
+      getDeEscalation.rules.rule2( clonedPatientMedication3, clonedMasterMedication2 ) );
     saveRecommendation(
       'Rule 3',
       getDeEscalation.rules.rule3(
-        medication.patientMedications,
-        clonedMasterMedication, asthmaControlAnswers,
+        clonedPatientMedication4,
+        clonedMasterMedication3, asthmaControlAnswers,
       ) );
     saveRecommendation(
       'Rule 4',
-      getDeEscalation.rules.rule4( medication.patientMedications, clonedMasterMedication, asthmaControlAnswers ) );
+      getDeEscalation.rules.rule4( clonedPatientMedication5, clonedMasterMedication4, asthmaControlAnswers ) );
     saveRecommendation(
       'Rule 5',
-      getDeEscalation.rules.rule5( medication.patientMedications, clonedMasterMedication, asthmaControlAnswers ) );
+      getDeEscalation.rules.rule5( clonedPatientMedication6, clonedMasterMedication5, asthmaControlAnswers ) );
   };
 
   const clearRecommendations = () => {
