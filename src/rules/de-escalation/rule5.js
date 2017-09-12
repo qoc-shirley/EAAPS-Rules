@@ -22,7 +22,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           if ( _.isEmpty( rule3Recommendation ) ) {
             rule3Recommendation = 'No recommendation';
           }
-          if ( !_.isEmpty( noLaba ) ){
+          if ( !_.isEmpty( noLaba ) ) {
             return result.push( 'statement5',
               'discontinue Ltra: ',
               Object.assign( patientMedication, { tag: 'd11' } ),

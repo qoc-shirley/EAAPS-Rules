@@ -16,7 +16,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               device: patientMedication.device,
               name: patientMedication.name,
             } )
-            .filter(findMedication => (
+            .filter( findMedication => (
                 !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
                 findMedication.name === 'flovent' &&
                 findMedication.device === 'inhaler2'

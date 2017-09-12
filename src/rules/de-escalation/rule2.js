@@ -11,7 +11,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           .isEmpty()
           .value();
 
-        const compareLowestDoseToPatientMedication =_.chain( _masterMedications )
+        const compareLowestDoseToPatientMedication = _.chain( _masterMedications )
           .filter( {
             chemicalType: patientMedication.chemicalType,
             name: patientMedication.name,
