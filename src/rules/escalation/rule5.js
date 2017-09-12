@@ -20,7 +20,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' && patientMedication.name !== 'symbicort' &&
                calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) &&
-           !_.isEmpty( originalMedicationLtra ) ) {
+           !_.isEmpty( originalMedicationLtra ) &&  !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
             const recommendHighest = _.chain( _masterMedications )
               .filter( sameMedication => sameMedication.chemicalType === patientMedication.chemicalType &&
                   sameMedication.name === patientMedication.name &&
@@ -69,7 +69,8 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           }
           else if ( ( patientMedication.chemicalType === 'ICS' &&
                       calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
-                    !_.isEmpty( isLaba ) && !_.isEmpty( originalMedicationLtra )
+                    !_.isEmpty( isLaba ) && !_.isEmpty( originalMedicationLtra ) &&
+                    !_.some( _patientMedications, { chemicalType: 'laac' } )
                   ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const filteredMedication = _.chain( _masterMedications )
@@ -134,7 +135,8 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             return result;
           }
           else if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
-            _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
+            _.some( _patientMedications, { chemicalType: 'ltra' } ) &&
+            !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
             result.push( [
               Object.assign( patientMedication,
                 {
