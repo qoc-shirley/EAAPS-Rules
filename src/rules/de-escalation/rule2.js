@@ -57,7 +57,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             (
               !_.isEmpty( adjust.ICSDoseToDose( findMedication, 100 ) ) &&
               findMedication.name === 'arnuity' &&
-              findMedication.device === 'inhaler2'
+              findMedication.device === 'ellipta'
             ) )
           .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
           .isEmpty()
