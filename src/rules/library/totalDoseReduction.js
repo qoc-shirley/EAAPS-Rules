@@ -14,7 +14,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
   if ( _.isEmpty( exactlyFiftyWithPatientMedication ) ) {
     // adjust timesPerDay/DoseICS and prioritize puffsPerTime
     // console.log('ex fif empty');
-    const betweenFiftyAndFullDose = adjust.checkDoseReduction(
+    let betweenFiftyAndFullDose = adjust.checkDoseReduction(
           patientMedication,
           'betweenFiftyAndFullDose',
           calculate.patientICSDose( patientMedication ),
@@ -23,7 +23,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
 
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
       // console.log('betweenfifty')
-      return _.chain( filteredMedications )
+      betweenFiftyAndFullDose = _.chain( filteredMedications )
         .filter( ( medication ) => {
           if ( medication.timesPerDay === '1 OR 2' ) {
             if ( calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
@@ -48,6 +48,11 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
             _.toInteger( minMedication.timesPerDay ) *
             _.toInteger( minMedication.maxPuffPerTime ) )
         .value();
+      if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
+        return [];
+      }
+
+      return betweenFiftyAndFullDose;
     }
 
     return betweenFiftyAndFullDose;

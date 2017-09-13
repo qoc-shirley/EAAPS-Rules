@@ -62,10 +62,9 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           .filter( _medication => calculate.patientICSDose( patientMedication ) > calculate.ICSDose( _medication ) )
           .isEmpty()
           .value();
-
         // console.log('in: ',medicationsWithLowestDose, compareLowestDoseToPatientMedication );
         if ( patientMedication.chemicalType === 'ICS' && noLabaLtra && !compareLowestDoseToPatientMedication &&
-          !_.some( _patientMedications, { chemicalType: 'laac' } )) {
+          !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
           const recommend = _.chain( _masterMedications )
             .filter( _recommendMedication => _recommendMedication.chemicalICS === patientMedication.chemicalICS &&
               _recommendMedication.device === patientMedication.device )
@@ -73,6 +72,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
           // totalDoseReduction - either reducing the patientMedication by half or adjusting it to be between half the
           // patientMedication dose to it's full dose
+          console.log(recommend);
           const operationTotalDoseReduction = totalDoseReduction( patientMedication, recommend );
           result.push( Object.assign( operationTotalDoseReduction, { tag: 'd3' } ) );
         }

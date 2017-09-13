@@ -73,9 +73,18 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
   let betweenFiftyAndFullDose = false;
   let counter = 1;
   let testAdjustment;
+  let timesPerDayRange = false;
+  if ( medication.name === 'asmanex' || medication.name === 'alvesco' ) {
+    timesPerDayRange = true;
+    Object.assign( medication, { timesPerDay: 1 } );
+  }
 
   if ( level === 'exactlyFifty' ) {
     while ( exactlyFifty === false && counter <= max ) {
+      if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+        counter = 1;
+        Object.assign( medication, { timesPerDay: 2 } );
+      }
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment === originalICSDose / 2 ) {
         exactlyFifty = true;
@@ -84,9 +93,15 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
       }
       counter += 1;
     }
+
+    return [];
   }
   else if ( level === 'betweenFiftyAndFullDose' ) {
     while ( betweenFiftyAndFullDose === false && counter <= max ) {
+      if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+        counter = 1;
+        Object.assign( medication, { timesPerDay: 2 } );
+      }
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       // console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter, medication)
       if ( testAdjustment >= originalICSDose / 2 &&
@@ -110,7 +125,17 @@ export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => 
   let equal = false;
   let counter = 1;
   let testAdjustment;
+  let timesPerDayRange = false;
+  if ( medication.timesPerDay === '1 OR 2' ) {
+    // console.log('1or2');
+    timesPerDayRange = true;
+    Object.assign( medication, { timesPerDay: 1 } );
+  }
   while ( equal === false && ( counter <= max ) ) {
+    if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+      counter = 1;
+      Object.assign( medication, { timesPerDay: 2 } );
+    }
     testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
     if ( testAdjustment === calculate.patientICSDose( patientMedication ) ) {
       // console.log("adjust equal: ", medication);
