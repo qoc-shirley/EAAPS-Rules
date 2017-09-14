@@ -24,26 +24,26 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
       // console.log('betweenfifty')
       betweenFiftyAndFullDose = _.chain( filteredMedications )
-        .filter( ( medication ) => {
+        .filter( ( mMed ) => {
 
           // if ( mMed.timesPerDay.toString() === '1,2' ) {
-          if ( medication.timesPerDay === '1 OR 2' ) {
-            if ( calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
-              calculate.ICSDose( medication ) < calculate.patientICSDose( patientMedication )
+          if ( mMed.timesPerDay === '1 OR 2' ) {
+            if ( calculate.ICSDose( mMed ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+              calculate.ICSDose( mMed ) < calculate.patientICSDose( patientMedication )
             ) {
 
               // return Object.assign( medication, { timesPerDay: [1] } );
-              return Object.assign( medication, { timesPerDay: 1 } );
+              return Object.assign( mMed, { timesPerDay: 1 } );
             }
-            else if ( calculate.ICSDose( medication ) * 2 >= calculate.patientICSDose( patientMedication ) / 2 &&
-              calculate.ICSDose( medication ) * 2 < calculate.patientICSDose( patientMedication ) ) {
-              return Object.assign( medication, { timesPerDay: 2 } );
+            else if ( calculate.ICSDose( mMed ) * 2 >= calculate.patientICSDose( patientMedication ) / 2 &&
+              calculate.ICSDose( mMed ) * 2 < calculate.patientICSDose( patientMedication ) ) {
+              return Object.assign( mMed, { timesPerDay: 2 } );
             }
           }
           // console.log('asdf');
 
           return !_.isEmpty( adjust.checkDoseReduction(
-            medication,
+            mMed,
             'betweenFiftyAndFullDose',
             calculate.patientICSDose( patientMedication ),
           ) );
