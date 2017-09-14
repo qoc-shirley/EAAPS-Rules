@@ -9,7 +9,7 @@ import totalDoseReduction from '../library/totalDoseReduction';
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
-        console.log('rule3: ', _patientMedications);
+        // console.log('rule3: ', _patientMedications);
         const compareLowestDoseToPatientMedication =
           _.chain( _masterMedications )
             .filter( {
