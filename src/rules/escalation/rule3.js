@@ -109,12 +109,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               !_.some( _patientMedications, { chemicalType: 'ltra' } ) && isLaac &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
             return result.push(
-              Object.assign( patientMedication,
-                {
-                  maxPuffPerTime: patientMedication.puffPerTime,
-                  tag: 'e9',
-                  isSmart: true,
-                } ) );
+              Object.assign( patientMedication, { tag: 'e9', isSmart: true } ) );
           }
 
           return result;
