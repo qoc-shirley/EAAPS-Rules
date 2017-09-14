@@ -197,7 +197,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                       .value();
                     if ( _.isEmpty( nextHighICSDoseWithSameDevice ) ) {
-                      return result.push( _.chain( _masterMedications )
+                      const recommend = _.chain( _masterMedications )
                         .filter( {
                           chemicalType: 'ICS',
                           chemicalICS: patientMedication.chemicalICS,
@@ -205,9 +205,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                         .filter( nextHigherMedication =>
                           !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
                         .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                        .thru( _medication => Object.assign( _medication, { tag: 'd7' } ) )
-                        .value(),
-                      );
+                        .value();
+                      if ( _.isEmpty( recommend ) ) {
+                        return [];
+                      }
+
+                      return result.push( Object.assign( recommend, { tag: 'd7' } ) );
                     }
 
                     return result.push( Object.assign( nextHighICSDoseWithSameDevice, { tag: 'd7' } ) );
@@ -319,7 +322,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                     .value();
                   if ( _.isEmpty( nextHighICSDoseWithSameDevice ) ) {
-                    return result.push( _.chain( _masterMedications )
+                    const recommend = _.chain( _masterMedications )
                       .filter( {
                         chemicalType: 'ICS',
                         chemicalICS: patientMedication.chemicalICS,
@@ -327,9 +330,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       .filter( nextHigherMedication =>
                         !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
                       .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                      .thru( _medication => Object.assign( _medication, { tag: 'd8' } ) )
-                      .value(),
-                    );
+                      .value();
+                    if ( _.isEmpty( recommend ) ) {
+                      return [];
+                    }
+
+                    return result.push( Object.assign( recommend, { tag: 'd8' } ) );
                   }
 
                   return result.push( Object.assign( nextHighICSDoseWithSameDevice, { tag: 'd8' } ) );

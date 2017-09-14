@@ -30,14 +30,28 @@ saveRecommendation,
     showPatientMedications = null;
   }
 
+  const newMasterMedications = _.chain( medicationData )
+    .thru( medicationRow => _.chain( medicationRow )
+      .map( ( element ) => {
+        if ( element === '.' ) {
+          return '';
+        }
+
+        return element;
+      } )
+      .value(),
+    )
+    .value();
+  console.log( 'newMasterMedications: ', newMasterMedications );
+
   const escalationRules = () => {
-    const clonedMasterMedication1 = _.cloneDeep( medicationData );
-    const clonedMasterMedication2 = _.cloneDeep( medicationData );
-    const clonedMasterMedication3 = _.cloneDeep( medicationData );
-    const clonedMasterMedication4 = _.cloneDeep( medicationData );
-    const clonedMasterMedication5 = _.cloneDeep( medicationData );
-    const clonedMasterMedication6 = _.cloneDeep( medicationData );
-    const clonedMasterMedication7 = _.cloneDeep( medicationData );
+    const clonedMasterMedication1 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication2 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication3 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication4 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication5 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication6 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication7 = _.cloneDeep( newMasterMedications );
     const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );
@@ -82,27 +96,26 @@ saveRecommendation,
   //   puffPerTime: 2,
   //   maxPuffPerTime: 1 }];
 
-  // const zenhaleCase1 = [{ id: 38,
-  //   device: 'inhaler2',
-  //   function: 'controller',
-  //   name: 'zenhale',
-  //   chemicalType: 'laba,ICS',
-  //   chemicalLABA: 'formoterol',
-  //   chemicalICS: 'mometasone',
-  //   doseICS: 200,
-  //   maxGreenICS: 800,
-  //   lowCeilICS: 399,
-  //   highFloorICS: 801,
-  //   timesPerDay: 5,
-  //   puffPerTime: 5,
-  //   maxPuffPerTime: 4 }];
-
+  const zenhaleCase1 = [{ id: 38,
+    device: 'inhaler2',
+    function: 'controller',
+    name: 'zenhale',
+    chemicalType: 'laba,ICS',
+    chemicalLABA: 'formoterol',
+    chemicalICS: 'mometasone',
+    doseICS: 200,
+    maxGreenICS: 800,
+    lowCeilICS: 399,
+    highFloorICS: 801,
+    timesPerDay: 5,
+    puffPerTime: 5,
+    maxPuffPerTime: 4 }];
   const deescalationRules = () => {
-    const clonedMasterMedication1 = _.cloneDeep( medicationData );
-    const clonedMasterMedication2 = _.cloneDeep( medicationData );
-    const clonedMasterMedication3 = _.cloneDeep( medicationData );
-    const clonedMasterMedication4 = _.cloneDeep( medicationData );
-    const clonedMasterMedication5 = _.cloneDeep( medicationData );
+    const clonedMasterMedication1 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication2 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication3 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication4 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication5 = _.cloneDeep( newMasterMedications );
     const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );
@@ -130,7 +143,7 @@ saveRecommendation,
     saveRecommendation(
       'Rule 3',
       getDeEscalation.rules.rule3(
-        clonedPatientMedication4,
+        zenhaleCase1,
         clonedMasterMedication3, asthmaControlAnswers,
       ) );
     saveRecommendation(
