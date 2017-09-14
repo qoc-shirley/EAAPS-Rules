@@ -72,7 +72,7 @@ const rule2 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
           // totalDoseReduction - either reducing the patientMedication by half or adjusting it to be between half the
           // patientMedication dose to it's full dose
-          console.log(recommend);
+          // console.log(recommend);
           const operationTotalDoseReduction = totalDoseReduction( patientMedication, recommend );
           result.push( Object.assign( operationTotalDoseReduction, { tag: 'd3' } ) );
         }
