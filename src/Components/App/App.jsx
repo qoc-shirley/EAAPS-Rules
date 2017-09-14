@@ -130,7 +130,7 @@ saveRecommendation,
     saveRecommendation(
       'Rule 3',
       getDeEscalation.rules.rule3(
-        zenhaleCase1,
+        clonedPatientMedication4,
         clonedMasterMedication3, asthmaControlAnswers,
       ) );
     saveRecommendation(
