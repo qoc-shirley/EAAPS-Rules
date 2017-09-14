@@ -22,7 +22,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .filter( { name: 'singulair' } )
                 .thru( _medication => result.push( [
                   Object.assign( _medication[0], { tag: 'e11' } ),
-                  Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'e11' } )] ) )
+                  Object.assign( patientMedication, { tag: 'e11' } )] ) )
                 .value();
             }
             // console.log( 'laba and ICS' );
@@ -43,7 +43,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   ) {
                     // console.log('no match wih any');
                     return _.concat( accResult,
-                      Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime } ) );
+                      Object.assign( patientMedication, { tag: 'e10' } ) );
                   }
 
                   const adjustToOrgIcsDose = adjust.ICSDoseToOriginalMedication( medication, patientMedication );
@@ -58,7 +58,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     // console.log('match device and chemical');
                     newMedication = adjustToOrgIcsDose;
 
-                    return _.concat( accResult, newMedication );
+                    return _.concat( accResult,
+                      Object.assign( newMedication, { tag: 'e11' } ) );
                   }
 
                   else if ( medication.chemicalType === 'laba,ICS' &&
@@ -71,7 +72,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     // console.log('only match chemical');
                     newMedication = adjustToOrgIcsDose;
 
-                    return _.concat( accResult, newMedication );
+                    return _.concat( accResult,
+                      Object.assign( newMedication, { tag: 'e11' } ) );
                   }
 
                   return accResult;
@@ -79,9 +81,9 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .uniqBy( 'id' )
                 .thru( _medication => result.push(
                   [
-                    Object.assign( _medication[0], { tag: 'e11' } ),
-                    Object.assign( singulair[0], { tag: 'e11' } ),
-                    Object.assign( labaMedication[0], { tag: 'e11' } ),
+                    _medication,
+                    Object.assign( singulair[0], { tag: '' } ),
+                    Object.assign( labaMedication[0], { tag: '' } ),
                   ] ) )
                 .value();
             }
@@ -94,12 +96,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
             // multiple triggers causes the tag to be e19 but should be fixed when we fix the multiple trigger problem
             return result.push(
-              Object.assign( patientMedication,
-                {
-                  maxPuffPerTime: patientMedication.puffPerTime,
-                  tag: 'e12',
-                  isSmart: true,
-                } ) );
+              Object.assign( patientMedication, { tag: 'e12', isSmart: true } ) );
           }
 
           return result;
