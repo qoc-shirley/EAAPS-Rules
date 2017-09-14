@@ -89,7 +89,7 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
       if ( testAdjustment === originalICSDose / 2 ) {
         exactlyFifty = true;
 
-        return Object.assign( medication, { puffPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter } );
       }
       counter += 1;
     }
@@ -109,7 +109,7 @@ export const checkDoseReduction = ( medication, level, originalICSDose ) => {
         betweenFiftyAndFullDose = true;
         // console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
 
-        return Object.assign( medication, { puffPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter } );
       }
       counter += 1;
     }
@@ -141,7 +141,7 @@ export const ICSDoseToOriginalMedication = ( medication, patientMedication ) => 
       // console.log("adjust equal: ", medication);
       equal = true;
 
-      return Object.assign( medication, { puffPerTime: counter } );
+      return Object.assign( medication, { puffsPerTime: counter } );
     }
     counter += 1;
   }
@@ -201,7 +201,7 @@ export const ICSHigherNext = ( medication, patientMedication ) => {
     if ( testAdjustment > calculate.patientICSDose( patientMedication ) ) {
       higherNext = true;
 
-      return Object.assign( medication, { puffPerTime: counter } );
+      return Object.assign( medication, { puffsPerTime: counter } );
     }
     counter += 1;
   }

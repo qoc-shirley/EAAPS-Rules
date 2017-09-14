@@ -123,7 +123,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 return result;
               }
 
-              return result.push( Object.assign( fifty, { puffPerTime: 1, tag: 'd4' } ) );
+              return result.push( Object.assign( fifty, { puffsPerTime: 1, tag: 'd4' } ) );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
               const sameChemicalLabaAndIcs = _.chain( _masterMedications )

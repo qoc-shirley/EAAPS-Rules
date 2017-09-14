@@ -50,7 +50,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
         } )
         .minBy( minMedication =>  _.toInteger( minMedication.doseICS ) *
             _.toInteger( minMedication.timesPerDay ) *
-            _.toInteger( minMedication.puffPerTime ) )
+            _.toInteger( minMedication.puffsPerTime ) )
         .value();
       if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
         return [];
