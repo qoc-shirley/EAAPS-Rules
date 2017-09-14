@@ -53,7 +53,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
             _.toInteger( minMedication.puffsPerTime ) )
         .value();
       if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
-        console.log('between1and 50');
+        // console.log('between1and 50');
         const betweenOneAndFifty = _.chain( filteredMedications )
           .filter( ( mMed ) => {
 
@@ -84,7 +84,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
             _.toInteger( minMedication.puffsPerTime ) )
           .value();
         if ( _.isEmpty( betweenOneAndFifty ) ) {
-          console.log('everythhing empty');
+          // console.log('everythhing empty');
           return [];
         }
 
