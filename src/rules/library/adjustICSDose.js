@@ -19,7 +19,7 @@ export const ICSDose = ( medication, level ) => {
         // console.log( 'test adjustment: ', testAdjustment, counter );
         lowMediumICSDose = true;
 
-        return Object.assign( medication, { maxPuffPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter } );
       }
       counter += 1;
     }
@@ -31,7 +31,7 @@ export const ICSDose = ( medication, level ) => {
         // console.log( 'test adjustment: ', testAdjustment, counter );
         highICSDose = true;
 
-        return Object.assign( medication, { maxPuffPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter } );
       }
       counter += 1;
     }
@@ -43,7 +43,7 @@ export const ICSDose = ( medication, level ) => {
         // console.log( 'test adjustment: ', testAdjustment, counter );
         lowICSDose = true;
 
-        return Object.assign( medication, { maxPuffPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter } );
       }
       counter += 1;
     }
@@ -53,12 +53,12 @@ export const ICSDose = ( medication, level ) => {
    console.log('medication: ', medication);
     while ( highestICSDose === false && counter <= max ) {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
+      // console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
       // console.log('compare values: ',  testAdjustment === _.toInteger( medication.maxGreenICS ));
       if ( testAdjustment === _.toInteger( medication.maxGreenICS ) ) {
         highestICSDose = true;
 
-        return Object.assign( medication, { maxPuffPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter } );
       }
       counter += 1;
     }
