@@ -18,7 +18,8 @@ export const ICSDose = ( medication, level ) => {
       testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment > _.toInteger( medication.lowCeilICS ) &&
         testAdjustment < _.toInteger( medication.highFloorICS ) &&
-        testAdjustment <= medication.maxGreenICS && testAdjustmentLaba <= medication.maxGreenLABA ) {
+        testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         // console.log( 'test adjustment: ', testAdjustment, counter );
         lowMediumICSDose = true;
 
@@ -32,7 +33,8 @@ export const ICSDose = ( medication, level ) => {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment >= _.toInteger( medication.highFloorICS ) &&
-        testAdjustment <= medication.maxGreenICS && testAdjustmentLaba <= medication.maxGreenLABA ) {
+        testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         // console.log( 'test adjustment: ', testAdjustment, counter );
         highICSDose = true;
 
@@ -46,7 +48,8 @@ export const ICSDose = ( medication, level ) => {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment <= _.toInteger( medication.lowCeilICS ) &&
-        testAdjustment <= medication.maxGreenICS && testAdjustmentLaba <= medication.maxGreenLABA ) {
+        testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         // console.log( 'test adjustment: ', testAdjustment, counter );
         lowICSDose = true;
 
@@ -64,7 +67,7 @@ export const ICSDose = ( medication, level ) => {
       // console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
       // console.log('compare values: ',  testAdjustment === _.toInteger( medication.maxGreenICS ));
       if ( testAdjustment === _.toInteger( medication.maxGreenICS ) &&
-           testAdjustmentLaba <= medication.maxGreenLABA ) {
+           testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         highestICSDose = true;
 
         return Object.assign( medication, { puffsPerTime: counter } );
@@ -98,7 +101,8 @@ export const checkDoseReduction = ( medication, level, patientMedication ) => {
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment === calculate.patientICSDose( patientMedication ) / 2  &&
-        testAdjustment <= medication.maxGreenICS && testAdjustmentLaba <= medication.maxGreenLABA ) {
+        testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         exactlyFifty = true;
 
         return Object.assign( medication, { puffsPerTime: counter } );
@@ -119,7 +123,8 @@ export const checkDoseReduction = ( medication, level, patientMedication ) => {
       // console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter, medication)
       if ( testAdjustment >= calculate.patientICSDose( patientMedication ) / 2 &&
           testAdjustment < calculate.patientICSDose( patientMedication ) &&
-          testAdjustment <= medication.maxGreenICS && testAdjustmentLaba <= medication.maxGreenLABA ) {
+          testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         betweenFiftyAndFullDose = true;
         // console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
 
@@ -140,7 +145,8 @@ export const checkDoseReduction = ( medication, level, patientMedication ) => {
       testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment >= 1 &&
         testAdjustment < calculate.patientICSDose( patientMedication ) &&
-        testAdjustment <= medication.maxGreenICS && testAdjustmentLaba <= medication.maxGreenLABA ) {
+        testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         betweenFiftyAndFullDose = true;
         // console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
 
@@ -236,7 +242,8 @@ export const ICSHigherNext = ( medication, patientMedication ) => {
     testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
     // console.log(testAdjustment , calculate.patientICSDose( patientMedication ));
     if ( testAdjustment > calculate.patientICSDose( patientMedication ) &&
-         testAdjustment <= medication.maxGreenICS && testAdjustmentLaba <= medication.maxGreenLABA ) {
+         testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
+      testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
       higherNext = true;
 
       return Object.assign( medication, { puffsPerTime: counter } );

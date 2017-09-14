@@ -31,8 +31,8 @@ saveRecommendation,
   }
 
   const newMasterMedications = _.chain( medicationData )
-    .thru( medicationRow => _.chain( medicationRow )
-      .map( ( element ) => {
+    .map( medicationRow => _.chain( medicationRow )
+      .mapValues( ( element ) => {
         if ( element === '.' ) {
           return '';
         }
