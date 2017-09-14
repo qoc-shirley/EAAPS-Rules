@@ -82,20 +82,20 @@ saveRecommendation,
   //   puffPerTime: 2,
   //   maxPuffPerTime: 1 }];
 
-  const zenhaleCase1 = [{ id: 38,
-    device: 'inhaler2',
-    function: 'controller',
-    name: 'zenhale',
-    chemicalType: 'laba,ICS',
-    chemicalLABA: 'formoterol',
-    chemicalICS: 'mometasone',
-    doseICS: 200,
-    maxGreenICS: 800,
-    lowCeilICS: 399,
-    highFloorICS: 801,
-    timesPerDay: 5,
-    puffPerTime: 5,
-    maxPuffPerTime: 4 }];
+  // const zenhaleCase1 = [{ id: 38,
+  //   device: 'inhaler2',
+  //   function: 'controller',
+  //   name: 'zenhale',
+  //   chemicalType: 'laba,ICS',
+  //   chemicalLABA: 'formoterol',
+  //   chemicalICS: 'mometasone',
+  //   doseICS: 200,
+  //   maxGreenICS: 800,
+  //   lowCeilICS: 399,
+  //   highFloorICS: 801,
+  //   timesPerDay: 5,
+  //   puffPerTime: 5,
+  //   maxPuffPerTime: 4 }];
 
   const deescalationRules = () => {
     const clonedMasterMedication1 = _.cloneDeep( medicationData );
