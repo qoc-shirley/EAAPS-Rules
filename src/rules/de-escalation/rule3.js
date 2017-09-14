@@ -118,12 +118,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   return result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
                 }
                 result.push( Object.assign( getRecommendationFromRule2[0], { tag: 'd5' } ) );
-                result.push( Object.assign( isLaba[0], { tag: 'd5', maxPuffPerTime: isLaba[0].puffPerTime } ) );
+                result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
 
                 return result;
               }
 
-              return result.push( Object.assign( fifty, { maxPuffPerTime: 1, tag: 'd4' } ) );
+              return result.push( Object.assign( fifty, { puffPerTime: 1, tag: 'd4' } ) );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
               const sameChemicalLabaAndIcs = _.chain( _masterMedications )
@@ -153,13 +153,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 // discontinue laba medication
                 // add tag: d7
                 return result.push( 'statement 3 b a i And ii',
-                  Object.assign( patientMedication,
-                    {
-                      maxPuffPerTime: patientMedication.puffPerTime,
-                      timesPerDay: patientMedication.timesPerDay,
-                      tag: 'd7',
-                    } ),
-                  Object.assign( isLaba[0], { tag: 'd7', maxPuffPerTime: isLaba[0].puffPerTime } ),
+                  Object.assign( patientMedication, { tag: 'd7' } ),
+                  Object.assign( isLaba[0], { tag: 'd7' } ),
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -288,8 +283,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             }
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
               return result.push( 'statement 3 b b2',
-                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd9' } ),
-                Object.assign( isLaba[0], { tag: 'd9', maxPuffPerTime: isLaba[0].puffPerTime } ) );
+                Object.assign( patientMedication, { tag: 'd9' } ),
+                Object.assign( isLaba[0], { tag: 'd9' } ) );
             }
           }
         }

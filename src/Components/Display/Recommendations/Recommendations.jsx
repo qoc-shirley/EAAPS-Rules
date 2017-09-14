@@ -83,7 +83,7 @@ const showRecommendations = ( {
                                 <p className="data">{medicationElement.chemicalLABA}</p>
                                 <p className="data">{medicationElement.chemicalICS}</p>
                                 <p className="data">{medicationElement.doseICS}</p>
-                                <p className="data">{medicationElement.maxPuffPerTime}</p>
+                                <p className="data">{medicationElement.puffPerTime}</p>
                                 <p className="data">{medicationElement.timesPerDay}</p>
                               </div>
                             );
@@ -98,7 +98,7 @@ const showRecommendations = ( {
                                 <p className="data">{medicationElement.chemicalLABA}</p>
                                 <p className="data">{medicationElement.chemicalICS}</p>
                                 <p className="data">{medicationElement.doseICS}</p>
-                                <p className="data">{medicationElement.maxPuffPerTime}</p>
+                                <p className="data">{medicationElement.puffPerTime}</p>
                                 <p className="data">{medicationElement.timesPerDay}</p>
                               </div>
                             );
