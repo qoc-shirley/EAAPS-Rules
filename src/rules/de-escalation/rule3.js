@@ -244,7 +244,45 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   .value(),
                 );
               }
-              const equalICSDose = _.chain( _masterMedications )
+              // const equalICSDose = _.chain( _masterMedications )
+              //   .filter(
+              //   {
+              //     chemicalType: 'ICS',
+              //     device: patientMedication.device,
+              //     chemicalICS: patientMedication.chemicalICS,
+              //   } )
+              //   .filter( _medication =>
+              //     adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) !== [] &&
+              //     _medication.doseICS === patientMedication.doseICS )
+              //   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+              //   .value();
+              // // console.log( 'equalICSDose: ', equalICSDose );
+              // if ( _.isEmpty( equalICSDose ) ) {
+              //   // console.log( 'equalICSDose empty' );
+              //
+              //   // add tag
+              //   return result.push( _.chain( _masterMedications )
+              //     .filter(
+              //     {
+              //       chemicalType: 'ICS',
+              //       device: patientMedication.device,
+              //       chemicalICS: patientMedication.chemicalICS,
+              //     } )
+              //     .filter( nextHigherMedication =>
+              //       adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
+              //     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+              //     .thru( addTag => Object.assign( addTag, { tag: 'd8' } ) )
+              //     .value(),
+              //   );
+              // }
+              // // const getHighestDose = get.highestICSDose( equalICSDose );
+              //
+              // return result.push( 'statement 3 b b1',
+              //  //  Object.assign( getHighestDose, { tag: 'd8' } ),
+              //   Object.assign( equalICSDose, { tag: 'd8' } ) );
+              // recommend medication with same chemicalICS as original Medication
+              // console.log( 'laba,ICS' );
+              const equalICSDoseWithSameDevice = _.chain( _masterMedications )
                 .filter(
                 {
                   chemicalType: 'ICS',
@@ -256,30 +294,54 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   _medication.doseICS === patientMedication.doseICS )
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .value();
-              // console.log( 'equalICSDose: ', equalICSDose );
-              if ( _.isEmpty( equalICSDose ) ) {
-                // console.log( 'equalICSDose empty' );
-
-                // add tag
-                return result.push( _.chain( _masterMedications )
+              if ( _.isEmpty( equalICSDoseWithSameDevice ) ) {
+                const equalICSDose = _.chain(_masterMedications)
                   .filter(
                   {
                     chemicalType: 'ICS',
-                    device: patientMedication.device,
                     chemicalICS: patientMedication.chemicalICS,
                   } )
-                  .filter( nextHigherMedication =>
-                    adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
+                  .filter( _medication =>
+                    !_.isEmpty( adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) ) )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                  .thru( addTag => Object.assign( addTag, { tag: 'd8' } ) )
-                  .value(),
-                );
+                  .value();
+                if ( _.isEmpty( equalICSDose ) ) {
+                  // add tag: d8
+                  const nextHighICSDoseWithSameDevice = _.chain( _masterMedications )
+                    .filter(
+                    {
+                      chemicalType: 'ICS',
+                      device: patientMedication.device,
+                      chemicalICS: patientMedication.chemicalICS,
+                    } )
+                    .filter( nextHigherMedication =>
+                      !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
+                    .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                    .value();
+                  if ( _.isEmpty( nextHighICSDoseWithSameDevice ) ) {
+                    return result.push( _.chain( _masterMedications )
+                      .filter( {
+                        chemicalType: 'ICS',
+                        chemicalICS: patientMedication.chemicalICS,
+                      } )
+                      .filter( nextHigherMedication =>
+                        !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
+                      .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                      .thru( _medication => Object.assign( _medication, { tag: 'd8' } ) )
+                      .value(),
+                    );
+                  }
+
+                  return result.push( Object.assign( nextHighICSDoseWithSameDevice, { tag: 'd8' } ) );
+                }
+
+                return result.push( Object.assign( equalICSDose, { tag: 'd8' } ) );
               }
               // const getHighestDose = get.highestICSDose( equalICSDose );
 
               return result.push( 'statement 3 b b1',
-               //  Object.assign( getHighestDose, { tag: 'd8' } ),
-                Object.assign( equalICSDose, { tag: 'd8' } ) );
+                Object.assign( equalICSDoseWithSameDevice, { tag: 'd8' } ) );
+              // has to be presented as an option
             }
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
               return result.push( 'statement 3 b b2',
