@@ -7,7 +7,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
   const exactlyFiftyWithPatientMedication = adjust.checkDoseReduction(
     patientMedication,
     'exactlyFifty',
-    calculate.patientICSDose( patientMedication ),
+    patientMedication,
   );
   // console.log('50 of patient: ',exactlyFiftyWithPatientMedication )
 
@@ -17,39 +17,78 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
     let betweenFiftyAndFullDose = adjust.checkDoseReduction(
           patientMedication,
           'betweenFiftyAndFullDose',
-          calculate.patientICSDose( patientMedication ),
+          patientMedication,
         );
    // console.log('betweenFiftyAndFullDose 1: ', betweenFiftyAndFullDose);
 
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
       // console.log('betweenfifty')
       betweenFiftyAndFullDose = _.chain( filteredMedications )
-        .filter( ( medication ) => {
-          if ( medication.timesPerDay === '1 OR 2' ) {
-            if ( calculate.ICSDose( medication ) >= calculate.patientICSDose( patientMedication ) / 2 &&
-              calculate.ICSDose( medication ) < calculate.patientICSDose( patientMedication )
+        .filter( ( mMed ) => {
+
+          // if ( mMed.timesPerDay.toString() === '1,2' ) {
+          if ( mMed.timesPerDay === '1 OR 2' ) {
+            if ( calculate.ICSDose( mMed ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+              calculate.ICSDose( mMed ) < calculate.patientICSDose( patientMedication )
             ) {
-              return Object.assign( medication, { timesPerDay: 1 } );
+
+              // return Object.assign( medication, { timesPerDay: [1] } );
+              return Object.assign( mMed, { timesPerDay: 1 } );
             }
-            else if ( calculate.ICSDose( medication ) * 2 >= calculate.patientICSDose( patientMedication ) / 2 &&
-              calculate.ICSDose( medication ) * 2 < calculate.patientICSDose( patientMedication ) ) {
-              return Object.assign( medication, { timesPerDay: 2 } );
+            else if ( calculate.ICSDose( mMed ) * 2 >= calculate.patientICSDose( patientMedication ) / 2 &&
+              calculate.ICSDose( mMed ) * 2 < calculate.patientICSDose( patientMedication ) ) {
+              return Object.assign( mMed, { timesPerDay: 2 } );
             }
           }
           // console.log('asdf');
 
           return !_.isEmpty( adjust.checkDoseReduction(
-            medication,
+            mMed,
             'betweenFiftyAndFullDose',
-            calculate.patientICSDose( patientMedication ),
+            patientMedication,
           ) );
         } )
         .minBy( minMedication =>  _.toInteger( minMedication.doseICS ) *
             _.toInteger( minMedication.timesPerDay ) *
-            _.toInteger( minMedication.maxPuffPerTime ) )
+            _.toInteger( minMedication.puffsPerTime ) )
         .value();
       if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
-        return [];
+        // console.log('between1and 50');
+        const betweenOneAndFifty = _.chain( filteredMedications )
+          .filter( ( mMed ) => {
+
+            // if ( mMed.timesPerDay.toString() === '1,2' ) {
+            if ( mMed.timesPerDay === '1 OR 2' ) {
+              if ( calculate.ICSDose( mMed ) >= calculate.patientICSDose( patientMedication ) / 2 &&
+                calculate.ICSDose( mMed ) < calculate.patientICSDose( patientMedication )
+              ) {
+
+                // return Object.assign( medication, { timesPerDay: [1] } );
+                return Object.assign( mMed, { timesPerDay: 1 } );
+              }
+              else if ( calculate.ICSDose( mMed ) * 2 >= calculate.patientICSDose( patientMedication ) / 2 &&
+                calculate.ICSDose( mMed ) * 2 < calculate.patientICSDose( patientMedication ) ) {
+                return Object.assign( mMed, { timesPerDay: 2 } );
+              }
+            }
+            // console.log('asdf');
+
+            return !_.isEmpty( adjust.checkDoseReduction(
+              mMed,
+              'betweenOneAndFifty',
+              patientMedication,
+            ) );
+          } )
+          .minBy( minMedication =>  _.toInteger( minMedication.doseICS ) *
+            _.toInteger( minMedication.timesPerDay ) *
+            _.toInteger( minMedication.puffsPerTime ) )
+          .value();
+        if ( _.isEmpty( betweenOneAndFifty ) ) {
+          // console.log('everythhing empty');
+          return [];
+        }
+
+        return betweenOneAndFifty;
       }
 
       return betweenFiftyAndFullDose;

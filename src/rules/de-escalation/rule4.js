@@ -30,7 +30,7 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           // change result when pushing to CDSS
           result.push( 'statement4',
             'discontinue ltra: ', Object.assign( isLtra[0], { tag: 'd10' } ),
-            Object.assign( patientMedication, { tag: 'd10', maxPuffPerTime: patientMedication.puffPerTime } ),
+            Object.assign( patientMedication, { tag: 'd10' } ),
             'continue ltra : ', Object.assign( isLtra[0], { tag: 'd10' } ),
             'Rule1: ', Object.assign( rule1Recommendation, { tag: 'd10' } ),
             'Rule2: ', Object.assign( rule2Recommendation, { tag: 'd10' } ),

@@ -26,7 +26,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           if ( !_.isEmpty( noLaba ) ) {
             return result.push( 'statement5',
               'discontinue Ltra: ',
-              Object.assign( patientMedication, { tag: 'd11', maxPuffPerTime: patientMedication.puffPerTime } ),
+              Object.assign( patientMedication, { tag: 'd11' } ),
               Object.assign( noLaba[0], { tag: 'd11' } ),
               'continue ltra (Rule3): ',
               Object.assign( rule3Recommendation, { tag: 'd11' } ),
@@ -35,7 +35,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           result.push( 'statement5',
             'discontinue Ltra: ',
-            Object.assign( patientMedication, { tag: 'd11', maxPuffPerTime: patientMedication.puffPerTime } ),
+            Object.assign( patientMedication, { tag: 'd11' } ),
             'continue ltra (Rule3): ',
             Object.assign( rule3Recommendation, { tag: 'd11' } ),
             Object.assign( noLtra[0], { tag: 'd11' } ),

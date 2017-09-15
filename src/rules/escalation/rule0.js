@@ -5,35 +5,35 @@ const rule0 = ( patientMedications, masterMedications ) => {
   const recommendationOne = _.chain( masterMedications )
     .filter( { name: 'flovent', doseICS: '125' } )
     .thru( changeOne =>
-      _.map( changeOne, changeOneEach => Object.assign( changeOneEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+      _.map( changeOne, changeOneEach => Object.assign( changeOneEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationTwo = _.chain( masterMedications )
     .filter( { device: 'diskus', doseICS: '100' } )
     .thru( changeTwo =>
-      _.map( changeTwo, changeTwoEach => Object.assign( changeTwoEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+      _.map( changeTwo, changeTwoEach => Object.assign( changeTwoEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationThree = _.chain( masterMedications )
     .filter( { name: 'pulmicort', doseICS: '200' } )
     .thru( changeThree =>
       _.map( changeThree, changeThreeEach =>
-        Object.assign( changeThreeEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+        Object.assign( changeThreeEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationFour = _.chain( masterMedications )
     .filter( { name: 'asmanex', doseICS: '200' } )
     .thru( changeFour =>
       _.map( changeFour, changeFourEach =>
-        Object.assign( changeFourEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+        Object.assign( changeFourEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationFive = _.chain( masterMedications )
     .filter( { name: 'alvesco', doseICS: '200' } )
     .thru( changeFive =>
       _.map( changeFive, changeFiveEach =>
-        Object.assign( changeFiveEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+        Object.assign( changeFiveEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationSix = _.chain( masterMedications )
     .filter( { name: 'qvar', doseICS: '100' } )
     .thru( changeSix =>
-      _.map( changeSix, changeSixEach => Object.assign( changeSixEach, { maxPuffPerTime: 1, tag: 'e1' } ) ) )
+      _.map( changeSix, changeSixEach => Object.assign( changeSixEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   if ( _.isEmpty( patientMedications ) ) {
     const recommendations = [[recommendationOne,
@@ -59,7 +59,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
           .value();
         if ( noIcsOrLabaIcsOrLaac ) {
           if ( patientMedication.chemicalType === 'ltra' ) {
-            result.push( Object.assign( patientMedication, { tag: 'e2' } ) );
+            return result.push( Object.assign( patientMedication, { tag: 'e2' } ) );
           }
           else if (
             ( patientMedication.chemicalType === 'laba' )
@@ -100,7 +100,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
                 .thru( get.lowestICSDose )
                 .thru(
                   medication => Object.assign( {}, medication,
-                    { maxPuffPerTime: 1, tag: 'e2' },
+                    { puffsPerTime: 1, tag: 'e2' },
                   ) )
                 .value(),
               );
@@ -132,7 +132,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
               .map( ( _medications ) => {
                 return get.lowestICSDose( _medications );
               } )
-              .map( _medication => Object.assign( _medication, { maxPuffPerTime: 1, tag: 'e3' } ) )
+              .map( _medication => Object.assign( _medication, { puffsPerTime: 1, tag: 'e3' } ) )
               .thru( addToRecommendation => result.push( addToRecommendation ) )
               .value();
           }

@@ -56,7 +56,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               .value();
 
             if (  !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
-              // console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba, isLtra)
+              console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba, isLtra)
               result.push( Object.assign( isLtra, { tag: 'e7' } ) );
 
               if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
@@ -76,7 +76,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
               return result.push( Object.assign( adjustToMedium, { tag: 'e7' } ) );
             }
-            // console.log( 'test getDeviceIcsOrLaba' );
+            console.log( 'test getDeviceIcsOrLaba' );
             if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
               result.push( Object.assign( isLaba[0], { tag: 'e8' } ) );
 
@@ -109,12 +109,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               !_.some( _patientMedications, { chemicalType: 'ltra' } ) && isLaac &&
             categorize.patientICSDose( patientMedication ) === 'low' ) {
             return result.push(
-              Object.assign( patientMedication,
-                {
-                  maxPuffPerTime: patientMedication.puffPerTime,
-                  tag: 'e9',
-                  isSmart: true,
-                } ) );
+              Object.assign( patientMedication, { tag: 'e9', isSmart: true } ) );
           }
 
           return result;

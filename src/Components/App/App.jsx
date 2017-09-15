@@ -30,14 +30,28 @@ saveRecommendation,
     showPatientMedications = null;
   }
 
+  const newMasterMedications = _.chain( medicationData )
+    .map( medicationRow => _.chain( medicationRow )
+      .mapValues( ( element ) => {
+        if ( element === '.' ) {
+          return '';
+        }
+
+        return element;
+      } )
+      .value(),
+    )
+    .value();
+  console.log( 'newMasterMedications: ', newMasterMedications );
+
   const escalationRules = () => {
-    const clonedMasterMedication1 = _.cloneDeep( medicationData );
-    const clonedMasterMedication2 = _.cloneDeep( medicationData );
-    const clonedMasterMedication3 = _.cloneDeep( medicationData );
-    const clonedMasterMedication4 = _.cloneDeep( medicationData );
-    const clonedMasterMedication5 = _.cloneDeep( medicationData );
-    const clonedMasterMedication6 = _.cloneDeep( medicationData );
-    const clonedMasterMedication7 = _.cloneDeep( medicationData );
+    const clonedMasterMedication1 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication2 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication3 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication4 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication5 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication6 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication7 = _.cloneDeep( newMasterMedications );
     const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );
@@ -98,11 +112,11 @@ saveRecommendation,
   //   maxPuffPerTime: 4 }];
 
   const deescalationRules = () => {
-    const clonedMasterMedication1 = _.cloneDeep( medicationData );
-    const clonedMasterMedication2 = _.cloneDeep( medicationData );
-    const clonedMasterMedication3 = _.cloneDeep( medicationData );
-    const clonedMasterMedication4 = _.cloneDeep( medicationData );
-    const clonedMasterMedication5 = _.cloneDeep( medicationData );
+    const clonedMasterMedication1 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication2 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication3 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication4 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication5 = _.cloneDeep( newMasterMedications );
     const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );

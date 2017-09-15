@@ -9,7 +9,7 @@ import totalDoseReduction from '../library/totalDoseReduction';
 const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) => _.chain( patientMedications )
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
-        console.log('rule3: ', _patientMedications);
+        // console.log('rule3: ', _patientMedications);
         const compareLowestDoseToPatientMedication =
           _.chain( _masterMedications )
             .filter( {
@@ -118,12 +118,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   return result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
                 }
                 result.push( Object.assign( getRecommendationFromRule2[0], { tag: 'd5' } ) );
-                result.push( Object.assign( isLaba[0], { tag: 'd5', maxPuffPerTime: isLaba[0].puffPerTime } ) );
+                result.push( Object.assign( isLaba[0], { tag: 'd5' } ) );
 
                 return result;
               }
 
-              return result.push( Object.assign( fifty, { maxPuffPerTime: 1, tag: 'd4' } ) );
+              return result.push( Object.assign( fifty, { puffsPerTime: 1, tag: 'd4' } ) );
             }
             else if ( patientMedication.chemicalType === 'laba,ICS' ) {
               const sameChemicalLabaAndIcs = _.chain( _masterMedications )
@@ -153,13 +153,8 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 // discontinue laba medication
                 // add tag: d7
                 return result.push( 'statement 3 b a i And ii',
-                  Object.assign( patientMedication,
-                    {
-                      maxPuffPerTime: patientMedication.puffPerTime,
-                      timesPerDay: patientMedication.timesPerDay,
-                      tag: 'd7',
-                    } ),
-                  Object.assign( isLaba[0], { tag: 'd7', maxPuffPerTime: isLaba[0].puffPerTime } ),
+                  Object.assign( patientMedication, { tag: 'd7' } ),
+                  Object.assign( isLaba[0], { tag: 'd7' } ),
                 );
               }
               else if ( patientMedication.chemicalType === 'laba,ICS' ) {
@@ -202,7 +197,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                       .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                       .value();
                     if ( _.isEmpty( nextHighICSDoseWithSameDevice ) ) {
-                      return result.push( _.chain( _masterMedications )
+                      const recommend = _.chain( _masterMedications )
                         .filter( {
                           chemicalType: 'ICS',
                           chemicalICS: patientMedication.chemicalICS,
@@ -210,9 +205,12 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                         .filter( nextHigherMedication =>
                           !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
                         .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                        .thru( _medication => Object.assign( _medication, { tag: 'd7' } ) )
-                        .value(),
-                      );
+                        .value();
+                      if ( _.isEmpty( recommend ) ) {
+                        return [];
+                      }
+
+                      return result.push( Object.assign( recommend, { tag: 'd7' } ) );
                     }
 
                     return result.push( Object.assign( nextHighICSDoseWithSameDevice, { tag: 'd7' } ) );
@@ -249,7 +247,45 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   .value(),
                 );
               }
-              const equalICSDose = _.chain( _masterMedications )
+              // const equalICSDose = _.chain( _masterMedications )
+              //   .filter(
+              //   {
+              //     chemicalType: 'ICS',
+              //     device: patientMedication.device,
+              //     chemicalICS: patientMedication.chemicalICS,
+              //   } )
+              //   .filter( _medication =>
+              //     adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) !== [] &&
+              //     _medication.doseICS === patientMedication.doseICS )
+              //   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+              //   .value();
+              // // console.log( 'equalICSDose: ', equalICSDose );
+              // if ( _.isEmpty( equalICSDose ) ) {
+              //   // console.log( 'equalICSDose empty' );
+              //
+              //   // add tag
+              //   return result.push( _.chain( _masterMedications )
+              //     .filter(
+              //     {
+              //       chemicalType: 'ICS',
+              //       device: patientMedication.device,
+              //       chemicalICS: patientMedication.chemicalICS,
+              //     } )
+              //     .filter( nextHigherMedication =>
+              //       adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
+              //     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+              //     .thru( addTag => Object.assign( addTag, { tag: 'd8' } ) )
+              //     .value(),
+              //   );
+              // }
+              // // const getHighestDose = get.highestICSDose( equalICSDose );
+              //
+              // return result.push( 'statement 3 b b1',
+              //  //  Object.assign( getHighestDose, { tag: 'd8' } ),
+              //   Object.assign( equalICSDose, { tag: 'd8' } ) );
+              // recommend medication with same chemicalICS as original Medication
+              // console.log( 'laba,ICS' );
+              const equalICSDoseWithSameDevice = _.chain( _masterMedications )
                 .filter(
                 {
                   chemicalType: 'ICS',
@@ -261,35 +297,62 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                   _medication.doseICS === patientMedication.doseICS )
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                 .value();
-              // console.log( 'equalICSDose: ', equalICSDose );
-              if ( _.isEmpty( equalICSDose ) ) {
-                // console.log( 'equalICSDose empty' );
-
-                // add tag
-                return result.push( _.chain( _masterMedications )
+              if ( _.isEmpty( equalICSDoseWithSameDevice ) ) {
+                const equalICSDose = _.chain(_masterMedications)
                   .filter(
                   {
                     chemicalType: 'ICS',
-                    device: patientMedication.device,
                     chemicalICS: patientMedication.chemicalICS,
                   } )
-                  .filter( nextHigherMedication =>
-                    adjust.ICSHigherNext( nextHigherMedication, patientMedication ) !== [] )
+                  .filter( _medication =>
+                    !_.isEmpty( adjust.ICSDoseToOriginalMedication( _medication, patientMedication ) ) )
                   .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                  .thru( addTag => Object.assign( addTag, { tag: 'd8' } ) )
-                  .value(),
-                );
+                  .value();
+                if ( _.isEmpty( equalICSDose ) ) {
+                  // add tag: d8
+                  const nextHighICSDoseWithSameDevice = _.chain( _masterMedications )
+                    .filter(
+                    {
+                      chemicalType: 'ICS',
+                      device: patientMedication.device,
+                      chemicalICS: patientMedication.chemicalICS,
+                    } )
+                    .filter( nextHigherMedication =>
+                      !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
+                    .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                    .value();
+                  if ( _.isEmpty( nextHighICSDoseWithSameDevice ) ) {
+                    const recommend = _.chain( _masterMedications )
+                      .filter( {
+                        chemicalType: 'ICS',
+                        chemicalICS: patientMedication.chemicalICS,
+                      } )
+                      .filter( nextHigherMedication =>
+                        !_.isEmpty( adjust.ICSHigherNext( nextHigherMedication, patientMedication ) ) )
+                      .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                      .value();
+                    if ( _.isEmpty( recommend ) ) {
+                      return [];
+                    }
+
+                    return result.push( Object.assign( recommend, { tag: 'd8' } ) );
+                  }
+
+                  return result.push( Object.assign( nextHighICSDoseWithSameDevice, { tag: 'd8' } ) );
+                }
+
+                return result.push( Object.assign( equalICSDose, { tag: 'd8' } ) );
               }
               // const getHighestDose = get.highestICSDose( equalICSDose );
 
               return result.push( 'statement 3 b b1',
-               //  Object.assign( getHighestDose, { tag: 'd8' } ),
-                Object.assign( equalICSDose, { tag: 'd8' } ) );
+                Object.assign( equalICSDoseWithSameDevice, { tag: 'd8' } ) );
+              // has to be presented as an option
             }
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
               return result.push( 'statement 3 b b2',
-                Object.assign( patientMedication, { maxPuffPerTime: patientMedication.puffPerTime, tag: 'd9' } ),
-                Object.assign( isLaba[0], { tag: 'd9', maxPuffPerTime: isLaba[0].puffPerTime } ) );
+                Object.assign( patientMedication, { tag: 'd9' } ),
+                Object.assign( isLaba[0], { tag: 'd9' } ) );
             }
           }
         }

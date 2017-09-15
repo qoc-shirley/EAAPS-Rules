@@ -13,12 +13,12 @@ const rule9 = patientMedications => _.chain( patientMedications )
         !_.some( patientMedications, { chemicalType: 'laac' } ) ) {
         const ltra = _.filter( patientMedications, { chemicalType: 'ltra' } );
         if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
-          console.log('ltra: ', ltra);
+          // console.log('ltra: ', ltra);
           result.push( Object.assign( patientMedication, { tag: 'e20' } ) );
           result.push( Object.assign( ltra[0], { tag: 'e20' } ) );
         }
         else {
-          console.log('ltra: ', ltra);
+          // console.log('ltra: ', ltra);
           const filterMedication = _.chain( medicationData )
             .filter( {
               chemicalType: patientMedication.chemicalType,
