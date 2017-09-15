@@ -22,7 +22,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
    // console.log('betweenFiftyAndFullDose 1: ', betweenFiftyAndFullDose);
 
     if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
-      // console.log('betweenfifty')
+      console.log('betweenfifty')
       betweenFiftyAndFullDose = _.chain( filteredMedications )
         .filter( ( mMed ) => {
 
@@ -40,7 +40,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
               return Object.assign( mMed, { timesPerDay: 2 } );
             }
           }
-          // console.log('asdf');
+          console.log('asdf');
 
           return !_.isEmpty( adjust.checkDoseReduction(
             mMed,
@@ -53,7 +53,7 @@ const totalDoseReduction = ( patientMedication, filteredMedications ) => {
             _.toInteger( minMedication.puffsPerTime ) )
         .value();
       if ( _.isEmpty( betweenFiftyAndFullDose ) ) {
-        // console.log('between1and 50');
+        console.log('between1and 50');
         const betweenOneAndFifty = _.chain( filteredMedications )
           .filter( ( mMed ) => {
 

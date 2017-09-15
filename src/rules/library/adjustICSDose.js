@@ -80,32 +80,37 @@ export const ICSDose = ( medication, level ) => {
 };
 
 export const checkDoseReduction = ( medication, level, patientMedication ) => {
-  const max = _.toInteger( medication.maxPuffPerTime );
+  const clonedMedication = _.cloneDeep( medication );
+  const max = _.toInteger( clonedMedication.maxPuffPerTime );
   let exactlyFifty = false;
   let betweenFiftyAndFullDose = false;
   let counter = 1;
   let testAdjustment;
   let testAdjustmentLaba;
   let timesPerDayRange = false;
-  if ( medication.name === 'asmanex' || medication.name === 'alvesco' ) {
+  if ( clonedMedication.name === 'asmanex' || clonedMedication.name === 'alvesco' ) {
     timesPerDayRange = true;
-    Object.assign( medication, { timesPerDay: 1 } );
+    Object.assign( clonedMedication, { timesPerDay: 1 } );
   }
 
   if ( level === 'exactlyFifty' ) {
     while ( exactlyFifty === false && counter <= max ) {
-      if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+      if ( max === counter && clonedMedication.timesPerDay === 1 && timesPerDayRange === true ) {
         counter = 1;
-        Object.assign( medication, { timesPerDay: 2 } );
+        Object.assign( clonedMedication, { timesPerDay: 2 } );
       }
-      testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
+      testAdjustment = _.toInteger( clonedMedication.doseICS ) *
+        _.toInteger( clonedMedication.timesPerDay ) *
+        counter;
+      testAdjustmentLaba = _.toInteger( clonedMedication.doseLABA ) *
+        _.toInteger( clonedMedication.timesPerDay ) *
+        counter;
       if ( testAdjustment === calculate.patientICSDose( patientMedication ) / 2  &&
-        testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
-        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
+        testAdjustment <= _.toInteger( clonedMedication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( clonedMedication.maxGreenLABA ) ) {
         exactlyFifty = true;
 
-        return Object.assign( medication, { puffsPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter, timesPerDay: clonedMedication.timesPerDay } );
       }
       counter += 1;
     }
@@ -114,21 +119,26 @@ export const checkDoseReduction = ( medication, level, patientMedication ) => {
   }
   else if ( level === 'betweenFiftyAndFullDose' ) {
     while ( betweenFiftyAndFullDose === false && counter <= max ) {
-      if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+      if ( max === counter && clonedMedication.timesPerDay === 1 && timesPerDayRange === true ) {
         counter = 1;
-        Object.assign( medication, { timesPerDay: 2 } );
+        Object.assign( clonedMedication, { timesPerDay: 2 } );
       }
-      testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
-      // console.log('testAdjustMent: ', testAdjustment, originalICSDose, counter, medication)
+      testAdjustment = _.toInteger( clonedMedication.doseICS ) *
+        _.toInteger( clonedMedication.timesPerDay ) *
+        counter;
+      testAdjustmentLaba = _.toInteger( clonedMedication.doseLABA ) *
+        _.toInteger( clonedMedication.timesPerDay ) *
+        counter;
+     // console.log('testAdjustMent: ', testAdjustment,
+      // calculate.patientICSDose( patientMedication ), counter, medication, patientMedication)
       if ( testAdjustment >= calculate.patientICSDose( patientMedication ) / 2 &&
           testAdjustment < calculate.patientICSDose( patientMedication ) &&
-          testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
-        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
+          testAdjustment <= _.toInteger( clonedMedication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( clonedMedication.maxGreenLABA ) ) {
         betweenFiftyAndFullDose = true;
-        // console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
+        // console.log('medication adjust: ',  clonedMedication, Object.assign( clonedMedication, { puffsPerTime: counter } ) );
 
-        return Object.assign( medication, { puffsPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter, timesPerDay: clonedMedication.timesPerDay } );
       }
       counter += 1;
     }
@@ -137,20 +147,24 @@ export const checkDoseReduction = ( medication, level, patientMedication ) => {
   }
   else if ( level === 'betweenOneAndFifty' ) {
     while ( betweenFiftyAndFullDose === false && counter <= max ) {
-      if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+      if ( max === counter && clonedMedication.timesPerDay === 1 && timesPerDayRange === true ) {
         counter = 1;
-        Object.assign( medication, { timesPerDay: 2 } );
+        Object.assign( clonedMedication, { timesPerDay: 2 } );
       }
-      testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
-      testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
+      testAdjustment = _.toInteger( clonedMedication.doseICS ) *
+        _.toInteger( clonedMedication.timesPerDay ) *
+        counter;
+      testAdjustmentLaba = _.toInteger( clonedMedication.doseLABA ) *
+        _.toInteger( clonedMedication.timesPerDay ) *
+        counter;
       if ( testAdjustment >= 1 &&
         testAdjustment < calculate.patientICSDose( patientMedication ) &&
-        testAdjustment <= _.toInteger( medication.maxGreenICS ) &&
-        testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
+        testAdjustment <= _.toInteger( clonedMedication.maxGreenICS ) &&
+        testAdjustmentLaba <= _.toInteger( clonedMedication.maxGreenLABA ) ) {
         betweenFiftyAndFullDose = true;
         // console.log('medication adjust: ',  Object.assign( medication, { maxPuffPerTime: counter } ));
 
-        return Object.assign( medication, { puffsPerTime: counter } );
+        return Object.assign( medication, { puffsPerTime: counter, timesPerDay: clonedMedication.timesPerDay } );
       }
       counter += 1;
     }
