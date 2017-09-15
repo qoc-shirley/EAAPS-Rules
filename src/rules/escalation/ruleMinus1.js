@@ -35,7 +35,6 @@ const ruleMinus1 = ( patientMedications ) => {
     return _.chain( patientMedications )
       .filter( patientMedication => patientMedication.chemicalType === 'laac' )
       .concat( runThroughEscalationRules )
-      .map( _medication => Object.assign( _medication, { tag: 'e0' } ) )
       .value();
   }
 

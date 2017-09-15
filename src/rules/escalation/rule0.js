@@ -59,7 +59,7 @@ const rule0 = ( patientMedications, masterMedications ) => {
           .value();
         if ( noIcsOrLabaIcsOrLaac ) {
           if ( patientMedication.chemicalType === 'ltra' ) {
-            result.push( Object.assign( patientMedication, { tag: 'e2' } ) );
+            return result.push( Object.assign( patientMedication, { tag: 'e2' } ) );
           }
           else if (
             ( patientMedication.chemicalType === 'laba' )
