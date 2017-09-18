@@ -6,14 +6,14 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
         const noLaba = _.chain( _patientMedications )
-          .filter( _medication => _medication.chemicalType === 'laba' )
+          .filter( _medication => _medication.chemicalType.toLowerCase() === 'laba' )
           .isEmpty()
           .value();
         const isLtra = _.chain( _patientMedications )
           .filter( { chemicalType: 'ltra' } )
           .value();
 
-        if ( patientMedication.chemicalType === 'ICS' && noLaba && !_.isEmpty( isLtra ) &&
+        if ( patientMedication.chemicalType.toLowerCase() === 'ics' && noLaba && !_.isEmpty( isLtra ) &&
           !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
           // Provide a choice to discontinue the LTRA
           const patientMedicationClone1 = _.cloneDeep( patientMedication );
