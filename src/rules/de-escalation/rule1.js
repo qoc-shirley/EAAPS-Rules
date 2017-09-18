@@ -67,12 +67,10 @@ const rule1 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
         !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
           const avgAsthmaSymptoms = _questionnaireAnswers[0].asthmaSymptoms;
           if ( avgAsthmaSymptoms === '0' ) {
-            return result.push( 'statement1Ai',
-              Object.assign( patientMedication, { tag: 'd1' } ) );
+            return result.push( Object.assign( patientMedication, { tag: 'd1' } ) );
           }
           else if ( avgAsthmaSymptoms === '1' || avgAsthmaSymptoms === '2' || avgAsthmaSymptoms === '3' ) {
-            return result.push( 'statement1Aii',
-              Object.assign( patientMedication, { tag: 'd2' } ) );
+            return result.push( Object.assign( patientMedication, { tag: 'd2' } ) );
           }
 
           return [];
