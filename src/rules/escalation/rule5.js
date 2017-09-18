@@ -101,7 +101,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 _.chain( _masterMedications )
                   .filter( medication => medication.chemicalType === 'ICS' &&
                       medication.name === patientMedication.name &&
-                      ( adjust.ICSDose( medication, 'highest' ) !== [] ) &&
+                      !_.isEmpty( adjust.ICSDose( medication, 'highest' ) ) &&
                       ( medication.timesPerDay === patientMedication.timesPerDay ||
                         medication.timesPerDay === '1 OR 2' ) &&
                       ( medication.device === patientMedication.device || medication.device === laba.device ) )
