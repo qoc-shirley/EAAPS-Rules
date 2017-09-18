@@ -3,35 +3,35 @@ import * as get from '../library/getICSDose';
 
 const rule0 = ( patientMedications, masterMedications ) => {
   const recommendationOne = _.chain( masterMedications )
-    .filter( { name: 'flovent', doseICS: '125' } )
+    .filter( { name: 'flovent', doseICS: '125', chemicalType: 'ICS' } )
     .thru( changeOne =>
       _.map( changeOne, changeOneEach => Object.assign( changeOneEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationTwo = _.chain( masterMedications )
-    .filter( { device: 'diskus', doseICS: '100' } )
+    .filter( { device: 'diskus', doseICS: '100', chemicalType: 'ICS' } )
     .thru( changeTwo =>
       _.map( changeTwo, changeTwoEach => Object.assign( changeTwoEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationThree = _.chain( masterMedications )
-    .filter( { name: 'pulmicort', doseICS: '200' } )
+    .filter( { name: 'pulmicort', doseICS: '200', chemicalType: 'ICS' } )
     .thru( changeThree =>
       _.map( changeThree, changeThreeEach =>
         Object.assign( changeThreeEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
   const recommendationFour = _.chain( masterMedications )
-    .filter( { name: 'asmanex', doseICS: '200' } )
+    .filter( { name: 'asmanex', doseICS: '200', chemicalType: 'ICS' } )
     .thru( changeFour =>
       _.map( changeFour, changeFourEach =>
-        Object.assign( changeFourEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
+        Object.assign( changeFourEach, { puffsPerTime: 1, tag: 'e1', timesPerDay: 1 } ) ) )
     .value();
   const recommendationFive = _.chain( masterMedications )
-    .filter( { name: 'alvesco', doseICS: '200' } )
+    .filter( { name: 'alvesco', doseICS: '200', chemicalType: 'ICS' } )
     .thru( changeFive =>
       _.map( changeFive, changeFiveEach =>
-        Object.assign( changeFiveEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
+        Object.assign( changeFiveEach, { puffsPerTime: 1, tag: 'e1', timesPerDay: 1 } ) ) )
     .value();
   const recommendationSix = _.chain( masterMedications )
-    .filter( { name: 'qvar', doseICS: '100' } )
+    .filter( { name: 'qvar', doseICS: '100', chemicalType: 'ICS' } )
     .thru( changeSix =>
       _.map( changeSix, changeSixEach => Object.assign( changeSixEach, { puffsPerTime: 1, tag: 'e1' } ) ) )
     .value();
