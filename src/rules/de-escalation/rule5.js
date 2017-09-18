@@ -24,7 +24,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
             rule3Recommendation = 'No recommendation';
           }
           if ( !_.isEmpty( noLaba ) ) {
-            return result.push( 'statement5',
+            return result.push(
               'discontinue Ltra: ',
               Object.assign( patientMedication, { tag: 'd11' } ),
               Object.assign( noLaba[0], { tag: 'd11' } ),
@@ -33,7 +33,7 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               Object.assign( noLtra[0], { tag: 'd11' } ),
             );
           }
-          result.push( 'statement5',
+          result.push(
             'discontinue Ltra: ',
             Object.assign( patientMedication, { tag: 'd11' } ),
             'continue ltra (Rule3): ',

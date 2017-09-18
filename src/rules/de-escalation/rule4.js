@@ -28,7 +28,7 @@ const rule4 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
           }
           // console.log(rule1( [patientMedication], _masterMedications, _questionnaireAnswers ));
           // change result when pushing to CDSS
-          result.push( 'statement4',
+          result.push(
             'discontinue ltra: ', Object.assign( isLtra[0], { tag: 'd10' } ),
             Object.assign( patientMedication, { tag: 'd10' } ),
             'continue ltra : ', Object.assign( isLtra[0], { tag: 'd10' } ),
