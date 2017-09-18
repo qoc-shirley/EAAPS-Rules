@@ -5,17 +5,17 @@ const rule5 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
     .reduce( ( result, medication ) => {
       const rule = _.partial( ( _masterMedications, _patientMedications, _questionnaireAnswers, patientMedication ) => {
         const noLaba = _.chain( _patientMedications )
-          .filter( _medication => _medication.chemicalType === 'laba' )
+          .filter( _medication => _medication.chemicalType.toLowerCase() === 'laba' )
           .value();
 
         const noLtra = _.chain( _patientMedications )
-          .filter( _medication => _medication.chemicalType === 'ltra' )
+          .filter( _medication => _medication.chemicalType.toLowerCase() === 'ltra' )
           .value();
 
         if (
-            ( patientMedication.chemicalType === 'laba,ICS' ||
-              ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( noLaba ) ) )
-          && !_.isEmpty( noLtra ) && !_.some( _patientMedications, { chemicalType: 'laac' } )) {
+            ( patientMedication.chemicalType.toLowerCase() === 'laba,ics' ||
+              ( patientMedication.chemicalType.toLowerCase() === 'ics' && !_.isEmpty( noLaba ) ) )
+          && !_.isEmpty( noLtra ) && !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
           // Provide a choice to discontinue the LTRA
           const patientMedicationClone = _.cloneDeep( patientMedication );
           let rule3Recommendation =
