@@ -152,8 +152,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               if ( patientMedication.chemicalType === 'ICS' ) {
                 // discontinue laba medication
                 // add tag: d7
-                return result.push( 'statement 3 b a i And ii',
-                  Object.assign( patientMedication, { tag: 'd7' } ),
+                return result.push( Object.assign( patientMedication, { tag: 'd7' } ),
                   Object.assign( isLaba[0], { tag: 'd7' } ),
                 );
               }
@@ -220,9 +219,7 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
                 }
                 // const getHighestDose = get.highestICSDose( equalICSDose );
 
-                return result.push( 'statement 3 b a i And ii',
-                  // Object.assign( getHighestDose, { tag: 'd7' } ),
-                  Object.assign( equalICSDoseWithSameDevice, { tag: 'd7' } ) );
+                return result.push( Object.assign( equalICSDoseWithSameDevice, { tag: 'd7' } ) );
                 // has to be presented as an option
               }
             }
@@ -345,13 +342,11 @@ const rule3 = ( patientMedications, masterMedications, questionnaireAnswers ) =>
               }
               // const getHighestDose = get.highestICSDose( equalICSDose );
 
-              return result.push( 'statement 3 b b1',
-                Object.assign( equalICSDoseWithSameDevice, { tag: 'd8' } ) );
+              return result.push( Object.assign( equalICSDoseWithSameDevice, { tag: 'd8' } ) );
               // has to be presented as an option
             }
             else if ( avgUseOfRescuePuff === '1' || avgUseOfRescuePuff === '2' || avgUseOfRescuePuff === '3' ) {
-              return result.push( 'statement 3 b b2',
-                Object.assign( patientMedication, { tag: 'd9' } ),
+              return result.push( Object.assign( patientMedication, { tag: 'd9' } ),
                 Object.assign( isLaba[0], { tag: 'd9' } ) );
             }
           }
