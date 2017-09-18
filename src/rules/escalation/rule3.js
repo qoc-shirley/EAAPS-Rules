@@ -26,7 +26,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               return _.chain( _masterMedications )
                 .filter( medication => medication.chemicalType === 'laba,ICS' &&
                   medication.name === patientMedication.name &&
-                  ( adjust.ICSDose( medication, 'medium' ) !== [] ) &&
+                  !_.isEmpty( adjust.ICSDose( medication, 'medium' ) ) &&
                   ( medication.timesPerDay === patientMedication.timesPerDay ||
                     medication.timesPerDay === '1 OR 2' ) &&
                   medication.device === patientMedication.device )
