@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
 import * as categorize from '../library/categorizeDose';
+import * as match from '../library/match';
 
 const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
       .reduce( ( result, originalMedication ) => {
@@ -25,66 +26,98 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   Object.assign( patientMedication, { tag: 'e11' } )] ) )
                 .value();
             }
-            // console.log( 'laba and ICS' );
-            else if ( !_.isEmpty( LabaAndIcs ) && _.some( _patientMedications, { chemicalType: 'laba' } ) ) {
-              let newMedication = null;
+            else if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( labaMedication ) ) {
+              // let newMedication = null;
+              console.log( 'laba and ICS: ', _.chain( _masterMedications )
+                .filter( mMed => mMed.chemicalType === 'laba,ICS' &&
+                  mMed.chemicalLABA === labaMedication[0].chemicalLABA &&
+                  mMed.chemicalICS === patientMedication.chemicalICS &&
+                  ( mMed.device === patientMedication.device || mMed.device === labaMedication[0].device ) &&
+                  !_.isEmpty( adjust.ICSDoseToOriginalMedication( mMed, patientMedication ) ) ).value() );
 
               return _.chain( _masterMedications )
-                .reduce( ( accResult, medication ) => {
-                  const laba = _.chain( _patientMedications )
-                    .find( { chemicalType: 'laba' } )
+                .filter( mMed => mMed.chemicalType === 'laba,ICS' &&
+                  mMed.chemicalLABA === labaMedication[0].chemicalLABA &&
+                  mMed.chemicalICS === patientMedication.chemicalICS &&
+                  ( mMed.device === patientMedication.device || mMed.device === labaMedication[0].device ) &&
+                !_.isEmpty( adjust.ICSDoseToOriginalMedication( mMed, patientMedication ) ) )
+                .thru( ( medication ) => {
+                  console.log('medication: ', medication );
+                  const sameChemicalIcsAndLaba = _.chain( _masterMedications )
+                    .filter( mMed => mMed.chemicalType === 'laba,ICS' &&
+                      mMed.chemicalLABA === labaMedication[0].chemicalLABA &&
+                      mMed.chemicalICS === patientMedication.chemicalICS )
+                    .thru( _mMed => adjust.ICSDoseToOriginalMedication( _mMed, patientMedication ) )
+                    .thru( _mMed => match.minimizePuffsPerTime( _mMed ) )
                     .value();
-                  if ( medication.chemicalType !== 'laba,ICS' &&
-                    ( ( medication.chemicalLABA !== laba.chemicalLABA &&
-                        medication.chemicalICS !== patientMedication.chemicalICS ) ||
-                      ( medication.device !== patientMedication.device &&
-                        medication.device !== laba.device )
-                    )
-                  ) {
-                    // console.log('no match wih any');
-                    return _.concat( accResult,
-                      Object.assign( patientMedication, { tag: 'e10' } ) );
+
+                  if ( _.isEmpty( medication ) ) {
+                    console.log('empty everything: ', patientMedication);
+                    return Object.assign( patientMedication, { tag: 'e10' } );
+                  }
+                  else if ( !_.isEmpty( sameChemicalIcsAndLaba ) ) {
+                    console.log('empty device');
+                    return Object.assign( sameChemicalIcsAndLaba, { tag: 'e11' } );
+                  }
+                  console.log('can match device and chemical');
+                  if ( !_.chain( medication ).filter( { device: patientMedication.device } ).isEmpty().value() ) {
+                    return _.chain( medication )
+                      .filter( { device: patientMedication.device } )
+                      .value();
                   }
 
-                  const adjustToOrgIcsDose = adjust.ICSDoseToOriginalMedication( medication, patientMedication );
-                  if ( medication.chemicalType === 'laba,ICS' &&
-                    medication.chemicalLABA === laba.chemicalLABA &&
-                    medication.chemicalICS === patientMedication.chemicalICS &&
-                    ( medication.device === patientMedication.device || medication.device === laba.device )
-                    && ( _.isNil( newMedication ) ||
-                      ( !_.isEmpty( adjustToOrgIcsDose ) &&
-                        _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
-                  ) {
-                    // console.log('match device and chemical');
-                    newMedication = adjustToOrgIcsDose;
-
-                    return _.concat( accResult,
-                      Object.assign( newMedication, { tag: 'e11' } ) );
-                  }
-
-                  else if ( medication.chemicalType === 'laba,ICS' &&
-                    medication.chemicalLABA === laba.chemicalLABA &&
-                    medication.chemicalICS === patientMedication.chemicalICS &&
-                    ( _.isNil( newMedication ) ||
-                      ( !_.isEmpty( adjustToOrgIcsDose ) &&
-                        _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
-                  ) {
-                    // console.log('only match chemical');
-                    newMedication = adjustToOrgIcsDose;
-
-                    return _.concat( accResult,
-                      Object.assign( newMedication, { tag: 'e11' } ) );
-                  }
-
-                  return accResult;
+                  return _.chain( medication )
+                    .filter( { device: labaMedication[0].device } )
+                    .thru( _mMed => Object.assign( _mMed, { tag: 'e11' } ) )
+                    .value();
+                //   if ( medication.chemicalType !== 'laba,ICS' &&
+                //     ( ( medication.chemicalLABA !== labaMedication[0].chemicalLABA &&
+                //         medication.chemicalICS !== patientMedication.chemicalICS ) ||
+                //       ( medication.device !== patientMedication.device &&
+                //         medication.device !== labaMedication[0].device )
+                //     )
+                //   ) {
+                //     console.log('no match wih any');
+                //     return _.concat( accResult,
+                //       Object.assign( patientMedication, { tag: 'e10' } ) );
+                //   }
+                //
+                //   const adjustToOrgIcsDose = adjust.ICSDoseToOriginalMedication( medication, patientMedication );
+                //   if ( medication.chemicalType === 'laba,ICS' &&
+                //     medication.chemicalLABA === labaMedication[0].chemicalLABA &&
+                //     medication.chemicalICS === patientMedication.chemicalICS &&
+                //     ( medication.device === patientMedication.device || medication.device === labaMedication[0].device )
+                //     && ( _.isNil( newMedication ) ||
+                //       ( !_.isEmpty( adjustToOrgIcsDose ) &&
+                //         _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
+                //   ) {
+                //     console.log('match device and chemical');
+                //     newMedication = adjustToOrgIcsDose;
+                //
+                //     return _.concat( accResult,
+                //       Object.assign( newMedication, { tag: 'e11' } ) );
+                //   }
+                //
+                //   else if ( medication.chemicalType === 'laba,ICS' &&
+                //     medication.chemicalLABA === labaMedication[0].chemicalLABA &&
+                //     medication.chemicalICS === patientMedication.chemicalICS &&
+                //     ( _.isNil( newMedication ) ||
+                //       ( !_.isEmpty( adjustToOrgIcsDose ) &&
+                //         _.toInteger( newMedication.doseICS ) < _.toInteger( adjustToOrgIcsDose.doseICS ) ) )
+                //   ) {
+                //     console.log('only match chemical');
+                //     newMedication = adjustToOrgIcsDose;
+                //
+                //     return _.concat( accResult,
+                //       Object.assign( newMedication, { tag: 'e11' } ) );
+                //   }
+                //
+                //   return accResult;
                 }, [] )
-                .uniqBy( 'id' )
-                .thru( _medication => result.push(
-                  [
-                    _medication,
-                    Object.assign( singulair[0], { tag: '' } ),
-                    Object.assign( labaMedication[0], { tag: '' } ),
-                  ] ) )
+                .thru( _mMed => match.minimizePuffsPerTime( _mMed ) )
+                .thru( _medication => result.push( _medication,
+                  Object.assign( singulair[0], { tag: '' } ),
+                  Object.assign( labaMedication[0], { tag: '' } ) ) )
                 .value();
             }
           }
@@ -106,6 +139,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
         return result;
       }, [] )
     .flattenDeep()
+    .uniqBy( 'id' )
     .value();
 
 export default rule4;
