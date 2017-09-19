@@ -38,7 +38,7 @@ export const ICSDose = ( medication, level ) => {
       if ( testAdjustment >= _.toInteger( medication.highFloorICS ) ) {
         // console.log( 'test adjustment: ', testAdjustment, counter );
         highICSDose = true;
-        console.log('medication high: ',  Object.assign( medication, { puffsPerTime: counter } ) );
+        console.log('medication high: ', Object.assign( medication, { puffsPerTime: counter } ) );
 
         return Object.assign( medication, { puffsPerTime: counter } );
       }
@@ -66,16 +66,26 @@ export const ICSDose = ( medication, level ) => {
   else if ( level === 'highest' ) {
     // console.log('max:', max);
    // console.log('medication: ', medication);
+    let timesPerDayRange = false;
+    if ( medication.name === 'asmanex' || medication.name === 'alvesco' ) {
+      // console.log('1or2');
+      timesPerDayRange = true;
+      Object.assign( medication, { timesPerDay: 1 } );
+    }
     while ( highestICSDose === false && counter <= max ) {
+      if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+        counter = 1;
+        Object.assign( medication, { timesPerDay: 2 } );
+      }
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
-      // console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
-      // console.log('compare values ICS: ',  testAdjustment === _.toInteger( medication.maxGreenICS ));
-      // console.log('compare values LABA: ',  testAdjustmentLaba  <= _.toInteger( medication.maxGreenLABA ),testAdjustmentLaba, medication.maxGreenLABA);
+      console.log( 'test adjustment: ', testAdjustment, medication.maxGreenICS, counter );
+      console.log('compare values ICS: ',  testAdjustment === _.toInteger( medication.maxGreenICS ));
+      console.log('compare values LABA: ',  testAdjustmentLaba  <= _.toInteger( medication.maxGreenLABA ),testAdjustmentLaba, medication.maxGreenLABA);
       if ( testAdjustment === _.toInteger( medication.maxGreenICS ) &&
            testAdjustmentLaba <= _.toInteger( medication.maxGreenLABA ) ) {
         highestICSDose = true;
-        // console.log('medication highest: ',  Object.assign( medication, { puffsPerTime: counter } ) );
+        console.log('medication highest adjusted: ',  Object.assign( medication, { puffsPerTime: counter } ) );
 
         return Object.assign( medication, { puffsPerTime: counter } );
       }

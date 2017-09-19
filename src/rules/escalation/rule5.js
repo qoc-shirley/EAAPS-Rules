@@ -91,6 +91,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   Object.assign( originalMedicationLtra[0], { tag: 'e15' } ),
                   Object.assign( originalMedicationLaba[0], { tag: 'e15' } )] );
 
+              console.log('patientMedication: ', adjust.ICSDose( patientMedication, 'highest' ) );
               if ( !_.isEmpty( adjust.ICSDose( patientMedication, 'highest' ) ) ) {
                 const adjustToMax = adjust.ICSDose( patientMedication, 'highest' );
 
@@ -99,27 +100,32 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
               return result.push(
                 _.chain( _masterMedications )
-                  .filter( medication => medication.chemicalType === 'ICS' &&
+                  .filter( medication =>{
+                  return medication.chemicalType === 'ICS' &&
                       medication.name === patientMedication.name &&
                       !_.isEmpty( adjust.ICSDose( medication, 'highest' ) ) &&
-                      ( medication.timesPerDay === patientMedication.timesPerDay ||
+                      ( _.toInteger( medication.timesPerDay ) === _.toInteger( patientMedication.timesPerDay ) ||
                         medication.timesPerDay === '1 OR 2' ) &&
-                      ( medication.device === patientMedication.device || medication.device === laba.device ) )
+                      ( medication.device === patientMedication.device || medication.device === laba.device ) })
                   .reduce( ( accResult, medication ) => {
-                    if ( _.isNil( accResult.high ) ) {
-                      accResult.high = medication;
+                    console.log('filteredMEdication: ', medication);
+                    if ( _.isEmpty( accResult ) ) {
+                      accResult = medication;
+                      console.log('nil: ', accResult);
 
                       return accResult;
                     }
-                    else if ( accResult.high.doseICS <= medication.doseICS ) {
-                      accResult.high = medication;
+                    else if ( accResult.doseICS <= medication.doseICS ) {
+                      accResult = medication;
+                      console.log('replace or not: ', accResult);
 
                       return accResult;
                     }
+                    console.log('otherwise: ', accResult);
 
                     return accResult;
                   }, [] )
-                  .thru( medication => medication.high )
+                  .thru( medication => { console.log('medication.high: ', medication ); return medication } )
                   .thru( _medication => Object.assign( _medication, { tag: 'e15' } ) )
                   .value(),
               );

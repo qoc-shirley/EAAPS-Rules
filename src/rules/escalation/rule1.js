@@ -86,14 +86,17 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 .value(),
               );
             }
-            const chemicalICSMedications = _.chain( newMedications )
+            let chemicalICSMedications = _.chain( newMedications )
               .filter( { chemicalICS: patientMedication.chemicalICS, device: patientMedication.device } )
               .value();
+            if ( _.isEmpty( chemicalICSMedications ) ) {
+              chemicalICSMedications =  _.chain( newMedications )
+                .filter( { chemicalICS: patientMedication.chemicalICS } )
+                .value();
+            }
             console.log('chemicalICSMedications: ', chemicalICSMedications);
             const equal = _.chain( chemicalICSMedications )
-              .filter( medication =>{
-                console.log('getEqual: ',  adjust.ICSDoseToOriginalMedication( medication, patientMedication ));
-                 return !_.isEmpty( adjust.ICSDoseToOriginalMedication( medication, patientMedication ) ) })
+              .filter( medication => !_.isEmpty( adjust.ICSDoseToOriginalMedication( medication, patientMedication ) ) )
               .value();
             console.log('equal: ', equal);
             if ( !_.isEmpty( chemicalICSMedications ) ) {
@@ -102,7 +105,6 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
               let checkNewMedication;
               if ( !_.isEmpty( equal ) ) {
                 checkNewMedication = _.chain( equal )
-                  // .filter( { device: patientMedication.device } )
                   .reduce( ( accResult, medication ) => {
                     if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
                       const newMedAdjust = adjust.ICSDose( medication, 'highest' );
@@ -117,7 +119,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                     }
                     else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
                       const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
-                      console.log('newMedAdjust greater: ', newMedAdjust);
+                      console.log('newMedAdjust smaller: ', newMedAdjust);
                       if ( _.isEmpty( toNext ) ||
                         ( toNext.doseICS < newMedAdjust.doseICS &&
                           calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
@@ -129,19 +131,18 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                       return accResult;
                     }
+                    console.log('medication: ', medication);
 
                     return medication;
                   }, [] )
                   .thru( _medication => Object.assign( _medication, { tag: 'e4' } ) )
                   .value();
-                console.log( 'toMax: ', toMax );
                 if ( _.isEmpty( checkNewMedication ) ) {
-                  console.log('checkNewMedication is empty)');
-                  checkNewMedication = _.chain( equal )
+                  checkNewMedication = _.chain( chemicalICSMedications )
                     .reduce( ( accResult, medication ) => {
                       if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
                         const newMedAdjust = adjust.ICSDose( medication, 'highest' );
-                        console.log('newMedAdjust: ', newMedAdjust);
+                        console.log('newMedAdjust greater: ', newMedAdjust);
                         if ( _.isEmpty( toMax ) ||
                           ( toMax.doseICS < newMedAdjust.doseICS &&
                             calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
@@ -152,6 +153,7 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                       }
                       else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
                         const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
+                        console.log('newMedAdjust smaller: ', newMedAdjust);
                         if ( _.isEmpty( toNext ) ||
                           ( toNext.doseICS < newMedAdjust.doseICS &&
                             calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
@@ -163,68 +165,13 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                         return accResult;
                       }
+                      console.log('medication: ', medication);
 
                       return medication;
                     }, [] )
                     .thru( _medication => Object.assign( _medication, { tag: 'e4' } ) )
                     .value();
                 }
-                // const category = categorize.patientICSDose( patientMedication );
-                //
-                // return result.push( _.chain( _masterMedications )
-                //   .reduce( ( accNewMedications, medication ) => {
-                //     if ( medication.chemicalLABA === 'salmeterol' &&
-                //       medication.chemicalICS === 'fluticasone' &&
-                //       medication.device === 'diskus' ) {
-                //       accNewMedications.diskus.push( Object.assign( medication, { tag: 'e5' } ) );
-                //     }
-                //     else if ( medication.chemicalLABA === 'salmeterol' &&
-                //       medication.chemicalICS === 'fluticasone' &&
-                //       medication.device === 'inhaler2' ) {
-                //       accNewMedications.inhaler2Advair.push( Object.assign( medication, { tag: 'e5' } ) );
-                //     }
-                //     else if ( medication.chemicalLABA === 'formoterol' &&
-                //       medication.chemicalICS === 'budesonide' ) {
-                //       accNewMedications.inhaler2Zenhale.push( Object.assign( medication, { tag: 'e5' } ) );
-                //     }
-                //     else if ( medication.chemicalLABA === 'formoterol' &&
-                //       medication.chemicalICS === 'mometasone' ) {
-                //       accNewMedications.symbicort.push( Object.assign( medication, { tag: 'e5' } ) );
-                //     }
-                //
-                //     return accNewMedications;
-                //   }, { diskus: [], inhaler2Advair: [], inhaler2Zenhale: [], symbicort: [] } )
-                //   .map( ( _newMedications ) => {
-                //     // console.log('newMedications: ', _newMedications );
-                //     if ( category === 'excessive' ) {
-                //       const findLowestOrHighestMedication = _.chain( _newMedications )
-                //         .filter( _medication => categorize.ICSDose( _medication ) === category &&
-                //           adjust.ICSDose( _medication, 'highest' ) !== [] )
-                //         .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                //         .value();
-                //       if ( _.isEmpty( findLowestOrHighestMedication ) ) {
-                //         return _.chain( _newMedications )
-                //           .filter( _medication => adjust.ICSDose( _medication, 'highest' ) !== [] )
-                //           .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                //           .value();
-                //       }
-                //     }
-                //     const findLowestOrHighestMedication = _.chain( _newMedications )
-                //       .filter( _medication => categorize.ICSDose( _medication ) === category &&
-                //         adjust.ICSDose( _medication, category ) !== [] )
-                //       .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                //       .value();
-                //     if ( _.isEmpty( findLowestOrHighestMedication ) ) {
-                //       return _.chain( _newMedications )
-                //         .filter( _medication => adjust.ICSDose( _medication, category ) !== [] )
-                //         .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                //         .value();
-                //     }
-                //
-                //     return findLowestOrHighestMedication;
-                //   } )
-                //   .value(),
-                // );
               }
               else if ( _.isEmpty( equal ) ) {
                 console.log(' equal empty: ', chemicalICSMedications);
@@ -261,40 +208,6 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   }, [] )
                   .thru( _medication => Object.assign( _medication, { tag: 'e4' } ) )
                   .value();
-                if ( _.isEmpty( checkNewMedication ) ) {
-                  checkNewMedication = _.chain( chemicalICSMedications )
-                    .reduce( ( accResult, medication ) => {
-                      // console.log( 'patientMedication newMedication: ', patientMedication, medication );
-                      if ( calculate.patientICSDose( patientMedication ) > calculate.ICSDose( medication ) ) {
-                        const newMedAdjust = adjust.ICSDose( medication, 'highest' );
-                        console.log('newMedAdjust: ', newMedAdjust);
-                        if ( _.isEmpty( toMax ) ||
-                          ( toMax.doseICS < newMedAdjust.doseICS &&
-                            calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
-                          toMax = Object.assign( newMedAdjust, { tag: 'e4' } );
-
-                          return accResult;
-                        }
-                      }
-                      else if ( calculate.patientICSDose( patientMedication ) < calculate.ICSDose( medication ) ) {
-                        const newMedAdjust = adjust.ICSHigherNext( medication, patientMedication );
-                        if ( _.isEmpty( toNext ) ||
-                          ( toNext.doseICS < newMedAdjust.doseICS &&
-                            calculate.ICSDose( toNext ) === calculate.ICSDose( newMedAdjust ) ) ) {
-                          // ICS DOSE is same but doseICS is greater than the one stored
-                          toNext = Object.assign( newMedAdjust, { tag: 'e4' } );
-
-                          return accResult;
-                        }
-
-                        return accResult;
-                      }
-
-                      return medication;
-                    }, [] )
-                    .thru( _medication => Object.assign( _medication, { tag: 'e4' } ) )
-                    .value();
-                }
               }
               const minimization = match.minimizePuffsPerTime( [checkNewMedication, toMax, toNext] );
 

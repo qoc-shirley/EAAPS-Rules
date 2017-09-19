@@ -47,16 +47,17 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             const sameChemicalLabaAndIcs = _.chain( _masterMedications )
               .filter( masterMedication => masterMedication.chemicalType === 'laba,ICS' &&
                   masterMedication.chemicalICS === patientMedication.chemicalICS &&
-                  _.filter( isLaba, medication => masterMedication.chemicalLABA === medication.chemicalLABA ) )
+                masterMedication.chemicalLABA === laba.chemicalLABA )
               .value();
 
+            console.log('sameChemicalLabaAndIcs: ', sameChemicalLabaAndIcs);
             const getDeviceIcsOrLaba = _.chain( sameChemicalLabaAndIcs )
               .filter( medication => medication.device === patientMedication.device ||
                   medication.device === laba.device )
               .value();
             console.log('getDeviceIcsOrLaba: ', getDeviceIcsOrLaba);
 
-            if (  !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
+            if ( !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
               console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba, isLtra)
               result.push( Object.assign( isLtra, { tag: 'e7' } ) );
 
@@ -77,8 +78,8 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
               return result.push( Object.assign( adjustToMedium, { tag: 'e7' } ) );
             }
-            console.log( 'test getDeviceIcsOrLaba' );
-            if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
+            // console.log( 'test getDeviceIcsOrLaba' );
+            else if ( _.isEmpty( sameChemicalLabaAndIcs ) ) {
               console.log( 'sameChemicalLabaAndIcs empty' );
               result.push( Object.assign( isLaba[0], { tag: 'e8' } ) );
 
@@ -101,18 +102,18 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             }
             console.log('asdf');
 
-            if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
+            // if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
               return _.chain( sameChemicalLabaAndIcs )
                 .filter( chooseDevice => chooseDevice.device === patientMedication.device )
                 .filter( adjustMedication => !_.isEmpty( adjust.ICSDose( adjustMedication, 'medium' ) ) )
                 .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-                .thru( _medication => Object.assign( _medication, { tag: 'e7' } ) )
+                .thru( _medication => result.push( Object.assign( _medication, { tag: 'e7' } ) ) )
                 .value();
-            }
-            const adjustToMedium = adjust.ICSDose( patientMedication, 'medium' );
+            // }
+            // const adjustToMedium = adjust.ICSDose( patientMedication, 'medium' );
 
-            return result.push( Object.assign( adjustToMedium, { tag: 'e7' } ),
-              Object.assign( isLaba[0], { tag: 'e7' } ) );
+            // return result.push( Object.assign( adjustToMedium, { tag: 'e7' } ),
+              // Object.assign( isLaba[0], { tag: 'e7' } ) );
           }
           else if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
               !_.some( _patientMedications, { chemicalType: 'ltra' } ) && isLaac &&
