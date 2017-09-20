@@ -2,19 +2,8 @@ import _ from 'lodash';
 import masterMedications from '../../medicationData/medicationData';
 
 const getLabaICSAndICS = ( patientMedications ) => {
-  const result = [];
-
   return _.chain( patientMedications )
-    .filter(
-      _.partial( ( medicationElements, patientMedication ) => {
-        if ( patientMedication.chemicalType === 'ICS' ) {
-          result.push( patientMedication );
-        }
-        else if ( patientMedication.chemicalType === 'laba,ICS' ) {
-          result.push( patientMedication );
-        }
-      }, masterMedications ) )
-    .concat( result )
+    .filter( pMed => pMed.chemicalType === 'ICS' || pMed.chemicalType === 'laba,ICS' )
     .flatten()
     .value();
 };
