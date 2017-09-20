@@ -13,7 +13,7 @@ export const doseICS = ( medications, matchMedication ) =>
 export const minimizePuffsPerTime = ( medications ) => {
   console.log( 'minimizePuffsPerTime: ', medications);
   return _.chain( medications )
-    .thru( convert => _.map( [convert],
+    .thru( convert => _.map( convert,
       convertEach => Object.assign( convertEach, { doseICS: _.toInteger( convertEach.doseICS ) } ) ) )
     .maxBy( 'doseICS' )
     .value();

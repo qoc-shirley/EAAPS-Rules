@@ -114,7 +114,14 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 //
                 //   return accResult;
                 }, [] )
-                .thru( _mMed => match.minimizePuffsPerTime( _mMed ) )
+                .thru( _mMed => {
+                  console.log('_mMed: ', _mMed);
+                  if ( !_.isArray( _mMed ) ) {
+                    return match.minimizePuffsPerTime( [_mMed] );
+                  }
+
+                  return match.minimizePuffsPerTime( _mMed );
+                  } )
                 .thru( _medication => result.push( _medication,
                   Object.assign( singulair[0], { tag: '' } ),
                   Object.assign( labaMedication[0], { tag: '' } ) ) )
