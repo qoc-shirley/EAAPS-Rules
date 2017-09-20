@@ -2,9 +2,8 @@ import _ from 'lodash';
 import * as adjust from '../library/adjustICSDose';
 import * as categorize from '../library/categorizeDose';
 import * as match from '../library/match';
-import masterMedications from '../../medicationData/medicationData';
 
-const rule7 = patientMedications => _.chain( patientMedications )
+const rule7 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, patientMedication ) => {
       if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === true &&
         patientMedication.function === 'controller,reliever' &&
