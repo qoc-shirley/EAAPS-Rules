@@ -122,9 +122,16 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
                   return match.minimizePuffsPerTime( _mMed );
                   } )
-                .thru( _medication => result.push( _medication,
-                  Object.assign( singulair[0], { tag: '' } ),
-                  Object.assign( labaMedication[0], { tag: '' } ) ) )
+                .thru( ( _medication ) => {
+                  if ( _medication.chemicalType === 'ICS' ) {
+                    return result.push( _medication,
+                      Object.assign( singulair[0], { tag: '' } ),
+                      Object.assign( labaMedication[0], { tag: '' } ) );
+                  }
+
+                  return result.push( _medication,
+                    Object.assign( singulair[0], { tag: ''} ) );
+                  } )
                 .value();
             }
           }

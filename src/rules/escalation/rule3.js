@@ -59,7 +59,7 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
 
             if ( !_.isEmpty( sameChemicalLabaAndIcs ) && _.isEmpty( getDeviceIcsOrLaba ) ) {
               console.log("empty",sameChemicalLabaAndIcs,getDeviceIcsOrLaba, isLtra)
-              result.push( Object.assign( isLtra, { tag: 'e7' } ) );
+              result.push( Object.assign( isLaba[0], { tag: 'e7' } ) );
 
               if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
                 return _.chain( _masterMedications )
