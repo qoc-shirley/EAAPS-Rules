@@ -4,65 +4,6 @@ import * as categorize from '../library/categorizeDose';
 import * as adjust from '../library/adjustICSDose';
 import * as match from '../library/match';
 
-// const returnCombo = ( _mMedications, _pMedications ) => {
-//   const category = categorize.patientICSDose( patientMedication );
-//
-//   return  _.chain( _masterMedications )
-//     .reduce( ( accNewMedications, medication ) => {
-//       if ( medication.chemicalLABA === 'salmeterol' &&
-//         medication.chemicalICS === 'fluticasone' &&
-//         medication.device === 'diskus' ) {
-//         accNewMedications.diskus.push( Object.assign( medication, { tag: 'e5' } ) );
-//       }
-//       else if ( medication.chemicalLABA === 'salmeterol' &&
-//         medication.chemicalICS === 'fluticasone' &&
-//         medication.device === 'inhaler2' ) {
-//         accNewMedications.inhaler2Advair.push( Object.assign( medication, { tag: 'e5' } ) );
-//       }
-//       else if ( medication.chemicalLABA === 'formoterol' &&
-//         medication.chemicalICS === 'budesonide' ) {
-//         accNewMedications.inhaler2Zenhale.push( Object.assign( medication, { tag: 'e5' } ) );
-//       }
-//       else if ( medication.chemicalLABA === 'formoterol' &&
-//         medication.chemicalICS === 'mometasone' ) {
-//         accNewMedications.symbicort.push( Object.assign( medication, { tag: 'e5' } ) );
-//       }
-//
-//       return accNewMedications;
-//     }, { diskus: [], inhaler2Advair: [], inhaler2Zenhale: [], symbicort: [] } )
-//     .map( ( _newMedications ) => {
-//       // console.log('newMedications: ', _newMedications );
-//       if ( category === 'excessive' ) {
-//         const findLowestOrHighestMedication = _.chain( _newMedications )
-//           .filter( _medication => categorize.ICSDose( _medication ) === category &&
-//             adjust.ICSDose( _medication, 'highest' ) !== [] )
-//           .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-//           .value();
-//         if ( _.isEmpty( findLowestOrHighestMedication ) ) {
-//           return _.chain( _newMedications )
-//             .filter( _medication => adjust.ICSDose( _medication, 'highest' ) !== [] )
-//             .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-//             .value();
-//         }
-//       }
-//       const findLowestOrHighestMedication = _.chain( _newMedications )
-//         .filter( _medication => categorize.ICSDose( _medication ) === category &&
-//           adjust.ICSDose( _medication, category ) !== [] )
-//         .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-//         .value();
-//       if ( _.isEmpty( findLowestOrHighestMedication ) ) {
-//         return _.chain( _newMedications )
-//           .filter( _medication => adjust.ICSDose( _medication, category ) !== [] )
-//           .thru( _medication => match.minimizePuffsPerTime( _medication ) )
-//           .value();
-//       }
-//
-//       return findLowestOrHighestMedication;
-//     } )
-//     .value(),
-//   );
-// };
-
 const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedications )
     .reduce( ( result, patientOriginalMedication ) => {
       const rule =
@@ -243,13 +184,12 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                 if ( category === 'excessive' ) {
                   const findLowestOrHighestMedication = _.chain( _newMedications )
                     .filter( _medication => categorize.ICSDose( _medication ) === category &&
-                      adjust.ICSDose( _medication, 'highest' ) !== [] )
+                      !_.isEmpty( adjust.ICSDose( _medication, 'highest' ) ) )
                     .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                     .value();
                   if ( _.isEmpty( findLowestOrHighestMedication ) ) {
                     return _.chain( _newMedications )
-                      .filter( _medication => adjust.ICSDose( _medication, 'highest' ) !== [] )
-                      // .thru( _medication => match.minimizePuffsPerTime( _medication ) )
+                      .filter( _medication => !_.isEmpty( adjust.ICSDose( _medication, 'highest' ) ) )
                       .value();
                   }
                 }
@@ -257,13 +197,11 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   .filter( _medication => categorize.ICSDose( _medication ) === category &&
                     !_.isEmpty(adjust.ICSDose( _medication, category ) ) )
                   .minBy( _medication => calculate.patientICSDose( _medication ) )
-                  // .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                   .value();
                 if ( _.isEmpty( findLowestOrHighestMedication ) ) { // try to return the lowest ICS DOSE
                   return _.chain( _newMedications )
                     .filter( _medication => !_.isEmpty(adjust.ICSDose( _medication, category ) ) )
                     .minBy( _medication => calculate.patientICSDose( _medication ) )
-                    // .thru( _medication => match.minimizePuffsPerTime( _medication ) )
                     .value();
                 }
 
