@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import masterMedications from '../../medicationData/medicationData';
 
 const getLabaICSAndICS = ( patientMedications ) => {
   return _.chain( patientMedications )
