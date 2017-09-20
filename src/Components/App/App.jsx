@@ -53,6 +53,7 @@ saveRecommendation,
     const clonedMasterMedication6 = _.cloneDeep( newMasterMedications );
     const clonedMasterMedication7 = _.cloneDeep( newMasterMedications );
     const clonedMasterMedication8 = _.cloneDeep( newMasterMedications );
+    const clonedMasterMedication9 = _.cloneDeep( newMasterMedications );
     const clonedPatientMedication1 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication2 = _.cloneDeep( medication.patientMedications );
     const clonedPatientMedication3 = _.cloneDeep( medication.patientMedications );
@@ -76,7 +77,7 @@ saveRecommendation,
     saveRecommendation( 'Rule 6', getEscalation.rules.rule6( clonedPatientMedication7 ) );
     saveRecommendation( 'Rule 7', getEscalation.rules.rule7( clonedPatientMedication8, clonedMasterMedication8 ) );
     saveRecommendation( 'Rule 8', getEscalation.rules.rule8( clonedPatientMedication9, clonedMasterMedication6 ) );
-    saveRecommendation( 'Rule 9', getEscalation.rules.rule9( clonedPatientMedication10 ) );
+    saveRecommendation( 'Rule 9', getEscalation.rules.rule9( clonedPatientMedication10, clonedMasterMedication9 ) );
     saveRecommendation( 'Rule 10', getEscalation.rules.rule10( clonedPatientMedication11 ) );
     saveRecommendation( 'Rule 11',
       getEscalation.rules.rule11( clonedPatientMedication12, clonedMasterMedication7 ) );
