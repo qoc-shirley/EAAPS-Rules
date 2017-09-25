@@ -14,7 +14,17 @@ export const ICSDose = ( medication, level ) => {
 
   if ( level === 'medium' ) {
     // console.log('medium');
-    while ( lowMediumICSDose === false && ( counter <= max ) ) {
+    let timesPerDayRange = false;
+    if ( medication.name === 'asmanex' || medication.name === 'alvesco' ) {
+      // console.log('1or2');
+      timesPerDayRange = true;
+      Object.assign( medication, { timesPerDay: 1 } );
+    }
+    while ( lowMediumICSDose === false && counter <= max ) {
+      if ( max === counter && medication.timesPerDay === 1 && timesPerDayRange === true ) {
+        counter = 1;
+        Object.assign( medication, { timesPerDay: 2 } );
+      }
       testAdjustment = _.toInteger( medication.doseICS ) * _.toInteger( medication.timesPerDay ) * counter;
       testAdjustmentLaba = _.toInteger( medication.doseLABA ) * _.toInteger( medication.timesPerDay ) * counter;
       if ( testAdjustment > _.toInteger( medication.lowCeilICS ) &&
