@@ -18,8 +18,8 @@ const rule1 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             )
             .isEmpty()
             .value();
-          const onlyOneICS = _.size(_.filter( _patientMedications, { chemicalType: 'ICS'} ) );
-          if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) && onlyICS && onlyOneICS === 1 ) {
+          const onlyOneICS = _.size(_.filter( _patientMedications, { chemicalType: 'ICS' } ) ) === 1;
+          if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( newMedications ) && onlyICS && onlyOneICS ) {
             // talk to lili
             if ( _.some( _patientMedications, { chemicalType: 'ltra' } ) ) {
               result.push( _.chain( _patientMedications )
