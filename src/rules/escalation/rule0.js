@@ -57,14 +57,18 @@ const rule0 = ( patientMedications, masterMedications ) => {
             _medication.chemicalType === 'laac' )
           .isEmpty()
           .value();
-        if ( noIcsOrLabaIcsOrLaac ) {
-          if ( ( patientMedication.chemicalType === 'ltra' ) &&
-           _.size( _.filter( _patientMedications, { chemicalType: 'ltra' } ) ) === 1 ) {
+        const checkLabaAndLtra = _.some(_patientMedications, med => med => med.chemicalType === 'laba' && med.chemicalType === 'ltra' );
+        const labaSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) === 1;
+        const ltraSize = _.size( _.filter( _patientMedications, { chemicalType: 'ltra' } ) ) === 1;
+        console.log('checkLabaAndLtra: ', checkLabaAndLtra, labaSize, ltraSize);
+        if ( noIcsOrLabaIcsOrLaac &&
+          ( ( checkLabaAndLtra && labaSize && ltraSize ) || labaSize || ltraSize )
+          ) {
+          if ( ( patientMedication.chemicalType === 'ltra' ) ) {
             return result.push( Object.assign( patientMedication, { tag: 'e2' } ) );
           }
           else if (
             ( patientMedication.chemicalType === 'laba' ) &&
-            _.size( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) === 1 &&
             ( _.some( _masterMedications, { chemicalType: 'laba,ICS' } ) )
           ) {
             const isLabaICSAndChemicalLABA = _.chain( _masterMedications )
