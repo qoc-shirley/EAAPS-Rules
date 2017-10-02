@@ -95,7 +95,7 @@ const MedicationTable = (
         return filteredMedication.map( addPuffToMedication => Object.assign( {}, addPuffToMedication, {
           puffsPerTime: medication.medicationList[index].puffValue,
           timesPerDay: medication.medicationList[index].timesPerDayValue,
-          isSmart: true,
+          isSmart: false,
         } ) );
       }
 

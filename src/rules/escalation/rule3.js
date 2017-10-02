@@ -118,7 +118,8 @@ const rule3 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           }
           else if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
             isLtra && isLaac &&
-            categorize.patientICSDose( patientMedication ) === 'low' ) {
+            categorize.patientICSDose( patientMedication ) === 'low' &&
+            _.size( _.filter( _patientMedications, { name: 'symbicort', isSmart: false } ) ) === 1 ) {
             return result.push(
               Object.assign( patientMedication, { tag: 'e9', isSmart: true } ) );
           }

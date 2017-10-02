@@ -7,6 +7,9 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
       .reduce( ( result, originalMedication ) => {
         const rule = _.partial( ( _masterMedications, _patientMedications, patientMedication ) => {
           const labaMedication = _.filter( _patientMedications, { chemicalType: 'laba' } );
+          const labaIcsSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba,ICS' } ) ) === 1;
+          const icsSize = _.size( _.filter( _patientMedications, { chemicalType: 'ICS' } ) ) === 1;
+          const labaSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) === 1
           if ( ( patientMedication.chemicalType === 'laba,ICS' || ( patientMedication.chemicalType === 'ICS' &&
               !_.isEmpty( labaMedication ) ) ) &&
             patientMedication.name !== 'symbicort' &&
@@ -16,7 +19,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
             const LabaAndIcs = _.filter( _patientMedications, { chemicalType: 'ICS' } );
             const singulair = _.filter( _masterMedications, { name: 'singulair' } );
-            if ( patientMedication.chemicalType === 'laba,ICS' && _.isEmpty( LabaAndIcs ) ) {
+            if ( patientMedication.chemicalType === 'laba,ICS' && _.isEmpty( LabaAndIcs ) && labaIcsSize) {
               // console.log( 'laba,ICS' );
 
               return _.chain( _masterMedications )
@@ -26,7 +29,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
                   Object.assign( patientMedication, { tag: 'e11' } )] ) )
                 .value();
             }
-            else if ( patientMedication.chemicalType === 'ICS' && !_.isEmpty( labaMedication ) ) {
+            else if ( patientMedication.chemicalType === 'ICS'
+              && !_.isEmpty( labaMedication ) && icsSize && labaSize && !labaIcsSize ) {
               // let newMedication = null;
               console.log( 'laba and ICS: ', _.chain( _masterMedications )
                 .filter( mMed => mMed.chemicalType === 'laba,ICS' &&
@@ -140,7 +144,8 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
             ( categorize.patientICSDose( patientMedication ) === 'medium' ||
             categorize.patientICSDose( patientMedication ) === 'high' ) &&
             !_.some( _patientMedications, { chemicalType: 'ltra' } ) &&
-            !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
+            !_.some( _patientMedications, { chemicalType: 'laac' } ) &&
+            _.size( _.filter( _patientMedications, { name: 'symbicort', isSmart: false } ) ) === 1 ) {
             // multiple triggers causes the tag to be e19 but should be fixed when we fix the multiple trigger problem
             return result.push(
               Object.assign( patientMedication, { tag: 'e12', isSmart: true } ) );
