@@ -9,7 +9,7 @@ const rule4 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           const labaMedication = _.filter( _patientMedications, { chemicalType: 'laba' } );
           const labaIcsSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba,ICS' } ) ) === 1;
           const icsSize = _.size( _.filter( _patientMedications, { chemicalType: 'ICS' } ) ) === 1;
-          const labaSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) === 1
+          const labaSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) === 1;
           if ( ( patientMedication.chemicalType === 'laba,ICS' || ( patientMedication.chemicalType === 'ICS' &&
               !_.isEmpty( labaMedication ) ) ) &&
             patientMedication.name !== 'symbicort' &&

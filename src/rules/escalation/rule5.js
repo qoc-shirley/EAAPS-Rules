@@ -11,6 +11,9 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           // console.log('master medications: ', _masterMedications);
           const originalMedicationLtra = _.filter( _patientMedications, { chemicalType: 'ltra' } );
           const originalMedicationLaba = _.filter( _patientMedications, { chemicalType: 'laba' } );
+          const labaIcsSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba,ICS' } ) ) === 1;
+          const icsSize = _.size( _.filter( _patientMedications, { chemicalType: 'ICS' } ) ) === 1;
+          const labaSize = _.size( _.filter( _patientMedications, { chemicalType: 'laba' } ) ) === 1;
           const filterOrgMeds = _.filter( _patientMedications, medication => medication.name !== 'symbicort' &&
               (
                 medication.chemicalType === 'laba' ||
@@ -20,7 +23,9 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           const isLaba = _.filter( filterOrgMeds, { chemicalType: 'laba' } );
           if ( patientMedication.chemicalType === 'laba,ICS' && patientMedication.name !== 'symbicort' &&
                calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) &&
-           !_.isEmpty( originalMedicationLtra ) &&  !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
+               !_.isEmpty( originalMedicationLtra ) && !_.some( _patientMedications, { chemicalType: 'laac' } ) &&
+                labaIcsSize && _.isEmpty( filterOrgMeds )
+          ) {
             const recommendHighest = _.chain( _masterMedications )
               .filter( sameMedication => sameMedication.chemicalType === patientMedication.chemicalType &&
                   sameMedication.name === patientMedication.name &&
@@ -70,7 +75,7 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           else if ( ( patientMedication.chemicalType === 'ICS' &&
                       calculate.patientICSDose( patientMedication ) < _.toInteger( patientMedication.maxGreenICS ) ) &&
                     !_.isEmpty( isLaba ) && !_.isEmpty( originalMedicationLtra ) &&
-                    !_.some( _patientMedications, { chemicalType: 'laac' } )
+                    !_.some( _patientMedications, { chemicalType: 'laac' } ) && icsSize && labaSize && !labaIcsSize
                   ) {
             const laba = _.find( isLaba, { chemicalType: 'laba' } );
             const filteredMedication = _.chain( _masterMedications )
@@ -142,7 +147,8 @@ const rule5 = ( patientMedications, masterMedications ) => _.chain( patientMedic
           }
           else if ( patientMedication.name === 'symbicort' && patientMedication.isSmart === false &&
             _.some( _patientMedications, { chemicalType: 'ltra' } ) &&
-            !_.some( _patientMedications, { chemicalType: 'laac' } ) ) {
+            !_.some( _patientMedications, { chemicalType: 'laac' } ) &&
+            _.size( _.filter( _patientMedications, { name: 'symbicort', isSmart: false } ) ) === 1 ) {
             result.push( [
               Object.assign( patientMedication, { tag: 'e16', isSmart: true } ),
               Object.assign( originalMedicationLtra[0], { tag: 'e16' } )],
