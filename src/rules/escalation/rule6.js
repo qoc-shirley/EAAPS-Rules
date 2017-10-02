@@ -7,10 +7,14 @@ const rule6 = patientMedications => _
       const filterChemicalTypeLtra = _.filter( patientMedications, { chemicalType: 'ltra' } );
       const filterChemicalTypeLaba = _.filter( patientMedications, { chemicalType: 'laba' } );
       const isLaac = _.some( patientMedications, { chemicalType: 'laac' } );
+      const labaIcsSize = _.size( _.filter( patientMedications, { chemicalType: 'laba,ICS' } ) ) === 1;
+      const icsSize = _.size( _.filter( patientMedications, { chemicalType: 'ICS' } ) ) === 1;
+      const labaSize = _.size( _.filter( patientMedications, { chemicalType: 'laba' } ) ) === 1;
 
       if ( patientMedication.name !== 'symbicort' &&
-        ( patientMedication.chemicalType === 'laba,ICS' ||
-        ( !_.isEmpty( filterChemicalTypeLaba ) && patientMedication.chemicalType === 'ICS' )
+        ( ( patientMedication.chemicalType === 'laba,ICS' && labaIcsSize && !icsSize && !labaSize ) ||
+        ( !_.isEmpty( filterChemicalTypeLaba ) && patientMedication.chemicalType === 'ICS' &&
+          icsSize && labaSize && labaIcsSize )
         ) &&
         calculate.patientICSDose( patientMedication ) >= _.toInteger( patientMedication.maxGreenICS ) &&
         !_.isEmpty( filterChemicalTypeLtra ) && !isLaac ) {

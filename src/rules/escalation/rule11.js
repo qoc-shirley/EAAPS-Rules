@@ -12,7 +12,9 @@ const rule11 = ( patientMedications, _masterMedications ) => {
   let filteredPatientMedications = getLabaICSAndICS( patientMedications );
 
   if ( _.find( filteredPatientMedications, { chemicalType: 'ICS' } ) &&
+    _.size( _.filter( patientMedications, { chemicalType: 'ICS' } ) ) === 1 &&
     _.find( filteredPatientMedications, { chemicalType: 'laba,ICS' } ) &&
+    _.size( _.filter( patientMedications, { chemicalType: 'ICS' } ) ) === 1 &&
   !_.some( patientMedications, { chemicalType: 'laac' } ) &&
     !_.some( patientMedications, { chemicalType: 'ltra' } ) &&
       !_.some( patientMedications, { chemicalType: 'laba' } )

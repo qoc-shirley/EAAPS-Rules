@@ -9,7 +9,9 @@ const isSMARTMediumOrHigh = patientMedications => _.chain( patientMedications )
     if ( patientMedication.name === 'symbicort' &&
         patientMedication.isSmart === true &&
       patientMedication.function === 'controller,reliever' &&
-      ( icsDose === 'medium' || icsDose === 'high' ) && !_.some( patientMedications, { chemicalType: 'ltra' } ) &&
+      ( icsDose === 'medium' || icsDose === 'high' ) &&
+      !_.some( patientMedications, { chemicalType: 'ltra' } ) &&
+      _.size( _.filter( patientMedications, { name: 'symbicort', isSmart: true } ) ) === 1 &&
       !isLaac ) {
       return true;
     }

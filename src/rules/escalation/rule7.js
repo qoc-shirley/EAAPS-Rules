@@ -9,7 +9,8 @@ const rule7 = ( patientMedications, masterMedications ) => _.chain( patientMedic
         patientMedication.function === 'controller,reliever' &&
         categorize.patientICSDose( patientMedication ) === 'low' &&
         !_.some( patientMedications, { chemicalType: 'ltra' } ) &&
-        !_.some( patientMedications, { chemicalType: 'laac' } )) {
+        !_.some( patientMedications, { chemicalType: 'laac' } ) &&
+        _.size( _.filter( patientMedications, { name: 'symbicort', isSmart: true } ) ) === 1 ) {
         if ( _.isEmpty( adjust.ICSDose( patientMedication, 'medium' ) ) ) {
           return _.chain( masterMedications )
             .filter( medication => medication.name === 'symbicort' &&
